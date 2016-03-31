@@ -1,10 +1,23 @@
-# Cache and logs (Symfony2)
-/app/cache/*
-/app/logs/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
+# Common stuff
+*~
+*#
 
-# Cache and logs (Symfony3)
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE configuration files
+.idea
+.vscode
+.netbeans
+nbproject
+
+# Cache and logs
 /var/cache/*
 /var/logs/*
 !var/cache/.gitkeep
