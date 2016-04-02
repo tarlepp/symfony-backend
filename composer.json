@@ -1,10 +1,12 @@
 {
     "name": "tarlepp/symfony-backend",
-    "description": "",
+    "description": "Simple JSON API which is build on top of Symfony framework",
     "type": "project",
     "keywords": [
         "php",
-        "symfony"
+        "symfony",
+        "REST",
+        "JSON"
     ],
     "homepage": "https://github.com/tarlepp/symfony-backend",
     "license": "MIT",
