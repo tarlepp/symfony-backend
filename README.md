@@ -11,7 +11,7 @@ Simple JSON API which is build on top of [Symfony](https://symfony.com/) framewo
 ### TODO
 - [ ] Configuration for each environment and/or developer
 - [ ] Authentication via JWT
-- [ ] "Automatic" API doc generation
+- [ ] "Automatic" API doc generation (Swagger)
 - [ ] Database connection (Doctrine dbal + orm)
 - [ ] Console tools (dbal, migrations, orm)
 - [ ] Docker support
@@ -30,6 +30,31 @@ Simple JSON API which is build on top of [Symfony](https://symfony.com/) framewo
 $ curl -sS https://getcomposer.org/installer | php
 $ php composer.phar install
 ```
+
+### Environment checks
+You need to check that your environment is ready to use this application in CLI and WEB mode.
+First step is to make sure that ```var``` directory permissions are set right. Instructions 
+for this can be found [here](http://symfony.com/doc/current/book/installation.html#book-installation-permissions).
+
+
+#### CLI
+Open terminal and go to project root directory and run following command.
+
+```bash
+$ ./bin/symfony_requirements
+```
+
+Check the output from your console.
+
+#### WEB
+Open terminal and go to project root directory and run following command to start standalone server.
+
+```bash
+$ ./bin/console server:run
+```
+
+Open your favorite browser with ```http://127.0.0.1:8000/config.php``` url and check it for any errors.
+And if you get just blank page double check your [permissions](http://symfony.com/doc/current/book/installation.html#book-installation-permissions).
 
 ### Configuration
 *TODO*
