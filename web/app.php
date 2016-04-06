@@ -33,6 +33,7 @@ $loader->unregister();
 $apcLoader->register(true);
 */
 
+// Create new AppKernel
 $kernel = new AppKernel('prod', false);
 $kernel->loadClassCache();
 //$kernel = new AppCache($kernel);
@@ -42,9 +43,13 @@ $kernel->loadClassCache();
  * instead of relying on the configuration parameter
  */
 //Request::enableHttpMethodParameterOverride();
+
+// Create new request
 $request = Request::createFromGlobals();
 
+// Create response and send it back
 $response = $kernel->handle($request);
 $response->send();
 
+// Terminate current request/response cycle
 $kernel->terminate($request, $response);
