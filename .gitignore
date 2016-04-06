@@ -26,6 +26,7 @@ nbproject
 # Parameters
 /app/config/parameters.yml
 /app/config/parameters.ini
+/app/config/development_ip_addresses_local.php
 
 # Managed by Composer
 /app/bootstrap.php.cache
