@@ -7,6 +7,7 @@
 namespace App\EventListener;
 
 // Symfony components
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -26,19 +27,24 @@ class ExceptionListener
     protected $kernel;
 
     /**
+     * @var Logger
+     */
+    protected $logger;
+
+    /**
      * ExceptionListener constructor.
      *
-     * @param   \AppKernel $kernel
+     * @param   \AppKernel  $kernel
+     * @param   Logger      $logger
      */
-    public function __construct(\AppKernel $kernel)
+    public function __construct(\AppKernel $kernel, Logger $logger)
     {
         $this->kernel = $kernel;
+        $this->logger = $logger;
     }
 
     /**
      * Listener method for all exceptions.
-     *
-     * @todo Add logger OR should that be in app specified ExceptionHandler class?
      *
      * @param   GetResponseForExceptionEvent $event
      */
@@ -46,6 +52,9 @@ class ExceptionListener
     {
         // Get exception from current event
         $exception = $event->getException();
+
+        // Log exception
+        $this->logger->error((string)$exception);
 
         // Create new response
         $response = new Response();

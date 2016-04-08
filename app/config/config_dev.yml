@@ -18,6 +18,7 @@ monolog:
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
             channels: [!event]
+            formatter: app.monolog_formatter
         console:
             type: console
             channels: [!event, !doctrine]

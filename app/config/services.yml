@@ -6,6 +6,9 @@ parameters:
 services:
     app.exception_listener:
         class: App\EventListener\ExceptionListener
-        arguments: [ '@kernel' ]
+        arguments: [ '@kernel', '@logger' ]
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+    app.monolog_formatter:
+        class: Monolog\Formatter\LineFormatter
+        arguments: [ ~, ~, true ]
