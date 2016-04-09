@@ -6,6 +6,9 @@
  */
 namespace App\Entity;
 
+// Application components
+use App\Doctrine\Behaviours as ORMBehaviors;
+
 // Doctrine components
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,7 +27,9 @@ use Doctrine\ORM\Mapping as ORM;
  *          @ORM\Index(name="deletedBy_id", columns={"deletedBy_id"})
  *      }
  *  )
- * @ORM\Entity
+ * @ORM\Entity(
+ *      repositoryClass="App\Repository\User"
+ *  )
  *
  * @category    Database
  * @package     App\Entity
@@ -32,6 +37,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User
 {
+    // Traits
+    use ORMBehaviors\Blameable;
+    use ORMBehaviors\Timestampable;
+
     /**
      * @var integer
      *

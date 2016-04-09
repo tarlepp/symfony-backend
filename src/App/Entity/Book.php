@@ -6,6 +6,9 @@
  */
 namespace App\Entity;
 
+// Application components
+use App\Doctrine\Behaviours as ORMBehaviors;
+
 // Doctrine components
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,13 +18,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  *      name="book",
  *      indexes={
- *          @ORM\Index(name="IDX_CBE5A331BDAFD8C8", columns={"author"}),
+ *          @ORM\Index(name="author", columns={"author"}),
  *          @ORM\Index(name="createdBy_id", columns={"createdBy_id"}),
  *          @ORM\Index(name="updatedBy_id", columns={"updatedBy_id"}),
  *          @ORM\Index(name="deletedBy_id", columns={"deletedBy_id"})
  *      }
  *  )
- * @ORM\Entity
+ * @ORM\Entity(
+ *      repositoryClass="App\Repository\Book"
+ *  )
  *
  * @category    Database
  * @package     App\Entity
@@ -29,6 +34,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Book
 {
+    // Traits
+    use ORMBehaviors\Blameable;
+    use ORMBehaviors\Timestampable;
+
     /**
      * @var integer
      *
