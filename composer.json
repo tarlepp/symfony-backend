@@ -36,16 +36,18 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "symfony/symfony": "3.0.*",
-        "doctrine/orm": "^2.5",
-        "doctrine/doctrine-bundle": "^1.6",
-        "doctrine/doctrine-cache-bundle": "^1.2",
-        "symfony/swiftmailer-bundle": "^2.3",
-        "symfony/monolog-bundle": "^2.8",
-        "sensio/distribution-bundle": "^5.0",
-        "sensio/framework-extra-bundle": "^3.0.2",
-        "incenteev/composer-parameter-handler": "^2.0",
-        "knplabs/doctrine-behaviors": "1.3.2"
+        "symfony/symfony": "3.0.4",
+        "doctrine/orm": "2.5.4",
+        "doctrine/doctrine-bundle": "1.6.2",
+        "doctrine/doctrine-cache-bundle": "1.3.0",
+        "symfony/swiftmailer-bundle": "2.3.11",
+        "symfony/monolog-bundle": "2.10.0",
+        "sensio/distribution-bundle": "5.0.5",
+        "sensio/framework-extra-bundle": "3.0.12",
+        "incenteev/composer-parameter-handler": "2.1.2",
+        "knplabs/doctrine-behaviors": "1.3.2",
+        "friendsofsymfony/rest-bundle": "1.7.8",
+        "jms/serializer-bundle": "1.1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
