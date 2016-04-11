@@ -1,3 +1,8 @@
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+
+api:
+    type: rest  # Required for ``RestYamlLoader`` to process imported routes
+    prefix: /api
+    resource: "api_routes.yml"
