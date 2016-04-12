@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 // 3rd party components
 use Knp\DoctrineBehaviors\Model\Blameable\BlameableMethods;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Blameable trait.
@@ -34,6 +35,8 @@ trait Blameable
      *
      * @var null|\App\Entity\User
      *
+     * @JMS\Groups({"CreatedBy"})
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumns({
      *      @ORM\JoinColumn(
@@ -49,6 +52,8 @@ trait Blameable
      * Updated user
      *
      * @var null|\App\Entity\User
+     *
+     * @JMS\Groups({"UpdatedBy"})
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumns({
@@ -67,6 +72,8 @@ trait Blameable
      * Note that this is not used atm.
      *
      * @var null|\App\Entity\User
+     *
+     * @JMS\Groups({"DeletedBy"})
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumns({

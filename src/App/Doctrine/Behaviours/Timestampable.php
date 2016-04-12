@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 // 3rd party components
 use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableMethods;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * Trait Timestampable
@@ -26,12 +27,15 @@ use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableMethods;
  */
 trait Timestampable
 {
+    // Traits
     use TimestampableMethods;
 
     /**
      * Created at datetime.
      *
      * @var null|\DateTime
+     *
+     * @JMS\Groups({"Default", "Author", "Book", "User"})
      *
      * @ORM\Column(
      *      name="createdAt",
@@ -45,6 +49,8 @@ trait Timestampable
      * Updated at datetime.
      *
      * @var null|\DateTime
+     *
+     * @JMS\Groups({"Default", "Author", "Book", "User"})
      *
      * @ORM\Column(
      *      name="updatedAt",
