@@ -66,3 +66,9 @@ swiftmailer:
 fos_rest:
     routing_loader:
         default_format: json
+
+jms_serializer:
+    handlers:
+        datetime:
+            default_format: "Y-m-d\\TH:i:sP" # DATE_RFC3339
+            default_timezone: "UTC"

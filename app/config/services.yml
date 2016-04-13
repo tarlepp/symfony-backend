@@ -9,6 +9,10 @@ services:
         arguments: [ '@kernel', '@logger' ]
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
     app.monolog_formatter:
         class: Monolog\Formatter\LineFormatter
         arguments: [ ~, ~, true ]
+
+    jms_serializer.cache_naming_strategy:
+        class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
