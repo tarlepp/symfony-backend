@@ -12,6 +12,9 @@ use App\Doctrine\Behaviours as ORMBehaviors;
 // Doctrine components
 use Doctrine\ORM\Mapping as ORM;
 
+// 3rd party components
+use JMS\Serializer\Annotation as JMS;
+
 /**
  * Book
  *
@@ -41,6 +44,8 @@ class Book
     /**
      * @var integer
      *
+     * @JMS\Groups({"Default", "Books", "Book", "BookId"})
+     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -48,14 +53,27 @@ class Book
     private $id;
 
     /**
-     * @var integer
+     * @var \App\Entity\Author
      *
-     * @ORM\Column(name="author", type="integer", nullable=false)
+     * @JMS\Groups({"Author", "AuthorId"})
+     *
+     * @ORM\ManyToOne(
+     *      targetEntity="App\Entity\Author",
+     *      inversedBy="books"
+     *  )
+     * @ORM\JoinColumns({
+     *      @ORM\JoinColumn(
+     *          name="author",
+     *          referencedColumnName="id"
+     *      )
+     *  })
      */
     private $author;
 
     /**
      * @var string
+     *
+     * @JMS\Groups({"Default", "Book"})
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
      */
@@ -64,12 +82,16 @@ class Book
     /**
      * @var string
      *
+     * @JMS\Groups({"Default", "Book"})
+     *
      * @ORM\Column(name="description", type="text", nullable=false)
      */
     private $description;
 
     /**
      * @var \DateTime
+     *
+     * @JMS\Groups({"Default", "Book"})
      *
      * @ORM\Column(name="releaseDate", type="date", nullable=false)
      */

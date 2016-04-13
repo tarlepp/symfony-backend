@@ -12,6 +12,9 @@ use App\Doctrine\Behaviours as ORMBehaviors;
 // Doctrine components
 use Doctrine\ORM\Mapping as ORM;
 
+// 3rd party components
+use JMS\Serializer\Annotation as JMS;
+
 /**
  * User
  *
@@ -44,6 +47,8 @@ class User
     /**
      * @var integer
      *
+     * @JMS\Groups({"Default", "User", "CreatedBy", "UpdatedBy", "UserId"})
+     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -53,12 +58,16 @@ class User
     /**
      * @var string
      *
+     * @JMS\Groups({"Default", "User"})
+     *
      * @ORM\Column(name="username", type="string", length=255, nullable=false)
      */
     private $username;
 
     /**
      * @var string
+     *
+     * @JMS\Groups({"Default", "User"})
      *
      * @ORM\Column(name="firstname", type="string", length=255, nullable=false)
      */
@@ -67,12 +76,16 @@ class User
     /**
      * @var string
      *
+     * @JMS\Groups({"Default", "User"})
+     *
      * @ORM\Column(name="surname", type="string", length=255, nullable=false)
      */
     private $surname;
 
     /**
      * @var string
+     *
+     * @JMS\Groups({"Default", "User"})
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=false)
      */
@@ -81,12 +94,17 @@ class User
     /**
      * @var string
      *
+     * @JMS\Exclude
+     *
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
      */
     private $password;
 
     /**
      * @var string
+     *
+     * @JMS\Accessor(getter="getRoles")
+     * @JMS\Groups({"Default", "Roles"})
      *
      * @ORM\Column(name="roles", type="string", length=255, nullable=false)
      */

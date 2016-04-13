@@ -12,6 +12,9 @@ use App\Doctrine\Behaviours as ORMBehaviors;
 // Doctrine components
 use Doctrine\ORM\Mapping as ORM;
 
+// 3rd party components
+use JMS\Serializer\Annotation as JMS;
+
 /**
  * Author
  *
@@ -38,27 +41,66 @@ class Author
     use ORMBehaviors\Timestampable;
 
     /**
+     * Author ID.
+     *
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @JMS\Groups({"Default", "Author", "AuthorId"})
+     *
+     * @ORM\Column(
+     *      name="id",
+     *      type="integer",
+     *      nullable=false
+     *  )
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
+     * Author name.
+     *
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @JMS\Groups({"Default", "Author"})
+     *
+     * @ORM\Column(
+     *      name="name",
+     *      type="string",
+     *      length=255,
+     *      nullable=false
+     *  )
      */
     private $name;
 
     /**
+     * Author description.
+     *
      * @var string
      *
-     * @ORM\Column(name="description", type="text", nullable=false)
+     * @JMS\Groups({"Default", "Author"})
+     *
+     * @ORM\Column(
+     *      name="description",
+     *      type="text",
+     *      nullable=false
+     *  )
      */
     private $description;
+
+    /**
+     * Author books.
+     *
+     * @var \App\Entity\Book[]
+     *
+     * @JMS\Groups({"Books"})
+     *
+     * @ORM\OneToMany(
+     *      targetEntity="App\Entity\Book",
+     *      mappedBy="author"
+     *  )
+     */
+    private $books;
 
     /**
      * Get id
@@ -68,6 +110,36 @@ class Author
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Get author books
+     *
+     * @return Book[]
+     */
+    public function getBooks()
+    {
+        return $this->books;
     }
 
     /**
@@ -85,16 +157,6 @@ class Author
     }
 
     /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
      * Set description
      *
      * @param string $description
@@ -106,15 +168,5 @@ class Author
         $this->description = $description;
 
         return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 }
