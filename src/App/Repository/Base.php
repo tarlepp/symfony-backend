@@ -10,6 +10,7 @@ namespace App\Repository;
 use App\Entity;
 
 // Doctrine components
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -22,4 +23,14 @@ use Doctrine\ORM\EntityRepository;
 abstract class Base extends EntityRepository
 {
     // Implement custom entity query methods here
+
+    /**
+     * Public getter method for entity manager.
+     *
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return parent::getEntityManager();
+    }
 }
