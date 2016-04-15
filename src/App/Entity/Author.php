@@ -30,11 +30,11 @@ use JMS\Serializer\Annotation as JMS;
  *      repositoryClass="App\Repository\Author"
  *  )
  *
- * @category    Database
+ * @category    Model
  * @package     App\Entity
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class Author
+class Author extends Base
 {
     // Traits
     use ORMBehaviors\Blameable;

@@ -31,11 +31,11 @@ use JMS\Serializer\Annotation as JMS;
  *      repositoryClass="App\Repository\Book"
  *  )
  *
- * @category    Database
+ * @category    Model
  * @package     App\Entity
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class Book
+class Book extends Base
 {
     // Traits
     use ORMBehaviors\Blameable;
