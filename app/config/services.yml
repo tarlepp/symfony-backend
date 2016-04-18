@@ -14,5 +14,17 @@ services:
         class: Monolog\Formatter\LineFormatter
         arguments: [ ~, ~, true ]
 
+    repositoryAuthor:
+        class: Doctrine\ORM\EntityRepository
+        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        arguments:
+            - App\Entity\Author
+
+    app.services.author:
+        class: App\Services\Author
+        arguments:
+            - '@repositoryAuthor'
+            - '@validator'
+
     jms_serializer.cache_naming_strategy:
         class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
