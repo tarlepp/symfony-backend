@@ -20,10 +20,22 @@ services:
         arguments:
             - App\Entity\Author
 
+    repositoryBook:
+        class: Doctrine\ORM\EntityRepository
+        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        arguments:
+            - App\Entity\Book
+
     app.services.author:
         class: App\Services\Author
         arguments:
             - '@repositoryAuthor'
+            - '@validator'
+
+    app.services.book:
+        class: App\Services\Book
+        arguments:
+            - '@repositoryBook'
             - '@validator'
 
     jms_serializer.cache_naming_strategy:
