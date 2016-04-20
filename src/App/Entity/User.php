@@ -10,7 +10,11 @@ namespace App\Entity;
 use App\Doctrine\Behaviours as ORMBehaviors;
 
 // Doctrine components
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+
+// Symfony components
+use Symfony\Component\Security\Core\User\UserInterface;
 
 // 3rd party components
 use JMS\Serializer\Annotation as JMS;
@@ -38,7 +42,7 @@ use JMS\Serializer\Annotation as JMS;
  * @package     App\Entity
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class User extends Base
+class User extends Base implements UserInterface, \Serializable
 {
     // Traits
     use ORMBehaviors\Blameable;
@@ -101,6 +105,18 @@ class User extends Base
     private $password;
 
     /**
+     * Group[]
+     *
+     * @JMS\Groups({"Groups"})
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="Group",
+     *     inversedBy="users"
+     * )
+     */
+    private $groups;
+
+    /**
      * @var string
      *
      * @JMS\Accessor(getter="getRoles")
@@ -111,6 +127,16 @@ class User extends Base
     private $roles;
 
     /**
+     * User constructor.
+     *
+     * return User
+     */
+    public function __construct()
+    {
+        $this->groups = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -118,6 +144,66 @@ class User extends Base
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Get firstname
+     *
+     * @return string
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Get surname
+     *
+     * @return string
+     */
+    public function getSurname()
+    {
+        return $this->surname;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Get roles
+     *
+     * @return string
+     */
+    public function getRoles()
+    {
+        return $this->groups->toArray();
     }
 
     /**
@@ -135,16 +221,6 @@ class User extends Base
     }
 
     /**
-     * Get username
-     *
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
      * Set firstname
      *
      * @param string $firstname
@@ -156,16 +232,6 @@ class User extends Base
         $this->firstname = $firstname;
 
         return $this;
-    }
-
-    /**
-     * Get firstname
-     *
-     * @return string
-     */
-    public function getFirstname()
-    {
-        return $this->firstname;
     }
 
     /**
@@ -183,16 +249,6 @@ class User extends Base
     }
 
     /**
-     * Get surname
-     *
-     * @return string
-     */
-    public function getSurname()
-    {
-        return $this->surname;
-    }
-
-    /**
      * Set email
      *
      * @param string $email
@@ -204,16 +260,6 @@ class User extends Base
         $this->email = $email;
 
         return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     /**
@@ -231,36 +277,53 @@ class User extends Base
     }
 
     /**
-     * Get password
+     * String representation of object
      *
-     * @return string
+     * @link  http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
      */
-    public function getPassword()
+    public function serialize()
     {
-        return $this->password;
+        // TODO: Implement serialize() method.
     }
 
     /**
-     * Set roles
+     * Constructs the object
      *
-     * @param string $roles
+     * @link  http://php.net/manual/en/serializable.unserialize.php
      *
-     * @return User
+     * @param string $serialized <p>
+     *                           The string representation of the object.
+     *                           </p>
+     *
+     * @return void
+     * @since 5.1.0
      */
-    public function setRoles($roles)
+    public function unserialize($serialized)
     {
-        $this->roles = $roles;
-
-        return $this;
+        // TODO: Implement unserialize() method.
     }
 
     /**
-     * Get roles
+     * Returns the salt that was originally used to encode the password.
      *
-     * @return string
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
      */
-    public function getRoles()
+    public function getSalt()
     {
-        return $this->roles;
+        // TODO: Implement getSalt() method.
     }
-}
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+}}
