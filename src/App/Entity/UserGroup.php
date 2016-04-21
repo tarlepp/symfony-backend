@@ -1,6 +1,6 @@
 <?php
 /**
- * /src/App/Entity/Group.php
+ * /src/App/Entity/UserGroup.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
@@ -17,10 +17,10 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * Class Group
+ * Class UserGroup
  *
  * @ORM\Table(
- *      name="group",
+ *      name="user_group",
  *      uniqueConstraints={
  *          @ORM\UniqueConstraint(
  *              name="uq_role",
@@ -29,14 +29,14 @@ use JMS\Serializer\Annotation as JMS;
  *      }
  *  )
  * @ORM\Entity(
- *      repositoryClass="App\Repository\Group"
+ *      repositoryClass="App\Repository\UserGroup"
  *  )
  *
  * @category    Model
  * @package     App\Entity
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class Group implements RoleInterface
+class UserGroup implements RoleInterface
 {
     /**
      * Group id.
@@ -82,7 +82,7 @@ class Group implements RoleInterface
     /**
      * @ORM\ManyToMany(
      *      targetEntity="User",
-     *      mappedBy="groups"
+     *      mappedBy="userGroups"
      *  )
      */
     private $users;
@@ -90,7 +90,7 @@ class Group implements RoleInterface
     /**
      * Group constructor.
      *
-     * @return  Group
+     * @return  UserGroup
      */
     public function __construct()
     {
@@ -130,7 +130,7 @@ class Group implements RoleInterface
      *
      * @param   string  $name
      *
-     * @return  Group
+     * @return  UserGroup
      */
     public function setName($name)
     {
@@ -144,7 +144,7 @@ class Group implements RoleInterface
      *
      * @param   string  $role
      *
-     * @return  Group
+     * @return  UserGroup
      */
     public function setRole($role)
     {
