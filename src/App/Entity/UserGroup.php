@@ -6,6 +6,9 @@
  */
 namespace App\Entity;
 
+// Application components
+use App\Doctrine\Behaviours as ORMBehaviors;
+
 // Symfony components
 use Symfony\Component\Security\Core\Role\RoleInterface;
 
@@ -36,19 +39,25 @@ use JMS\Serializer\Annotation as JMS;
  * @package     App\Entity
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class UserGroup implements RoleInterface
+class UserGroup extends Base implements RoleInterface
 {
+    // Traits
+    use ORMBehaviors\Blameable;
+    use ORMBehaviors\Timestampable;
+
     /**
      * Group id.
      *
      * @var integer
      *
+     * @JMS\Groups({"Default", "UserGroup", "UserGroupId"})
+     *
      * @ORM\Column(
      *      name="id",
      *      type="integer"
      * )
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -56,6 +65,8 @@ class UserGroup implements RoleInterface
      * Group name
      *
      * @var string
+     *
+     * @JMS\Groups({"Default", "UserGroup"})
      *
      * @ORM\Column(
      *      name="name",
@@ -70,6 +81,8 @@ class UserGroup implements RoleInterface
      *
      * @var string
      *
+     * @JMS\Groups({"Default", "UserGroup"})
+     *
      * @ORM\Column(
      *      name="role",
      *      type="string",
@@ -80,6 +93,8 @@ class UserGroup implements RoleInterface
     private $role;
 
     /**
+     * @JMS\Groups({"User", "UserId"})
+     *
      * @ORM\ManyToMany(
      *      targetEntity="User",
      *      mappedBy="userGroups"
@@ -149,6 +164,40 @@ class UserGroup implements RoleInterface
     public function setRole($role)
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Method to attach new user group to user.
+     *
+     * @param   User    $user
+     *
+     * @return  UserGroup
+     */
+    public function addUser(User $user)
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addUserGroup($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Method to remove specified user from user group.
+     *
+     * @param   User    $user
+     *
+     * @return  UserGroup
+     */
+    public function removeUser(User $user)
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeUserGroup($this);
+        }
 
         return $this;
     }

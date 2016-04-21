@@ -53,7 +53,11 @@ class User extends Base implements UserInterface, \Serializable
      *
      * @JMS\Groups({"Default", "User", "CreatedBy", "UpdatedBy", "UserId"})
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(
+     *      name="id",
+     *      type="integer",
+     *      nullable=false
+     *  )
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -64,7 +68,12 @@ class User extends Base implements UserInterface, \Serializable
      *
      * @JMS\Groups({"Default", "User"})
      *
-     * @ORM\Column(name="username", type="string", length=255, nullable=false)
+     * @ORM\Column(
+     *      name="username",
+     *      type="string",
+     *      length=255,
+     *      nullable=false
+     *  )
      */
     private $username;
 
@@ -73,7 +82,12 @@ class User extends Base implements UserInterface, \Serializable
      *
      * @JMS\Groups({"Default", "User"})
      *
-     * @ORM\Column(name="firstname", type="string", length=255, nullable=false)
+     * @ORM\Column(
+     *      name="firstname",
+     *      type="string",
+     *      length=255,
+     *      nullable=false
+     *  )
      */
     private $firstname;
 
@@ -82,7 +96,12 @@ class User extends Base implements UserInterface, \Serializable
      *
      * @JMS\Groups({"Default", "User"})
      *
-     * @ORM\Column(name="surname", type="string", length=255, nullable=false)
+     * @ORM\Column(
+     *      name="surname",
+     *      type="string",
+     *      length=255,
+     *      nullable=false
+     *  )
      */
     private $surname;
 
@@ -91,7 +110,12 @@ class User extends Base implements UserInterface, \Serializable
      *
      * @JMS\Groups({"Default", "User"})
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     * @ORM\Column(
+     *      name="email",
+     *      type="string",
+     *      length=255,
+     *      nullable=false
+     *  )
      */
     private $email;
 
@@ -100,31 +124,26 @@ class User extends Base implements UserInterface, \Serializable
      *
      * @JMS\Exclude
      *
-     * @ORM\Column(name="password", type="string", length=255, nullable=false)
+     * @ORM\Column(
+     *      name="password",
+     *      type="string",
+     *      length=255,
+     *      nullable=false
+     *  )
      */
     private $password;
 
     /**
-     * Group[]
+     * UserGroup[]
      *
-     * @JMS\Groups({"Groups"})
+     * @JMS\Groups({"UserGroup", "UserGroupId"})
      *
      * @ORM\ManyToMany(
-     *     targetEntity="Group",
+     *     targetEntity="UserGroup",
      *     inversedBy="users"
      * )
      */
-    private $groups;
-
-    /**
-     * @var string
-     *
-     * @JMS\Accessor(getter="getRoles")
-     * @JMS\Groups({"Default", "Roles"})
-     *
-     * @ORM\Column(name="roles", type="string", length=255, nullable=false)
-     */
-    private $roles;
+    private $userGroups;
 
     /**
      * User constructor.
@@ -133,7 +152,7 @@ class User extends Base implements UserInterface, \Serializable
      */
     public function __construct()
     {
-        $this->groups = new ArrayCollection();
+        $this->userGroups = new ArrayCollection();
     }
 
     /**
@@ -203,7 +222,7 @@ class User extends Base implements UserInterface, \Serializable
      */
     public function getRoles()
     {
-        return $this->groups->toArray();
+        return $this->userGroups->toArray();
     }
 
     /**
@@ -314,7 +333,7 @@ class User extends Base implements UserInterface, \Serializable
      */
     public function getSalt()
     {
-        // TODO: Implement getSalt() method.
+        return null;
     }
 
     /**
@@ -326,4 +345,39 @@ class User extends Base implements UserInterface, \Serializable
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
-}}
+    }
+
+    /**
+     * Method to attach new user group to user.
+     *
+     * @param   UserGroup   $userGroup
+     *
+     * @return  User
+     */
+    public function addUserGroup(UserGroup $userGroup)
+    {
+        if (!$this->userGroups->contains($userGroup)) {
+            $this->userGroups->add($userGroup);
+            $userGroup->addUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Method to remove specified user group from user.
+     *
+     * @param   UserGroup   $userGroup
+     *
+     * @return  User
+     */
+    public function removeUserGroup(UserGroup $userGroup)
+    {
+        if ($this->userGroups->contains($userGroup)) {
+            $this->userGroups->removeElement($userGroup);
+            $userGroup->removeUser($this);
+        }
+
+        return $this;
+    }
+}
