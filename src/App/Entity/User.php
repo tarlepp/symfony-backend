@@ -298,30 +298,35 @@ class User extends Base implements UserInterface, \Serializable
     /**
      * String representation of object
      *
-     * @link  http://php.net/manual/en/serializable.serialize.php
-     * @return string the string representation of the object or null
-     * @since 5.1.0
+     * @link    http://php.net/manual/en/serializable.serialize.php
+     *
+     * @return  string  the string representation of the object or null
      */
     public function serialize()
     {
-        // TODO: Implement serialize() method.
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->password,
+        ]);
     }
 
     /**
      * Constructs the object
      *
-     * @link  http://php.net/manual/en/serializable.unserialize.php
+     * @link    http://php.net/manual/en/serializable.unserialize.php
      *
-     * @param string $serialized <p>
-     *                           The string representation of the object.
-     *                           </p>
+     * @param   string  $serialized The string representation of the object.
      *
-     * @return void
-     * @since 5.1.0
+     * @return  void
      */
     public function unserialize($serialized)
     {
-        // TODO: Implement unserialize() method.
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+        ) = unserialize($serialized);
     }
 
     /**
