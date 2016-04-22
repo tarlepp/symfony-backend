@@ -36,7 +36,6 @@ You need to check that your environment is ready to use this application in CLI 
 First step is to make sure that ```var``` directory permissions are set right. Instructions 
 for this can be found [here](http://symfony.com/doc/current/book/installation.html#book-installation-permissions).
 
-
 #### CLI
 Open terminal and go to project root directory and run following command.
 
@@ -58,6 +57,13 @@ And if you get just blank page double check your [permissions](http://symfony.co
 
 ### Configuration
 *TODO*
+
+#### JWT SSH keys generation
+```
+$ mkdir -p app/var/jwt
+$ openssl genrsa -out app/var/jwt/private.pem -aes256 4096
+$ openssl rsa -pubout -in app/var/jwt/private.pem -out app/var/jwt/public.pem
+```
 
 ### Database initialization
 *TODO*
