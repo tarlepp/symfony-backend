@@ -34,6 +34,9 @@ nbproject
 /app/config/parameters.yml
 /app/config/development_ip_addresses_local.php
 
+# Keys
+/app/var/jwt/*.pem
+
 # Managed by Composer
 /bin/*
 !bin/console
