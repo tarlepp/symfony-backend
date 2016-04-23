@@ -26,6 +26,13 @@ Simple JSON API which is build on top of [Symfony](https://symfony.com/) framewo
 * Use your favorite IDE and get checkout from git OR just use command ```git clone https://github.com/tarlepp/symfony-backend.git```
 * Open terminal, go to folder where you make that checkout and run following commands
 
+JWT SSH keys generation
+```bash
+$ openssl genrsa -out app/var/jwt/private.pem -aes256 4096
+$ openssl rsa -pubout -in app/var/jwt/private.pem -out app/var/jwt/public.pem
+```
+
+Fetch all dependencies
 ```bash
 $ curl -sS https://getcomposer.org/installer | php
 $ php composer.phar install
@@ -57,13 +64,6 @@ And if you get just blank page double check your [permissions](http://symfony.co
 
 ### Configuration
 *TODO*
-
-#### JWT SSH keys generation
-```
-$ mkdir -p app/var/jwt
-$ openssl genrsa -out app/var/jwt/private.pem -aes256 4096
-$ openssl rsa -pubout -in app/var/jwt/private.pem -out app/var/jwt/public.pem
-```
 
 ### Database initialization
 *TODO*
