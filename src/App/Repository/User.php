@@ -13,6 +13,7 @@ use App\Entity;
 use Doctrine\ORM\NoResultException;
 
 // Symfony components
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -25,7 +26,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  * @package     App\Repository
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class User extends Base implements UserProviderInterface
+class User extends Base implements UserProviderInterface, UserLoaderInterface
 {
     /**
      * Loads the user for the given username.
@@ -48,7 +49,7 @@ class User extends Base implements UserProviderInterface
         $query = $this
             ->createQueryBuilder('u')
             ->select('u, g')
-            ->leftJoin('u.user_groups', 'g')
+            ->leftJoin('u.userGroups', 'g')
             ->where('u.username = :username OR u.email = :email')
             ->setParameter('username', $username)
             ->setParameter('email', $username)
