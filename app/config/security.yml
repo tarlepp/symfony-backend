@@ -2,10 +2,20 @@
 # http://symfony.com/doc/current/book/security.html
 security:
 
+    # http://symfony.com/doc/current/cookbook/security/named_encoders.html
+    encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: bcrypt
+            cost: 12
+        App\Entity\User:
+            algorithm: bcrypt
+            cost: 12
+
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+        users:
+            entity:
+                class: App\Entity\User
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -13,12 +23,19 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
-            anonymous: ~
-            # activate different ways to authenticate
+        gettoken:
+            pattern: ^/api/getToken$
+            stateless: true
+            gfreeau_get_jwt:
+                username_parameter: username
+                password_parameter: password
+                post_only: true
+                authentication_provider: security.authentication.provider.dao
+                user_checker: security.user_checker
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+        api:
+            pattern: ^/api
+            stateless: true
+            lexik_jwt: ~
