@@ -26,6 +26,12 @@ services:
         arguments:
             - App\Entity\Book
 
+    repositoryUser:
+        class: Doctrine\ORM\EntityRepository
+        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        arguments:
+            - App\Entity\User
+
     app.services.author:
         class: App\Services\Author
         arguments:
@@ -34,6 +40,12 @@ services:
 
     app.services.book:
         class: App\Services\Book
+        arguments:
+            - '@repositoryBook'
+            - '@validator'
+
+    app.services.user:
+        class: App\Services\User
         arguments:
             - '@repositoryBook'
             - '@validator'
