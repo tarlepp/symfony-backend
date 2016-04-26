@@ -115,6 +115,17 @@ interface Rest
     public function create(\stdClass $data);
 
     /**
+     * Generic method to save given entity to specified repository. Return value is created entity.
+     *
+     * @throws  ValidatorException
+     *
+     * @param   Entity  $entity
+     *
+     * @return  Entity
+     */
+    public function save(Entity $entity);
+
+    /**
      * Generic method to update specified entity with new data.
      *
      * @throws  HttpException
@@ -210,6 +221,20 @@ interface Rest
      * @param   Entity      $entity
      */
     public function afterCreate(\stdClass $data, Entity $entity);
+
+    /**
+     * Before lifecycle method for save method.
+     *
+     * @param   Entity      $entity
+     */
+    public function beforeSave(Entity $entity);
+
+    /**
+     * After lifecycle method for save method.
+     *
+     * @param   Entity      $entity
+     */
+    public function afterSave(Entity $entity);
 
     /**
      * Before lifecycle method for update method.

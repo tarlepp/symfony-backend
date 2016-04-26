@@ -71,7 +71,7 @@ abstract class Rest extends Base implements Interfaces\Rest
 
         // Store entity name and manager
         $this->entityName = $this->repository->getClassName();
-        $this->entityManager = $this->getEntityManager();
+        $this->entityManager = $this->repository->getEntityManager();
     }
 
     /**
@@ -238,6 +238,42 @@ abstract class Rest extends Base implements Interfaces\Rest
     }
 
     /**
+     * Generic method to save given entity to specified repository. Return value is created entity.
+     *
+     * @throws  ValidatorException
+     *
+     * @param   Entity  $entity
+     *
+     * @return  Entity
+     */
+    public function save(Entity $entity)
+    {
+        // Before callback method call
+        if (method_exists($this, 'beforeSave')) {
+            $this->beforeSave($entity);
+        }
+
+        // Validate entity
+        $errors = $this->validator->validate($entity);
+
+        // Oh noes, we have some errors
+        if (count($errors) > 0) {
+            throw new ValidatorException($errors);
+        }
+
+        // Persist on database
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush($entity);
+
+        // After callback method call
+        if (method_exists($this, 'afterSave')) {
+            $this->afterSave($entity);
+        }
+
+        return $entity;
+    }
+
+    /**
      * Generic method to update specified entity with new data.
      *
      * @throws  HttpException
@@ -384,6 +420,20 @@ abstract class Rest extends Base implements Interfaces\Rest
     public function afterCreate(\stdClass $data, Entity $entity) { }
 
     /**
+     * Before lifecycle method for save method.
+     *
+     * @param   Entity      $entity
+     */
+    public function beforeSave(Entity $entity) { }
+
+    /**
+     * After lifecycle method for save method.
+     *
+     * @param   Entity      $entity
+     */
+    public function afterSave(Entity $entity) { }
+
+    /**
      * Before lifecycle method for update method.
      *
      * @param   integer     $id
@@ -423,8 +473,6 @@ abstract class Rest extends Base implements Interfaces\Rest
      * @todo    should this throw an error, if given data contains something else than entity itself?
      * @todo    should this throw an error, if setter method doesn't exists?
      *
-     * @throws  ValidatorException
-     *
      * @param   Entity      $entity
      * @param   \stdClass   $data
      *
@@ -456,16 +504,7 @@ abstract class Rest extends Base implements Interfaces\Rest
             }
         }
 
-        // Validate entity
-        $errors = $this->validator->validate($entity);
-
-        // Oh noes, we have some errors
-        if (count($errors) > 0) {
-            throw new ValidatorException($errors);
-        }
-
-        // And make entity persist on database
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush($entity);
+        // And save current entity
+        $this->save($entity);
     }
 }
