@@ -15,12 +15,17 @@ use Doctrine\ORM\Mapping as ORM;
 
 // Symfony components
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as AssertCollection;
 
 // 3rd party components
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * User
+ * Class User
+ *
+ * @AssertCollection\UniqueEntity("email")
+ * @AssertCollection\UniqueEntity("username")
  *
  * @ORM\Table(
  *      name="user",
@@ -68,6 +73,8 @@ class User extends Base implements UserInterface, \Serializable
      *
      * @JMS\Groups({"Default", "User"})
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(
      *      name="username",
      *      type="string",
@@ -81,6 +88,8 @@ class User extends Base implements UserInterface, \Serializable
      * @var string
      *
      * @JMS\Groups({"Default", "User"})
+     *
+     * @Assert\NotBlank()
      *
      * @ORM\Column(
      *      name="firstname",
@@ -96,6 +105,8 @@ class User extends Base implements UserInterface, \Serializable
      *
      * @JMS\Groups({"Default", "User"})
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(
      *      name="surname",
      *      type="string",
@@ -109,6 +120,9 @@ class User extends Base implements UserInterface, \Serializable
      * @var string
      *
      * @JMS\Groups({"Default", "User"})
+     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
      *
      * @ORM\Column(
      *      name="email",
@@ -124,6 +138,8 @@ class User extends Base implements UserInterface, \Serializable
      *
      * @JMS\Exclude
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(
      *      name="password",
      *      type="string",
@@ -134,14 +150,14 @@ class User extends Base implements UserInterface, \Serializable
     private $password;
 
     /**
-     * UserGroup[]
+     * @var ArrayCollection
      *
      * @JMS\Groups({"UserGroup", "UserGroupId"})
      *
      * @ORM\ManyToMany(
      *     targetEntity="UserGroup",
      *     inversedBy="users"
-     * )
+     *  )
      */
     private $userGroups;
 
@@ -218,11 +234,21 @@ class User extends Base implements UserInterface, \Serializable
     /**
      * Get roles
      *
-     * @return string
+     * @return array
      */
     public function getRoles()
     {
         return $this->userGroups->toArray();
+    }
+
+    /**
+     * Get user groups.
+     *
+     * @return ArrayCollection
+     */
+    public function getUserGroups()
+    {
+        return $this->userGroups;
     }
 
     /**
