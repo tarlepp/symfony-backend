@@ -11,6 +11,8 @@ use App\Doctrine\Behaviours as ORMBehaviors;
 
 // Symfony components
 use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as AssertCollection;
 
 // Doctrine components
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,13 +24,17 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * Class UserGroup
  *
+ * @AssertCollection\UniqueEntity("role")
+ *
  * @ORM\Table(
  *      name="user_group",
  *      uniqueConstraints={
- *          @ORM\UniqueConstraint(
- *              name="uq_role",
- *              columns={"role"}
- *          ),
+ *          @ORM\UniqueConstraint(name="uq_role", columns={"role"}),
+ *      },
+ *      indexes={
+ *          @ORM\Index(name="createdBy_id", columns={"createdBy_id"}),
+ *          @ORM\Index(name="updatedBy_id", columns={"updatedBy_id"}),
+ *          @ORM\Index(name="deletedBy_id", columns={"deletedBy_id"})
  *      }
  *  )
  * @ORM\Entity(
@@ -55,44 +61,58 @@ class UserGroup extends Base implements RoleInterface
      * @ORM\Column(
      *      name="id",
      *      type="integer"
-     * )
+     *  )
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * Group name
+     * Group name.
      *
      * @var string
      *
      * @JMS\Groups({"Default", "UserGroup"})
      *
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Length(min = 4, max = 255)
+     *
      * @ORM\Column(
      *      name="name",
      *      type="string",
-     *      length=255
+     *      length=255,
+     *      nullable=false
      *  )
      */
     private $name;
 
     /**
-     * Role name
+     * Role name.
      *
      * @var string
      *
      * @JMS\Groups({"Default", "UserGroup"})
      *
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Length(min = 2, max = 20)
+     *
      * @ORM\Column(
      *      name="role",
      *      type="string",
      *      length=20,
+     *      nullable=false,
      *      unique=true
      *  )
      */
     private $role;
 
     /**
+     * Array collection of users of group.
+     *
+     * @var ArrayCollection
+     *
      * @JMS\Groups({"User", "UserId"})
      *
      * @ORM\ManyToMany(
@@ -138,6 +158,16 @@ class UserGroup extends Base implements RoleInterface
     public function getRole()
     {
         return $this->role;
+    }
+
+    /**
+     * Getter for user collection.
+     *
+     * @return ArrayCollection
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 
     /**
