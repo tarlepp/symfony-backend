@@ -54,6 +54,8 @@ class User extends Base implements UserInterface, \Serializable
     use ORMBehaviors\Timestampable;
 
     /**
+     * User id.
+     *
      * @var integer
      *
      * @JMS\Groups({"Default", "User", "CreatedBy", "UpdatedBy", "UserId"})
@@ -69,11 +71,15 @@ class User extends Base implements UserInterface, \Serializable
     private $id;
 
     /**
+     * User's username.
+     *
      * @var string
      *
      * @JMS\Groups({"Default", "User"})
      *
      * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Length(min = 2, max = 255)
      *
      * @ORM\Column(
      *      name="username",
@@ -85,11 +91,15 @@ class User extends Base implements UserInterface, \Serializable
     private $username;
 
     /**
+     * User's firstname.
+     *
      * @var string
      *
      * @JMS\Groups({"Default", "User"})
      *
      * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Length(min = 2, max = 255)
      *
      * @ORM\Column(
      *      name="firstname",
@@ -101,11 +111,15 @@ class User extends Base implements UserInterface, \Serializable
     private $firstname;
 
     /**
+     * User's surname.
+     *
      * @var string
      *
      * @JMS\Groups({"Default", "User"})
      *
      * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Length(min = 2, max = 255)
      *
      * @ORM\Column(
      *      name="surname",
@@ -117,11 +131,14 @@ class User extends Base implements UserInterface, \Serializable
     private $surname;
 
     /**
+     * User's email.
+     *
      * @var string
      *
      * @JMS\Groups({"Default", "User"})
      *
      * @Assert\NotBlank()
+     * @Assert\NotNull()
      * @Assert\Email()
      *
      * @ORM\Column(
@@ -134,11 +151,14 @@ class User extends Base implements UserInterface, \Serializable
     private $email;
 
     /**
+     * User's password (encrypted).
+     *
      * @var string
      *
      * @JMS\Exclude
      *
      * @Assert\NotBlank()
+     * @Assert\NotNull()
      *
      * @ORM\Column(
      *      name="password",
@@ -150,6 +170,8 @@ class User extends Base implements UserInterface, \Serializable
     private $password;
 
     /**
+     * Collection of user's user groups.
+     *
      * @var ArrayCollection
      *
      * @JMS\Groups({"UserGroup", "UserGroupId"})
@@ -172,7 +194,7 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Get id
+     * Getter for id.
      *
      * @return integer
      */
@@ -182,7 +204,7 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Get username
+     * Getter for username.
      *
      * @return string
      */
@@ -192,7 +214,7 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Get firstname
+     * Getter for firstname.
      *
      * @return string
      */
@@ -202,7 +224,7 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Get surname
+     * Getter for surname.
      *
      * @return string
      */
@@ -212,7 +234,7 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Get email
+     * Getter for email.
      *
      * @return string
      */
@@ -222,7 +244,7 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Get password
+     * Getter for password.
      *
      * @return string
      */
@@ -232,9 +254,9 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Get roles
+     * Getter for roles.
      *
-     * @return array
+     * @return UserGroup[]
      */
     public function getRoles()
     {
@@ -242,7 +264,7 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Get user groups.
+     * Getter for user groups collection.
      *
      * @return ArrayCollection
      */
@@ -252,11 +274,11 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Set username
+     * Setter for username.
      *
-     * @param string $username
+     * @param   string  $username
      *
-     * @return User
+     * @return  User
      */
     public function setUsername($username)
     {
@@ -266,11 +288,11 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Set firstname
+     * Setter for firstname.
      *
-     * @param string $firstname
+     * @param   string  $firstname
      *
-     * @return User
+     * @return  User
      */
     public function setFirstname($firstname)
     {
@@ -280,11 +302,11 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Set surname
+     * Setter for surname.
      *
-     * @param string $surname
+     * @param   string  $surname
      *
-     * @return User
+     * @return  User
      */
     public function setSurname($surname)
     {
@@ -294,11 +316,11 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Set email
+     * Setter for email.
      *
-     * @param string $email
+     * @param   string  $email
      *
-     * @return User
+     * @return  User
      */
     public function setEmail($email)
     {
@@ -308,11 +330,11 @@ class User extends Base implements UserInterface, \Serializable
     }
 
     /**
-     * Set password
+     * Setter for password.
      *
-     * @param string $password
+     * @param   string  $password
      *
-     * @return User
+     * @return  User
      */
     public function setPassword($password)
     {
