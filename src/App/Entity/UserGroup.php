@@ -113,7 +113,7 @@ class UserGroup extends Base implements RoleInterface
      *
      * @var ArrayCollection
      *
-     * @JMS\Groups({"User", "UserId"})
+     * @JMS\Groups({"Users", "UserId"})
      *
      * @ORM\ManyToMany(
      *      targetEntity="User",
