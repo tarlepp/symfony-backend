@@ -35,6 +35,7 @@ class AppKernel extends Kernel
             new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
             new Gfreeau\Bundle\GetJWTBundle\GfreeauGetJWTBundle(),
             new Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
             new App\AppBundle(),
         ];
 
