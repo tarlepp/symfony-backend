@@ -71,6 +71,9 @@ And if you get just blank page double check your [permissions](http://symfony.co
 ## Development
 *TODO*
 
+## Useful resources
+* [Symfony Development using PhpStorm](http://blog.jetbrains.com/phpstorm/2014/08/symfony-development-using-phpstorm/) - Guide to configure your PhpStorm for Symfony development
+
 ## Contributing & issues & questions
 Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
 
