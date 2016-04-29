@@ -6,11 +6,17 @@
  */
 namespace App\EventListener;
 
+// Application components
+use App\Entity\User;
+
 // 3rd party components
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class JWTCreatedListener
+ *
+ * @see /app/config/services.yml
  *
  * @category    Listener
  * @package     App\EventListener
@@ -18,6 +24,23 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
  */
 class JWTCreatedListener
 {
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * JWTCreatedListener constructor.
+     *
+     * @param   ContainerInterface  $container
+     *
+     * @return  JWTCreatedListener
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Event listener method to attach some custom data to JWT payload.
      *
@@ -46,10 +69,15 @@ class JWTCreatedListener
         $payload['ip'] = $request->getClientIp();
         $payload['agent'] = $request->headers->get('User-Agent');
 
-        /** @var \App\Entity\User $user */
+        /** @var User $user */
         $user = $event->getUser();
 
-        // Attach user login data information to payload
+        // We need to make sure that User object is right one
+        if (!($user instanceof User)) {
+            $user = $this->container->get('app.services.user')->loadUserByUsername($payload['username']);
+        }
+
+        // Merge payload with user's login data
         $payload = array_merge($payload, $user->getLoginData());
 
         // And set new payload for JWT
