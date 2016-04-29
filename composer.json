@@ -41,6 +41,7 @@
         "doctrine/doctrine-cache-bundle": "1.3.0",
         "friendsofsymfony/rest-bundle": "2.0.0-BETA2",
         "gfreeau/get-jwt-bundle": "2.0.x-dev",
+        "gesdinet/jwt-refresh-token-bundle": "0.1.7",
         "incenteev/composer-parameter-handler": "2.1.2",
         "knplabs/doctrine-behaviors": "1.3.2",
         "lexik/jwt-authentication-bundle": "1.5.1",
