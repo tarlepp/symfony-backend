@@ -256,11 +256,22 @@ class User extends Base implements UserInterface, \Serializable
     /**
      * Getter for roles.
      *
-     * @return UserGroup[]
+     * @return string[]
      */
     public function getRoles()
     {
-        return $this->userGroups->toArray();
+        /**
+         * Lambda iterator to get user group role information.
+         *
+         * @param   UserGroup   $userGroup
+         *
+         * @return  string
+         */
+        $iterator = function($userGroup) {
+            return $userGroup->getRole();
+        };
+
+        return array_map($iterator, $this->userGroups->toArray());
     }
 
     /**
@@ -387,6 +398,21 @@ class User extends Base implements UserInterface, \Serializable
     public function getSalt()
     {
         return null;
+    }
+
+    /**
+     * Method to get login data for JWT token.
+     *
+     * @return array
+     */
+    public function getLoginData()
+    {
+        return [
+            'firstname' => $this->getFirstname(),
+            'surname'   => $this->getSurname(),
+            'email'     => $this->getEmail(),
+            'roles'     => array_unique($this->getRoles()),
+        ];
     }
 
     /**
