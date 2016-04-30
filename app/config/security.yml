@@ -23,8 +23,9 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        # https://github.com/lexik/LexikJWTAuthenticationBundle/blob/master/Resources/doc/index.md
         gettoken:
-            pattern: ^/api/getToken$
+            pattern: ^/auth/getToken$
             stateless: true
             gfreeau_get_jwt:
                 username_parameter: username
@@ -35,7 +36,21 @@ security:
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
+        # https://github.com/gesdinet/JWTRefreshTokenBundle#step-4-allow-anonymous-access-to-refresh-token
+        refresh:
+            pattern:  ^/auth/refreshToken
+            stateless: true
+            anonymous: true
+
+        auth:
+            pattern: ^/auth
+            stateless: true
+            lexik_jwt: ~
+
         api:
             pattern: ^/api
             stateless: true
             lexik_jwt: ~
+
+    access_control:
+        - { path: ^/auth/refreshToken, roles: IS_AUTHENTICATED_ANONYMOUSLY }

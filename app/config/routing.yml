@@ -2,6 +2,11 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
+# https://github.com/gesdinet/JWTRefreshTokenBundle#step-3-configure-your-own-routing-to-refresh-token
+gesdinet_jwt_refresh_token:
+    path:     /auth/refreshToken
+    defaults: { _controller: gesdinet.jwtrefreshtoken:refresh }
+
 api:
     type: rest  # Required for ``RestYamlLoader`` to process imported routes
     prefix: /api

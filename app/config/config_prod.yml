@@ -13,6 +13,7 @@ imports:
 #        result_cache_driver: apc
 #        query_cache_driver: apc
 
+# http://symfony.com/doc/current/reference/configuration/monolog.html
 monolog:
     handlers:
         main:

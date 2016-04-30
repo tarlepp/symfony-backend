@@ -11,17 +11,18 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
+# http://symfony.com/doc/current/reference/configuration/monolog.html
 monolog:
     handlers:
         main:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
-            channels: [!event]
+            channels: [ !event ]
             formatter: app.monolog_formatter
         console:
             type: console
-            channels: [!event, !doctrine]
+            channels: [ !event, !doctrine ]
         firephp:
             type: firephp
             level: info

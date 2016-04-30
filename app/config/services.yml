@@ -12,6 +12,7 @@ services:
 
     app.event.jwt_created_listener:
         class: App\EventListener\JWTCreatedListener
+        arguments: [ '@service_container' ]
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
@@ -24,41 +25,32 @@ services:
         class: Monolog\Formatter\LineFormatter
         arguments: [ ~, ~, true ]
 
-    repositoryAuthor:
+    repository.author:
         class: Doctrine\ORM\EntityRepository
         factory: [ '@doctrine.orm.entity_manager', getRepository ]
-        arguments:
-            - App\Entity\Author
+        arguments: [ App\Entity\Author ]
 
-    repositoryBook:
+    repository.book:
         class: Doctrine\ORM\EntityRepository
         factory: [ '@doctrine.orm.entity_manager', getRepository ]
-        arguments:
-            - App\Entity\Book
+        arguments: [ App\Entity\Book ]
 
-    repositoryUser:
+    repository.user:
         class: Doctrine\ORM\EntityRepository
         factory: [ '@doctrine.orm.entity_manager', getRepository ]
-        arguments:
-            - App\Entity\User
+        arguments: [ App\Entity\User ]
 
     app.services.author:
         class: App\Services\Author
-        arguments:
-            - '@repositoryAuthor'
-            - '@validator'
+        arguments: [ '@repository.author', '@validator' ]
 
     app.services.book:
         class: App\Services\Book
-        arguments:
-            - '@repositoryBook'
-            - '@validator'
+        arguments: [ '@repository.book', '@validator' ]
 
     app.services.user:
         class: App\Services\User
-        arguments:
-            - '@repositoryBook'
-            - '@validator'
+        arguments: [ '@repository.user', '@validator' ]
 
     jms_serializer.cache_naming_strategy:
         class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
