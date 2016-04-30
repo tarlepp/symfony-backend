@@ -8,6 +8,7 @@ namespace App\Services;
 
 // Application components
 use App\Entity\Base as Entity;
+use App\Entity\Interfaces\Base as EntityInterface;
 use App\Repository\Base as AppEntityRepository;
 
 // Doctrine components
@@ -244,11 +245,11 @@ abstract class Rest extends Base implements Interfaces\Rest
      *
      * @throws  ValidatorException
      *
-     * @param   Entity  $entity
+     * @param   EntityInterface $entity
      *
      * @return  Entity
      */
-    public function save(Entity $entity)
+    public function save(EntityInterface $entity)
     {
         // Before callback method call
         if (method_exists($this, 'beforeSave')) {
@@ -424,50 +425,50 @@ abstract class Rest extends Base implements Interfaces\Rest
     /**
      * Before lifecycle method for save method.
      *
-     * @param   Entity      $entity
+     * @param   EntityInterface $entity
      */
-    public function beforeSave(Entity $entity) { }
+    public function beforeSave(EntityInterface $entity) { }
 
     /**
      * After lifecycle method for save method.
      *
-     * @param   Entity      $entity
+     * @param   EntityInterface $entity
      */
-    public function afterSave(Entity $entity) { }
+    public function afterSave(EntityInterface $entity) { }
 
     /**
      * Before lifecycle method for update method.
      *
-     * @param   integer     $id
-     * @param   \stdClass   $data
-     * @param   Entity      $entity
+     * @param   integer         $id
+     * @param   \stdClass       $data
+     * @param   EntityInterface $entity
      */
-    public function beforeUpdate(&$id, \stdClass $data, Entity $entity) { }
+    public function beforeUpdate(&$id, \stdClass $data, EntityInterface $entity) { }
 
     /**
      * After lifecycle method for update method.
      *
-     * @param   integer     $id
-     * @param   \stdClass   $data
-     * @param   Entity      $entity
+     * @param   integer         $id
+     * @param   \stdClass       $data
+     * @param   EntityInterface $entity
      */
-    public function afterUpdate(&$id, \stdClass $data, Entity $entity) { }
+    public function afterUpdate(&$id, \stdClass $data, EntityInterface $entity) { }
 
     /**
      * Before lifecycle method for delete method.
      *
-     * @param   Entity  $entity
-     * @param   integer $id
+     * @param   integer         $id
+     * @param   EntityInterface $entity
      */
-    public function beforeDelete(&$id, Entity $entity) { }
+    public function beforeDelete(&$id, EntityInterface $entity) { }
 
     /**
      * After lifecycle method for delete method.
      *
-     * @param   Entity  $entity
-     * @param   integer $id
+     * @param   integer         $id
+     * @param   EntityInterface $entity
      */
-    public function afterDelete(&$id, Entity $entity) { }
+    public function afterDelete(&$id, EntityInterface $entity) { }
 
     /**
      * Helper method to set data to specified entity and store it to database.
@@ -475,12 +476,12 @@ abstract class Rest extends Base implements Interfaces\Rest
      * @todo    should this throw an error, if given data contains something else than entity itself?
      * @todo    should this throw an error, if setter method doesn't exists?
      *
-     * @param   Entity      $entity
-     * @param   \stdClass   $data
+     * @param   EntityInterface $entity
+     * @param   \stdClass       $data
      *
      * @return  void
      */
-    protected function persistEntity(Entity $entity, \stdClass $data)
+    protected function persistEntity(EntityInterface $entity, \stdClass $data)
     {
         // Specify properties that are not allowed to update by user
         $ignoreProperties = [

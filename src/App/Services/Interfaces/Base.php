@@ -9,7 +9,7 @@ namespace App\Services\Interfaces;
 /**
  * Interface Base
  *
- * @category    Services
+ * @category    Interfaces
  * @package     App\Services\Interfaces
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
