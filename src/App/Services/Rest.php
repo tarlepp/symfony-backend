@@ -7,16 +7,18 @@
 namespace App\Services;
 
 // Application components
-use App\Repository\Base as EntityRepository;
 use App\Entity\Base as Entity;
+use App\Repository\Base as AppEntityRepository;
 
 // Doctrine components
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 // Symfony components
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Abstract base class for all the application REST service classes.
@@ -32,7 +34,7 @@ abstract class Rest extends Base implements Interfaces\Rest
     /**
      * REST service entity repository.
      *
-     * @var EntityRepository
+     * @var AppEntityRepository
      */
     protected $repository;
 
@@ -61,9 +63,9 @@ abstract class Rest extends Base implements Interfaces\Rest
      * Class constructor.
      *
      * @param   EntityRepository    $repository
-     * @param   RecursiveValidator  $validator
+     * @param   ValidatorInterface  $validator
      */
-    public function __construct(EntityRepository $repository, RecursiveValidator $validator)
+    public function __construct(EntityRepository $repository, ValidatorInterface $validator)
     {
         // Store class variables
         $this->repository = $repository;
@@ -87,7 +89,7 @@ abstract class Rest extends Base implements Interfaces\Rest
     /**
      * Getter method for current repository.
      *
-     * @return  EntityRepository
+     * @return  AppEntityRepository
      */
     public function getRepository()
     {

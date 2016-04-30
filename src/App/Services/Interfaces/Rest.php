@@ -8,15 +8,16 @@ namespace App\Services\Interfaces;
 
 // Application components
 use App\Entity\Base as Entity;
-use App\Repository\Base as EntityRepository;
+use App\Repository\Base as AppEntityRepository;
 
 // Doctrine components
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 // Symfony components
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Interface for REST based services.
@@ -31,9 +32,9 @@ interface Rest
      * Class constructor.
      *
      * @param   EntityRepository    $repository
-     * @param   RecursiveValidator  $validator
+     * @param   ValidatorInterface  $validator
      */
-    public function __construct(EntityRepository $repository, RecursiveValidator $validator);
+    public function __construct(EntityRepository $repository, ValidatorInterface $validator);
 
     /**
      * Getter method for entity manager.
@@ -45,7 +46,7 @@ interface Rest
     /**
      * Getter method for current repository.
      *
-     * @return  EntityRepository
+     * @return  AppEntityRepository
      */
     public function getRepository();
 
