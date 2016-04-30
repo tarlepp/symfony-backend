@@ -17,7 +17,7 @@ namespace App\Entity;
  * @package     App\Entity
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-abstract class Base
+abstract class Base implements Interfaces\Base
 {
     /**
      * Returns a string representation of entity.
