@@ -11,6 +11,8 @@ use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 
 /**
  * Class ExceptionListener
@@ -34,10 +36,10 @@ class ExceptionListener
     /**
      * ExceptionListener constructor.
      *
-     * @param   \AppKernel  $kernel
-     * @param   Logger      $logger
+     * @param   KernelInterface         $kernel
+     * @param   DebugLoggerInterface    $logger
      */
-    public function __construct(\AppKernel $kernel, Logger $logger)
+    public function __construct(KernelInterface $kernel, DebugLoggerInterface $logger)
     {
         $this->kernel = $kernel;
         $this->logger = $logger;
