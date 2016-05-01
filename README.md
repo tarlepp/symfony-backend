@@ -9,13 +9,14 @@ Simple JSON API which is build on top of [Symfony](https://symfony.com/) framewo
 * API documentation
 
 ### TODO
-- [ ] Configuration for each environment and/or developer
-- [ ] Authentication via JWT
+- [x] Configuration for each environment and/or developer
+- [x] Authentication via JWT
+- [x] CORS support
 - [ ] "Automatic" API doc generation (Swagger)
-- [ ] Database connection (Doctrine dbal + orm)
-- [ ] Console tools (dbal, migrations, orm)
-- [ ] Docker support
-- [ ] Logger (monolog) 
+- [x] Database connection (Doctrine dbal + orm)
+- [x] Console tools (dbal, migrations, orm)
+- [x] Docker support
+- [x] Logger (monolog) 
 - [ ] And _everything_ else...
 
 ## Requirements
@@ -37,6 +38,8 @@ Fetch all dependencies
 $ curl -sS https://getcomposer.org/installer | php
 $ php composer.phar install
 ```
+
+Note that this will also ask you some environment settings; db, mail, secrets, jwt, etc.
 
 ### Environment checks
 You need to check that your environment is ready to use this application in CLI and WEB mode.
@@ -63,16 +66,39 @@ Open your favorite browser with ```http://127.0.0.1:8000/config.php``` url and c
 And if you get just blank page double check your [permissions](http://symfony.com/doc/current/book/installation.html#book-installation-permissions).
 
 ### Configuration
-*TODO*
+Application will ask your configuration settings when you first time run ```php composer.phar install``` command.
+All those parameters that you should change are in ```/app/config/parameters.yml``` file, so just open that and 
+made necessary changes to it.
+
+If you want to answer those parameter values again, you can just delete ```/app/config/parameters.yml``` file and
+then run ```php composer.phar update``` command. 
 
 ### Database initialization
-*TODO*
+At start you have just empty database which you have configured in previous topic. To initialize your database
+just run following command:
+
+```bash
+$ ./bin/console doctrine:migrations:migrate
+```
 
 ## Development
 *TODO*
 
-## Useful resources
+### Database changes
+Generally you will need to generate migration files from each database change that you're doing. Easiest way to
+handle these are just following workflow:
+
+1. Made your changes to Entity (```/src/App/Entity/```)
+2. Run diff command to create new migration file; 
+```bash
+$ ./bin/console doctrine:migrations:diff
+```
+
+With this you won't need to write those migration files by yourself, just let doctrine handle those.
+
+## Useful resources + tips
 * [Symfony Development using PhpStorm](http://blog.jetbrains.com/phpstorm/2014/08/symfony-development-using-phpstorm/) - Guide to configure your PhpStorm for Symfony development
+* Use 1.1-dev version of composer, so that you can use ```php composer.phar outdated``` command to check package versions
 
 ## Contributing & issues & questions
 Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
