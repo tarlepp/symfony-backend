@@ -4,7 +4,7 @@
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace App\Command;
+namespace App\Command\User;
 
 // Application components
 use App\Entity\User;
@@ -27,7 +27,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * @package     App\Command
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class UserCreateCommand extends ContainerAwareCommand
+class CreateCommand extends Base
 {
     /**
      * {@inheritdoc}
@@ -60,32 +60,26 @@ class UserCreateCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
+        // Initialize common console command
+        parent::execute($input, $output);
 
         // Set title
-        $io->title($this->getDescription());
+        $this->io->title($this->getDescription());
 
         /** @var FormHelper $formHelper */
         $formHelper = $this->getHelper('form');
 
         /** @var User $user */
-        $user = $formHelper->interactUsingForm('App\Form\Console\User', $input, $output);
+        $user = $formHelper->interactUsingForm('App\Form\Console\User', $this->input, $this->output);
 
-        // Get password encoder and encode given password
-        $encoder = $this->getContainer()->get('security.password_encoder');
-        $encoded = $encoder->encodePassword($user, $user->getPassword());
+        // Get and set (encode) new password for user
+        $this->encodePassword($user, $user->getPassword());
 
-        // Set encoded password to user entity
-        $user->setPassword($encoded);
-
-        /** @var \App\Services\User $userService */
-        $userService = $this->getContainer()->get('app.services.user');
-
-        // Store user to database
-        $userService->save($user);
+        // Store user
+        $this->store($user);
 
         // Uuh all done!
-        $io->success('New user created!');
+        $this->io->success('New user created!');
     }
 
     /**
