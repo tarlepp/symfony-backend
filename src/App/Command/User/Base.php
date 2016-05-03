@@ -1,19 +1,64 @@
 <?php
-
+/**
+ * /src/App/Command/User/Base.php
+ *
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ */
 namespace App\Command\User;
 
+// Application components
 use App\Entity\User as Entity;
 use App\Services\User as Service;
 
+// Symfony components
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
+/**
+ * Class Base
+ *
+ * @category    Console
+ * @package     App\Command\User
+ * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ */
 abstract class Base extends ContainerAwareCommand
 {
+    /**
+     * Name of the console command.
+     *
+     * @var string
+     */
+    protected $commandName;
+
+    /**
+     * Description of the console command.
+     *
+     * @var string
+     */
+    protected $commandDescription;
+
+    /**
+     * Supported command line parameters. This is an array that contains array configuration of each parameter,
+     * following structure is supported.
+     *
+     *  [
+     *      'name'          => '', // The option name
+     *      'shortcut'      => '', // The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+     *      'mode'          => '', // The option mode: One of the InputOption::VALUE_* constants
+     *      'description'   => '', // A description text
+     *      'default'       => '', // The default value (must be null for InputOption::VALUE_NONE)
+     *  ]
+     *
+     * @var array
+     */
+    protected $commandParameters = [];
+
     /**
      * @var InputInterface
      */
@@ -37,6 +82,38 @@ abstract class Base extends ContainerAwareCommand
     /**
      * {@inheritdoc}
      */
+    protected function configure()
+    {
+        /**
+         * Lambda iterator function to parse specified inputs.
+         *
+         * @param   array   $input
+         *
+         * @return  InputOption
+         */
+        $iterator = function(array $input) {
+            return new InputOption(
+                $input['name'],
+                array_key_exists('shortcut', $input)    ? $input['shortcut']    : null,
+                array_key_exists('mode', $input)        ? $input['mode']        : InputOption::VALUE_OPTIONAL,
+                array_key_exists('description', $input) ? $input['description'] : '',
+                array_key_exists('default', $input)     ? $input['default']     : null
+            );
+        };
+
+        // Configure command
+        $this
+            ->setName($this->commandName)
+            ->setDescription($this->commandDescription)
+            ->setDefinition(
+                new InputDefinition(array_map($iterator, $this->commandParameters))
+            )
+        ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Store input and output objects
@@ -48,6 +125,9 @@ abstract class Base extends ContainerAwareCommand
 
         // Store user service object
         $this->service = $this->getContainer()->get('app.services.user');
+
+        // Set title
+        $this->io->title($this->getDescription());
     }
 
     /**
@@ -73,6 +153,7 @@ abstract class Base extends ContainerAwareCommand
         }
 
         if ($showUserInformation) {
+            $this->io->writeln('Following user found');
             $this->printUserInformation($user);
         }
 

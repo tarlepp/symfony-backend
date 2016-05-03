@@ -1,60 +1,52 @@
 <?php
 /**
- * /src/App/Command/UserCreateCommand.php
+ * /src/App/Command/User/CreateCommand.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 namespace App\Command\User;
 
-// Application components
-use App\Entity\User;
-
 // Symfony components
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 // 3rd party components
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
- * Class UserChangePasswordCommand
+ * Class ChangePasswordCommand
  *
  * @category    Console
- * @package     App\Command
+ * @package     App\Command\User
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class ChangePasswordCommand extends Base
 {
     /**
-     * {@inheritdoc}
+     * Name of the console command.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        /**
-         * Lambda iterator function to parse specified inputs.
-         *
-         * @param   array   $input
-         *
-         * @return  InputOption
-         */
-        $iterator = function(array $input) {
-            return new InputOption($input['attribute'], null, InputOption::VALUE_OPTIONAL, $input['description']);
-        };
+    protected $commandName = 'user:changePassword';
 
-        // Configure command
-        $this
-            ->setName('user:changePassword')
-            ->setDescription('Change user\'s password')
-            ->setDefinition(
-                new InputDefinition(array_map($iterator, $this->getInputParameters()))
-            )
-        ;
-    }
+    /**
+     * Description of the console command.
+     *
+     * @var string
+     */
+    protected $commandDescription = 'Change user\'s password.';
+
+    /**
+     * Supported command line parameters.
+     *
+     * @var array
+     */
+    protected $commandParameters = [
+        [
+            'name'          => 'username',
+            'description'   => 'Username',
+        ],
+    ];
 
     /**
      * {@inheritdoc}
@@ -64,14 +56,21 @@ class ChangePasswordCommand extends Base
         // Initialize common console command
         parent::execute($input, $output);
 
-        // Set title
-        $this->io->title($this->getDescription());
+        // Display warning
         $this->io->warning('BE ABSOLUTELY SURE WHAT YOU\'RE DOING.');
 
-        // Fetch user and show user information
-        $user = $this->getUser(true);
+        $userFound = false;
+
+        // Ask user till user accept founded user
+        while (!$userFound) {
+            // Fetch user and show user information
+            $user = $this->getUser(true);
+
+            $userFound = $this->io->confirm('Is this the user who\'s password you want to change?', false);
+        }
 
         // Get and set (encode) new password for user
+        /** @noinspection PhpUndefinedVariableInspection */
         $this->encodePassword($user, $this->askNewPassword());
 
         // Store user
@@ -81,17 +80,9 @@ class ChangePasswordCommand extends Base
         $this->io->success('Password changed successfully!');
     }
 
-    private function getInputParameters()
-    {
-        return [
-            [
-                'attribute'     => 'username',
-                'description'   => 'Username',
-            ],
-        ];
-    }
-
     /**
+     * Helper method to ask new password.
+     *
      * @return  string
      */
     private function askNewPassword()

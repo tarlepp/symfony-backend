@@ -1,6 +1,6 @@
 <?php
 /**
- * /src/App/Command/UserCreateCommand.php
+ * /src/App/Command/User/CreateCommand.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
@@ -10,50 +10,62 @@ namespace App\Command\User;
 use App\Entity\User;
 
 // Symfony components
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 // 3rd party components
 use Matthias\SymfonyConsoleForm\Console\Helper\FormHelper;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Class UserCreateCommand
+ * Class CreateCommand
  *
  * @category    Console
- * @package     App\Command
+ * @package     App\Command\User
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class CreateCommand extends Base
 {
     /**
-     * {@inheritdoc}
+     * Name of the console command.
+     *
+     * @var string
      */
-    protected function configure()
-    {
-        /**
-         * Lambda iterator function to parse specified inputs.
-         *
-         * @param   array   $input
-         *
-         * @return  InputOption
-         */
-        $iterator = function(array $input) {
-            return new InputOption($input['attribute'], null, InputOption::VALUE_OPTIONAL, $input['description']);
-        };
+    protected $commandName = 'user:create';
 
-        // Configure command
-        $this
-            ->setName('user:create')
-            ->setDescription('Create new user to the database.')
-            ->setDefinition(
-                new InputDefinition(array_map($iterator, $this->getInputParameters()))
-            )
-        ;
-    }
+    /**
+     * Description of the console command.
+     *
+     * @var string
+     */
+    protected $commandDescription = 'Create new user to the database.';
+
+    /**
+     * Supported command line parameters.
+     *
+     * @var array
+     */
+    protected $commandParameters = [
+        [
+            'name'          => 'username',
+            'description'   => 'Username',
+        ],
+        [
+            'name'          => 'firstname',
+            'description'   => 'Firstname',
+        ],
+        [
+            'name'          => 'surname',
+            'description'   => 'Surname',
+        ],
+        [
+            'name'          => 'email',
+            'description'   => 'Email address',
+        ],
+        [
+            'name'          => 'password',
+            'description'   => 'Password',
+        ]
+    ];
 
     /**
      * {@inheritdoc}
@@ -62,9 +74,6 @@ class CreateCommand extends Base
     {
         // Initialize common console command
         parent::execute($input, $output);
-
-        // Set title
-        $this->io->title($this->getDescription());
 
         /** @var FormHelper $formHelper */
         $formHelper = $this->getHelper('form');
@@ -80,32 +89,5 @@ class CreateCommand extends Base
 
         // Uuh all done!
         $this->io->success('New user created!');
-    }
-
-    /**
-     * Helper method to return command input parameters.
-     *
-     * @return array
-     */
-    private function getInputParameters()
-    {
-        return [
-            [
-                'attribute'     => 'username',
-                'description'   => 'Username',
-            ],
-            [
-                'attribute'     => 'firstname',
-                'description'   => 'Firstname',
-            ],
-            [
-                'attribute'     => 'surname',
-                'description'   => 'Surname',
-            ],
-            [
-                'attribute'     => 'email',
-                'description'   => 'Email address',
-            ],
-        ];
     }
 }
