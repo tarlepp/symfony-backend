@@ -403,6 +403,8 @@ class User extends Base implements UserInterface, \Serializable
     /**
      * Method to get login data for JWT token.
      *
+     * Note that roles does not contain possible child role information!
+     *
      * @return array
      */
     public function getLoginData()
