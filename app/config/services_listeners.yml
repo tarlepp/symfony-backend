@@ -1,0 +1,18 @@
+# Application specified listener services configuration.
+services:
+    app.event.exception_listener:
+        class: App\EventListener\ExceptionListener
+        arguments: [ '@kernel', '@logger' ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    app.event.jwt_created_listener:
+        class: App\EventListener\JWTCreatedListener
+        arguments: [ '@service_container' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
+    app.event.jwt_decoded_listener:
+        class: App\EventListener\JWTDecodedListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }

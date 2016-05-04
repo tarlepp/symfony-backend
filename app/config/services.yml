@@ -1,3 +1,11 @@
+# Import application services
+#
+# Note that all of there services are application bundle specified custom services.
+imports:
+    - { resource: services_listeners.yml }
+    - { resource: services_repository.yml }
+    - { resource: services_rest.yml }
+
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
@@ -6,63 +14,13 @@ parameters:
     knp.doctrine_behaviors.blameable_subscriber.blameable_trait: App\Doctrine\Behaviours\Blameable
     knp.doctrine_behaviors.blameable_subscriber.user_entity: App\Entity\User
 
+# Generic service configuration.
+#
+# Note that you should not add any application specified custom configurations here, use imports for those.
 services:
-    app.event.exception_listener:
-        class: App\EventListener\ExceptionListener
-        arguments: [ '@kernel', '@logger' ]
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception }
-
-    app.event.jwt_created_listener:
-        class: App\EventListener\JWTCreatedListener
-        arguments: [ '@service_container' ]
-        tags:
-            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
-
-    app.event.jwt_decoded_listener:
-        class: App\EventListener\JWTDecodedListener
-        tags:
-            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }
-
     app.monolog_formatter:
         class: Monolog\Formatter\LineFormatter
         arguments: [ ~, ~, true ]
-
-    repository.author:
-        class: Doctrine\ORM\EntityRepository
-        factory: [ '@doctrine.orm.entity_manager', getRepository ]
-        arguments: [ App\Entity\Author ]
-
-    repository.book:
-        class: Doctrine\ORM\EntityRepository
-        factory: [ '@doctrine.orm.entity_manager', getRepository ]
-        arguments: [ App\Entity\Book ]
-
-    repository.user:
-        class: Doctrine\ORM\EntityRepository
-        factory: [ '@doctrine.orm.entity_manager', getRepository ]
-        arguments: [ App\Entity\User ]
-
-    repository.user_group:
-        class: Doctrine\ORM\EntityRepository
-        factory: [ '@doctrine.orm.entity_manager', getRepository ]
-        arguments: [ App\Entity\UserGroup ]
-
-    app.services.author:
-        class: App\Services\Author
-        arguments: [ '@repository.author', '@validator' ]
-
-    app.services.book:
-        class: App\Services\Book
-        arguments: [ '@repository.book', '@validator' ]
-
-    app.services.user:
-        class: App\Services\User
-        arguments: [ '@repository.user', '@validator' ]
-
-    app.services.user_group:
-        class: App\Services\UserGroup
-        arguments: [ '@repository.user_group', '@validator' ]
 
     jms_serializer.cache_naming_strategy:
         class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy

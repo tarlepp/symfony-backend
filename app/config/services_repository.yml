@@ -1,0 +1,23 @@
+# Application repository services.
+#
+# Note that these are only used with REST services.
+services:
+    repository.author:
+        class: Doctrine\ORM\EntityRepository
+        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        arguments: [ App\Entity\Author ]
+
+    repository.book:
+        class: Doctrine\ORM\EntityRepository
+        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        arguments: [ App\Entity\Book ]
+
+    repository.user:
+        class: Doctrine\ORM\EntityRepository
+        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        arguments: [ App\Entity\User ]
+
+    repository.user_group:
+        class: Doctrine\ORM\EntityRepository
+        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        arguments: [ App\Entity\UserGroup ]
