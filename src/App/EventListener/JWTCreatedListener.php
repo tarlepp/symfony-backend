@@ -74,7 +74,7 @@ class JWTCreatedListener
 
         // We need to make sure that User object is right one
         if (!($user instanceof User)) {
-            $user = $this->container->get('app.services.user')->loadUserByUsername($payload['username']);
+            $user = $this->container->get('app.services.user')->getByUsername($payload['username']);
         }
 
         // Merge payload with user's login data
