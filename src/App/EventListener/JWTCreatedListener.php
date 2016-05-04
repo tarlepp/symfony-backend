@@ -9,9 +9,13 @@ namespace App\EventListener;
 // Application components
 use App\Entity\User;
 
+// Symfony components
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Role\RoleInterface;
+
 // 3rd party components
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class JWTCreatedListener
@@ -60,15 +64,63 @@ class JWTCreatedListener
         // Get current original payload
         $payload = $event->getData();
 
+        // Update JWT expiration data
+        $this->setExpiration($payload);
+
+        // Add some extra security data to payload
+        $this->setSecurityData($payload, $request);
+
+        // Add necessary user data to payload
+        $this->setUserData($payload, $event);
+
+        // And set new payload for JWT
+        $event->setData($payload);
+    }
+
+    /**
+     * Method to set/modify JWT expiration date dynamically.
+     *
+     * @param   array   $payload
+     *
+     * @return  void
+     */
+    private function setExpiration(array &$payload)
+    {
         // Set new exp value for JWT
         $expiration = new \DateTime('+1 day');
 
         $payload['exp'] = $expiration->getTimestamp();
+    }
 
-        // Set some security check data to payload
+    /**
+     * Method to add some security related data to JWT payload, which are checked on JWT decode process.
+     *
+     * @see JWTDecodedListener
+     *
+     * @param   array   $payload
+     * @param   Request $request
+     *
+     * @return  void
+     */
+    private function setSecurityData(array &$payload, Request $request)
+    {
         $payload['ip'] = $request->getClientIp();
         $payload['agent'] = $request->headers->get('User-Agent');
+    }
 
+    /**
+     * Method to add all necessary user information to JWT payload.
+     *
+     * Magic thing here is to determine all user's roles to single dimensional array, which is used on the frontend
+     * side application to check access to different routes.
+     *
+     * @param   array           $payload
+     * @param   JWTCreatedEvent $event
+     *
+     * @return  void
+     */
+    private function setUserData(array &$payload, JWTCreatedEvent $event)
+    {
         /** @var User $user */
         $user = $event->getUser();
 
@@ -77,10 +129,17 @@ class JWTCreatedListener
             $user = $this->container->get('app.services.user')->getByUsername($payload['username']);
         }
 
+        // Determine all roles for current user
+        $payload['roles'] = array_unique(
+            array_map(
+                function(RoleInterface $role) {
+                    return $role->getRole();
+                },
+                $this->container->get('security.role_hierarchy')->getReachableRoles($user->getUserGroups()->toArray())
+            )
+        );
+
         // Merge payload with user's login data
         $payload = array_merge($payload, $user->getLoginData());
-
-        // And set new payload for JWT
-        $event->setData($payload);
     }
 }
