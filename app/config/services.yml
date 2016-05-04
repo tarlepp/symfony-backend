@@ -43,6 +43,11 @@ services:
         factory: [ '@doctrine.orm.entity_manager', getRepository ]
         arguments: [ App\Entity\User ]
 
+    repository.user_group:
+        class: Doctrine\ORM\EntityRepository
+        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        arguments: [ App\Entity\UserGroup ]
+
     app.services.author:
         class: App\Services\Author
         arguments: [ '@repository.author', '@validator' ]
@@ -54,6 +59,10 @@ services:
     app.services.user:
         class: App\Services\User
         arguments: [ '@repository.user', '@validator' ]
+
+    app.services.user_group:
+        class: App\Services\UserGroup
+        arguments: [ '@repository.user_group', '@validator' ]
 
     jms_serializer.cache_naming_strategy:
         class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
