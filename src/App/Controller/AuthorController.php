@@ -51,7 +51,7 @@ class AuthorController extends Rest
      *
      * @Method({"GET"})
      *
-     * Security("has_role('ROLE_USER')")
+     * @Security("has_role('ROLE_USER')")
      *
      * @param   Request $request
      *
@@ -72,7 +72,7 @@ class AuthorController extends Rest
      *
      * @Method({"GET"})
      *
-     * Security("has_role('ROLE_USER')")
+     * @Security("has_role('ROLE_USER')")
      *
      * @param   Request $request
      * @param   integer $id
