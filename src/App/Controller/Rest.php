@@ -25,7 +25,7 @@ use FOS\RestBundle\Controller\FOSRestController;
  * @package     App\Controller
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-abstract class Rest extends FOSRestController
+abstract class Rest extends FOSRestController implements Interfaces\Rest
 {
     /**
      * Service object for controller.
