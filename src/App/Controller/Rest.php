@@ -8,9 +8,9 @@ namespace App\Controller;
 
 // Application components
 use App\Services\Rest as RestService;
+use App\Entity\Interfaces\Base as EntityInterface;
 
 // Symfony components
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -43,14 +43,17 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     protected $serviceName;
 
     /**
-     * {@inheritdoc}
+     * Get service.
+     *
+     * @return  RestService
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function getService()
     {
-        parent::setContainer($container);
+        if (is_null($this->service)) {
+            $this->service = $this->container->get($this->serviceName);
+        }
 
-        // Set used service
-        $this->service = $this->container->get($this->serviceName);
+        return $this->service;
     }
 
     /**
@@ -65,7 +68,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     public function find(Request $request)
     {
         // Fetch data from database
-        $data = $this->service->find();
+        $data = $this->getService()->find();
 
         return $this->createResponse($request, $data);
     }
@@ -81,7 +84,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     public function findOne(Request $request, $id)
     {
         // Fetch data from database
-        $data = $this->service->findOne($id);
+        $data = $this->getService()->findOne($id);
 
         // Oh noes, record not found...
         if (is_null($data)) {
@@ -104,7 +107,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
         $data = $this->getEntityData($request);
 
         // Create new entity
-        $entity = $this->service->create($data);
+        $entity = $this->getService()->create($data);
 
         return $this->createResponse($request, $entity, 201);
     }
@@ -123,7 +126,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
         $data = $this->getEntityData($request);
 
         // Update entity
-        $entity = $this->service->update($id, $data);
+        $entity = $this->getService()->update($id, $data);
 
         return $this->createResponse($request, $entity);
     }
@@ -138,8 +141,8 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     public function delete(Request $request, $id)
     {
-        // Remove entity
-        $entity = $this->service->delete($id);
+        // Delete entity
+        $entity = $this->getService()->delete($id);
 
         return $this->createResponse($request, $entity);
     }
@@ -147,9 +150,9 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     /**
      * Helper method to create actual response for request.
      *
-     * @param   Request $request
-     * @param   mixed   $data
-     * @param   integer $httpStatus
+     * @param   Request                                     $request
+     * @param   mixed|EntityInterface|EntityInterface[]     $data
+     * @param   integer                                     $httpStatus
      *
      * @return  Response
      */
@@ -180,7 +183,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
         $populateAll = array_key_exists('populateAll', $request->query->all());
 
         // Get current entity name
-        $entityName = $this->service->getRepository()->getClassName();
+        $entityName = $this->getService()->getRepository()->getClassName();
 
         $bits = explode('\\', $entityName);
 

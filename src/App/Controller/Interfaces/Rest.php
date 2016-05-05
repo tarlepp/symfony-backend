@@ -6,10 +6,12 @@
  */
 namespace App\Controller\Interfaces;
 
+// Application components
+use App\Services\Rest as RestService;
+
 // Symfony components
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Interface Rest
@@ -21,11 +23,11 @@ use Symfony\Component\HttpFoundation\Response;
 interface Rest
 {
     /**
-     * Sets the container.
+     * Get service.
      *
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     * @return  RestService
      */
-    public function setContainer(ContainerInterface $container = null);
+    public function getService();
 
     /**
      * Generic 'find' method for REST endpoints.
