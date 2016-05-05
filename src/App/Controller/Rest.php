@@ -67,8 +67,14 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     public function find(Request $request)
     {
+        // Determine used parameters
+        $criteria   = $this->getCriteria($request);
+        $orderBy    = $this->getOrderBy($request);
+        $limit      = $this->getLimit($request);
+        $offset     = $this->getOffset($request);
+
         // Fetch data from database
-        $data = $this->getService()->find();
+        $data = $this->getService()->find($criteria, $orderBy, $limit, $offset);
 
         return $this->createResponse($request, $data);
     }
@@ -218,5 +224,53 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     {
         // TODO handle this!
         return new \stdClass();
+    }
+
+    /**
+     * Method to get used criteria array for 'find' method.
+     *
+     * @param   Request $request
+     *
+     * @return  array
+     */
+    private function getCriteria(Request $request)
+    {
+        return [];
+    }
+
+    /**
+     * Getter method for used order by option within 'find' method.
+     *
+     * @param   Request $request
+     *
+     * @return  null|array
+     */
+    private function getOrderBy(Request $request)
+    {
+        return null;
+    }
+
+    /**
+     * Getter method for used limit option within 'find' method.
+     *
+     * @param   Request $request
+     *
+     * @return  null|integer
+     */
+    private function getLimit(Request $request)
+    {
+        return null;
+    }
+
+    /**
+     * Getter method for used offset option within 'find' method.
+     *
+     * @param   Request $request
+     *
+     * @return  null|integer
+     */
+    private function getOffset(Request $request)
+    {
+        return null;
     }
 }
