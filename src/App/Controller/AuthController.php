@@ -15,12 +15,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 // Sensio components
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 // 3rd party components
 use JMS\Serializer\SerializationContext;
 
 /**
  * Class AuthController
+ *
+ * @Route("/auth")
  *
  * @category    Controller
  * @package     App\Controller
@@ -31,7 +34,7 @@ class AuthController extends Controller
     /**
      * This is just for the route config, nothing else...
      *
-     * @Route("/auth/getToken")
+     * @Route("/getToken")
      *
      * @return  Response
      */
@@ -44,7 +47,9 @@ class AuthController extends Controller
     /**
      * Route action to return current user profile data from database.
      *
-     * @Route("/auth/profile");
+     * @Route("/profile");
+     *
+     * @Security("has_role('ROLE_USER')")
      *
      * @return Response
      */
