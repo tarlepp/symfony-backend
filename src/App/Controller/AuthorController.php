@@ -1,94 +1,86 @@
 <?php
 /**
- * /src/App/Controller/AuthorController.php
+ * /src/App/Controller/AuthController.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 namespace App\Controller;
 
-// Symfony components
-use FOS\RestBundle\Context\Context;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+// Application components
+use App\Services\Author;
 
-// 3rd party components
-use FOS\RestBundle\Controller\FOSRestController;
+// Sensio components
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+// Symfony components
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class AuthorController
  *
- * @category    REST
+ * @Route("/author")
+ *
+ * @category    Controller
  * @package     App\Controller
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class AuthorController extends FOSRestController
+class AuthorController extends Rest
 {
     /**
-     * @var \Doctrine\Common\Persistence\ObjectRepository
+     * Service object for controller.
+     *
+     * @var Author
      */
-    protected $repository;
+    protected $service;
 
     /**
-     * Sets the container.
+     * Name of the service that controller uses. This is used on setContainer method to invoke specified service to
+     * class context.
      *
-     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     * @var string
      */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        parent::setContainer($container);
+    protected $serviceName = 'app.services.author';
 
-        $this->repository = $this->getDoctrine()->getRepository('AppBundle:Author');
+    /**
+     * This is just for the route config, nothing else...
+     *
+     * @Route("/")
+     *
+     * @Method({"GET"})
+     *
+     * Security("has_role('ROLE_USER')")
+     *
+     * @param   Request $request
+     *
+     * @return  Response
+     */
+    public function find(Request $request)
+    {
+        return parent::find($request);
     }
 
     /**
-     * todo
+     * This is just for the route config, nothing else...
      *
-     * @param Request $request
+     * @Route(
+     *      "/{id}",
+     *      requirements={"id" = "\d+"}
+     *  )
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Method({"GET"})
+     *
+     * Security("has_role('ROLE_USER')")
+     *
+     * @param   Request $request
+     * @param   integer $id
+     *
+     * @return Response
      */
-    public function getAuthorAction(Request $request)
+    public function findOne(Request $request, $id = 0)
     {
-        $populate = (array)$request->get('populate', []);
-        $populateAll = array_key_exists('populateAll', $request->query->all());
-
-        $context = $this->getSerializeContext($populate, $populateAll);
-
-        $data = $this->repository->findAll();
-        $view = $this->view($data, 200);
-        $view->setContext($context);
-
-        return $this->handleView($view);
-    }
-
-    /**
-     * Helper method to get serialization context for query.
-     *
-     * @param   array   $populate
-     * @param   boolean $populateAll
-     *
-     * @return  Context
-     */
-    protected function getSerializeContext(array $populate, $populateAll)
-    {
-        $bits = explode('\\', $this->repository->getClassName());
-
-        // Determine used default group
-        $defaultGroup = $populateAll ? 'Default' : end($bits);
-
-        if (count($populate) === 0 && $populateAll) {
-            $associations = array_keys(
-                $this->getDoctrine()->getManager()->getClassMetadata('AppBundle:Author')->getAssociationMappings()
-            );
-
-            $populate = array_map('ucfirst', $associations);
-        }
-
-        // Create context and set used groups
-        $context = new Context();
-        $context->addGroups(array_merge([$defaultGroup], $populate));
-        $context->setSerializeNull(true);
-
-        return $context;
+        return parent::findOne($request, $id);
     }
 }
