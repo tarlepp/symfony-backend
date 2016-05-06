@@ -184,7 +184,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
         $populateAll = array_key_exists('populateAll', $request->query->all());
 
         // Get current entity name
-        $entityName = $this->getService()->getRepository()->getClassName();
+        $entityName = $this->getService()->getRepository()->getEntityName();
 
         $bits = explode('\\', $entityName);
 
@@ -257,9 +257,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     private function getLimit(Request $request)
     {
-        $limit = (int)$request->get('limit', -1);
-
-        return $limit < 0 ? null : $limit;
+        return $request->get('limit', null);
     }
 
     /**
@@ -271,8 +269,6 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     private function getOffset(Request $request)
     {
-        $offset = (int)$request->get('offset', -1);
-
-        return $offset < 0 ? null : $offset;
+        return $request->get('offset', null);
     }
 }
