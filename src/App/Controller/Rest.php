@@ -7,8 +7,9 @@
 namespace App\Controller;
 
 // Application components
-use App\Services\Rest as RestService;
 use App\Entity\Interfaces\Base as EntityInterface;
+use App\Services\Rest as RestService;
+use App\Util\JSON;
 
 // Symfony components
 use Symfony\Component\HttpFoundation\Response;
@@ -215,9 +216,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     protected function getEntityData(Request $request)
     {
-        // TODO implement actual functionality
-
-        return new \stdClass();
+        return JSON::decode($request->getContent());
     }
 
     /**
