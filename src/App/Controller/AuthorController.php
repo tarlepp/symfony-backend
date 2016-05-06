@@ -1,6 +1,6 @@
 <?php
 /**
- * /src/App/Controller/AuthController.php
+ * /src/App/Controller/AuthorController.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
@@ -45,7 +45,7 @@ class AuthorController extends Rest
     protected $serviceName = 'app.services.author';
 
     /**
-     * This is just for the route config, nothing else...
+     * Route action to get array of authors.
      *
      * @Route("/")
      *
@@ -63,7 +63,7 @@ class AuthorController extends Rest
     }
 
     /**
-     * This is just for the route config, nothing else...
+     * Route action to get specified author.
      *
      * @Route(
      *      "/{id}",
@@ -77,10 +77,73 @@ class AuthorController extends Rest
      * @param   Request $request
      * @param   integer $id
      *
-     * @return Response
+     * @return  Response
      */
     public function findOne(Request $request, $id = 0)
     {
         return parent::findOne($request, $id);
+    }
+
+    /**
+     * Route action to create new author.
+     *
+     * @Route("")
+     * @Route("/")
+     *
+     * @Method({"POST"})
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param   Request $request
+     *
+     * @return  Response
+     */
+    public function create(Request $request)
+    {
+        return parent::create($request);
+    }
+
+    /**
+     * Route action to update author data.
+     *
+     * @Route(
+     *      "/{id}",
+     *      requirements={"id" = "\d+"}
+     *  )
+     *
+     * @Method({"PUT"})
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param   Request $request
+     * @param   integer $id
+     *
+     * @return  Response
+     */
+    public function update(Request $request, $id)
+    {
+        return parent::update($request, $id);
+    }
+
+    /**
+     * Route action to delete specified author.
+     *
+     * @Route(
+     *      "/{id}",
+     *      requirements={"id" = "\d+"}
+     *  )
+     *
+     * @Method({"DELETE"})
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param   Request $request
+     * @param   integer $id
+     *
+     * @return  Response
+     */
+    public function delete(Request $request, $id)
+    {
+        return parent::delete($request, $id);
     }
 }
