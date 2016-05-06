@@ -243,9 +243,18 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     private function getOrderBy(Request $request)
     {
-        // TODO implement actual functionality
+        // Normalize parameter value
+        $orderBy = array_filter((array)$request->get('orderBy', []));
 
-        return null;
+        // Initialize output
+        $output = [];
+
+        // Create actual order by definition
+        foreach ($orderBy as $key => $value) {
+            is_string($key) ? $output[$key] = $value : $output[$value] = 'ASC';
+        }
+
+        return count($output) > 0 ? $output : null;
     }
 
     /**
