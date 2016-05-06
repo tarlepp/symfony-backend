@@ -155,11 +155,14 @@ abstract class Rest extends Base implements Interfaces\Rest
      * Generic findOne method to return single item from database. Return value is single entity from specified
      * repository.
      *
+     * @throws  HttpException
+     *
      * @param   integer $id
+     * @param   boolean $throwExceptionIfNotFound
      *
      * @return  null|Entity
      */
-    public function findOne($id)
+    public function findOne($id, $throwExceptionIfNotFound = false)
     {
         // Before callback method call
         if (method_exists($this, 'beforeFindOne')) {
@@ -167,6 +170,11 @@ abstract class Rest extends Base implements Interfaces\Rest
         }
 
         $entity = $this->getRepository()->find($id);
+
+        // Entity not found
+        if ($throwExceptionIfNotFound && is_null($entity)) {
+            throw new HttpException(404, 'Not found');
+        }
 
         // After callback method call
         if (method_exists($this, 'afterFindOne')) {
@@ -182,10 +190,11 @@ abstract class Rest extends Base implements Interfaces\Rest
      *
      * @param   array       $criteria
      * @param   null|array  $orderBy
+     * @param   boolean     $throwExceptionIfNotFound
      *
      * @return  null|Entity
      */
-    public function findOneBy(array $criteria, array $orderBy = null)
+    public function findOneBy(array $criteria, array $orderBy = null, $throwExceptionIfNotFound = false)
     {
         // Before callback method call
         if (method_exists($this, 'beforeFindOneBy')) {
@@ -193,6 +202,11 @@ abstract class Rest extends Base implements Interfaces\Rest
         }
 
         $entity = $this->getRepository()->findOneBy($criteria, $orderBy);
+
+        // Entity not found
+        if ($throwExceptionIfNotFound && is_null($entity)) {
+            throw new HttpException(404, 'Not found');
+        }
 
         // After callback method call
         if (method_exists($this, 'afterFindOneBy')) {
