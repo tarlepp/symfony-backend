@@ -33,4 +33,14 @@ abstract class Base extends EntityRepository
     {
         return parent::getEntityManager();
     }
+
+    /**
+     * Public getter method for entity name.
+     *
+     * @return string
+     */
+    public function getEntityName()
+    {
+        return parent::getEntityName();
+    }
 }
