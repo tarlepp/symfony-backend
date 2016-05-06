@@ -34,16 +34,9 @@ class JSON
      */
     public static function encode($input, $options = 0, $depth = 512)
     {
-        // Decode given JSON string to object
         $output = json_encode($input, $options, $depth);
 
-        // Get last JSON error
-        $error = json_last_error();
-
-        // Oh noes, some error happened
-        if ($error !== JSON_ERROR_NONE) {
-            self::throwException($error);
-        }
+        self::handleError();
 
         return $output;
     }
@@ -66,30 +59,27 @@ class JSON
      */
     public static function decode($json, $assoc = false, $depth = 512, $options = 0)
     {
-        // Decode given JSON string to object
         $output = json_decode($json, $assoc, $depth, $options);
 
-        // Get last JSON error
-        $error = json_last_error();
-
-        // Oh noes, some error happened
-        if ($error !== JSON_ERROR_NONE) {
-            self::throwException($error);
-        }
+        self::handleError();
 
         return $output;
     }
 
     /**
-     * Generic method to throw an exception about encode and decode methods.
-     *
-     * @param   integer $error
+     * Helper method to handle possible errors within json_encode and json_decode functions.
      *
      * @return  void
      */
-    private static function throwException($error)
+    private static function handleError()
     {
-        throw new \LogicException(self::getErrorMessage($error) . ' - ' . json_last_error_msg());
+        // Get last JSON error
+        $error = json_last_error();
+
+        // Oh noes, some error happened
+        if ($error !== JSON_ERROR_NONE) {
+            throw new \LogicException(self::getErrorMessage($error) . ' - ' . json_last_error_msg());
+        }
     }
 
     /**
