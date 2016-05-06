@@ -90,12 +90,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     public function findOne(Request $request, $id)
     {
         // Fetch data from database
-        $data = $this->getService()->findOne($id);
-
-        // Oh noes, record not found...
-        if (is_null($data)) {
-            throw $this->createNotFoundException('Record does\'t exists.');
-        }
+        $data = $this->getService()->findOne($id, true);
 
         return $this->createResponse($request, $data);
     }
@@ -198,9 +193,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
 
         // Set all associations to be populated
         if (count($populate) === 0 && $populateAll) {
-            $associations = array_keys(
-                $this->getDoctrine()->getManager()->getClassMetadata($entityName)->getAssociationMappings()
-            );
+            $associations = $this->getService()->getAssociations();
 
             $populate = array_map('ucfirst', $associations);
         }
@@ -222,7 +215,8 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     protected function getEntityData(Request $request)
     {
-        // TODO handle this!
+        // TODO implement actual functionality
+
         return new \stdClass();
     }
 
@@ -235,6 +229,8 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     private function getCriteria(Request $request)
     {
+        // TODO implement actual functionality
+
         return [];
     }
 
@@ -247,6 +243,8 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     private function getOrderBy(Request $request)
     {
+        // TODO implement actual functionality
+
         return null;
     }
 
@@ -259,7 +257,9 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     private function getLimit(Request $request)
     {
-        return null;
+        $limit = (int)$request->get('limit', -1);
+
+        return $limit < 0 ? null : $limit;
     }
 
     /**
@@ -271,6 +271,8 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     private function getOffset(Request $request)
     {
-        return null;
+        $offset = (int)$request->get('offset', -1);
+
+        return $offset < 0 ? null : $offset;
     }
 }
