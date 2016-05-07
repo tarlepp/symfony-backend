@@ -11,11 +11,16 @@ use App\Entity\Interfaces\Base as EntityInterface;
 use App\Services\Rest as RestService;
 use App\Util\JSON;
 
+// Sensio components
+use /** @noinspection PhpUnusedAliasInspection */ Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use /** @noinspection PhpUnusedAliasInspection */ Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use /** @noinspection PhpUnusedAliasInspection */ Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 // Symfony components
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-// 3rd party components
+// FOS components
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Controller\FOSRestController;
 
@@ -62,6 +67,12 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      *
      * @todo How to handle where criteria?
      *
+     * @Route("/")
+     *
+     * @Method({"GET"})
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
      * @param   Request     $request
      *
      * @return  Response
@@ -83,6 +94,15 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     /**
      * Generic 'findOne' method for REST endpoints.
      *
+     * @Route(
+     *      "/{id}",
+     *      requirements={"id" = "\d+"}
+     *  )
+     *
+     * @Method({"GET"})
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
      * @param   Request $request
      * @param   integer $id
      *
@@ -98,6 +118,13 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
 
     /**
      * Generic 'create' method for REST endpoints.
+     *
+     * @Route("")
+     * @Route("/")
+     *
+     * @Method({"POST"})
+     *
+     * @Security("has_role('ROLE_ADMIN')")
      *
      * @param   Request $request
      *
@@ -117,6 +144,15 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     /**
      * Generic 'update' method for REST endpoints.
      *
+     * @Route(
+     *      "/{id}",
+     *      requirements={"id" = "\d+"}
+     *  )
+     *
+     * @Method({"PUT"})
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
      * @param   Request $request
      * @param   integer $id
      *
@@ -135,6 +171,15 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
 
     /**
      * Generic 'delete' method for REST endpoints.
+     *
+     * @Route(
+     *      "/{id}",
+     *      requirements={"id" = "\d+"}
+     *  )
+     *
+     * @Method({"DELETE"})
+     *
+     * @Security("has_role('ROLE_ADMIN')")
      *
      * @param   Request $request
      * @param   integer $id
