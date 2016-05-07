@@ -6,10 +6,15 @@
  */
 namespace App\EventListener;
 
+// Doctrine components
+use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\ORMException;
+
 // Symfony components
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
@@ -73,7 +78,9 @@ class ExceptionListener
 
         // Set base of error message
         $error = [
-            'message'   => $exception->getMessage(),
+            'message'   => ($this->kernel->getEnvironment() === 'dev')
+                ? $exception->getMessage()
+                : $this->getExceptionMessage($exception),
             'code'      => $exception->getCode(),
             'status'    => $response->getStatusCode(),
         ];
@@ -84,6 +91,7 @@ class ExceptionListener
                 'debug' => [
                     'file'          => $exception->getFile(),
                     'line'          => $exception->getLine(),
+                    'message'       => $exception->getMessage(),
                     'trace'         => $exception->getTrace(),
                     'traceString'   => $exception->getTraceAsString(),
                 ]
@@ -94,5 +102,31 @@ class ExceptionListener
 
         // Send the modified response object to the event
         $event->setResponse($response);
+    }
+
+    /**
+     * Helper method to convert exception message for user. This method is used in 'production' environment so, that
+     * application won't reveal any sensitive error data to users.
+     *
+     * @todo    What else use cases this should handle?
+     *
+     * @param   \Exception  $exception
+     *
+     * @return  string
+     */
+    private function getExceptionMessage(\Exception $exception)
+    {
+        // Within AccessDeniedHttpException we need to hide actual real message from users
+        if ($exception instanceof AccessDeniedHttpException) {
+            $message = 'Access denied.';
+        } elseif ($exception instanceof DBALException
+            || $exception instanceof ORMException
+        ) { // Database errors
+            $message = 'Database error.';
+        } else {
+            $message = $exception->getMessage();
+        }
+
+        return $message;
     }
 }
