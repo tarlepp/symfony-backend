@@ -1,6 +1,6 @@
 <?php
 /**
- * /src/App/Command/User/CreateCommand.php
+ * /src/App/Command/User/CreateUserCommand.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
@@ -10,7 +10,9 @@ namespace App\Command\User;
 use App\Entity\User;
 
 // Symfony components
+use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 // 3rd party components
@@ -23,7 +25,7 @@ use Matthias\SymfonyConsoleForm\Console\Helper\FormHelper;
  * @package     App\Command\User
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class CreateCommand extends Base
+class CreateUserCommand extends Base
 {
     /**
      * Name of the console command.
@@ -74,6 +76,13 @@ class CreateCommand extends Base
     {
         // Initialize common console command
         parent::execute($input, $output);
+
+        // Ensure that we have user groups
+        if (count($this->serviceUserGroup->find()) === 0) {
+            throw new LogicException(
+                'You need to have at least one user group. Use \'user:createGroup\' command to create groups.'
+            );
+        }
 
         /** @var FormHelper $formHelper */
         $formHelper = $this->getHelper('form');
