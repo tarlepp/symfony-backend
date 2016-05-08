@@ -17,6 +17,10 @@ namespace App\Services\Helper;
  */
 class Roles
 {
+    const ROLE_USER         = 'ROLE_USER';
+    const ROLE_ADMIN        = 'ROLE_ADMIN';
+    const ROLE_SUPER_ADMIN  = 'ROLE_SUPER_ADMIN';
+
     /**
      * Roles hierarchy.
      *
@@ -52,5 +56,32 @@ class Roles
         array_walk_recursive($this->rolesHierarchy, $iterator);
 
         return array_unique($roles);
+    }
+
+    /**
+     * Getter method for role label.
+     *
+     * @param   string  $role
+     *
+     * @return  string
+     */
+    public function getRoleLabel($role)
+    {
+        switch ($role) {
+            case self::ROLE_USER:
+                $output = 'Normal users';
+                break;
+            case self::ROLE_ADMIN:
+                $output = 'Admin users';
+                break;
+            case self::ROLE_SUPER_ADMIN:
+                $output = 'Root users';
+                break;
+            default:
+                $output = 'Unknown';
+                break;
+        }
+
+        return $output;
     }
 }
