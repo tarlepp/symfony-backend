@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 /**
  * Class User
  *
- * @category    Doctrine
+ * @category    Form
  * @package     App\Form\Console
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
