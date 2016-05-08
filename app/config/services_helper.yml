@@ -1,0 +1,7 @@
+# Helper service configurations
+#
+# This file contains helper service specified configurations.
+services:
+    app.services.helper.roles:
+        class: App\Services\Helper\Roles
+        arguments: [ '%security.role_hierarchy.roles%' ]

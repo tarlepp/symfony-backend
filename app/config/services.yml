@@ -5,6 +5,7 @@ imports:
     - { resource: services_listeners.yml }
     - { resource: services_repository.yml }
     - { resource: services_rest.yml }
+    - { resource: services_helper.yml }
 
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html

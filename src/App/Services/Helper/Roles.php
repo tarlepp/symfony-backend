@@ -1,21 +1,21 @@
 <?php
 /**
- * /src/App/Services/RolesHelper.php
+ * /src/App/Services/Helper/Roles.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace App\Services;
+namespace App\Services\Helper;
 
 /**
- * Class RolesHelper
+ * Class Roles
  *
- * @see /app/config/services.yml
+ * @see /app/config/services_helper.yml
  *
  * @category    Service
- * @package     App\Services
+ * @package     App\Services\Helper
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class RolesHelper
+class Roles
 {
     /**
      * Roles hierarchy.
@@ -29,7 +29,7 @@ class RolesHelper
      *
      * @param   array   $rolesHierarchy This is a 'security.role_hierarchy.roles' parameter value
      *
-     * @return  RolesHelper
+     * @return  Roles
      */
     public function __construct(array $rolesHierarchy)
     {
@@ -39,7 +39,7 @@ class RolesHelper
     /**
      * Getter method to return all roles in single dimensional array.
      *
-     * @return array
+     * @return string[]
      */
     public function getRoles()
     {
