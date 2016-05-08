@@ -42,19 +42,19 @@ security:
             stateless: true
             anonymous: true
 
-        auth:
-            pattern: ^/auth
+        root:
+            pattern:  ^/$
             stateless: true
-            lexik_jwt: ~
+            anonymous: true
 
         api:
-            pattern: ^/api
+            pattern: ^/
             stateless: true
             lexik_jwt: ~
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
 
     access_control:
         - { path: ^/auth/refreshToken, roles: IS_AUTHENTICATED_ANONYMOUSLY }
