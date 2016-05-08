@@ -1,21 +1,34 @@
 <?php
-
+/**
+ * /src/App/Controller/DefaultController.php
+ *
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ */
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+// Sensio components
+use /** @noinspection PhpUnusedAliasInspection */ Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+// Symfony components
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+
+/**
+ * Class DefaultController
+ *
+ * @category    Controller
+ * @package     App\Controller
+ * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ */
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * Default application response when requested root.
+     *
+     * @Route("/")
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
-        ]);
+        return new Response('', Response::HTTP_OK);
     }
 }
