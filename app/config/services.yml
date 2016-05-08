@@ -2,6 +2,7 @@
 #
 # Note that all of there services are application bundle specified custom services.
 imports:
+    - { resource: services_form.yml }
     - { resource: services_listeners.yml }
     - { resource: services_repository.yml }
     - { resource: services_rest.yml }

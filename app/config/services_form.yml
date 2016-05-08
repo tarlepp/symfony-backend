@@ -1,0 +1,10 @@
+# Form service configurations
+#
+# This file contains form service specified configurations.
+services:
+    app.form.console.user_group:
+        class: App\Form\Console\UserGroup
+        calls:
+            - [ setHelperRoles, [ '@app.services.helper.roles' ] ]
+        tags:
+            - { name: form.type }
