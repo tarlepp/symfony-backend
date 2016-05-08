@@ -85,7 +85,7 @@ class CreateCommand extends Base
         $this->encodePassword($user, $user->getPassword());
 
         // Store user
-        $this->store($user);
+        $this->storeUser($user);
 
         // Uuh all done!
         $this->io->success('New user created!');

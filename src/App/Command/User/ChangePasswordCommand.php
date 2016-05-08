@@ -74,7 +74,7 @@ class ChangePasswordCommand extends Base
         $this->encodePassword($user, $this->askNewPassword());
 
         // Store user
-        $this->store($user);
+        $this->storeUser($user);
 
         // Uuh all done!
         $this->io->success('Password changed successfully!');

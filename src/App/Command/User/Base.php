@@ -7,8 +7,10 @@
 namespace App\Command\User;
 
 // Application components
-use App\Entity\User as Entity;
-use App\Services\User as Service;
+use App\Entity\User as EntityUser;
+use App\Entity\UserGroup as EntityUserGroup;
+use App\Services\User as ServiceUser;
+use App\Services\UserGroup as ServiceUserGroup;
 
 // Symfony components
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -75,9 +77,14 @@ abstract class Base extends ContainerAwareCommand
     protected $io;
 
     /**
-     * @var Service
+     * @var ServiceUser
      */
-    protected $service;
+    protected $serviceUser;
+
+    /**
+     * @var ServiceUserGroup
+     */
+    protected $serviceUserGroup;
 
     /**
      * {@inheritdoc}
@@ -123,8 +130,9 @@ abstract class Base extends ContainerAwareCommand
         // Create output decorator helpers for the Symfony Style Guide.
         $this->io = new SymfonyStyle($this->input, $this->output);
 
-        // Store user service object
-        $this->service = $this->getContainer()->get('app.services.user');
+        // Store user and user group service objects
+        $this->serviceUser = $this->getContainer()->get('app.services.user');
+        $this->serviceUserGroup = $this->getContainer()->get('app.services.user_group');
 
         // Set title
         $this->io->title($this->getDescription());
@@ -135,7 +143,7 @@ abstract class Base extends ContainerAwareCommand
      *
      * @param   bool    $showUserInformation
      *
-     * @return  Entity
+     * @return  EntityUser
      */
     protected function getUser($showUserInformation = false)
     {
@@ -146,7 +154,7 @@ abstract class Base extends ContainerAwareCommand
             $username = $this->io->askQuestion($question);
 
             try {
-                $user = $this->service->getByUsername($username);
+                $user = $this->serviceUser->getByUsername($username);
             } catch (UsernameNotFoundException $error) {
                 $this->io->warning($error->getMessage());
             }
@@ -163,12 +171,12 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to encode password for provided user object.
      *
-     * @param   Entity  $user
-     * @param   string  $password
+     * @param   EntityUser  $user
+     * @param   string      $password
      *
      * @return  void
      */
-    protected function encodePassword(Entity $user, $password)
+    protected function encodePassword(EntityUser $user, $password)
     {
         // Get password encoder and encode given password
         $encoder = $this->getContainer()->get('security.password_encoder');
@@ -181,11 +189,11 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Private helper method to print user information to console.
      *
-     * @param   Entity  $user
+     * @param   EntityUser  $user
      *
      * @return  void
      */
-    protected function printUserInformation(Entity $user)
+    protected function printUserInformation(EntityUser $user)
     {
         // Attributes to print out
         $attributes = [
@@ -229,13 +237,26 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to store user entity.
      *
-     * @param   Entity  $user
+     * @param   EntityUser  $user
      *
-     * @return  Entity
+     * @return  EntityUser
      */
-    protected function store(Entity $user)
+    protected function storeUser(EntityUser $user)
     {
         // Store user to database
-        return $this->service->save($user);
+        return $this->serviceUser->save($user);
+    }
+
+    /**
+     * Helper method to store user group entity.
+     *
+     * @param   EntityUserGroup $userGroup
+     *
+     * @return  EntityUserGroup
+     */
+    protected function storeUserGroup(EntityUserGroup $userGroup)
+    {
+        // Store user group to database
+        return $this->serviceUserGroup->save($userGroup);
     }
 }
