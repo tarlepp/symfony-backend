@@ -47,7 +47,7 @@ class Roles
      */
     public function getRoles()
     {
-        $roles = array();
+        $roles = [];
 
         $iterator = function($value) use (&$roles) {
             $roles[] = $value;
