@@ -9,7 +9,7 @@ namespace App\Services;
 /**
  * Abstract base class for all the application services.
  *
- * @category    Services
+ * @category    Service
  * @package     App\Services
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */

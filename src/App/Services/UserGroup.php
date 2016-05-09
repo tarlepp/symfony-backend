@@ -14,7 +14,7 @@ use App\Repository\UserGroup as Repository;
 /**
  * Class UserGroup
  *
- * @category    Services
+ * @category    Service
  * @package     App\Services
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  *

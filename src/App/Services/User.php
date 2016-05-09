@@ -14,7 +14,7 @@ use App\Repository\User as Repository;
 /**
  * Class User
  *
- * @category    Services
+ * @category    Service
  * @package     App\Services
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  *

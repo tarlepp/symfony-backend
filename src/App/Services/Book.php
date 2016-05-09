@@ -14,7 +14,7 @@ use App\Repository\Book as Repository;
 /**
  * Class Book
  *
- * @category    Services
+ * @category    Service
  * @package     App\Services
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  *

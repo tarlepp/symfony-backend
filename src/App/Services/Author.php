@@ -14,7 +14,7 @@ use App\Repository\Author as Repository;
 /**
  * Class Author
  *
- * @category    Services
+ * @category    Service
  * @package     App\Services
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  *
