@@ -61,7 +61,7 @@ class User extends AbstractType
                 ]
             )
             ->add(
-                'password',
+                'plainPassword',
                 Type\PasswordType::class,
                 [
                     'label'     => 'Password',

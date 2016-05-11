@@ -63,8 +63,8 @@ class CreateUserCommand extends Base
             'description'   => 'Email address',
         ],
         [
-            'name'          => 'password',
-            'description'   => 'Password',
+            'name'          => 'plainPassword',
+            'description'   => 'Plain password',
         ]
     ];
 
@@ -89,11 +89,8 @@ class CreateUserCommand extends Base
         /** @var User $user */
         $user = $formHelper->interactUsingForm('App\Form\Console\User', $this->input, $this->output);
 
-        // Get and set (encode) new password for user
-        $this->encodePassword($user, $user->getPassword());
-
         // Store user
-        $this->storeUser($user);
+        $this->storeUser($user, true);
 
         // Uuh all done!
         $this->io->success('New user created!');

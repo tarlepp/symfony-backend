@@ -7,6 +7,7 @@
 namespace App\Command\User;
 
 // Symfony components
+use App\Entity\User;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -69,12 +70,11 @@ class ChangePasswordCommand extends Base
             $userFound = $this->io->confirm('Is this the user who\'s password you want to change?', false);
         }
 
-        // Get and set (encode) new password for user
-        /** @noinspection PhpUndefinedVariableInspection */
-        $this->encodePassword($user, $this->askNewPassword());
+        /** @var User $user */
+        $user->setPlainPassword($this->askNewPassword());
 
         // Store user
-        $this->storeUser($user);
+        $this->storeUser($user, true);
 
         // Uuh all done!
         $this->io->success('Password changed successfully!');

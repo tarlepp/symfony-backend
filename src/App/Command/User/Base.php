@@ -222,7 +222,7 @@ abstract class Base extends ContainerAwareCommand
 
             return [
                 $attribute,
-                is_array($value) ? implode(' ', $value) : $value,
+                is_array($value) ? implode(', ', $value) : $value,
             ];
         };
 
@@ -238,13 +238,14 @@ abstract class Base extends ContainerAwareCommand
      * Helper method to store user entity.
      *
      * @param   EntityUser  $user
+     * @param   boolean     $skipValidation
      *
      * @return  EntityUser
      */
-    protected function storeUser(EntityUser $user)
+    protected function storeUser(EntityUser $user, $skipValidation = false)
     {
         // Store user to database
-        return $this->serviceUser->save($user);
+        return $this->serviceUser->save($user, $skipValidation);
     }
 
     /**
