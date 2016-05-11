@@ -157,9 +157,6 @@ class User extends Base implements UserInterface, \Serializable
      *
      * @JMS\Exclude
      *
-     * @Assert\NotBlank()
-     * @Assert\NotNull()
-     *
      * @ORM\Column(
      *      name="password",
      *      type="string",
