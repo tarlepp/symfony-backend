@@ -7,3 +7,8 @@ book:
     type:         rest
     resource:     "App\\Controller\\BookController"
     name_prefix:  api_
+
+user:
+    type:         rest
+    resource:     "App\\Controller\\UserController"
+    name_prefix:  api_
