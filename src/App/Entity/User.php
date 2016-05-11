@@ -170,6 +170,13 @@ class User extends Base implements UserInterface, \Serializable
     private $password;
 
     /**
+     * Plain password. Used for model validation. Must not be persisted.
+     *
+     * @var  string
+     */
+    private $plainPassword;
+
+    /**
      * Collection of user's user groups.
      *
      * @var ArrayCollection
@@ -251,6 +258,16 @@ class User extends Base implements UserInterface, \Serializable
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Getter for plain password.
+     *
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
     }
 
     /**
@@ -343,13 +360,30 @@ class User extends Base implements UserInterface, \Serializable
     /**
      * Setter for password.
      *
-     * @param   string  $password
+     * @param   string  $password   Note that this must be encoded at this point!
      *
      * @return  User
      */
     public function setPassword($password)
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Setter for plain password.
+     *
+     * @param   string  $plainPassword
+     *
+     * @return  User
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+
+        // Change some mapped values so preUpdate will get called.
+        $this->password = ''; // just blank it out
 
         return $this;
     }
@@ -425,7 +459,7 @@ class User extends Base implements UserInterface, \Serializable
      */
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
+        $this->plainPassword = '';
     }
 
     /**
