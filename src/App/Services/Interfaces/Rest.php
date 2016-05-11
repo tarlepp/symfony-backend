@@ -122,10 +122,11 @@ interface Rest
      * @throws  ValidatorException
      *
      * @param   EntityInterface $entity
+     * @param   boolean         $skipValidation
      *
      * @return  Entity
      */
-    public function save(EntityInterface $entity);
+    public function save(EntityInterface $entity, $skipValidation = false);
 
     /**
      * Generic method to update specified entity with new data.

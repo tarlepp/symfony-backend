@@ -260,10 +260,11 @@ abstract class Rest extends Base implements Interfaces\Rest
      * @throws  ValidatorException
      *
      * @param   EntityInterface $entity
+     * @param   boolean         $skipValidation
      *
      * @return  Entity
      */
-    public function save(EntityInterface $entity)
+    public function save(EntityInterface $entity, $skipValidation = false)
     {
         // Before callback method call
         if (method_exists($this, 'beforeSave')) {
@@ -271,11 +272,13 @@ abstract class Rest extends Base implements Interfaces\Rest
         }
 
         // Validate entity
-        $errors = $this->validator->validate($entity);
+        if (!$skipValidation) {
+            $errors = $this->validator->validate($entity);
 
-        // Oh noes, we have some errors
-        if (count($errors) > 0) {
-            throw new ValidatorException($errors);
+            // Oh noes, we have some errors
+            if (count($errors) > 0) {
+                throw new ValidatorException($errors);
+            }
         }
 
         // Persist on database

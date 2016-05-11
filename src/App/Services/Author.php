@@ -24,7 +24,7 @@ use App\Repository\Author as Repository;
  * @method  null|Entity     findOne($id)
  * @method  null|Entity     findOneBy(array $criteria, array $orderBy = null)
  * @method  Entity          create(\stdClass $data)
- * @method  Entity          save(EntityInterface $entity)
+ * @method  Entity          save(EntityInterface $entity, $skipValidation = false)
  * @method  Entity          update($id, \stdClass $data)
  * @method  Entity          delete($id)
  */
