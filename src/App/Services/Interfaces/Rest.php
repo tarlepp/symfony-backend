@@ -78,10 +78,17 @@ interface Rest
      * @param   null|array      $orderBy
      * @param   null|integer    $limit
      * @param   null|integer    $offset
+     * @param   null|array      $search
      *
      * @return  Entity[]
      */
-    public function find(array $criteria = [], array $orderBy = null, $limit = null, $offset = null);
+    public function find(
+        array $criteria = [],
+        array $orderBy = null,
+        $limit = null,
+        $offset = null,
+        array $search = null
+    );
 
     /**
      * Generic findOne method to return single item from database. Return value is single entity from specified

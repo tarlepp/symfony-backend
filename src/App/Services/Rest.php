@@ -130,18 +130,27 @@ abstract class Rest extends Base implements Interfaces\Rest
      * @param   null|array      $orderBy
      * @param   null|integer    $limit
      * @param   null|integer    $offset
+     * @param   null|array      $search
      *
      * @return  Entity[]
      */
-    public function find(array $criteria = [], array $orderBy = null, $limit = null, $offset = null)
-    {
+    public function find(
+        array $criteria = [],
+        array $orderBy = null,
+        $limit = null,
+        $offset = null,
+        array $search = null
+    ) {
         // Before callback method call
         if (method_exists($this, 'beforeFind')) {
             $this->beforeFind($criteria, $orderBy, $limit, $offset);
         }
 
         // Fetch data
-        $entities = $this->getRepository()->findBy($criteria, $orderBy, $limit, $offset);
+        $entities = is_null($search)
+            ? $this->getRepository()->findBy($criteria, $orderBy, $limit, $offset)
+            : $this->getRepository()->findByWithSearchTerms($search, $criteria, $orderBy, $limit, $offset)
+        ;
 
         // After callback method call
         if (method_exists($this, 'afterFind')) {

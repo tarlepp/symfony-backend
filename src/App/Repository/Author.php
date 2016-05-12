@@ -18,5 +18,12 @@ use App\Entity;
  */
 class Author extends Base
 {
+    /**
+     * Names of search columns.
+     *
+     * @var string[]
+     */
+    protected $searchColumns = ['name', 'description'];
+
     // Implement custom entity query methods here
 }

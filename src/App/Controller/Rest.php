@@ -27,6 +27,10 @@ use FOS\RestBundle\Controller\FOSRestController;
 /**
  * Class Rest
  *
+ * This abstract class contains basic REST functionality that you can use on your own controllers.
+ *
+ * @todo Implement GET /count
+ *
  * @category    Controller
  * @package     App\Controller
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
@@ -65,8 +69,6 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     /**
      * Generic 'find' method for REST endpoints.
      *
-     * @todo How to handle where criteria?
-     *
      * @Route("/")
      *
      * @Method({"GET"})
@@ -84,9 +86,10 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
         $orderBy    = $this->getOrderBy($request);
         $limit      = $this->getLimit($request);
         $offset     = $this->getOffset($request);
+        $search     = $this->getSearchTerms($request);
 
         // Fetch data from database
-        $data = $this->getService()->find($criteria, $orderBy, $limit, $offset);
+        $data = $this->getService()->find($criteria, $orderBy, $limit, $offset, $search);
 
         return $this->createResponse($request, $data);
     }
@@ -356,5 +359,23 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     private function getOffset(Request $request)
     {
         return $request->get('offset', null);
+    }
+
+    /**
+     * Getter method for used search terms within 'find' method.
+     *
+     * @param   Request $request
+     *
+     * @return  null|string[]
+     */
+    private function getSearchTerms(Request $request)
+    {
+        $search = $request->get('search', null);
+
+        if (!is_null($search)) {
+            $search = array_unique(array_filter(explode(' ', $search)));
+        }
+
+        return $search;
     }
 }
