@@ -18,5 +18,12 @@ use App\Entity;
  */
 class Book extends Base
 {
+    /**
+     * Names of search columns.
+     *
+     * @var string[]
+     */
+    protected $searchColumns = ['title', 'description'];
+
     // Implement custom entity query methods here
 }

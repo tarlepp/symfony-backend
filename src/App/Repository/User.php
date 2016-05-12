@@ -29,6 +29,13 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class User extends Base implements UserProviderInterface, UserLoaderInterface
 {
     /**
+     * Names of search columns.
+     *
+     * @var string[]
+     */
+    protected $searchColumns = ['username', 'firstname', 'surname', 'email'];
+
+    /**
      * Loads the user for the given username.
      *
      * This method must throw UsernameNotFoundException if the user is not found.

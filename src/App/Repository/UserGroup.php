@@ -18,5 +18,12 @@ use App\Entity;
  */
 class UserGroup extends Base
 {
+    /**
+     * Names of search columns.
+     *
+     * @var string[]
+     */
+    protected $searchColumns = ['name', 'role'];
+
     // Implement custom entity query methods here
 }
