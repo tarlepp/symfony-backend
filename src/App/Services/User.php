@@ -20,7 +20,7 @@ use App\Repository\User as Repository;
  *
  * @method  Entity          getReference($id)
  * @method  Repository      getRepository()
- * @method  Entity[]        find(array $criteria = [], array $orderBy = null, $limit = null, $offset = null)
+ * @method  Entity[]        find(array $criteria = [], array $orderBy = null, $limit = null, $offset = null, array $search = null)
  * @method  null|Entity     findOne($id)
  * @method  null|Entity     findOneBy(array $criteria, array $orderBy = null)
  * @method  Entity          create(\stdClass $data)
