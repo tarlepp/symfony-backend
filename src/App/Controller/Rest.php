@@ -279,7 +279,17 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     }
 
     /**
-     * Getter method for used order by option within 'find' method.
+     * Getter method for used order by option within 'find' method. Some examples below.
+     *
+     * Basic usage:
+     *  ?order=column1                              => ORDER BY column1 ASC
+     *  ?order=-column1                             => ORDER BY column2 DESC
+     *
+     * Array parameter usage:
+     *  ?order[column1]=ASC                         => ORDER BY column1 ASC
+     *  ?order[column1]=DESC                        => ORDER BY column1 DESC
+     *  ?order[column1]=foobar                      => ORDER BY column1 ASC
+     *  ?order[column1]=DESC&orderBy[column2]=DESC  => ORDER BY column1 DESC, column2 DESC
      *
      * @param   Request $request
      *
@@ -288,15 +298,38 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     private function getOrderBy(Request $request)
     {
         // Normalize parameter value
-        $orderBy = array_filter((array)$request->get('orderBy', []));
+        $userInput = array_filter((array)$request->get('order', []));
 
         // Initialize output
         $output = [];
 
-        // Create actual order by definition
-        foreach ($orderBy as $key => $value) {
-            is_string($key) ? $output[$key] = $value : $output[$value] = 'ASC';
-        }
+        /**
+         * Lambda function to process user input for 'order' parameter and convert it to proper array that
+         * Doctrine repository find method can use.
+         *
+         * @param   string          $value
+         * @param   integer|string  $key
+         */
+        $iterator = function(&$value, $key) use (&$output) {
+            $order = 'ASC';
+
+            if (is_string($key)) {
+                $column = $key;
+                $order = in_array(strtoupper($value), ['ASC', 'DESC']) ? strtoupper($value) : $order;
+            } else {
+                $column = $value;
+            }
+
+            if ($column[0] === '-') {
+                $column = substr($column, 1);
+                $order = 'DESC';
+            }
+
+            $output[$column] = $order;
+        };
+
+        // Process user input
+        array_walk($userInput, $iterator);
 
         return count($output) > 0 ? $output : null;
     }
