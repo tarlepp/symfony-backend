@@ -226,6 +226,31 @@ abstract class Rest extends Base implements Interfaces\Rest
     }
 
     /**
+     * Generic count method to return entity count for specified criteria and search terms.
+     *
+     * @param   array       $criteria
+     * @param   array|null  $search
+     *
+     * @return  integer
+     */
+    public function count(array $criteria = [], array $search = null)
+    {
+        // Before callback method call
+        if (method_exists($this, 'beforeCount')) {
+            $this->beforeFindOneBy($criteria, $search);
+        }
+
+        $count = $this->getRepository()->count($criteria, $search);
+
+        // After callback method call
+        if (method_exists($this, 'afterCount')) {
+            $this->afterFindOneBy($criteria, $search, $count);
+        }
+
+        return $count;
+    }
+
+    /**
      * Generic method to create new item (entity) to specified database repository. Return value is created entity for
      * specified repository.
      *

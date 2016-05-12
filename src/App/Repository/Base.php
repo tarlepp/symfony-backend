@@ -52,6 +52,28 @@ abstract class Base extends EntityRepository
     }
 
     /**
+     * Generic count method to determine count of entities for specified criteria and search term(s).
+     *
+     * @param   array       $criteria
+     * @param   array|null  $search
+     *
+     * @return  integer
+     */
+    public function count(array $criteria = [], array $search = null)
+    {
+        // Create new query builder
+        $queryBuilder = $this->createQueryBuilder('entity');
+
+        // Process normal and search term criteria
+        $this->processCriteria($queryBuilder, $criteria);
+        is_null($search) ?: $this->processSearchTerms($queryBuilder, $search);
+
+        $queryBuilder->select('COUNT(entity.id)');
+
+        return (int)$queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
+    /**
      * Generic replacement for basic 'findBy' method if/when you want to use generic LIKE search.
      *
      * @param   array           $search

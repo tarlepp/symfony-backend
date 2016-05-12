@@ -29,8 +29,6 @@ use FOS\RestBundle\Controller\FOSRestController;
  *
  * This abstract class contains basic REST functionality that you can use on your own controllers.
  *
- * @todo Implement GET /count
- *
  * @category    Controller
  * @package     App\Controller
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
@@ -115,6 +113,32 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     {
         // Fetch data from database
         $data = $this->getService()->findOne($id, true);
+
+        return $this->createResponse($request, $data);
+    }
+
+    /**
+     * Generic 'count' method for REST endpoints.
+     *
+     * @Route("/count")
+     *
+     * @Method({"GET"})
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @param   Request     $request
+     *
+     * @return  Response
+     */
+    public function count(Request $request)
+    {
+        // Determine used parameters
+        $criteria   = $this->getCriteria($request);
+        $search     = $this->getSearchTerms($request);
+
+        $data = [
+            'count' => $this->getService()->count($criteria, $search),
+        ];
 
         return $this->createResponse($request, $data);
     }
