@@ -98,6 +98,7 @@ With this you won't need to write those migration files by yourself, just let do
 
 ## Useful resources + tips
 * [Symfony Development using PhpStorm](http://blog.jetbrains.com/phpstorm/2014/08/symfony-development-using-phpstorm/) - Guide to configure your PhpStorm for Symfony development
+* [PHP Annotations plugin for PhpStorm](https://plugins.jetbrains.com/plugin/7320)
 * Use 1.1-dev version of composer, so that you can use ```php composer.phar outdated``` command to check package versions
 
 ## Contributing & issues & questions
