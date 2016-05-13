@@ -7,7 +7,7 @@
 namespace App\Controller;
 
 // Sensio components
-use /** @noinspection PhpUnusedAliasInspection */ Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 // Symfony components
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

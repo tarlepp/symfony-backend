@@ -10,13 +10,8 @@ namespace App\Controller;
 use App\Services\Book;
 
 // Sensio components
-use /** @noinspection PhpUnusedAliasInspection */ Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use /** @noinspection PhpUnusedAliasInspection */ Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use /** @noinspection PhpUnusedAliasInspection */ Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-
-// Symfony components
-use /** @noinspection PhpUnusedAliasInspection */ Symfony\Component\HttpFoundation\Response;
-use /** @noinspection PhpUnusedAliasInspection */ Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Class AuthorController
