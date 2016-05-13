@@ -7,7 +7,7 @@
 namespace App\Controller;
 
 // Application components
-use App\Entity\Interfaces\Base as EntityInterface;
+use App\Entity\Interfaces\EntityInterface;
 use App\Services\Rest as RestService;
 use App\Util\JSON;
 

@@ -8,7 +8,7 @@ namespace App\Services;
 
 // Application components
 use App\Entity\Base as Entity;
-use App\Entity\Interfaces\Base as EntityInterface;
+use App\Entity\Interfaces\EntityInterface as EntityInterface;
 use App\Repository\Base as AppEntityRepository;
 
 // Doctrine components
@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @package     App\Services
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-abstract class Rest extends Base implements Interfaces\Rest
+abstract class Rest implements Interfaces\Rest
 {
     /**
      * REST service entity repository.

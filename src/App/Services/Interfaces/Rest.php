@@ -7,8 +7,7 @@
 namespace App\Services\Interfaces;
 
 // Application components
-use App\Entity\Base as Entity;
-use App\Entity\Interfaces\Base as EntityInterface;
+use App\Entity\Interfaces\EntityInterface as Entity;
 use App\Repository\Base as AppEntityRepository;
 
 // Doctrine components
@@ -128,12 +127,12 @@ interface Rest
      *
      * @throws  ValidatorException
      *
-     * @param   EntityInterface $entity
-     * @param   boolean         $skipValidation
+     * @param   Entity  $entity
+     * @param   boolean $skipValidation
      *
      * @return  Entity
      */
-    public function save(EntityInterface $entity, $skipValidation = false);
+    public function save(Entity $entity, $skipValidation = false);
 
     /**
      * Generic method to update specified entity with new data.
@@ -235,48 +234,48 @@ interface Rest
     /**
      * Before lifecycle method for save method.
      *
-     * @param   EntityInterface $entity
+     * @param   Entity  $entity
      */
-    public function beforeSave(EntityInterface $entity);
+    public function beforeSave(Entity $entity);
 
     /**
      * After lifecycle method for save method.
      *
-     * @param   EntityInterface $entity
+     * @param   Entity  $entity
      */
-    public function afterSave(EntityInterface $entity);
+    public function afterSave(Entity $entity);
 
     /**
      * Before lifecycle method for update method.
      *
-     * @param   integer         $id
-     * @param   \stdClass       $data
-     * @param   EntityInterface $entity
+     * @param   integer     $id
+     * @param   \stdClass   $data
+     * @param   Entity      $entity
      */
-    public function beforeUpdate(&$id, \stdClass $data, EntityInterface $entity);
+    public function beforeUpdate(&$id, \stdClass $data, Entity $entity);
 
     /**
      * After lifecycle method for update method.
      *
-     * @param   integer         $id
-     * @param   \stdClass       $data
-     * @param   EntityInterface $entity
+     * @param   integer     $id
+     * @param   \stdClass   $data
+     * @param   Entity      $entity
      */
-    public function afterUpdate(&$id, \stdClass $data, EntityInterface $entity);
+    public function afterUpdate(&$id, \stdClass $data, Entity $entity);
 
     /**
      * Before lifecycle method for delete method.
      *
-     * @param   integer         $id
-     * @param   EntityInterface $entity
+     * @param   integer $id
+     * @param   Entity  $entity
      */
-    public function beforeDelete(&$id, EntityInterface $entity);
+    public function beforeDelete(&$id, Entity $entity);
 
     /**
      * After lifecycle method for delete method.
      *
-     * @param   integer         $id
-     * @param   EntityInterface $entity
+     * @param   integer $id
+     * @param   Entity  $entity
      */
-    public function afterDelete(&$id, EntityInterface $entity);
+    public function afterDelete(&$id, Entity $entity);
 }

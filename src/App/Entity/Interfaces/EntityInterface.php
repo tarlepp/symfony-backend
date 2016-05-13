@@ -1,24 +1,18 @@
 <?php
 /**
- * /src/App/Entity/Interfaces/Base.php
+ * /src/App/Entity/Interfaces/EntityInterface.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 namespace App\Entity\Interfaces;
 
 /**
- * Interface Base
+ * Interface Entity
  *
  * @category    Interface
  * @package     App\Entity\Interfaces
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-interface Base
+interface EntityInterface
 {
-    /**
-     * Returns a string representation of entity.
-     *
-     * @return  string
-     */
-    public function __toString();
 }

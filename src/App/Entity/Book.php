@@ -8,6 +8,7 @@ namespace App\Entity;
 
 // Application components
 use App\Doctrine\Behaviours as ORMBehaviors;
+use App\Entity\Interfaces\EntityInterface;
 
 // Doctrine components
 use Doctrine\ORM\Mapping as ORM;
@@ -35,7 +36,7 @@ use JMS\Serializer\Annotation as JMS;
  * @package     App\Entity
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class Book extends Base
+class Book implements EntityInterface
 {
     // Traits
     use ORMBehaviors\Blameable;

@@ -8,6 +8,7 @@ namespace App\Entity;
 
 // Application components
 use App\Doctrine\Behaviours as ORMBehaviors;
+use App\Entity\Interfaces\EntityInterface;
 
 // Symfony components
 use Symfony\Component\Security\Core\Role\RoleInterface;
@@ -45,7 +46,7 @@ use JMS\Serializer\Annotation as JMS;
  * @package     App\Entity
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class UserGroup extends Base implements RoleInterface
+class UserGroup implements EntityInterface, RoleInterface
 {
     // Traits
     use ORMBehaviors\Blameable;

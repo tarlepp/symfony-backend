@@ -8,6 +8,7 @@ namespace App\Entity;
 
 // Application components
 use App\Doctrine\Behaviours as ORMBehaviors;
+use App\Entity\Interfaces\EntityInterface;
 
 // Doctrine components
 use Doctrine\Common\Collections\ArrayCollection;
@@ -47,7 +48,7 @@ use JMS\Serializer\Annotation as JMS;
  * @package     App\Entity
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class User extends Base implements UserInterface, \Serializable
+class User implements EntityInterface, UserInterface, \Serializable
 {
     // Traits
     use ORMBehaviors\Blameable;
