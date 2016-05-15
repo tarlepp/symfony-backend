@@ -107,7 +107,7 @@ abstract class Base extends EntityRepository
     }
 
     /**
-     * TODO
+     * TODO convert findBy $criteria array to correct format !
      *
      * @param   QueryBuilder    $queryBuilder
      * @param   array           $criteria
@@ -116,19 +116,19 @@ abstract class Base extends EntityRepository
      */
     protected function processCriteria(QueryBuilder $queryBuilder, array $criteria)
     {
-        // TODO convert findBy $criteria array to correct format !
         //$queryBuilder->where($this->getExpression($queryBuilder, $queryBuilder->expr()->andX(), $criteria));
     }
 
     /**
-     * TODO
+     * Helper method to process given search terms and create criteria about those. Note that each repository
+     * has 'searchColumns' property which contains the fields where search term will be affected.
      *
-     * @param   QueryBuilder    $queryBuilder
-     * @param   array           $search
+     * @param   QueryBuilder $queryBuilder
+     * @param   array        $searchTerms
      *
      * @return  void
      */
-    protected function processSearchTerms(QueryBuilder $queryBuilder, array $search)
+    protected function processSearchTerms(QueryBuilder $queryBuilder, array $searchTerms)
     {
         $columns = $this->searchColumns;
 
@@ -143,18 +143,16 @@ abstract class Base extends EntityRepository
          *
          * @return  array
          */
-        $iterator = function ($term) use ($columns) {
-            $output = [];
+        $iteratorTerm = function($term) use ($columns) {
+            $iteratorColumn = function($column) use ($term) {
+                return ['entity.' . $column, 'LIKE', '%' . $term . '%'];
+            };
 
-            foreach ($columns as $column) {
-                $output[] = ['entity.' . $column, 'like', '%' . $term . '%'];
-            }
-
-            return $output;
+            return array_map($iteratorColumn, $columns);
         };
 
         // Create search criteria for each search term
-        $searchCriteria = array_map($iterator, $search);
+        $searchCriteria = array_map($iteratorTerm, $searchTerms);
 
         if (count($searchCriteria)) {
             // Create used criteria array
