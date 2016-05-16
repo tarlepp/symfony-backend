@@ -387,6 +387,18 @@ class User implements EntityInterface, UserInterface, \Serializable
     }
 
     /**
+     * Setter for userGroups.
+     *
+     * @param   UserGroup   $userGroup
+     *
+     * @return  User
+     */
+    public function setUserGroups(UserGroup $userGroup)
+    {
+        return $this->addUserGroup($userGroup);
+    }
+
+    /**
      * String representation of object
      *
      * @link    http://php.net/manual/en/serializable.serialize.php
