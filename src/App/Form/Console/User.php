@@ -7,11 +7,12 @@
 namespace App\Form\Console;
 
 // Symfony components
+use App\Entity\UserGroup;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
  * Class User
@@ -72,11 +73,10 @@ class User extends AbstractType
                 'userGroups',
                 EntityType::class,
                 [
-                    'label'     => 'User group(s)',
-                    'required'  => true,
-                    'class'     => 'App\Entity\UserGroup',
-                    'multiple'  => true,
-                    'choice_label' => function(/** @var \App\Entity\UserGroup $group */$group) {
+                    'label'         => 'User group(s)',
+                    'class'         => 'App\Entity\UserGroup',
+                    'multiple'      => true,
+                    'choice_label'  => function(UserGroup $group) {
                         return $group->getName() . ' [' . $group->getRole() . ']';
                     },
                 ]
