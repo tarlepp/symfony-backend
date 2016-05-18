@@ -59,7 +59,16 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @var integer
      *
-     * @JMS\Groups({"Default", "User", "CreatedBy", "UpdatedBy", "UserId"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "User",
+     *      "CreatedBy",
+     *      "UpdatedBy",
+     *      "User.id",
+     *      "User.createdBy",
+     *      "User.updatedBy",
+     *      "UserGroup.users"
+     *  })
      *
      * @ORM\Column(
      *      name="id",
@@ -76,7 +85,11 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @var string
      *
-     * @JMS\Groups({"Default", "User"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "User",
+     *      "User.username"
+     *  })
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -96,7 +109,11 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @var string
      *
-     * @JMS\Groups({"Default", "User"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "User",
+     *      "User.firstname"
+     *  })
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -116,7 +133,11 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @var string
      *
-     * @JMS\Groups({"Default", "User"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "User",
+     *      "User.surname"
+     *  })
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -136,7 +157,11 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @var string
      *
-     * @JMS\Groups({"Default", "User"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "User",
+     *      "User.email"
+     *  })
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -179,7 +204,11 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @var ArrayCollection
      *
-     * @JMS\Groups({"UserGroup", "UserGroupId"})
+     * @JMS\Groups({
+     *      "UserGroup",
+     *      "UserGroupId",
+     *      "User.userGroups"
+     *  })
      *
      * @ORM\ManyToMany(
      *     targetEntity="UserGroup",
