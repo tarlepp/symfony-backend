@@ -447,8 +447,6 @@ class User implements EntityInterface, UserInterface, \Serializable
     /**
      * Method to get login data for JWT token.
      *
-     * Note that roles does not contain possible child role information!
-     *
      * @return array
      */
     public function getLoginData()
@@ -457,7 +455,6 @@ class User implements EntityInterface, UserInterface, \Serializable
             'firstname' => $this->getFirstname(),
             'surname'   => $this->getSurname(),
             'email'     => $this->getEmail(),
-            'roles'     => array_unique($this->getRoles()),
         ];
     }
 
