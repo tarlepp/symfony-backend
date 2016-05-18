@@ -35,7 +35,13 @@ trait Blameable
      *
      * @var null|\App\Entity\User
      *
-     * @JMS\Groups({"CreatedBy"})
+     * @JMS\Groups({
+     *      "CreatedBy",
+     *      "Author.createdBy",
+     *      "Book.createdBy",
+     *      "User.createdBy",
+     *      "UserGroup.createdBy",
+     *  })
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumns({
@@ -53,7 +59,13 @@ trait Blameable
      *
      * @var null|\App\Entity\User
      *
-     * @JMS\Groups({"UpdatedBy"})
+     * @JMS\Groups({
+     *      "UpdatedBy",
+     *      "Author.updatedBy",
+     *      "Book.updatedBy",
+     *      "User.updatedBy",
+     *      "UserGroup.updatedBy",
+     *  })
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumns({
@@ -73,7 +85,13 @@ trait Blameable
      *
      * @var null|\App\Entity\User
      *
-     * @JMS\Groups({"DeletedBy"})
+     * @JMS\Groups({
+     *      "DeletedBy",
+     *      "Author.deletedBy",
+     *      "Book.deletedBy",
+     *      "User.deletedBy",
+     *      "UserGroup.deletedBy",
+     *  })
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumns({
