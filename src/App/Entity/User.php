@@ -196,6 +196,8 @@ class User implements EntityInterface, UserInterface, \Serializable
      * Plain password. Used for model validation. Must not be persisted.
      *
      * @var  string
+     *
+     * @JMS\Exclude
      */
     private $plainPassword;
 
