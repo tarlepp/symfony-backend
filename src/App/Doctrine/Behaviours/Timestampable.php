@@ -35,7 +35,17 @@ trait Timestampable
      *
      * @var null|\DateTime
      *
-     * @JMS\Groups({"Default", "Author", "Book", "User"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "Author",
+     *      "Book",
+     *      "User",
+     *      "UserGroup",
+     *      "Author.createdAt",
+     *      "Book.createdAt",
+     *      "User.createdAt",
+     *      "UserGroup.createdAt",
+     *  })
      *
      * @ORM\Column(
      *      name="createdAt",
@@ -50,7 +60,17 @@ trait Timestampable
      *
      * @var null|\DateTime
      *
-     * @JMS\Groups({"Default", "Author", "Book", "User"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "Author",
+     *      "Book",
+     *      "User",
+     *      "UserGroup",
+     *      "Author.updatedAt",
+     *      "Book.updatedAt",
+     *      "User.updatedAt",
+     *      "UserGroup.updatedAt",
+     *  })
      *
      * @ORM\Column(
      *      name="updatedAt",
