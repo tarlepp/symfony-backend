@@ -255,6 +255,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
         // Specify used populate settings
         $populate = (array)$request->get('populate', []);
         $populateAll = array_key_exists('populateAll', $request->query->all());
+        $populateOnly = array_key_exists('populateOnly', $request->query->all());
 
         // Get current entity name
         $entityName = $this->getService()->getRepository()->getEntityName();
@@ -273,7 +274,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
 
         // Create context and set used groups
         $context = new Context();
-        $context->addGroups(array_merge([$defaultGroup], $populate));
+        $context->addGroups($populateOnly ? $populate : array_merge([$defaultGroup], $populate));
         $context->setSerializeNull(true);
 
         return $context;
