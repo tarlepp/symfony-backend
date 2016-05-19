@@ -62,11 +62,10 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @JMS\Groups({
      *      "Default",
      *      "User",
-     *      "CreatedBy",
-     *      "UpdatedBy",
+     *      "Users",
+     *      "UserGroups",
      *      "User.id",
-     *      "User.createdBy",
-     *      "User.updatedBy",
+     *      "User.userGroups",
      *      "UserGroup.users"
      *  })
      *
@@ -88,7 +87,8 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @JMS\Groups({
      *      "Default",
      *      "User",
-     *      "User.username"
+     *      "Users",
+     *      "User.username",
      *  })
      *
      * @Assert\NotBlank()
@@ -112,7 +112,8 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @JMS\Groups({
      *      "Default",
      *      "User",
-     *      "User.firstname"
+     *      "Users",
+     *      "User.firstname",
      *  })
      *
      * @Assert\NotBlank()
@@ -136,7 +137,8 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @JMS\Groups({
      *      "Default",
      *      "User",
-     *      "User.surname"
+     *      "Users",
+     *      "User.surname",
      *  })
      *
      * @Assert\NotBlank()
@@ -160,7 +162,8 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @JMS\Groups({
      *      "Default",
      *      "User",
-     *      "User.email"
+     *      "Users",
+     *      "User.email",
      *  })
      *
      * @Assert\NotBlank()
@@ -207,9 +210,8 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @var ArrayCollection
      *
      * @JMS\Groups({
-     *      "UserGroup",
-     *      "UserGroupId",
-     *      "User.userGroups"
+     *      "UserGroups",
+     *      "User.userGroups",
      *  })
      *
      * @ORM\ManyToMany(
