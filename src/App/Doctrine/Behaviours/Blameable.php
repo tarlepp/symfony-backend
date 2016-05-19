@@ -85,6 +85,7 @@ trait Blameable
      *
      * @var null|\App\Entity\User
      *
+     * @JMS\Exclude()
      * @JMS\Groups({
      *      "DeletedBy",
      *      "Author.deletedBy",
