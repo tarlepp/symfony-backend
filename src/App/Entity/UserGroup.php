@@ -57,7 +57,13 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @var integer
      *
-     * @JMS\Groups({"Default", "UserGroup", "UserGroupId"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "UserGroup",
+     *      "UserGroups",
+     *      "User.userGroups",
+     *      "UserGroup.id",
+     *  })
      *
      * @ORM\Column(
      *      name="id",
@@ -73,7 +79,12 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @var string
      *
-     * @JMS\Groups({"Default", "UserGroup"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "UserGroup",
+     *      "UserGroups",
+     *      "UserGroup.name",
+     *  })
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -93,7 +104,12 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @var string
      *
-     * @JMS\Groups({"Default", "UserGroup"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "UserGroup",
+     *      "UserGroups",
+     *      "UserGroup.role",
+     *  })
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -114,7 +130,10 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @var ArrayCollection
      *
-     * @JMS\Groups({"Users", "UserId"})
+     * @JMS\Groups({
+     *      "Users",
+     *      "UserGroup.users",
+     *  })
      *
      * @ORM\ManyToMany(
      *      targetEntity="User",
@@ -131,6 +150,19 @@ class UserGroup implements EntityInterface, RoleInterface
     public function __construct()
     {
         $this->users = new ArrayCollection();
+    }
+
+    /**
+     * Convert object to string, this is only needed to get console forms to work - seems like there isn't another
+     * way to make those work with many-to-many relations.
+     *
+     * @link    https://github.com/matthiasnoback/symfony-console-form/issues/17
+     *
+     * @return  string
+     */
+    public function __toString()
+    {
+        return (string)$this->getId();
     }
 
     /**
