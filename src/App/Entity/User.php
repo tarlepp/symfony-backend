@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints as AssertCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use \Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -384,13 +385,14 @@ class User implements EntityInterface, UserInterface, \Serializable
     /**
      * Setter for password.
      *
-     * @param   string  $password   Note that this must be encoded at this point!
+     * @param   PasswordEncoderInterface    $encoder
+     * @param   string                      $plainPassword
      *
      * @return  User
      */
-    public function setPassword($password)
+    public function setPassword(PasswordEncoderInterface $encoder, $plainPassword)
     {
-        $this->password = $password;
+        $this->password = $encoder->encodePassword($plainPassword, $this->getSalt());
 
         return $this;
     }
