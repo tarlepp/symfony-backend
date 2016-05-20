@@ -272,9 +272,15 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
             $populate = array_map('ucfirst', $associations);
         }
 
+        if ($populateOnly) {
+            $groups = count($populate) === 0 ? [$defaultGroup] : $populate;
+        } else {
+            $groups = array_merge([$defaultGroup], $populate);
+        }
+
         // Create context and set used groups
         $context = new Context();
-        $context->addGroups($populateOnly ? $populate : array_merge([$defaultGroup], $populate));
+        $context->addGroups($groups);
         $context->setSerializeNull(true);
 
         return $context;
