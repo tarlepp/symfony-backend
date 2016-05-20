@@ -6,12 +6,9 @@
  */
 namespace App\Doctrine\Behaviours;
 
-// Doctrine components
 use Doctrine\ORM\Mapping as ORM;
-
-// 3rd party components
-use Knp\DoctrineBehaviors\Model\Blameable\BlameableMethods;
 use JMS\Serializer\Annotation as JMS;
+use Knp\DoctrineBehaviors\Model\Blameable\BlameableMethods;
 
 /**
  * Blameable trait.

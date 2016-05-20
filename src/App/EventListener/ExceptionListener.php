@@ -6,11 +6,8 @@
  */
 namespace App\EventListener;
 
-// Doctrine components
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
-
-// Symfony components
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;

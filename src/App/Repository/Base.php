@@ -6,14 +6,11 @@
  */
 namespace App\Repository;
 
-// Application entities
 use App\Entity;
-
-// Doctrine components
-use Doctrine\ORM\Query\Expr\Composite as CompositeExpression;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Composite as CompositeExpression;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Base doctrine repository class for entities.

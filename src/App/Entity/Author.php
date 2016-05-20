@@ -6,14 +6,9 @@
  */
 namespace App\Entity;
 
-// Application components
 use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
-
-// Doctrine components
 use Doctrine\ORM\Mapping as ORM;
-
-// 3rd party components
 use JMS\Serializer\Annotation as JMS;
 
 /**

@@ -6,10 +6,7 @@
  */
 namespace App\Controller;
 
-// Application components
 use App\Services\Book;
-
-// Sensio components
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 

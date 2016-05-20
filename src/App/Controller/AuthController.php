@@ -6,19 +6,12 @@
  */
 namespace App\Controller;
 
-// Application components
 use App\Entity\User;
-
-// Symfony components
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-
-// Sensio components
+use JMS\Serializer\SerializationContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-
-// 3rd party components
-use JMS\Serializer\SerializationContext;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class AuthController

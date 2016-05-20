@@ -6,10 +6,7 @@
  */
 namespace App\Form\Console;
 
-// Application components
 use App\Services\Helper\Roles;
-
-// Symfony components
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;

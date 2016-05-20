@@ -6,14 +6,9 @@
  */
 namespace App\Doctrine\Listener;
 
-// Application components
 use App\Entity\User;
-
-// Doctrine components
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-
-// Symfony components
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 

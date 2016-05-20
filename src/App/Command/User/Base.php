@@ -6,13 +6,10 @@
  */
 namespace App\Command\User;
 
-// Application components
 use App\Entity\User as EntityUser;
 use App\Entity\UserGroup as EntityUserGroup;
 use App\Services\User as ServiceUser;
 use App\Services\UserGroup as ServiceUserGroup;
-
-// Symfony components
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;

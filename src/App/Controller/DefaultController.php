@@ -6,10 +6,7 @@
  */
 namespace App\Controller;
 
-// Sensio components
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
-// Symfony components
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 

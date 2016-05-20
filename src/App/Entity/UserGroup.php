@@ -6,21 +6,14 @@
  */
 namespace App\Entity;
 
-// Application components
 use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
-
-// Symfony components
-use Symfony\Component\Security\Core\Role\RoleInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints as AssertCollection;
-
-// Doctrine components
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
-// 3rd party components
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints as AssertCollection;
+use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class UserGroup

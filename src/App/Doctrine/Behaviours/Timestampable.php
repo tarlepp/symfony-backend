@@ -6,12 +6,9 @@
  */
 namespace App\Doctrine\Behaviours;
 
-// Doctrine components
 use Doctrine\ORM\Mapping as ORM;
-
-// 3rd party components
-use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableMethods;
 use JMS\Serializer\Annotation as JMS;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableMethods;
 
 /**
  * Trait Timestampable

@@ -6,9 +6,8 @@
  */
 namespace App\Services;
 
-// Application components
-use App\Entity\UserGroup as Entity;
 use App\Entity\Interfaces\EntityInterface as EntityInterface;
+use App\Entity\UserGroup as Entity;
 use App\Repository\UserGroup as Repository;
 
 /**

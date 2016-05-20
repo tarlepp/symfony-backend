@@ -6,21 +6,14 @@
  */
 namespace App\Entity;
 
-// Application components
 use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
-
-// Doctrine components
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
-// Symfony components
+use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints as AssertCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints as AssertCollection;
-
-// 3rd party components
-use JMS\Serializer\Annotation as JMS;
 
 /**
  * Class User

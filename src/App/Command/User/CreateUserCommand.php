@@ -6,16 +6,11 @@
  */
 namespace App\Command\User;
 
-// Application components
 use App\Entity\User;
-
-// Symfony components
+use Matthias\SymfonyConsoleForm\Console\Helper\FormHelper;
 use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-// 3rd party components
-use Matthias\SymfonyConsoleForm\Console\Helper\FormHelper;
 
 /**
  * Class CreateCommand

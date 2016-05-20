@@ -6,7 +6,6 @@
  */
 namespace App\EventListener;
 
-// 3rd party components
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTDecodedEvent;
 
 /**

@@ -6,7 +6,6 @@
  */
 namespace App\Services;
 
-// Application components
 use App\Entity\Author as Entity;
 use App\Entity\Interfaces\EntityInterface as EntityInterface;
 use App\Repository\Author as Repository;

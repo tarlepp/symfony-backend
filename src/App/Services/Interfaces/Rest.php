@@ -6,15 +6,10 @@
  */
 namespace App\Services\Interfaces;
 
-// Application components
 use App\Entity\Interfaces\EntityInterface as Entity;
 use App\Repository\Base as AppEntityRepository;
-
-// Doctrine components
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-
-// Symfony components
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

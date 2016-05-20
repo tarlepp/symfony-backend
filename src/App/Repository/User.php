@@ -6,13 +6,8 @@
  */
 namespace App\Repository;
 
-// Application entities
 use App\Entity;
-
-// Doctrine components
 use Doctrine\ORM\NoResultException;
-
-// Symfony components
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;

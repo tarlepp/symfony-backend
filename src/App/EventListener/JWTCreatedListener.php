@@ -6,16 +6,11 @@
  */
 namespace App\EventListener;
 
-// Application components
 use App\Entity\User;
-
-// Symfony components
+use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Role\RoleInterface;
-
-// 3rd party components
-use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 
 /**
  * Class JWTCreatedListener

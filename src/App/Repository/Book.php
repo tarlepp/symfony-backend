@@ -6,7 +6,6 @@
  */
 namespace App\Repository;
 
-// Application entities
 use App\Entity;
 
 /**
