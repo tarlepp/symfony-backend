@@ -8,6 +8,7 @@ namespace App\Command\User;
 
 use App\Entity\User as EntityUser;
 use App\Entity\UserGroup as EntityUserGroup;
+use App\Form\Console\UserGroupData;
 use App\Services\User as ServiceUser;
 use App\Services\UserGroup as ServiceUserGroup;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -248,12 +249,17 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to store user group entity.
      *
-     * @param   EntityUserGroup $userGroup
+     * @param   UserGroupData   $userGroupData
      *
      * @return  EntityUserGroup
      */
-    protected function storeUserGroup(EntityUserGroup $userGroup)
+    protected function storeUserGroup(UserGroupData $userGroupData)
     {
+        // Create new UserGroup entity
+        $userGroup = new EntityUserGroup();
+        $userGroup->setName($userGroupData->name);
+        $userGroup->setRole($userGroupData->role);
+
         // Store user group to database
         return $this->serviceUserGroup->save($userGroup);
     }

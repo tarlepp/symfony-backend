@@ -6,7 +6,7 @@
  */
 namespace App\Command\User;
 
-use App\Entity\UserGroup;
+use App\Form\Console\UserGroupData;
 use Matthias\SymfonyConsoleForm\Console\Helper\FormHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,11 +57,11 @@ class CreateUserGroupCommand extends Base
         /** @var FormHelper $formHelper */
         $formHelper = $this->getHelper('form');
 
-        /** @var UserGroup $userGroup */
-        $userGroup = $formHelper->interactUsingForm('App\Form\Console\UserGroup', $this->input, $this->output);
+        /** @var UserGroupData $formData */
+        $formData = $formHelper->interactUsingForm('App\Form\Console\UserGroup', $this->input, $this->output);
 
-        // Store user
-        $this->storeUserGroup($userGroup);
+        // Store user group
+        $this->storeUserGroup($formData);
 
         // Uuh all done!
         $this->io->success('New user group created!');
