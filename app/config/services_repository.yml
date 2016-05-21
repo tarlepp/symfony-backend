@@ -6,18 +6,22 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory: [ '@doctrine.orm.entity_manager', getRepository ]
         arguments: [ App\Entity\Author ]
+        shared: false
 
     repository.book:
         class: Doctrine\ORM\EntityRepository
         factory: [ '@doctrine.orm.entity_manager', getRepository ]
         arguments: [ App\Entity\Book ]
+        shared: false
 
     repository.user:
         class: Doctrine\ORM\EntityRepository
         factory: [ '@doctrine.orm.entity_manager', getRepository ]
         arguments: [ App\Entity\User ]
+        shared: false
 
     repository.user_group:
         class: Doctrine\ORM\EntityRepository
         factory: [ '@doctrine.orm.entity_manager', getRepository ]
         arguments: [ App\Entity\UserGroup ]
+        shared: false
