@@ -8,3 +8,10 @@ services:
             - [ setHelperRoles, [ '@app.services.helper.roles' ] ]
         tags:
             - { name: form.type }
+
+    app.form.console.user:
+        class: App\Form\Console\User
+        calls:
+            - [ setUserGroupService, [ '@app.services.user_group' ] ]
+        tags:
+            - { name: form.type }

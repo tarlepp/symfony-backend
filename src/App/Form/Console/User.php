@@ -7,7 +7,7 @@
 namespace App\Form\Console;
 
 use App\Entity\UserGroup;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Services\UserGroup as UserGroupService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,6 +22,51 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class User extends AbstractType
 {
+    /**
+     * @var UserGroupService
+     */
+    protected $userGroupService;
+
+    /**
+     * Setter for user group service.
+     *
+     * @param   UserGroupService    $userGroupService
+     *
+     * @return  void
+     */
+    public function setUserGroupService(UserGroupService $userGroupService)
+    {
+        $this->userGroupService = $userGroupService;
+    }
+
+    /**
+     * Method to create choices array for user groups.
+     *
+     * @return  array
+     */
+    public function getUserGroupChoices()
+    {
+        // Initialize output
+        $choices = [];
+
+        /**
+         * Lambda function to iterate all user groups and to create necessary choices array.
+         *
+         * @param   UserGroup   $userGroup
+         *
+         * @return  void
+         */
+        $iterator = function(UserGroup $userGroup) use (&$choices) {
+            $name = $userGroup->getName() . ' [' . $userGroup->getRole() . ']';
+
+            $choices[$name] = $userGroup->getId();
+        };
+
+        array_map($iterator, $this->userGroupService->find());
+
+        return $choices;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -65,19 +110,14 @@ class User extends AbstractType
                 Type\PasswordType::class,
                 [
                     'label'     => 'Password',
-                    'required'  => true,
                 ]
             )
             ->add(
                 'userGroups',
-                EntityType::class,
+                Type\ChoiceType::class,
                 [
-                    'label'         => 'User group(s)',
-                    'class'         => 'App\Entity\UserGroup',
-                    'multiple'      => true,
-                    'choice_label'  => function(UserGroup $group) {
-                        return $group->getName() . ' [' . $group->getRole() . ']';
-                    },
+                    'choices'   => $this->getUserGroupChoices(),
+                    'multiple'  => true,
                 ]
             )
         ;
@@ -89,7 +129,7 @@ class User extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'App\Entity\User'
+            'data_class' => 'App\Form\Console\UserData',
         ]);
     }
 }

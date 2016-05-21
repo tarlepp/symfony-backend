@@ -6,8 +6,7 @@
  */
 namespace App\Command\User;
 
-use App\Entity\User;
-use Matthias\SymfonyConsoleForm\Console\Helper\FormHelper;
+use App\Form\Console\UserData;
 use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -78,14 +77,11 @@ class CreateUserCommand extends Base
             );
         }
 
-        /** @var FormHelper $formHelper */
-        $formHelper = $this->getHelper('form');
-
-        /** @var User $user */
-        $user = $formHelper->interactUsingForm('App\Form\Console\User', $this->input, $this->output);
+        /** @var UserData $dto */
+        $dto = $this->getHelper('form')->interactUsingForm('App\Form\Console\User', $this->input, $this->output);
 
         // Store user
-        $this->storeUser($user, true);
+        $this->storeUser($dto);
 
         // Uuh all done!
         $this->io->success('New user created!');

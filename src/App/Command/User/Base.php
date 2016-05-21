@@ -9,6 +9,7 @@ namespace App\Command\User;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\User as EntityUser;
 use App\Entity\UserGroup as EntityUserGroup;
+use App\Form\Console\UserData;
 use App\Form\Console\UserGroupData;
 use App\Services\User as ServiceUser;
 use App\Services\UserGroup as ServiceUserGroup;
@@ -283,15 +284,28 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to store user entity.
      *
-     * @param   EntityUser  $user
-     * @param   boolean     $skipValidation
+     * @param   UserData    $userData
+     * @param   EntityUser $user
      *
-     * @return  EntityUser
+     * @return EntityUser
      */
-    protected function storeUser(EntityUser $user, $skipValidation = false)
+    protected function storeUser(UserData $userData, EntityUser $user = null)
     {
+        // Create new UserGroup entity OR use provided one
+        $user = $user ?: new EntityUser();
+        $user->setUsername($userData->username);
+        $user->setFirstname($userData->firstname);
+        $user->setSurname($userData->surname);
+        $user->setEmail($userData->email);
+        $user->setPlainPassword($userData->plainPassword);
+
+        // Iterate user groups and attach those to current user
+        foreach($userData->userGroups as $groupId) {
+            $user->addUserGroup($this->serviceUserGroup->getReference($groupId));
+        }
+
         // Store user to database
-        return $this->serviceUser->save($user, $skipValidation);
+        return $this->serviceUser->save($user);
     }
 
     /**
