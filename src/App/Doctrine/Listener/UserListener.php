@@ -104,8 +104,15 @@ class UserListener
 
         // Yeah, we have new plain password set, so we need to encode it
         if (!empty($plainPassword)) {
+            $encoder = $this->getEncoder($user);
+
+            // Password hash callback
+            $callback = function($plainPassword) use ($encoder, $user) {
+                return $encoder->encodePassword($plainPassword, $user->getSalt());
+            };
+
             // Set new password and encode it with user encoder
-            $user->setPassword($this->getEncoder($user), $plainPassword);
+            $user->setPassword($callback, $plainPassword);
 
             // And clean up plain password from entity
             $user->eraseCredentials();

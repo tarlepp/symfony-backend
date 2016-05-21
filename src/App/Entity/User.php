@@ -385,14 +385,14 @@ class User implements EntityInterface, UserInterface, \Serializable
     /**
      * Setter for password.
      *
-     * @param   PasswordEncoderInterface    $encoder
-     * @param   string                      $plainPassword
+     * @param   callable    $encoder
+     * @param   string      $plainPassword
      *
      * @return  User
      */
-    public function setPassword(PasswordEncoderInterface $encoder, $plainPassword)
+    public function setPassword(callable $encoder, $plainPassword)
     {
-        $this->password = $encoder->encodePassword($plainPassword, $this->getSalt());
+        $this->password = $encoder($plainPassword);
 
         return $this;
     }
