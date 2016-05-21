@@ -54,11 +54,12 @@ class CreateUserGroupCommand extends Base
         // Initialize common console command
         parent::execute($input, $output);
 
-        /** @var FormHelper $formHelper */
-        $formHelper = $this->getHelper('form');
-
         /** @var UserGroupData $formData */
-        $formData = $formHelper->interactUsingForm('App\Form\Console\UserGroup', $this->input, $this->output);
+        $formData = $this->getHelper('form')->interactUsingForm(
+            'App\Form\Console\UserGroup',
+            $this->input,
+            $this->output
+        );
 
         // Store user group
         $this->storeUserGroup($formData);
