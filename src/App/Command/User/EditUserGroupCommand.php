@@ -1,6 +1,6 @@
 <?php
 /**
- * /src/App/Command/User/CreateCommand.php
+ * /src/App/Command/User/EditUserGroupCommand.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
