@@ -41,15 +41,23 @@ class Author implements EntityInterface
      *
      * @var integer
      *
-     * @JMS\Groups({"Default", "Author", "AuthorId"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "Author",
+     *      "Author.id",
+     *      "Author.books",
+     *      "Book.author",
+     *  })
      *
      * @ORM\Column(
      *      name="id",
      *      type="integer",
-     *      nullable=false
+     *      nullable=false,
      *  )
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
+     * @ORM\GeneratedValue(
+     *      strategy="IDENTITY",
+     *  )
      */
     private $id;
 
@@ -58,13 +66,17 @@ class Author implements EntityInterface
      *
      * @var string
      *
-     * @JMS\Groups({"Default", "Author"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "Author",
+     *      "Author.name",
+     *  })
      *
      * @ORM\Column(
      *      name="name",
      *      type="string",
      *      length=255,
-     *      nullable=false
+     *      nullable=false,
      *  )
      */
     private $name;
@@ -74,12 +86,16 @@ class Author implements EntityInterface
      *
      * @var string
      *
-     * @JMS\Groups({"Default", "Author"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "Author",
+     *      "Author.description",
+     *  })
      *
      * @ORM\Column(
      *      name="description",
      *      type="text",
-     *      nullable=false
+     *      nullable=false,
      *  )
      */
     private $description;
@@ -89,11 +105,14 @@ class Author implements EntityInterface
      *
      * @var \App\Entity\Book[]
      *
-     * @JMS\Groups({"Books"})
+     * @JMS\Groups({
+     *      "Books",
+     *      "Author.books",
+     *  })
      *
      * @ORM\OneToMany(
      *      targetEntity="App\Entity\Book",
-     *      mappedBy="author"
+     *      mappedBy="author",
      *  )
      */
     private $books;

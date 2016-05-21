@@ -40,28 +40,45 @@ class Book implements EntityInterface
     /**
      * @var integer
      *
-     * @JMS\Groups({"Default", "Books", "Book", "BookId"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "Book",
+     *      "Books",
+     *      "Book.author",
+     *      "Author.books",
+     *  })
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Column(
+     *      name="id",
+     *      type="integer",
+     *      nullable=false,
+     *  )
+     * @ORM\Id()
+     * @ORM\GeneratedValue(
+     *      strategy="IDENTITY",
+     *  )
      */
     private $id;
 
     /**
      * @var \App\Entity\Author
      *
-     * @JMS\Groups({"Author", "AuthorId"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "Book",
+     *      "Books",
+     *      "Book.author",
+     *  })
      *
      * @ORM\ManyToOne(
      *      targetEntity="App\Entity\Author",
-     *      inversedBy="books"
+     *      inversedBy="books",
      *  )
      * @ORM\JoinColumns({
      *      @ORM\JoinColumn(
      *          name="author",
-     *          referencedColumnName="id"
-     *      )
+     *          referencedColumnName="id",
+     *      ),
      *  })
      */
     private $author;
@@ -69,27 +86,55 @@ class Book implements EntityInterface
     /**
      * @var string
      *
-     * @JMS\Groups({"Default", "Book"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "Book",
+     *      "Books",
+     *      "Book.title",
+     *  })
      *
-     * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     * @ORM\Column(
+     *      name="title",
+     *      type="string",
+     *      length=255,
+     *      nullable=false,
+     *  )
      */
     private $title;
 
     /**
      * @var string
      *
-     * @JMS\Groups({"Default", "Book"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "Book",
+     *      "Books",
+     *      "Book.description",
+     *  })
      *
-     * @ORM\Column(name="description", type="text", nullable=false)
+     * @ORM\Column(
+     *      name="description",
+     *      type="text",
+     *      nullable=false,
+     *  )
      */
     private $description;
 
     /**
      * @var \DateTime
      *
-     * @JMS\Groups({"Default", "Book"})
+     * @JMS\Groups({
+     *      "Default",
+     *      "Book",
+     *      "Books",
+     *      "Book.releaseDate",
+     *  })
      *
-     * @ORM\Column(name="releaseDate", type="date", nullable=false)
+     * @ORM\Column(
+     *      name="releaseDate",
+     *      type="date",
+     *      nullable=false,
+     *  )
      */
     private $releaseDate;
 
