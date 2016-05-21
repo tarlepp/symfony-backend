@@ -89,10 +89,11 @@ interface Rest
      * repository.
      *
      * @param   integer $id
+     * @param   boolean $throwExceptionIfNotFound
      *
      * @return  null|Entity
      */
-    public function findOne($id);
+    public function findOne($id, $throwExceptionIfNotFound = false);
 
     /**
      * Generic findOneBy method to return single item from database by given criteria. Return value is single entity
