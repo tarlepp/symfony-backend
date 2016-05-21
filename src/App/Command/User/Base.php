@@ -6,6 +6,7 @@
  */
 namespace App\Command\User;
 
+use App\Entity\Interfaces\EntityInterface;
 use App\Entity\User as EntityUser;
 use App\Entity\UserGroup as EntityUserGroup;
 use App\Form\Console\UserGroupData;
@@ -18,6 +19,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
@@ -167,6 +169,59 @@ abstract class Base extends ContainerAwareCommand
     }
 
     /**
+     * Helper method to get user group object. This method will print a table which contains all user groups and
+     * information about each of those. Then user must "select" one of these user groups by group ID.
+     *
+     * @param   bool    $showInformation
+     *
+     * @return  EntityUserGroup
+     */
+    protected function getUserGroup($showInformation = false)
+    {
+        $userGroup = null;
+
+        /**
+         * Lambda function to format UserGroup data for io table.
+         *
+         * @param   EntityUserGroup $userGroup
+         *
+         * @return  array
+         */
+        $iterator = function(EntityUserGroup $userGroup) {
+            return [
+                $userGroup->getId(),
+                $userGroup->getName(),
+                $userGroup->getRole(),
+            ];
+        };
+
+        // Specify used table header values
+        $headers = ['ID', 'Name', 'Role'];
+
+        // And do while user has "selected" one valid user group
+        while (null === $userGroup) {
+            // Print console table
+            $this->io->table($headers, array_map($iterator, $this->serviceUserGroup->find()));
+
+            $question = new Question('User group ID: ', $this->input->getOption('id'));
+            $userGroupId = $this->io->askQuestion($question);
+
+            try {
+                $userGroup = $this->serviceUserGroup->findOne($userGroupId, true);
+            } catch (HttpException $error) {
+                $this->io->warning($error->getMessage());
+            }
+        }
+
+        if ($showInformation) {
+            $this->io->writeln('Following user group found');
+            $this->printUserGroupInformation($userGroup);
+        }
+
+        return $userGroup;
+    }
+
+    /**
      * Helper method to encode password for provided user object.
      *
      * @param   EntityUser  $user
@@ -203,33 +258,26 @@ abstract class Base extends ContainerAwareCommand
             'roles',
         ];
 
-        /**
-         * Lambda iterator function to return console table row data for given attribute.
-         *
-         * @param   string  $attribute
-         *
-         * @return  array
-         */
-        $iterator = function($attribute) use ($user) {
-            $method = sprintf(
-                'get%s',
-                $attribute
-            );
+        $this->printGenericInformation($user, $attributes);
+    }
 
-            $value = call_user_func([$user, $method]);
+    /**
+     * Helper method to print user information to console.
+     *
+     * @param   EntityUserGroup $userGroup
+     *
+     * @return  void
+     */
+    protected function printUserGroupInformation(EntityUserGroup $userGroup)
+    {
+        // Attributes to print out
+        $attributes = [
+            'id',
+            'name',
+            'role',
+        ];
 
-            return [
-                $attribute,
-                is_array($value) ? implode(', ', $value) : $value,
-            ];
-        };
-
-        // Specify headers and rows
-        $headers = ['Attribute', 'Value'];
-        $rows = array_map($iterator, $attributes);
-
-        // Print console table
-        $this->io->table($headers, $rows);
+        $this->printGenericInformation($userGroup, $attributes);
     }
 
     /**
@@ -247,20 +295,58 @@ abstract class Base extends ContainerAwareCommand
     }
 
     /**
-     * Helper method to store user group entity.
+     * Helper method to store user group entity. Note that this uses DTO pattern.
      *
      * @param   UserGroupData   $userGroupData
+     * @param   EntityUserGroup $userGroup
      *
      * @return  EntityUserGroup
      */
-    protected function storeUserGroup(UserGroupData $userGroupData)
+    protected function storeUserGroup(UserGroupData $userGroupData, EntityUserGroup $userGroup = null)
     {
-        // Create new UserGroup entity
-        $userGroup = new EntityUserGroup();
+        // Create new UserGroup entity OR use provided one
+        $userGroup = $userGroup ?: new EntityUserGroup();
         $userGroup->setName($userGroupData->name);
         $userGroup->setRole($userGroupData->role);
 
         // Store user group to database
         return $this->serviceUserGroup->save($userGroup);
+    }
+
+    /**
+     * Helper method to print generic information about given entity and attributes.
+     *
+     * @param   EntityInterface $entity
+     * @param   array           $attributes
+     */
+    private function printGenericInformation(EntityInterface $entity, array $attributes)
+    {
+        /**
+         * Lambda iterator function to return console table row data for given attribute.
+         *
+         * @param   string $attribute
+         *
+         * @return  array
+         */
+        $iterator = function($attribute) use ($entity) {
+            $method = sprintf(
+                'get%s',
+                $attribute
+            );
+
+            $value = call_user_func([$entity, $method]);
+
+            return [
+                $attribute,
+                is_array($value) ? implode(', ', $value) : $value,
+            ];
+        };
+
+        // Specify headers and rows
+        $headers = ['Attribute', 'Value'];
+        $rows = array_map($iterator, $attributes);
+
+        // Print console table
+        $this->io->table($headers, $rows);
     }
 }
