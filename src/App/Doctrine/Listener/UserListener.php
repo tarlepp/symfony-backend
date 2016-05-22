@@ -85,8 +85,6 @@ class UserListener
         // Valid user so lets change password
         if ($user instanceof User) {
             $this->changePassword($user);
-
-            $event->setNewValue('password', $user->getPassword());
         }
     }
 
