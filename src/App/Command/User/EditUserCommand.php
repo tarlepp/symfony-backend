@@ -67,26 +67,9 @@ class EditUserCommand extends Base
 
         /** @var User $user */
 
-        /**
-         * Lambda function to extract user group ID values from UserGroup entity
-         *
-         * @param   UserGroup   $userGroup
-         *
-         * @return  integer
-         */
-        $iterator = function(UserGroup $userGroup) {
-            return $userGroup->getId();
-        };
-
-        // Create new DTO with selected user data
-        $dto = new UserData();
-        $dto->username = $user->getUsername();
-        $dto->firstname = $user->getFirstname();
-        $dto->surname = $user->getSurname();
-        $dto->email = $user->getEmail();
-
-        // Note this won't work atm, see https://github.com/matthiasnoback/symfony-console-form/issues/16
-        //$dto->userGroups = array_map($iterator, $user->getUserGroups()->toArray());
+        $dto = $this->getUserDto($user);
+        // Note this is just a workaround, see https://github.com/matthiasnoback/symfony-console-form/issues/16
+        $dto->userGroups = null;
 
         /** @var UserData $dto */
         $dto = $this->getHelper('form')->interactUsingForm(
