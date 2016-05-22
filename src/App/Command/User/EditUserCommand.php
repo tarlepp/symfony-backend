@@ -7,7 +7,6 @@
 namespace App\Command\User;
 
 use App\Entity\User;
-use App\Entity\UserGroup;
 use App\Form\Console\UserData;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
