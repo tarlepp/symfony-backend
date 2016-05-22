@@ -53,8 +53,9 @@ security:
             lexik_jwt: ~
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_SUPER_ADMIN]
+        ROLE_USER:    [ROLE_LOGGED]
+        ROLE_ADMIN:   [ROLE_USER]
+        ROLE_ROOT:    [ROLE_ADMIN]
 
     access_control:
         - { path: ^/auth/refreshToken, roles: IS_AUTHENTICATED_ANONYMOUSLY }

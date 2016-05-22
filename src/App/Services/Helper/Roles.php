@@ -17,9 +17,10 @@ namespace App\Services\Helper;
  */
 class Roles
 {
-    const ROLE_USER         = 'ROLE_USER';
-    const ROLE_ADMIN        = 'ROLE_ADMIN';
-    const ROLE_SUPER_ADMIN  = 'ROLE_SUPER_ADMIN';
+    const ROLE_LOGGED   = 'ROLE_LOGGED';
+    const ROLE_USER     = 'ROLE_USER';
+    const ROLE_ADMIN    = 'ROLE_ADMIN';
+    const ROLE_ROOT     = 'ROLE_ROOT';
 
     /**
      * Roles hierarchy.
@@ -68,17 +69,20 @@ class Roles
     public function getRoleLabel($role)
     {
         switch ($role) {
+            case self::ROLE_LOGGED:
+                $output = 'Logged in users';
+                break;
             case self::ROLE_USER:
                 $output = 'Normal users';
                 break;
             case self::ROLE_ADMIN:
                 $output = 'Admin users';
                 break;
-            case self::ROLE_SUPER_ADMIN:
+            case self::ROLE_ROOT:
                 $output = 'Root users';
                 break;
             default:
-                $output = 'Unknown';
+                $output = 'Unknown - ' . $role;
                 break;
         }
 
