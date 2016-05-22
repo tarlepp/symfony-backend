@@ -15,4 +15,10 @@ namespace App\Entity\Interfaces;
  */
 interface EntityInterface
 {
+    /**
+     * Simple method to get 'string' presentation about the current record.
+     *
+     * @return  string
+     */
+    public function getRecordTitle();
 }

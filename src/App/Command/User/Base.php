@@ -13,6 +13,7 @@ use App\Form\Console\UserData;
 use App\Form\Console\UserGroupData;
 use App\Services\User as ServiceUser;
 use App\Services\UserGroup as ServiceUserGroup;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -269,7 +270,7 @@ abstract class Base extends ContainerAwareCommand
             'firstname',
             'surname',
             'email',
-            'roles',
+            'userGroups',
         ];
 
         $this->printGenericInformation($user, $attributes);
@@ -365,7 +366,17 @@ abstract class Base extends ContainerAwareCommand
                 $attribute
             );
 
+            // Get attribute value
             $value = call_user_func([$entity, $method]);
+
+            // And we have many-to-many records so map those to get string presentation of each records
+            if ($value instanceof PersistentCollection) {
+                $iterator = function(EntityInterface $entity) {
+                    return $entity->getRecordTitle();
+                };
+
+                $value = array_map($iterator, $value->toArray());
+            }
 
             return [
                 $attribute,

@@ -173,6 +173,21 @@ class Book implements EntityInterface
     }
 
     /**
+     * Simple method to get 'string' presentation about the current record.
+     *
+     * @return  string
+     */
+    public function getRecordTitle()
+    {
+        $parts = [
+            $this->getId(),
+            $this->getTitle(),
+        ];
+
+        return implode(' - ', $parts);
+    }
+
+    /**
      * Set title
      *
      * @param string $title
