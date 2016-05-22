@@ -253,8 +253,8 @@ abstract class Base extends ContainerAwareCommand
         $attributes = [
             'id',
             'username',
-            'surname',
             'firstname',
+            'surname',
             'email',
             'roles',
         ];
@@ -285,11 +285,12 @@ abstract class Base extends ContainerAwareCommand
      * Helper method to store user entity.
      *
      * @param   UserData    $userData
-     * @param   EntityUser $user
+     * @param   EntityUser  $user
+     * @param   Boolean     $skipValidation
      *
-     * @return EntityUser
+     * @return  EntityUser
      */
-    protected function storeUser(UserData $userData, EntityUser $user = null)
+    protected function storeUser(UserData $userData, EntityUser $user = null, $skipValidation = false)
     {
         // Create new UserGroup entity OR use provided one
         $user = $user ?: new EntityUser();
@@ -299,13 +300,16 @@ abstract class Base extends ContainerAwareCommand
         $user->setEmail($userData->email);
         $user->setPlainPassword($userData->plainPassword);
 
+        // Clear current user groups, we just want to create those relations from scratch
+        $user->clearUserGroups();
+
         // Iterate user groups and attach those to current user
         foreach($userData->userGroups as $groupId) {
             $user->addUserGroup($this->serviceUserGroup->getReference($groupId));
         }
 
         // Store user to database
-        return $this->serviceUser->save($user);
+        return $this->serviceUser->save($user, $skipValidation);
     }
 
     /**
