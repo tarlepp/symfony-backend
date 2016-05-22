@@ -406,10 +406,12 @@ class User implements EntityInterface, UserInterface, \Serializable
      */
     public function setPlainPassword($plainPassword)
     {
-        $this->plainPassword = $plainPassword;
+        if (!empty($plainPassword)) {
+            $this->plainPassword = $plainPassword;
 
-        // Change some mapped values so preUpdate will get called.
-        $this->password = ''; // just blank it out
+            // Change some mapped values so preUpdate will get called.
+            $this->password = ''; // just blank it out
+        }
 
         return $this;
     }
@@ -527,6 +529,18 @@ class User implements EntityInterface, UserInterface, \Serializable
             $this->userGroups->removeElement($userGroup);
             $userGroup->removeUser($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * Method to remove all many-to-many user group relations from current user.
+     *
+     * @return  User
+     */
+    public function clearUserGroups()
+    {
+        $this->userGroups->clear();
 
         return $this;
     }
