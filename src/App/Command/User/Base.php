@@ -223,6 +223,37 @@ abstract class Base extends ContainerAwareCommand
     }
 
     /**
+     * Helper method to get DTO for user entity.
+     *
+     * @param   EntityUser  $user
+     *
+     * @return  UserData
+     */
+    protected function getUserDto(EntityUser $user)
+    {
+        /**
+         * Lambda function to extract user group ID values from UserGroup entity
+         *
+         * @param   EntityUserGroup $userGroup
+         *
+         * @return  integer
+         */
+        $iterator = function(EntityUserGroup $userGroup) {
+            return $userGroup->getId();
+        };
+
+        // Create DTO for user
+        $dto = new UserData();
+        $dto->username = $user->getUsername();
+        $dto->firstname = $user->getFirstname();
+        $dto->surname = $user->getSurname();
+        $dto->email = $user->getEmail();
+        $dto->userGroups = array_map($iterator, $user->getUserGroups()->toArray());
+
+        return $dto;
+    }
+
+    /**
      * Helper method to encode password for provided user object.
      *
      * @param   EntityUser  $user

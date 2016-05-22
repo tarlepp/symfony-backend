@@ -7,9 +7,9 @@
 namespace App\Command\User;
 
 use App\Entity\User;
+use App\Form\Console\UserData;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 
 /**
  * Class ChangePasswordCommand
@@ -68,36 +68,21 @@ class ChangePasswordCommand extends Base
         }
 
         /** @var User $user */
-        $user->setPlainPassword($this->askNewPassword());
+
+        $dto = $this->getUserDto($user);
+
+        /** @var UserData $dto */
+        $dto = $this->getHelper('form')->interactUsingForm(
+            'App\Form\Console\UserPassword',
+            $this->input,
+            $this->output,
+            ['data' => $dto]
+        );
 
         // Store user
-        $this->storeUser($user, true);
+        $this->storeUser($dto, $user);
 
         // Uuh all done!
         $this->io->success('Password changed successfully!');
-    }
-
-    /**
-     * Helper method to ask new password.
-     *
-     * @return  string
-     */
-    private function askNewPassword()
-    {
-        // Create new question
-        $question = new Question('New password: ');
-        $question->setHidden(true);
-        $question->setHiddenFallback(false);
-        $question->setValidator(
-            function ($value) {
-                if (trim($value) == '') {
-                    throw new \Exception('The password can not be empty');
-                }
-
-                return $value;
-            }
-        );
-
-        return $this->io->askQuestion($question);
     }
 }
