@@ -146,19 +146,6 @@ class UserGroup implements EntityInterface, RoleInterface
     }
 
     /**
-     * Convert object to string, this is only needed to get console forms to work - seems like there isn't another
-     * way to make those work with many-to-many relations.
-     *
-     * @link    https://github.com/matthiasnoback/symfony-console-form/issues/17
-     *
-     * @return  string
-     */
-    public function __toString()
-    {
-        return (string)$this->getId();
-    }
-
-    /**
      * Getter for group id
      *
      * @return  integer
