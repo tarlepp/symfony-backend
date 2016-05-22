@@ -254,24 +254,6 @@ abstract class Base extends ContainerAwareCommand
     }
 
     /**
-     * Helper method to encode password for provided user object.
-     *
-     * @param   EntityUser  $user
-     * @param   string      $password
-     *
-     * @return  void
-     */
-    protected function encodePassword(EntityUser $user, $password)
-    {
-        // Get password encoder and encode given password
-        $encoder = $this->getContainer()->get('security.password_encoder');
-        $encoded = $encoder->encodePassword($user, $password);
-
-        // Set encoded password to user entity
-        $user->setPassword($encoded);
-    }
-
-    /**
      * Private helper method to print user information to console.
      *
      * @param   EntityUser  $user
