@@ -42,7 +42,7 @@ class AuthController extends Controller
      *
      * @Route("/profile");
      *
-     * @Security("has_role('ROLE_USER')")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @return Response
      */
@@ -57,7 +57,7 @@ class AuthController extends Controller
 
         // Create serializer context
         $context = SerializationContext::create();
-        $context->setGroups(['User', 'UserGroup']);
+        $context->setGroups(['User', 'UserGroups']);
         $context->setSerializeNull(true);
 
         // Create response
