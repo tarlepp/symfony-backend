@@ -6,7 +6,7 @@
  */
 namespace App\Controller;
 
-use App\Services\Book;
+use App\Services\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -29,7 +29,7 @@ class UserController extends Rest
     /**
      * Service object for controller.
      *
-     * @var Book
+     * @var User
      */
     protected $service;
 
@@ -79,5 +79,86 @@ class UserController extends Rest
     public function findOne(Request $request, $id)
     {
         parent::findOne($request, $id);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Route("/count")
+     *
+     * @Method({"GET"})
+     *
+     * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param   Request     $request
+     *
+     * @return  Response
+     */
+    public function count(Request $request)
+    {
+        return parent::count($request);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Route("")
+     * @Route("/")
+     *
+     * @Method({"POST"})
+     *
+     * @Security("has_role('ROLE_ROOT')")
+     *
+     * @param   Request $request
+     *
+     * @return  Response
+     */
+    public function create(Request $request)
+    {
+        return parent::create($request);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Route(
+     *      "/{id}",
+     *      requirements={"id" = "\d+"}
+     *  )
+     *
+     * @Method({"PUT"})
+     *
+     * @Security("has_role('ROLE_ROOT')")
+     *
+     * @param   Request $request
+     * @param   integer $id
+     *
+     * @return  Response
+     */
+    public function update(Request $request, $id)
+    {
+        return parent::update($request, $id);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Route(
+     *      "/{id}",
+     *      requirements={"id" = "\d+"}
+     *  )
+     *
+     * @Method({"DELETE"})
+     *
+     * @Security("has_role('ROLE_ROOT')")
+     *
+     * @param   Request $request
+     * @param   integer $id
+     *
+     * @return  Response
+     */
+    public function delete(Request $request, $id)
+    {
+        return parent::delete($request, $id);
     }
 }
