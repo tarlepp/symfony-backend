@@ -7,8 +7,6 @@
 namespace App\Services\Interfaces;
 
 use App\Entity\Interfaces\EntityInterface as Entity;
-use App\Repository\Base as AppEntityRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
@@ -32,18 +30,11 @@ interface Rest
     public function __construct(EntityRepository $repository, ValidatorInterface $validator);
 
     /**
-     * Getter method for entity manager.
+     * Getter method for current entity name.
      *
-     * @return EntityManager
+     * @return  string
      */
-    public function getEntityManager();
-
-    /**
-     * Getter method for current repository.
-     *
-     * @return  AppEntityRepository
-     */
-    public function getRepository();
+    public function getEntityName();
 
     /**
      * Gets a reference to the entity identified by the given type and identifier without actually loading it,
@@ -105,6 +96,16 @@ interface Rest
      * @return  null|Entity
      */
     public function findOneBy(array $criteria, array $orderBy = null);
+
+    /**
+     * Generic count method to return entity count for specified criteria and search terms.
+     *
+     * @param   array       $criteria
+     * @param   array|null  $search
+     *
+     * @return  integer
+     */
+    public function count(array $criteria = [], array $search = null);
 
     /**
      * Generic method to create new item (entity) to specified database repository. Return value is created entity for

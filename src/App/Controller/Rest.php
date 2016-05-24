@@ -251,7 +251,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
         $populateOnly = array_key_exists('populateOnly', $request->query->all());
 
         // Get current entity name
-        $entityName = $this->getService()->getRepository()->getEntityName();
+        $entityName = $this->getService()->getEntityName();
 
         $bits = explode('\\', $entityName);
 

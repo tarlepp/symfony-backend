@@ -7,7 +7,7 @@
 namespace App\Repository;
 
 use App\Entity;
-use Doctrine\ORM\EntityManager;
+use App\Entity\Interfaces\EntityInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Composite as CompositeExpression;
 use Doctrine\ORM\QueryBuilder;
@@ -19,7 +19,7 @@ use Doctrine\ORM\QueryBuilder;
  * @package     App\Repository
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-abstract class Base extends EntityRepository
+abstract class Base extends EntityRepository implements Interfaces\Base
 {
     /**
      * Names of search columns.
@@ -29,23 +29,66 @@ abstract class Base extends EntityRepository
     protected $searchColumns = [];
 
     /**
-     * Public getter method for entity manager.
+     * Getter method for entity name.
      *
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return parent::getEntityManager();
-    }
-
-    /**
-     * Public getter method for entity name.
-     *
-     * @return string
+     * @return  string
      */
     public function getEntityName()
     {
         return parent::getEntityName();
+    }
+
+    /**
+     * Gets a reference to the entity identified by the given type and identifier without actually loading it,
+     * if the entity is not yet loaded.
+     *
+     * @throws  \Doctrine\ORM\ORMException
+     *
+     * @param   integer $id
+     *
+     * @return  bool|\Doctrine\Common\Proxy\Proxy|null|object
+     */
+    public function getReference($id)
+    {
+        return $this->_em->getReference($this->getClassName(), $id);
+    }
+
+    /**
+     * Gets all association mappings of the class.
+     *
+     * @return  array
+     */
+    public function getAssociations()
+    {
+        return $this->_em->getClassMetadata($this->getClassName())->getAssociationMappings();
+    }
+
+    /**
+     * Helper method to persist specified entity to database.
+     *
+     * @param   EntityInterface $entity
+     *
+     * @return  void
+     */
+    public function save(EntityInterface $entity)
+    {
+        // Persist on database
+        $this->_em->persist($entity);
+        $this->_em->flush();
+    }
+
+    /**
+     * Helper method to remove specified entity from database.
+     *
+     * @param   EntityInterface $entity
+     *
+     * @return  void
+     */
+    public function remove(EntityInterface $entity)
+    {
+        // Remove from database
+        $this->_em->remove($entity);
+        $this->_em->flush();
     }
 
     /**

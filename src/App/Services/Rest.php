@@ -8,7 +8,6 @@ namespace App\Services;
 
 use App\Entity\Interfaces\EntityInterface as Entity;
 use App\Repository\Base as AppEntityRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
@@ -41,20 +40,6 @@ abstract class Rest implements Interfaces\Rest
     protected $validator;
 
     /**
-     * Entity manager object.
-     *
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * Name of the current entity.
-     *
-     * @var string
-     */
-    protected $entityName;
-
-    /**
      * Class constructor.
      *
      * @param   EntityRepository    $repository
@@ -65,30 +50,16 @@ abstract class Rest implements Interfaces\Rest
         // Store class variables
         $this->repository = $repository;
         $this->validator = $validator;
-
-        // Store entity name and manager
-        $this->entityName = $this->repository->getClassName();
-        $this->entityManager = $this->repository->getEntityManager();
     }
 
     /**
-     * Getter method for entity manager.
+     * Getter method for current entity name.
      *
-     * @return EntityManager
+     * @return  string
      */
-    public function getEntityManager()
+    public function getEntityName()
     {
-        return $this->entityManager;
-    }
-
-    /**
-     * Getter method for current repository.
-     *
-     * @return  AppEntityRepository
-     */
-    public function getRepository()
-    {
-        return $this->repository;
+        return $this->repository->getEntityName();
     }
 
     /**
@@ -103,7 +74,7 @@ abstract class Rest implements Interfaces\Rest
      */
     public function getReference($id)
     {
-        return $this->entityManager->getReference($this->entityName, $id);
+        return $this->repository->getReference($id);
     }
 
     /**
@@ -113,7 +84,7 @@ abstract class Rest implements Interfaces\Rest
      */
     public function getAssociations()
     {
-        return array_keys($this->entityManager->getClassMetadata($this->entityName)->getAssociationMappings());
+        return array_keys($this->repository->getAssociations());
     }
 
     /**
@@ -142,8 +113,8 @@ abstract class Rest implements Interfaces\Rest
 
         // Fetch data
         $entities = is_null($search)
-            ? $this->getRepository()->findBy($criteria, $orderBy, $limit, $offset)
-            : $this->getRepository()->findByWithSearchTerms($search, $criteria, $orderBy, $limit, $offset)
+            ? $this->repository->findBy($criteria, $orderBy, $limit, $offset)
+            : $this->repository->findByWithSearchTerms($search, $criteria, $orderBy, $limit, $offset)
         ;
 
         // After callback method call
@@ -172,7 +143,7 @@ abstract class Rest implements Interfaces\Rest
             $this->beforeFindOne($id);
         }
 
-        $entity = $this->getRepository()->find($id);
+        $entity = $this->repository->find($id);
 
         // Entity not found
         if ($throwExceptionIfNotFound && is_null($entity)) {
@@ -204,7 +175,7 @@ abstract class Rest implements Interfaces\Rest
             $this->beforeFindOneBy($criteria, $orderBy);
         }
 
-        $entity = $this->getRepository()->findOneBy($criteria, $orderBy);
+        $entity = $this->repository->findOneBy($criteria, $orderBy);
 
         // Entity not found
         if ($throwExceptionIfNotFound && is_null($entity)) {
@@ -234,7 +205,7 @@ abstract class Rest implements Interfaces\Rest
             $this->beforeFindOneBy($criteria, $search);
         }
 
-        $count = $this->getRepository()->count($criteria, $search);
+        $count = $this->repository->count($criteria, $search);
 
         // After callback method call
         if (method_exists($this, 'afterCount')) {
@@ -257,7 +228,7 @@ abstract class Rest implements Interfaces\Rest
     public function create(\stdClass $data)
     {
         // Determine entity name
-        $entity = $this->getRepository()->getClassName();
+        $entity = $this->repository->getClassName();
 
         /**
          * Create new entity
@@ -310,8 +281,7 @@ abstract class Rest implements Interfaces\Rest
         }
 
         // Persist on database
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush($entity);
+        $this->repository->save($entity);
 
         // After callback method call
         if (method_exists($this, 'afterSave')) {
@@ -335,7 +305,7 @@ abstract class Rest implements Interfaces\Rest
     public function update($id, \stdClass $data)
     {
         /** @var Entity $entity */
-        $entity = $this->getRepository()->find($id);
+        $entity = $this->repository->find($id);
 
         // Entity not found
         if (is_null($entity)) {
@@ -368,7 +338,7 @@ abstract class Rest implements Interfaces\Rest
     public function delete($id)
     {
         /** @var Entity $entity */
-        $entity = $this->getRepository()->find($id);
+        $entity = $this->repository->find($id);
 
         // Entity not found
         if (is_null($entity)) {
@@ -381,8 +351,7 @@ abstract class Rest implements Interfaces\Rest
         }
 
         // And remove entity from repo
-        $this->entityManager->remove($entity);
-        $this->entityManager->flush($entity);
+        $this->repository->remove($entity);
 
         // After callback method call
         if (method_exists($this, 'afterDelete')) {
