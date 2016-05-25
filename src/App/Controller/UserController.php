@@ -6,12 +6,15 @@
  */
 namespace App\Controller;
 
-use App\Services\User;
+use App\Entity\User as UserEntity;
+use App\Services\User as UserService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class UserController
@@ -29,7 +32,7 @@ class UserController extends Rest
     /**
      * Service object for controller.
      *
-     * @var User
+     * @var UserService
      */
     protected $service;
 
@@ -148,6 +151,11 @@ class UserController extends Rest
      *      requirements={"id" = "\d+"}
      *  )
      *
+     * @ParamConverter(
+     *     "user",
+     *     class="AppBundle:User"
+     *  )
+     *
      * @Method({"DELETE"})
      *
      * @Security("has_role('ROLE_ROOT')")
@@ -157,8 +165,15 @@ class UserController extends Rest
      *
      * @return  Response
      */
-    public function delete(Request $request, $id)
+    public function deleteUser(Request $request, UserEntity $user)
     {
-        return parent::delete($request, $id);
+        /** @var UserEntity $user */
+        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
+        if ($currentUser === $user) {
+            throw new HttpException(400, 'You can\'t remove yourself...');
+        }
+
+        return parent::delete($request, $user->getId());
     }
 }
