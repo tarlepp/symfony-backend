@@ -17,6 +17,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }
 
+    app.event.authentication_success:
+        class: App\EventListener\AuthenticationSuccessListener
+        arguments: [ '@app.services.user_login' ]
+        tags:
+           - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccess }
+
     app.event.doctrine.user:
         class: App\Doctrine\Listener\UserListener
         arguments: [ '@security.encoder_factory' ]
