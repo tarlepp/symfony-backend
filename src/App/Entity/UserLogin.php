@@ -10,6 +10,7 @@ use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * UserLogin class
@@ -360,6 +361,23 @@ class UserLogin implements EntityInterface
      */
     private $model;
 
+    /**
+     * @var \DateTime
+     *
+     * @JMS\Groups({
+     *      "Default",
+     *      "UserLogin",
+     *      "UserLogins",
+     *      "UserLogin.loginTime",
+     *  })
+     *
+     * @ORM\Column(
+     *      name="login_time",
+     *      type="datetime",
+     *      nullable=false,
+     *  )
+     */
+    private $loginTime;
 
     /**
      * @return  integer
@@ -498,6 +516,14 @@ class UserLogin implements EntityInterface
     }
 
     /**
+     * @return \DateTime
+     */
+    public function getLoginTime()
+    {
+        return $this->loginTime;
+    }
+
+    /**
      * Simple method to get 'string' presentation about the current record.
      *
      * @return  string
@@ -508,11 +534,11 @@ class UserLogin implements EntityInterface
     }
 
     /**
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return UserLogin
      */
-    public function setUser($user)
+    public function setUser(UserInterface $user)
     {
         $this->user = $user;
 
@@ -695,6 +721,18 @@ class UserLogin implements EntityInterface
     public function setModel($model)
     {
         $this->model = $model;
+
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $loginTime
+     *
+     * @return UserLogin
+     */
+    public function setLoginTime(\DateTime $loginTime)
+    {
+        $this->loginTime = $loginTime;
 
         return $this;
     }
