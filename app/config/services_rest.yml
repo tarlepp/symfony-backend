@@ -14,3 +14,7 @@ services:
     app.services.user_group:
         class: App\Services\UserGroup
         arguments: [ '@repository.user_group', '@validator' ]
+
+    app.services.user_login:
+        class: App\Services\UserLogin
+        arguments: [ '@repository.user_login', '@validator' ]
