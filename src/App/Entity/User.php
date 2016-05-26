@@ -59,7 +59,8 @@ class User implements EntityInterface, UserInterface, \Serializable
      *      "UserGroups",
      *      "User.id",
      *      "User.userGroups",
-     *      "UserGroup.users"
+     *      "UserGroup.users",
+     *      "UserLogin.user",
      *  })
      *
      * @ORM\Column(
@@ -215,6 +216,23 @@ class User implements EntityInterface, UserInterface, \Serializable
     private $userGroups;
 
     /**
+     * User logins
+     *
+     * @var \App\Entity\UserLogin[]
+     *
+     * @JMS\Groups({
+     *      "UserLogins",
+     *      "User.userLogins",
+     *  })
+     *
+     * @ORM\OneToMany(
+     *      targetEntity="App\Entity\UserLogin",
+     *      mappedBy="user",
+     *  )
+     */
+    private $userLogins;
+
+    /**
      * User constructor.
      *
      * return User
@@ -323,6 +341,16 @@ class User implements EntityInterface, UserInterface, \Serializable
     public function getUserGroups()
     {
         return $this->userGroups;
+    }
+
+    /**
+     * Getter for user logins collection.
+     *
+     * @return UserLogin[]
+     */
+    public function getUserLogins()
+    {
+        return $this->userLogins;
     }
 
     /**
