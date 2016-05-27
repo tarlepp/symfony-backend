@@ -17,6 +17,9 @@ Simple JSON API which is build on top of [Symfony](https://symfony.com/) framewo
 - [x] Console tools (dbal, migrations, orm)
 - [x] Docker support
 - [x] Logger (monolog) 
+- [ ] Generic docs
+ - [ ] New api endpoint
+ - [ ] New REST service
 - [ ] And _everything_ else...
 
 ## Requirements
