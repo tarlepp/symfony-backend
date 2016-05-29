@@ -6,6 +6,7 @@
  */
 namespace App\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,8 @@ class DefaultController extends Controller
      * Default application response when requested root.
      *
      * @Route("/")
+     *
+     * @Method("GET");
      */
     public function indexAction()
     {
