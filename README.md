@@ -1,4 +1,5 @@
 # What is this?
+[![Build Status](https://travis-ci.org/tarlepp/symfony-backend.png?branch=master)](https://travis-ci.org/tarlepp/symfony-backend)
 
 Simple JSON API which is build on top of [Symfony](https://symfony.com/) framework.
 
