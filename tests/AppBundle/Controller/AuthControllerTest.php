@@ -41,21 +41,6 @@ class AuthControllerTest extends WebTestCase
         // And load fixtures to the database
         $executor = new ORMExecutor($em, new ORMPurger());
         $executor->execute($loader->getFixtures());
-
-        var_dump('loaded fixtures');
-
-        $users = $em->getRepository('AppBundle:User')->findAll();
-
-        var_dump('data from database:');
-        var_dump(array_map(function($user) {
-            $foo = [
-                $user->getId(),
-                $user->getUsername(),
-                $user->getPassword(),
-            ];
-
-            return implode(' - ', $foo);
-        }, $users));
     }
 
     /**
@@ -70,21 +55,12 @@ class AuthControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('POST', '/auth/getToken', ['username' => $username, 'password' => $password]);
 
-        var_dump('test input:');
-        var_dump(
-            ['username' => $username, 'password' => $password]
-        );
-
-        $this->assertResponseSuccess($client->getResponse());
-
-        /*
         // Check that HTTP status code is correct
         $this->assertEquals(
             200,
             $client->getResponse()->getStatusCode(),
-            'User login was not successfully'
+            'User login was not successfully.\n' . $client->getResponse()
         );
-        */
     }
 
     /**
@@ -99,11 +75,17 @@ class AuthControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('POST', '/auth/getToken', ['username' => $username, 'password' => $password]);
 
+        // Specify error message
+        $message = [
+            'Hmm, weird invalid user can log in the system - take this serious, very serious...',
+            $client->getResponse()
+        ];
+
         // Check that HTTP status code is correct
         $this->assertEquals(
             401,
             $client->getResponse()->getStatusCode(),
-            'Hmm, weird invalid user can log in the system - take this serious, very serious...'
+            implode('\n', $message)
         );
     }
 
@@ -123,14 +105,14 @@ class AuthControllerTest extends WebTestCase
         $this->assertEquals(
             $expectedStatusCode,
             $client->getResponse()->getStatusCode(),
-            'HTTP status code was not expected for method \'' . $method . '\''
+            'HTTP status code was not expected for method \'' . $method . '\'\n' . $client->getResponse()
         );
 
         // Check that actual response content is correct
         $this->assertEquals(
             $ExpectedContent,
             $client->getResponse()->getContent(),
-            'HTTP response was not expected for method \'' . $method . '\''
+            'HTTP response was not expected for method \'' . $method . '\'\n' . $client->getResponse()
         );
     }
 
@@ -196,23 +178,5 @@ class AuthControllerTest extends WebTestCase
             'code'      => 0,
             'status'    => 405,
         ]);
-    }
-
-    protected function assertResponseSuccess(Response $response)
-    {
-        libxml_use_internal_errors(true);
-        $dom = new \DomDocument();
-        $dom->loadHTML($response->getContent());
-        $xpath = new \DOMXpath($dom);
-        $result = $xpath->query('//div[contains(@class,"text-exception")]/h1');
-        $exception = null;
-
-        if ($result->length) {
-            $exception = $result->item(0)->nodeValue;
-        } else {
-            $exception = $response->getContent();
-        }
-
-        $this->assertEquals(200, $response->getStatusCode(), $exception ? 'Exception: "'.$exception.'"' : null);
     }
 }
