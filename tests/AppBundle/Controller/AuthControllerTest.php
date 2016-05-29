@@ -46,7 +46,16 @@ class AuthControllerTest extends WebTestCase
 
         $users = $em->getRepository('AppBundle:User')->findAll();
 
-        var_dump(array_map(function($user) { return $user->getId(); }, $users));
+        var_dump('data from database:');
+        var_dump(array_map(function($user) {
+            $foo = [
+                $user->getId(),
+                $user->getUsername(),
+                $user->getPassword(),
+            ];
+
+            return implode(' - ', $foo);
+        }, $users));
     }
 
     /**
@@ -61,12 +70,21 @@ class AuthControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('POST', '/auth/getToken', ['username' => $username, 'password' => $password]);
 
+        var_dump('test input:');
+        var_dump(
+            ['username' => $username, 'password' => $password]
+        );
+
+        $this->assertResponseSuccess($client->getResponse());
+
+        /*
         // Check that HTTP status code is correct
         $this->assertEquals(
             200,
             $client->getResponse()->getStatusCode(),
             'User login was not successfully'
         );
+        */
     }
 
     /**
@@ -178,5 +196,19 @@ class AuthControllerTest extends WebTestCase
             'code'      => 0,
             'status'    => 405,
         ]);
+    }
+
+    protected function assertResponseSuccess(Response $response)
+    {
+        libxml_use_internal_errors(true);
+        $dom = new \DomDocument();
+        $dom->loadHTML($response->getContent());
+        $xpath = new \DOMXpath($dom);
+        $result = $xpath->query('//div[contains(@class,"text-exception")]/h1');
+        $exception = null;
+        if ($result->length) {
+            $exception = $result->item(0)->nodeValue;
+        }
+        $this->assertEquals(200, $response->getStatusCode(), $exception ? 'Exception: "'.$exception.'"' : null);
     }
 }
