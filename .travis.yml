@@ -2,27 +2,32 @@ language: php
 
 sudo: false
 
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
 git:
-    depth: 1
+  depth: 1
 
 services:
   - mysql
+  
+php:
+  - 5.5
+  - 5.6
+  - 7.0
+  - hhvm
 
 matrix:
-    include:
-        - php: hhvm
-        - php: 5.5
-        - php: 5.6
-          env: deps=high
-        - php: 7.0
-          env: deps=low
-    fast_finish: true
+  fast_finish: true
 
-before_script:
+before_install:
+  - phpenv config-rm xdebug.ini || true
   - cp app/config/parameters.yml.travis app/config/parameters.yml
-  - composer install
-  - php bin/console doctrine:database:create --env=test
-  - php bin/console doctrine:schema:create --env=test
 
 install:
-   - composer install
+  - composer install --prefer-dist
+  
+before_script:
+  - php bin/console doctrine:database:create
+  - php bin/console doctrine:schema:create
