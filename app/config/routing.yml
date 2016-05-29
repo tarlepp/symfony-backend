@@ -7,6 +7,11 @@ gesdinet_jwt_refresh_token:
     path:     /auth/refreshToken
     defaults: { _controller: gesdinet.jwtrefreshtoken:refresh }
 
+# https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/index.rst#step-3-register-the-routes
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
+
 api:
     type: rest  # Required for ``RestYamlLoader`` to process imported routes
     prefix: /api

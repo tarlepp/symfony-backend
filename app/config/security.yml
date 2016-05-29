@@ -42,6 +42,12 @@ security:
             stateless: true
             anonymous: true
 
+        # https://github.com/nelmio/NelmioApiDocBundle
+        api_doc:
+            pattern:  ^/api/doc
+            stateless: true
+            anonymous: true
+
         root:
             pattern:  ^/$
             stateless: true

@@ -83,6 +83,10 @@ jms_serializer:
             default_format: "Y-m-d\\TH:i:sP" # DATE_RFC3339
             default_timezone: "UTC"
 
+# https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/index.rst#step-4-configure-the-bundle
+# https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/configuration-in-depth.rst
+nelmio_api_doc: ~
+
 # https://github.com/nelmio/NelmioCorsBundle#configuration
 nelmio_cors:
     defaults:

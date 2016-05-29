@@ -37,6 +37,7 @@ class AppKernel extends Kernel
             new Gfreeau\Bundle\GetJWTBundle\GfreeauGetJWTBundle(),
             new Gesdinet\JWTRefreshTokenBundle\GesdinetJWTRefreshTokenBundle(),
             new Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle(),
+            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new App\AppBundle(),
         ];
