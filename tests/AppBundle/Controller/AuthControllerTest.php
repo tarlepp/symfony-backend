@@ -41,6 +41,12 @@ class AuthControllerTest extends WebTestCase
         // And load fixtures to the database
         $executor = new ORMExecutor($em, new ORMPurger());
         $executor->execute($loader->getFixtures());
+
+        var_dump('loaded fixtures');
+
+        $users = $em->getRepository('AppBundle:User')->findAll();
+
+        var_dump(array_map(function($user) { return $user->getId(); }, $users));
     }
 
     /**
