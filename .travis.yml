@@ -5,6 +5,9 @@ sudo: false
 git:
     depth: 1
 
+services:
+  - mysql
+
 matrix:
     include:
         - php: hhvm
@@ -14,6 +17,12 @@ matrix:
         - php: 7.0
           env: deps=low
     fast_finish: true
+
+before_script:
+  - cp app/config/parameters.yml.travis app/config/parameters.yml
+  - composer install
+  - php app/console doctrine:database:create
+  - php app/console doctrine:schema:create
 
 install:
    - composer install
