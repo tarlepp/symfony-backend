@@ -18,8 +18,8 @@ Simple JSON API which is build on top of [Symfony](https://symfony.com/) framewo
 - [x] Console tools (dbal, migrations, orm)
 - [x] Docker support
 - [x] Logger (monolog) 
-- [ ] TravisCI tests
-- [ ] Make tests
+- [x] TravisCI tests
+- [ ] Make tests, every endpoint
 - [ ] Docs - Generic 
 - [ ] Docs - New api endpoint 
 - [ ] Docs - New REST service
