@@ -206,9 +206,13 @@ class AuthControllerTest extends WebTestCase
         $xpath = new \DOMXpath($dom);
         $result = $xpath->query('//div[contains(@class,"text-exception")]/h1');
         $exception = null;
+
         if ($result->length) {
             $exception = $result->item(0)->nodeValue;
+        } else {
+            $exception = $response->getContent();
         }
+
         $this->assertEquals(200, $response->getStatusCode(), $exception ? 'Exception: "'.$exception.'"' : null);
     }
 }
