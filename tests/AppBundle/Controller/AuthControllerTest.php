@@ -44,11 +44,12 @@ class AuthControllerTest extends WebTestCase
     }
 
     /**
+     * Test that valid user gets token and refresh_token
      *
      * @dataProvider providerTestThatValidCredentialsWork
      *
-     * @param $username
-     * @param $password
+     * @param   string  $username
+     * @param   string  $password
      */
     public function testThatValidCredentialsWork($username, $password)
     {
@@ -61,14 +62,33 @@ class AuthControllerTest extends WebTestCase
             $client->getResponse()->getStatusCode(),
             'User login was not successfully.\n' . $client->getResponse()
         );
+
+        // Get response object
+        $response = json_decode($client->getResponse()->getContent());
+
+        // Attributes that should be present...
+        $attributes = [
+            'token',
+            'refresh_token',
+        ];
+
+        // Iterate expected attributes and check that those are present
+        foreach ($attributes as $attribute) {
+            $messageNotPresent = 'getToken did not return all expected attributes, missing \'' . $attribute . '\'.';
+            $messageEmpty = 'Attribute \'' . $attribute . '\' is empty, this is fail...';
+
+            $this->assertObjectHasAttribute($attribute, $response, $messageNotPresent);
+            $this->assertNotEmpty($response->{$attribute}, $messageEmpty);
+        }
     }
 
     /**
+     * Test that invalid credentials does not work.
      *
      * @dataProvider providerTestThatInvalidCredentialsWontWork
      *
-     * @param $username
-     * @param $password
+     * @param   string  $username
+     * @param   string  $password
      */
     public function testThatInvalidCredentialsWontWork($username, $password)
     {
@@ -90,6 +110,8 @@ class AuthControllerTest extends WebTestCase
     }
 
     /**
+     * Test that not supported HTTP methods returns 405.
+     *
      * @dataProvider providerTestThatNotSupportedMethodsReturn405
      *
      * @param $method
