@@ -160,10 +160,13 @@ class AuthControllerTest extends WebTestCase
     {
         return [
             [null, null],
+            [null, 'a'],
+            ['a', null],
             ['a', 'a'],
             ['', ''],
             ['john', 'doẽ'],
             ['john.doe@test.com', ''],
+            ['joh n', 'doe'],
         ];
     }
 
