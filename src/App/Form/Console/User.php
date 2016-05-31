@@ -56,7 +56,7 @@ class User extends AbstractType
          *
          * @return  void
          */
-        $iterator = function(UserGroup $userGroup) use (&$choices) {
+        $iterator = function (UserGroup $userGroup) use (&$choices) {
             $name = $userGroup->getName() . ' [' . $userGroup->getRole() . ']';
 
             $choices[$name] = $userGroup->getId();

@@ -127,7 +127,7 @@ class JWTCreatedListener
         // Determine all roles for current user
         $payload['roles'] = array_unique(
             array_map(
-                function(RoleInterface $role) {
+                function (RoleInterface $role) {
                     return $role->getRole();
                 },
                 $this->container->get('security.role_hierarchy')->getReachableRoles($user->getUserGroups()->toArray())

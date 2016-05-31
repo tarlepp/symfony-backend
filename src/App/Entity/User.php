@@ -99,7 +99,7 @@ class User implements EntityInterface, UserInterface, \Serializable
     private $username;
 
     /**
-     * User's firstname.
+     * User's firstname.d
      *
      * @var string
      *
@@ -326,7 +326,7 @@ class User implements EntityInterface, UserInterface, \Serializable
          *
          * @return  string
          */
-        $iterator = function($userGroup) {
+        $iterator = function ($userGroup) {
             return $userGroup->getRole();
         };
 

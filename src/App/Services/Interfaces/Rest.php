@@ -210,7 +210,7 @@ interface Rest
      * @param   null|array  $orderBy
      * @param   null|Entity $entity
      */
-    public function afterFindOneBy(array &$criteria, array &$orderBy = null,  Entity $entity = null);
+    public function afterFindOneBy(array &$criteria, array &$orderBy = null, Entity $entity = null);
 
     /**
      * Before lifecycle method for create method.

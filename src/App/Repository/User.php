@@ -37,7 +37,8 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      *
      * Method is override for performance reasons see link below.
      *
-     * @link http://symfony2-document.readthedocs.org/en/latest/cookbook/security/entity_provider.html#managing-roles-in-the-database
+     * @link http://symfony2-document.readthedocs.org/en/latest/cookbook/security/entity_provider.html
+     *       #managing-roles-in-the-database
      *
      * @param   string  $username   The username
      *

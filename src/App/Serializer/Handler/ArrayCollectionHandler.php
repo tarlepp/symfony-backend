@@ -43,6 +43,8 @@ class ArrayCollectionHandler extends \JMS\Serializer\Handler\ArrayCollectionHand
         // Don't include items that will produce null elements
         $dataArray = [];
 
+        /** @var \JMS\Serializer\SerializationContext $context */
+
         foreach ($collection->toArray() as $element) {
             if (!$context->isVisiting($element)) {
                 $dataArray[] = $element;

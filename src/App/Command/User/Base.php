@@ -53,7 +53,8 @@ abstract class Base extends ContainerAwareCommand
      *
      *  [
      *      'name'          => '', // The option name
-     *      'shortcut'      => '', // The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+     *      'shortcut'      => '', // The shortcuts, can be null, a string of shortcuts delimited by | or an array of
+     *                                shortcuts
      *      'mode'          => '', // The option mode: One of the InputOption::VALUE_* constants
      *      'description'   => '', // A description text
      *      'default'       => '', // The default value (must be null for InputOption::VALUE_NONE)
@@ -100,7 +101,7 @@ abstract class Base extends ContainerAwareCommand
          *
          * @return  InputOption
          */
-        $iterator = function(array $input) {
+        $iterator = function (array $input) {
             return new InputOption(
                 $input['name'],
                 array_key_exists('shortcut', $input)    ? $input['shortcut']    : null,
@@ -189,7 +190,7 @@ abstract class Base extends ContainerAwareCommand
          *
          * @return  array
          */
-        $iterator = function(EntityUserGroup $userGroup) {
+        $iterator = function (EntityUserGroup $userGroup) {
             return [
                 $userGroup->getId(),
                 $userGroup->getName(),
@@ -239,7 +240,7 @@ abstract class Base extends ContainerAwareCommand
          *
          * @return  integer
          */
-        $iterator = function(EntityUserGroup $userGroup) {
+        $iterator = function (EntityUserGroup $userGroup) {
             return $userGroup->getId();
         };
 
@@ -318,7 +319,7 @@ abstract class Base extends ContainerAwareCommand
         $user->clearUserGroups();
 
         // Iterate user groups and attach those to current user
-        foreach($userData->userGroups as $groupId) {
+        foreach ($userData->userGroups as $groupId) {
             $user->addUserGroup($this->serviceUserGroup->getReference($groupId));
         }
 
@@ -360,7 +361,7 @@ abstract class Base extends ContainerAwareCommand
          *
          * @return  array
          */
-        $iterator = function($attribute) use ($entity) {
+        $iterator = function ($attribute) use ($entity) {
             $method = sprintf(
                 'get%s',
                 $attribute
@@ -371,7 +372,7 @@ abstract class Base extends ContainerAwareCommand
 
             // And we have many-to-many records so map those to get string presentation of each records
             if ($value instanceof PersistentCollection) {
-                $iterator = function(EntityInterface $entity) {
+                $iterator = function (EntityInterface $entity) {
                     return $entity->getRecordTitle();
                 };
 

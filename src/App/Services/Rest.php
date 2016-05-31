@@ -369,7 +369,9 @@ abstract class Rest implements Interfaces\Rest
      * @param   null|integer    $limit
      * @param   null|integer    $offset
      */
-    public function beforeFind(array &$criteria = [], array &$orderBy = null, &$limit = null, &$offset = null) { }
+    public function beforeFind(array &$criteria = [], array &$orderBy = null, &$limit = null, &$offset = null)
+    {
+    }
 
     /**
      * After lifecycle method for find method.
@@ -386,14 +388,17 @@ abstract class Rest implements Interfaces\Rest
         &$limit = null,
         &$offset = null,
         array &$entities = []
-    ) { }
+    ) {
+    }
 
     /**
      * Before lifecycle method for findOne method.
      *
      * @param   integer $id
      */
-    public function beforeFindOne(&$id) { }
+    public function beforeFindOne(&$id)
+    {
+    }
 
     /**
      * After lifecycle method for findOne method.
@@ -401,7 +406,9 @@ abstract class Rest implements Interfaces\Rest
      * @param   integer     $id
      * @param   null|Entity $entity
      */
-    public function afterFindOne(&$id, Entity $entity = null) { }
+    public function afterFindOne(&$id, Entity $entity = null)
+    {
+    }
 
     /**
      * Before lifecycle method for findOneBy method.
@@ -409,7 +416,9 @@ abstract class Rest implements Interfaces\Rest
      * @param   array       $criteria
      * @param   null|array  $orderBy
      */
-    public function beforeFindOneBy(array &$criteria, array &$orderBy = null) { }
+    public function beforeFindOneBy(array &$criteria, array &$orderBy = null)
+    {
+    }
 
     /**
      * After lifecycle method for findOneBy method.
@@ -418,7 +427,9 @@ abstract class Rest implements Interfaces\Rest
      * @param   null|array  $orderBy
      * @param   null|Entity $entity
      */
-    public function afterFindOneBy(array &$criteria, array &$orderBy = null,  Entity $entity = null) { }
+    public function afterFindOneBy(array &$criteria, array &$orderBy = null, Entity $entity = null)
+    {
+    }
 
     /**
      * Before lifecycle method for create method.
@@ -426,7 +437,9 @@ abstract class Rest implements Interfaces\Rest
      * @param   \stdClass   $data
      * @param   Entity      $entity
      */
-    public function beforeCreate(\stdClass $data, Entity $entity) { }
+    public function beforeCreate(\stdClass $data, Entity $entity)
+    {
+    }
 
     /**
      * After lifecycle method for create method.
@@ -434,21 +447,27 @@ abstract class Rest implements Interfaces\Rest
      * @param   \stdClass   $data
      * @param   Entity      $entity
      */
-    public function afterCreate(\stdClass $data, Entity $entity) { }
+    public function afterCreate(\stdClass $data, Entity $entity)
+    {
+    }
 
     /**
      * Before lifecycle method for save method.
      *
      * @param   Entity  $entity
      */
-    public function beforeSave(Entity $entity) { }
+    public function beforeSave(Entity $entity)
+    {
+    }
 
     /**
      * After lifecycle method for save method.
      *
      * @param   Entity $entity
      */
-    public function afterSave(Entity $entity) { }
+    public function afterSave(Entity $entity)
+    {
+    }
 
     /**
      * Before lifecycle method for update method.
@@ -457,7 +476,9 @@ abstract class Rest implements Interfaces\Rest
      * @param   \stdClass   $data
      * @param   Entity      $entity
      */
-    public function beforeUpdate(&$id, \stdClass $data, Entity $entity) { }
+    public function beforeUpdate(&$id, \stdClass $data, Entity $entity)
+    {
+    }
 
     /**
      * After lifecycle method for update method.
@@ -466,7 +487,9 @@ abstract class Rest implements Interfaces\Rest
      * @param   \stdClass   $data
      * @param   Entity      $entity
      */
-    public function afterUpdate(&$id, \stdClass $data, Entity $entity) { }
+    public function afterUpdate(&$id, \stdClass $data, Entity $entity)
+    {
+    }
 
     /**
      * Before lifecycle method for delete method.
@@ -474,7 +497,9 @@ abstract class Rest implements Interfaces\Rest
      * @param   integer $id
      * @param   Entity  $entity
      */
-    public function beforeDelete(&$id, Entity $entity) { }
+    public function beforeDelete(&$id, Entity $entity)
+    {
+    }
 
     /**
      * After lifecycle method for delete method.
@@ -482,7 +507,9 @@ abstract class Rest implements Interfaces\Rest
      * @param   integer $id
      * @param   Entity  $entity
      */
-    public function afterDelete(&$id, Entity $entity) { }
+    public function afterDelete(&$id, Entity $entity)
+    {
+    }
 
     /**
      * Helper method to set data to specified entity and store it to database.

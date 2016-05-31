@@ -337,7 +337,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
          * @param   string          $value
          * @param   integer|string  $key
          */
-        $iterator = function(&$value, $key) use (&$output) {
+        $iterator = function (&$value, $key) use (&$output) {
             $order = 'ASC';
 
             if (is_string($key)) {

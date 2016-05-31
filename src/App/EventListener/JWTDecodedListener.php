@@ -40,8 +40,7 @@ class JWTDecodedListener
         $request = $event->getRequest();
 
         // Custom checks to validate user's JWT
-        if (
-            (!isset($payload['ip']) || $payload['ip'] !== $request->getClientIp())
+        if ((!isset($payload['ip']) || $payload['ip'] !== $request->getClientIp())
             || (!isset($payload['agent']) || $payload['agent'] !== $request->headers->get('User-Agent'))
         ) {
             $event->markAsInvalid();

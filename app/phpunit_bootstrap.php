@@ -26,7 +26,7 @@ $application = new Application($kernel);
 ////////// Specify functions to initialize test environment - start
 
 // Add the doctrine:database:drop command to the application and run it
-$dropDatabaseDoctrineCommand = function() use ($application) {
+$dropDatabaseDoctrineCommand = function () use ($application) {
     $command = new DropDatabaseDoctrineCommand();
     $application->add($command);
     $input = new ArrayInput(array(
@@ -37,7 +37,7 @@ $dropDatabaseDoctrineCommand = function() use ($application) {
 };
 
 // Add the doctrine:database:create command to the application and run it
-$createDatabaseDoctrineCommand = function() use ($application) {
+$createDatabaseDoctrineCommand = function () use ($application) {
     $command = new CreateDatabaseDoctrineCommand();
     $application->add($command);
     $input = new ArrayInput(
@@ -49,7 +49,7 @@ $createDatabaseDoctrineCommand = function() use ($application) {
 };
 
 // Add the doctrine:schema:update command to the application and run it
-$updateSchemaDoctrineCommand = function() use ($application) {
+$updateSchemaDoctrineCommand = function () use ($application) {
     $command = new UpdateSchemaDoctrineCommand();
     $application->add($command);
     $input = new ArrayInput(

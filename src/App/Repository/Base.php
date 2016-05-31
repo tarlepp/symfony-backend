@@ -183,8 +183,8 @@ abstract class Base extends EntityRepository implements Interfaces\Base
          *
          * @return  array
          */
-        $iteratorTerm = function($term) use ($columns) {
-            $iteratorColumn = function($column) use ($term) {
+        $iteratorTerm = function ($term) use ($columns) {
+            $iteratorColumn = function ($column) use ($term) {
                 return ['entity.' . $column, 'LIKE', '%' . $term . '%'];
             };
 
@@ -271,7 +271,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
                         $queryBuilder->expr()->orX(),
                         $comparison
                     ));
-                } else if ($key === 'and') {
+                } elseif ($key === 'and') {
                     $expression->add($this->getExpression(
                         $queryBuilder,
                         $queryBuilder->expr()->andX(),
@@ -280,7 +280,9 @@ abstract class Base extends EntityRepository implements Interfaces\Base
                 } else {
                     list($field, $operator, $value) = $comparison;
 
-                    $expression->add($queryBuilder->expr()->{$operator}($field, $queryBuilder->expr()->literal($value)));
+                    $expression->add(
+                        $queryBuilder->expr()->{$operator}($field, $queryBuilder->expr()->literal($value))
+                    );
                 }
             }
         }
