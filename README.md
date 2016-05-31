@@ -88,7 +88,19 @@ $ ./bin/console doctrine:migrations:migrate
 ```
 
 ## Development
-*TODO*
+* [Coding Standards](http://symfony.com/doc/current/contributing/code/standards.html) 
+
+### PHP Code Sniffer
+It's highly recommended that you use this tool while doing actual development to application. PHP Code Sniffer is added to project ```dev``` dependencies, so all you need to do is just configure it to your favorite IDE. So the ```phpcs``` command is available via following example command.
+
+```bash
+$ ./vendor/bin/phpcs -i
+```
+
+If you're using [PhpStorm](https://www.jetbrains.com/phpstorm/) following links will help you to get things rolling.
+
+* [Using PHP Code Sniffer Tool](https://www.jetbrains.com/help/phpstorm/10.0/using-php-code-sniffer-tool.html)
+* [PHP Code Sniffer in PhpStorm](https://confluence.jetbrains.com/display/PhpStorm/PHP+Code+Sniffer+in+PhpStorm)
 
 ### Database changes
 Generally you will need to generate migration files from each database change that you're doing. Easiest way to
@@ -100,7 +112,7 @@ handle these are just following workflow:
 $ ./bin/console doctrine:migrations:diff
 ```
 
-With this you won't need to write those migration files by yourself, just let doctrine handle those.
+With this you won't need to write those migration files by yourself, just let doctrine handle those - although remember to really look what those generated migration files really contains...
 
 ## Useful resources + tips
 * [Symfony Development using PhpStorm](http://blog.jetbrains.com/phpstorm/2014/08/symfony-development-using-phpstorm/) - Guide to configure your PhpStorm for Symfony development
