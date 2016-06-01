@@ -29,10 +29,14 @@ $application = new Application($kernel);
 $dropDatabaseDoctrineCommand = function () use ($application) {
     $command = new DropDatabaseDoctrineCommand();
     $application->add($command);
-    $input = new ArrayInput(array(
+
+    $input = new ArrayInput([
         'command' => 'doctrine:database:drop',
         '--force' => true,
-    ));
+    ]);
+
+    $input->setInteractive(false);
+
     $command->run($input, new ConsoleOutput());
 };
 
@@ -40,11 +44,13 @@ $dropDatabaseDoctrineCommand = function () use ($application) {
 $createDatabaseDoctrineCommand = function () use ($application) {
     $command = new CreateDatabaseDoctrineCommand();
     $application->add($command);
-    $input = new ArrayInput(
-        array(
-            'command' => 'doctrine:database:create',
-        )
-    );
+
+    $input = new ArrayInput([
+        'command' => 'doctrine:database:create',
+    ]);
+
+    $input->setInteractive(false);
+
     $command->run($input, new ConsoleOutput());
 };
 
@@ -52,12 +58,29 @@ $createDatabaseDoctrineCommand = function () use ($application) {
 $updateSchemaDoctrineCommand = function () use ($application) {
     $command = new UpdateSchemaDoctrineCommand();
     $application->add($command);
-    $input = new ArrayInput(
-        array(
-            'command' => 'doctrine:schema:update',
-            '--force' => true,
-        )
-    );
+
+    $input = new ArrayInput([
+        'command' => 'doctrine:schema:update',
+        '--force' => true,
+    ]);
+
+    $input->setInteractive(false);
+
+    $command->run($input, new ConsoleOutput());
+};
+
+// Add the doctrine:fixtures:load command to the application and run it
+$loadFixturesDoctrineCommand = function () use ($application) {
+    $command = new \Doctrine\Bundle\FixturesBundle\Command\LoadDataFixturesDoctrineCommand();
+    $application->add($command);
+
+    $input = new ArrayInput([
+        'command' => 'doctrine:fixtures:load',
+        '--no-interaction' => true,
+    ]);
+
+    $input->setInteractive(false);
+
     $command->run($input, new ConsoleOutput());
 };
 
@@ -70,6 +93,7 @@ array_map(
         $dropDatabaseDoctrineCommand,
         $createDatabaseDoctrineCommand,
         $updateSchemaDoctrineCommand,
+        $loadFixturesDoctrineCommand,
     ]
 );
 
