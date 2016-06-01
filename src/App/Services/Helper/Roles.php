@@ -87,4 +87,16 @@ class Roles
 
         return $output;
     }
+
+    /**
+     * Getter method for short role.
+     *
+     * @param   string $role
+     *
+     * @return  string
+     */
+    public function getShort($role)
+    {
+        return mb_strtolower(mb_substr($role, (mb_strpos($role, '_') + 1)));
+    }
 }
