@@ -7,18 +7,18 @@
 namespace AppBundle\Controller;
 
 use App\Fixtures\UserFixtureLoader;
+use App\Util\Tests\WebTestCase;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class AuthControllerTest
  *
  * @category    Tests
- * @package     App\Controller
+ * @package     AppBundle\Controller
  * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class AuthControllerTest extends WebTestCase
@@ -136,6 +136,62 @@ class AuthControllerTest extends WebTestCase
             $client->getResponse()->getContent(),
             'HTTP response was not expected for method \'' . $method . '\'\n' . $client->getResponse()
         );
+    }
+
+    public function testThatGetAuthProfileReturns401WithInvalidToken()
+    {
+        $client = static::createClient([], $this->getAuthService()->getAuthorizationHeaders('invalidtoken'));
+        $client->request('GET', '/auth/profile');
+
+        // Check that HTTP status code is correct
+        $this->assertEquals(
+            401,
+            $client->getResponse()->getStatusCode(),
+            'HTTP status code was not expected for /auth/profile request\n' . $client->getResponse()
+        );
+
+        $this->assertEquals(
+            '{"code":401,"message":"Invalid JWT Token"}',
+            $client->getResponse()->getContent(),
+            'Response content was not expected for /auth/profile request\n' . $client->getResponse()
+        );
+    }
+
+    /**
+     * @dataProvider providerTestThatValidCredentialsWork
+     *
+     * @param $username
+     * @param $password
+     *
+     * @throws \Exception
+     */
+    public function testThatGetAuthProfileReturnsExpectedData($username, $password)
+    {
+        $client = static::createClient(
+            [],
+            $this->getAuthService()->getAuthorizationHeadersForUser($username, $password)
+        );
+        $client->request(
+            'GET',
+            '/auth/profile'
+        );
+
+        // Check that HTTP status code is correct
+        $this->assertEquals(
+            200,
+            $client->getResponse()->getStatusCode(),
+            'HTTP status code was not expected for /auth/profile request\n' . $client->getResponse()
+        );
+
+        $profileData = json_decode($client->getResponse()->getContent());
+
+        $attributes = [
+            'id', 'username', 'firstname', 'surname', 'email', 'userGroups', 'createdAt', 'updatedAt',
+        ];
+
+        foreach ($attributes as $attribute) {
+            $this->assertObjectHasAttribute($attribute, $profileData);
+        }
     }
 
     /**

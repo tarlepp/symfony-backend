@@ -1,0 +1,4 @@
+services:
+    app.services.utils.tests.auth:
+        class: App\Util\Tests\Auth
+        arguments: [ '@service_container' ]
