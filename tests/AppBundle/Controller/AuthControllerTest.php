@@ -6,12 +6,7 @@
  */
 namespace AppBundle\Controller;
 
-use App\Fixtures\UserFixtureLoader;
 use App\Util\Tests\WebTestCase;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Loader;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -23,26 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AuthControllerTest extends WebTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function setUpBeforeClass()
-    {
-        // We need to boot kernel up to get Entity Manager
-        self::bootKernel();
-
-        /** @var EntityManagerInterface $em */
-        $em = static::$kernel->getContainer()->get('doctrine')->getManager();
-
-        // Create new loader and add necessary fixtures to be loaded
-        $loader = new Loader();
-        $loader->addFixture(new UserFixtureLoader());
-
-        // And load fixtures to the database
-        $executor = new ORMExecutor($em, new ORMPurger());
-        $executor->execute($loader->getFixtures());
-    }
-
     /**
      * Test that valid user gets token and refresh_token
      *
