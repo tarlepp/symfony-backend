@@ -8,6 +8,7 @@
          bootstrap="app/phpunit_bootstrap.php"
 >
     <php>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
         <ini name="error_reporting" value="-1" />
         <server name="KERNEL_DIR" value="app/" />
     </php>
