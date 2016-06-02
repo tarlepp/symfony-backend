@@ -33,3 +33,4 @@ install:
 
 before_script:
   - php bin/console --version
+  - php bin/console doctrine:database:create
