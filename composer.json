@@ -36,7 +36,7 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "doctrine/doctrine-bundle": "1.6.2",
+        "doctrine/doctrine-bundle": "1.6.3",
         "doctrine/doctrine-cache-bundle": "1.3.0",
         "doctrine/doctrine-migrations-bundle": "1.1.1",
         "doctrine/orm": "2.5.4",
@@ -50,17 +50,17 @@
         "matthiasnoback/symfony-console-form": "2.0.1",
         "nelmio/api-doc-bundle": "dev-master",
         "nelmio/cors-bundle": "1.4.1",
-        "piwik/device-detector": "^3.6",
+        "piwik/device-detector": "3.7.0",
         "sensio/distribution-bundle": "5.0.6",
         "sensio/framework-extra-bundle": "3.0.16",
         "symfony/monolog-bundle": "2.11.1",
         "symfony/swiftmailer-bundle": "2.3.11",
-        "symfony/symfony": "3.0.6"
+        "symfony/symfony": "3.1.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^2.3",
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0",
+        "symfony/phpunit-bridge": "^3.1",
         "squizlabs/php_codesniffer": "^2.6"
     },
     "repositories": [
