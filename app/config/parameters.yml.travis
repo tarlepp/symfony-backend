@@ -8,7 +8,7 @@ parameters:
     database_user:     travis
     database_password: ~
     # You should uncomment this if you want use pdo_sqlite
-    # database_path: "%kernel.root_dir%/data.db3"
+    # database_path: '%kernel.root_dir%/data.db3'
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
@@ -19,7 +19,7 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     # JWT key config
-    jwt_private_key_path: %kernel.root_dir%/var/jwt/private.pem   # ssh private key path
-    jwt_public_key_path:  %kernel.root_dir%/var/jwt/public.pem    # ssh public key path
-    jwt_key_pass_phrase:  thisisfortests                          # ssh key pass phrase
+    jwt_private_key_path: '%kernel.root_dir%/var/jwt/private.pem'   # ssh private key path
+    jwt_public_key_path:  '%kernel.root_dir%/var/jwt/public.pem'    # ssh public key path
+    jwt_key_pass_phrase:  thisisfortests                            # ssh key pass phrase
     jwt_token_ttl:        86400
