@@ -1,5 +1,5 @@
 app:
-    resource: "@AppBundle/Controller/"
+    resource: '@AppBundle/Controller/'
     type:     annotation
 
 # https://github.com/gesdinet/JWTRefreshTokenBundle#step-3-configure-your-own-routing-to-refresh-token
@@ -9,10 +9,10 @@ gesdinet_jwt_refresh_token:
 
 # https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/index.rst#step-3-register-the-routes
 NelmioApiDocBundle:
-    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    resource: '@NelmioApiDocBundle/Resources/config/routing.yml'
     prefix:   /api/doc
 
 api:
     type: rest  # Required for ``RestYamlLoader`` to process imported routes
     prefix: /api
-    resource: "api_routes.yml"
+    resource: 'api_routes.yml'

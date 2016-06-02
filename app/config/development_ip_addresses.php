@@ -24,7 +24,7 @@ $configFile = __DIR__ . '/development_ip_addresses_local.php';
 // Get local IP addresses
 $local = file_exists($configFile) ? require_once $configFile : [];
 
-// By default allow "localhost"
+// By default allow 'localhost'
 $base = [
     '127.0.0.1',
     'fe80::1',
