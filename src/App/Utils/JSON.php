@@ -1,10 +1,10 @@
 <?php
 /**
- * /src/App/Util/JSON.php
+ * /src/App/Utils/JSON.php
  *
  * @User  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace App\Util;
+namespace App\Utils;
 
 /**
  * Class JSON

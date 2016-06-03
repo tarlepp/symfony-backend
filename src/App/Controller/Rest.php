@@ -8,7 +8,7 @@ namespace App\Controller;
 
 use App\Entity\Interfaces\EntityInterface;
 use App\Services\Rest as RestService;
-use App\Util\JSON;
+use App\Utils\JSON;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
