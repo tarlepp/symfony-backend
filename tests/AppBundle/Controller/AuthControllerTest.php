@@ -6,7 +6,7 @@
  */
 namespace AppBundle\Controller;
 
-use App\Util\Tests\WebTestCase;
+use App\Tests\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -89,11 +89,11 @@ class AuthControllerTest extends WebTestCase
      *
      * @dataProvider providerTestThatNotSupportedMethodsReturn405
      *
-     * @param $method
-     * @param $expectedStatusCode
-     * @param $ExpectedContent
+     * @param   string  $method
+     * @param   integer $expectedStatusCode
+     * @param   string  $expectedContent
      */
-    public function testThatNotSupportedMethodsReturn405($method, $expectedStatusCode, $ExpectedContent)
+    public function testThatNotSupportedMethodsReturn405($method, $expectedStatusCode, $expectedContent)
     {
         $client = static::createClient();
         $client->request($method, '/auth/getToken');
@@ -107,12 +107,45 @@ class AuthControllerTest extends WebTestCase
 
         // Check that actual response content is correct
         $this->assertEquals(
-            $ExpectedContent,
+            $expectedContent,
             $client->getResponse()->getContent(),
             'HTTP response was not expected for method \'' . $method . '\'\n' . $client->getResponse()
         );
     }
 
+    /**
+     * Method to test that GET /auth/profile returns correct response without any Authorization header.
+     *
+     * Expected response is
+     *  Status: 401
+     *  Body: {"code":401,"message":"Invalid credentials"}
+     */
+    public function testThatGetAuthProfileReturns401WithoutToken()
+    {
+        $client = static::createClient();
+        $client->request('GET', '/auth/profile');
+
+        // Check that HTTP status code is correct
+        $this->assertEquals(
+            401,
+            $client->getResponse()->getStatusCode(),
+            'HTTP status code was not expected for /auth/profile request\n' . $client->getResponse()
+        );
+
+        $this->assertEquals(
+            '{"code":401,"message":"Invalid credentials"}',
+            $client->getResponse()->getContent(),
+            'Response content was not expected for /auth/profile request\n' . $client->getResponse()
+        );
+    }
+
+    /**
+     * Method to test that GET /auth/profile returns correct response with invalid Authorization header.
+     *
+     * Expected response is
+     *  Status: 401
+     *  Body: {"code":401,"message":"Invalid JWT Token"}
+     */
     public function testThatGetAuthProfileReturns401WithInvalidToken()
     {
         $client = static::createClient([], $this->getAuthService()->getAuthorizationHeaders('invalidtoken'));
@@ -133,12 +166,14 @@ class AuthControllerTest extends WebTestCase
     }
 
     /**
+     * Method to test that when specified user makes GET /auth/profile request he/she will get expected response.
+     *
      * @dataProvider providerTestThatValidCredentialsWork
      *
-     * @param $username
-     * @param $password
+     * @param   string  $username
+     * @param   string  $password
      *
-     * @throws \Exception
+     * @throws  \Exception
      */
     public function testThatGetAuthProfileReturnsExpectedData($username, $password)
     {
