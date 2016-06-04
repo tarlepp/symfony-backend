@@ -7,6 +7,7 @@
 namespace AppBundle\Controller;
 
 use App\Tests\WebTestCase;
+use App\Utils\JSON;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -39,7 +40,7 @@ class AuthControllerTest extends WebTestCase
         );
 
         // Get response object
-        $response = json_decode($client->getResponse()->getContent());
+        $response = JSON::decode($client->getResponse()->getContent());
 
         // Attributes that should be present...
         $attributes = [
@@ -190,7 +191,7 @@ class AuthControllerTest extends WebTestCase
             'HTTP status code was not expected for /auth/profile request\n' . $client->getResponse()
         );
 
-        $profileData = json_decode($client->getResponse()->getContent());
+        $profileData = JSON::decode($client->getResponse()->getContent());
 
         $attributes = [
             'id', 'username', 'firstname', 'surname', 'email', 'userGroups', 'createdAt', 'updatedAt',
@@ -273,7 +274,7 @@ class AuthControllerTest extends WebTestCase
      */
     private function getContent($method)
     {
-        return json_encode([
+        return JSON::encode([
             'message'   => 'No route found for "' . $method . ' /auth/getToken": Method Not Allowed (Allow: POST)',
             'code'      => 0,
             'status'    => 405,
