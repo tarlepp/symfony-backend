@@ -214,6 +214,18 @@ class AuthControllerTest extends WebTestCase
         return [
             ['john', 'doe'],
             ['john.doe@test.com', 'doe'],
+
+            ['john-logged', 'doe-logged'],
+            ['john.doe-logged@test.com', 'doe-logged'],
+
+            ['john-user', 'doe-user'],
+            ['john.doe-user@test.com', 'doe-user'],
+
+            ['john-admin', 'doe-admin'],
+            ['john.doe-admin@test.com', 'doe-admin'],
+
+            ['john-root', 'doe-root'],
+            ['john.doe-root@test.com', 'doe-root'],
         ];
     }
 
