@@ -29,17 +29,16 @@ class GetTokenInput extends AbstractType
                 'username',
                 Type\TextType::class,
                 [
-                    'label'         => 'Username',
-                    'required'      => true,
+                    'label' => 'Username',
+                    'required' => true,
                 ]
             )
             ->add(
                 'password',
                 Type\TextType::class,
                 [
-                    'required'      => true,
+                    'required' => true,
                 ]
-            )
-        ;
+            );
     }
 }
