@@ -33,9 +33,35 @@ class JSONTest extends WebTestCase
      * @param   array $parameters
      * @param   mixed $expected
      */
-    public function testThatDecodeWorksLikeExpected($parameters, $expected)
+    public function testThatDecodeWorksLikeExpected(array $parameters, $expected)
     {
         $this->assertEquals($expected, call_user_func_array('\App\Utils\JSON::decode', $parameters));
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatEncodeThrowsAnExceptionOnMaximumDepth
+     *
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Maximum stack depth exceeded
+     *
+     * @param array $arguments
+     */
+    public function testThatEncodeThrowsAnExceptionOnMaximumDepth(array $arguments)
+    {
+        call_user_func_array('\App\Utils\JSON::encode', $arguments);
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatDecodeThrowsAnExceptionOnMaximumDepth
+     *
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Maximum stack depth exceeded
+     *
+     * @param $arguments
+     */
+    public function testThatDecodeThrowsAnExceptionOnMaximumDepth(array $arguments)
+    {
+        call_user_func_array('\App\Utils\JSON::decode', $arguments);
     }
 
     /**
@@ -93,5 +119,41 @@ class JSONTest extends WebTestCase
         };
 
         return array_map($iterator, $this->dataProviderTestThatEncodeWorksLikeExpected());
+    }
+
+    /**
+     * Date provider for 'testThatEncodeThrowsAnExceptionOnMaximumDepth'
+     *
+     * @return array
+     */
+    public function dataProviderTestThatEncodeThrowsAnExceptionOnMaximumDepth()
+    {
+        return [
+            [
+                [
+                    ['foo' => ['bar' => ['foo' => ['bar' => 'foo']]]],
+                    0,
+                    3,
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * Date provider for 'testThatDecodeThrowsAnExceptionOnMaximumDepth'
+     *
+     * @return array
+     */
+    public function dataProviderTestThatDecodeThrowsAnExceptionOnMaximumDepth()
+    {
+        return [
+            [
+                [
+                    '{"bar":"foo","foo":{"a":"foobar","b":{"c":2}}}',
+                    false,
+                    3,
+                ]
+            ],
+        ];
     }
 }
