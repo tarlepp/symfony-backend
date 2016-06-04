@@ -39,6 +39,7 @@ class GetTokenInput extends AbstractType
                 [
                     'required' => true,
                 ]
-            );
+            )
+        ;
     }
 }
