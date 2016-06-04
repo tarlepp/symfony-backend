@@ -31,7 +31,6 @@ class GetTokenInput extends AbstractType
                 [
                     'label'         => 'Username',
                     'required'      => true,
-                    'description'   => 'Username',
                 ]
             )
             ->add(
@@ -39,7 +38,6 @@ class GetTokenInput extends AbstractType
                 Type\TextType::class,
                 [
                     'required'      => true,
-                    'description'   => 'Password',
                 ]
             )
         ;
