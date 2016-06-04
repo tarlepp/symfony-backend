@@ -29,8 +29,15 @@ before_install:
   - touch app/config/parameters_test.yml
 
 install:
-  - composer install --prefer-dist
+  - composer install
 
 before_script:
   - php bin/console --version
   - php bin/console doctrine:database:create
+
+script:
+ - mkdir -p build/logs
+ - phpunit --coverage-clover build/logs/clover.xml
+
+after_script:
+ - php vendor/bin/coveralls -v
