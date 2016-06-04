@@ -38,4 +38,25 @@ abstract class WebTestCase extends Base
 
         return $this->authService;
     }
+
+    /**
+     * Helper method to get authorized client for specified username and password.
+     *
+     * @param   string  $username
+     * @param   string  $password
+     * @param   array   $options
+     * @param   array   $server
+     *
+     * @return \Symfony\Bundle\FrameworkBundle\Client
+     */
+    public function getClient($username, $password, array $options = [], array $server = [])
+    {
+        return static::createClient(
+            $options,
+            array_merge(
+                $this->getAuthService()->getAuthorizationHeadersForUser($username, $password),
+                $server
+            )
+        );
+    }
 }

@@ -177,10 +177,7 @@ class AuthControllerTest extends WebTestCase
      */
     public function testThatGetAuthProfileReturnsExpectedData($username, $password)
     {
-        $client = static::createClient(
-            [],
-            $this->getAuthService()->getAuthorizationHeadersForUser($username, $password)
-        );
+        $client = $this->getClient($username, $password);
         $client->request(
             'GET',
             '/auth/profile'
