@@ -57,11 +57,37 @@ class JSONTest extends WebTestCase
      * @expectedException \LogicException
      * @expectedExceptionMessage Maximum stack depth exceeded
      *
-     * @param $arguments
+     * @param array $arguments
      */
     public function testThatDecodeThrowsAnExceptionOnMaximumDepth(array $arguments)
     {
         call_user_func_array('\App\Utils\JSON::decode', $arguments);
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatDecodeThrowsAnExceptionOnMalformedJson
+     *
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Syntax error, malformed JSON
+     *
+     * @param string $json
+     */
+    public function testThatDecodeThrowsAnExceptionOnMalformedJson($json)
+    {
+        call_user_func('\App\Utils\JSON::decode', $json);
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatEncodeThrowsAnExceptionOnInvalidUtfCharacters
+     *
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Malformed UTF-8 characters, possibly incorrectly encoded
+     *
+     * @param string $input
+     */
+    public function testThatEncodeThrowsAnExceptionOnInvalidUtfCharacters($input)
+    {
+        var_dump(call_user_func('\App\Utils\JSON::encode', $input));
     }
 
     /**
@@ -140,7 +166,7 @@ class JSONTest extends WebTestCase
     }
 
     /**
-     * Date provider for 'testThatDecodeThrowsAnExceptionOnMaximumDepth'
+     * Data provider for 'testThatDecodeThrowsAnExceptionOnMaximumDepth'
      *
      * @return array
      */
@@ -154,6 +180,33 @@ class JSONTest extends WebTestCase
                     3,
                 ]
             ],
+        ];
+    }
+
+    /**
+     * Data provider for 'testThatDecodeThrowsAnExceptionOnMalformedJson'
+     *
+     * @return array
+     */
+    public function dataProviderTestThatDecodeThrowsAnExceptionOnMalformedJson()
+    {
+        return [
+            ['{foo:bar}'],
+            ["{'foo':'bar'}"],
+            ['{"foo":bar}'],
+            ['{"foo":}'],
+        ];
+    }
+
+    /**
+     * Data provider for 'testThatEncodeThrowsAnExceptionOnInvalidUtfCharacters'
+     *
+     * @return array
+     */
+    public function dataProviderTestThatEncodeThrowsAnExceptionOnInvalidUtfCharacters()
+    {
+        return [
+            ["\xB1\x31"],
         ];
     }
 }
