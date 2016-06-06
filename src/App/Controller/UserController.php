@@ -47,6 +47,7 @@ class UserController extends Rest
     /**
      * {@inheritdoc}
      *
+     * @Route("")
      * @Route("/")
      *
      * @Method({"GET"})
