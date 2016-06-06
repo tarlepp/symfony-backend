@@ -26,6 +26,7 @@
                 <directory>src/*Bundle/Resources</directory>
                 <directory>src/*/*Bundle/Resources</directory>
                 <directory>src/*/Bundle/*Bundle/Resources</directory>
+                <directory>src/*/Tests/*</directory>
             </exclude>
         </whitelist>
     </filter>
