@@ -82,7 +82,7 @@ class UserController extends Rest
      */
     public function findOne(Request $request, $id)
     {
-        parent::findOne($request, $id);
+        return parent::findOne($request, $id);
     }
 
     /**

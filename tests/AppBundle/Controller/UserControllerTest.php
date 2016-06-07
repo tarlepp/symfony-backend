@@ -73,6 +73,75 @@ class UserControllerTest extends WebTestCase
     }
 
     /**
+     * @dataProvider dataProviderTestThatOnlyAdminUsersCanListUsers
+     *
+     * @param   string  $username
+     * @param   string  $password
+     * @param   integer $expectedStatus
+     */
+    public function testThatOnlyAdminUsersCanGetSingleUserData($username, $password, $expectedStatus)
+    {
+        // Create request
+        $client = $this->getClient($username, $password);
+        $client->request('GET', '/user/1');
+
+        // Check that HTTP status code is correct
+        $this->assertEquals(
+            $expectedStatus,
+            $client->getResponse()->getStatusCode(),
+            'HTTP status code was not expected for /user request\n' . $client->getResponse()
+        );
+
+        // Get response data
+        $responseData = JSON::decode($client->getResponse()->getContent());
+
+        // Forbidden request - not admin user
+        if ($expectedStatus === Response::HTTP_FORBIDDEN) {
+            $attributes = ['message', 'status', 'code'];
+
+            foreach ($attributes as $attribute) {
+                $this->assertObjectHasAttribute(
+                    $attribute,
+                    $responseData,
+                    'Response did not contain expected attribute'
+                );
+            }
+
+            // Get response object keys
+            $keys = array_keys(get_object_vars($responseData));
+
+            $this->assertEquals(
+                sort($attributes),
+                sort($keys),
+                'Response contains keys that are not expected'
+            );
+
+            $this->assertEquals('Access denied.', $responseData->message);
+            $this->assertEquals('403', $responseData->status);
+            $this->assertEquals('0', $responseData->code);
+        } else { // Otherwise check that response has correct output
+            $attributes = ['id', 'username', 'firstname', 'surname', 'email', 'createdAt', 'updatedAt'];
+
+            foreach ($attributes as $attribute) {
+                $this->assertObjectHasAttribute(
+                    $attribute,
+                    $responseData,
+                    'Response did not contain expected attribute'
+                );
+            }
+
+            // Get response object keys
+            $keys = array_keys(get_object_vars($responseData));
+
+            $this->assertEquals(
+                sort($attributes),
+                sort($keys),
+                'Response contains keys that are not expected'
+            );
+        }
+    }
+
+    /**
      * Data provider method for 'testThatOnlyAdminUsersCanListUsers' test
      *
      * @return array
