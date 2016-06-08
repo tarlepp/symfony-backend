@@ -8,6 +8,7 @@ namespace App\Repository;
 
 use App\Entity;
 use App\Entity\Interfaces\EntityInterface;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Composite as CompositeExpression;
 use Doctrine\ORM\QueryBuilder;
@@ -147,7 +148,11 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     }
 
     /**
-     * TODO convert findBy $criteria array to correct format !
+     * Process given criteria which is given by ?where parameter. This is given as JSON string, which is converted
+     * to assoc array for this process.
+     *
+     * TODO Implement more complex handlers
+     *  - Add support for ?where={"and": [{"c": "foo", "v": "bar"},{"c": "foo", "v": "bar", "o": "in"}] ... "}
      *
      * @param   QueryBuilder    $queryBuilder
      * @param   array           $criteria
@@ -156,7 +161,38 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      */
     protected function processCriteria(QueryBuilder $queryBuilder, array $criteria)
     {
-        //$queryBuilder->where($this->getExpression($queryBuilder, $queryBuilder->expr()->andX(), $criteria));
+        // Initialize condition array
+        $condition = [];
+
+        /**
+         * Lambda function to create condition array for 'getExpression' method.
+         *
+         * @param   mixed   $value
+         * @param   string  $column
+         */
+        $createCriteria = function ($value, $column) use (&$condition) {
+            if (strpos($column, '.') === false) {
+                $column = 'entity.' . $column;
+            }
+
+            // Determine used operator
+            $operator = is_array($value) ? 'in' : 'eq';
+
+            // Add condition
+            $condition[] = [$column, $operator, $value];
+        };
+
+        // Create used condition array
+        array_walk($criteria, $createCriteria);
+
+        // And attach search term condition to main query
+        $queryBuilder->andWhere(
+            $this->getExpression(
+                $queryBuilder,
+                $queryBuilder->expr()->andX(),
+                ['and' => $condition]
+            )
+        );
     }
 
     /**
@@ -280,8 +316,15 @@ abstract class Base extends EntityRepository implements Interfaces\Base
                 } else {
                     list($field, $operator, $value) = $comparison;
 
+                    $literal = function ($value) use ($queryBuilder) {
+                        return  $queryBuilder->expr()->literal($value);
+                    };
+
                     $expression->add(
-                        $queryBuilder->expr()->{$operator}($field, $queryBuilder->expr()->literal($value))
+                        $queryBuilder->expr()->{$operator}(
+                            $field,
+                            is_array($value) ? array_map($literal, $value) : $queryBuilder->expr()->literal($value)
+                        )
                     );
                 }
             }

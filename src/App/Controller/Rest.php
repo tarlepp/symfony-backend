@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class Rest
@@ -300,9 +301,13 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      */
     private function getCriteria(Request $request)
     {
-        // TODO implement actual functionality
+        try {
+            $userInput = array_filter(JSON::decode($request->get('where', '{}'), true));
+        } catch (\LogicException $error) {
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'Current \'where\' parameter is not valid JSON.');
+        }
 
-        return [];
+        return $userInput;
     }
 
     /**
