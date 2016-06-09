@@ -227,6 +227,10 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      * Method to process current 'criteria' array before 'find' and 'count' methods. Actual criteria is an array which
      * is parsed parsed from request ?where parameter.
      *
+     * This is usefully when you need to make custom query criteria for your REST find/count query.
+     *
+     * @see \App\Repository\Base::processCriteria
+     *
      * @param   array   $criteria
      *
      * @return  void
