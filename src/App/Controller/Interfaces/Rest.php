@@ -116,4 +116,14 @@ interface Rest
      * @return  Response
      */
     public function delete(Request $request, $id);
+
+    /**
+     * Method to process current 'criteria' array before 'find' and 'count' methods. Actual criteria is an array which
+     * is parsed parsed from request ?where parameter.
+     *
+     * @param   array   $criteria
+     *
+     * @return  void
+     */
+    public function processCriteria(array &$criteria);
 }

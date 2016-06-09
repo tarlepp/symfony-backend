@@ -164,26 +164,31 @@ abstract class Base extends EntityRepository implements Interfaces\Base
         // Initialize condition array
         $condition = [];
 
-        /**
-         * Lambda function to create condition array for 'getExpression' method.
-         *
-         * @param   mixed   $value
-         * @param   string  $column
-         */
-        $createCriteria = function ($value, $column) use (&$condition) {
-            if (strpos($column, '.') === false) {
-                $column = 'entity.' . $column;
-            }
+        // If criteria contains 'and' OR 'or' key(s) assume that array in only in the right format
+        if (array_key_exists('and', $criteria) || array_key_exists('or', $criteria)) {
+            $condition = $criteria;
+        } else { // Otherwise create default format
+            /**
+             * Lambda function to create condition array for 'getExpression' method.
+             *
+             * @param   mixed   $value
+             * @param   string  $column
+             */
+            $createCriteria = function ($value, $column) use (&$condition) {
+                if (strpos($column, '.') === false) {
+                    $column = 'entity.' . $column;
+                }
 
-            // Determine used operator
-            $operator = is_array($value) ? 'in' : 'eq';
+                // Determine used operator
+                $operator = is_array($value) ? 'in' : 'eq';
 
-            // Add condition
-            $condition[] = [$column, $operator, $value];
-        };
+                // Add condition
+                $condition[] = [$column, $operator, $value];
+            };
 
-        // Create used condition array
-        array_walk($criteria, $createCriteria);
+            // Create used condition array
+            array_walk($criteria, $createCriteria);
+        }
 
         // And attach search term condition to main query
         $queryBuilder->andWhere(

@@ -80,6 +80,10 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
         $offset     = $this->getOffset($request);
         $search     = $this->getSearchTerms($request);
 
+        if (method_exists($this, 'processCriteria')) {
+            $this->processCriteria($criteria);
+        }
+
         // Fetch data from database
         $data = $this->getService()->find($criteria, $orderBy, $limit, $offset, $search);
 
@@ -129,6 +133,10 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
         // Determine used parameters
         $criteria   = $this->getCriteria($request);
         $search     = $this->getSearchTerms($request);
+
+        if (method_exists($this, 'processCriteria')) {
+            $this->processCriteria($criteria);
+        }
 
         $data = [
             'count' => $this->getService()->count($criteria, $search),
@@ -213,6 +221,18 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
         $entity = $this->getService()->delete($id);
 
         return $this->createResponse($request, $entity);
+    }
+
+    /**
+     * Method to process current 'criteria' array before 'find' and 'count' methods. Actual criteria is an array which
+     * is parsed parsed from request ?where parameter.
+     *
+     * @param   array   $criteria
+     *
+     * @return  void
+     */
+    public function processCriteria(array &$criteria)
+    {
     }
 
     /**
