@@ -229,6 +229,8 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      * Helper method to process given search terms and create criteria about those. Note that each repository
      * has 'searchColumns' property which contains the fields where search term will be affected.
      *
+     * @see App\Controller\Rest::getSearchTerms
+     *
      * @param   QueryBuilder $queryBuilder
      * @param   array        $searchTerms
      *
@@ -257,17 +259,20 @@ abstract class Base extends EntityRepository implements Interfaces\Base
             return array_map($iteratorColumn, $columns);
         };
 
-        // Create search criteria for each search term
-        $searchCriteria = array_map($iteratorTerm, $searchTerms);
+        // Iterate given search terms
+        foreach ($searchTerms as $operand => $terms) {
+            // Create search criteria for each search term
+            $searchCriteria = array_map($iteratorTerm, $terms);
 
-        if (count($searchCriteria)) {
-            // Create used criteria array
-            $criteria = [
-                'or' => call_user_func_array('array_merge', $searchCriteria)
-            ];
+            if (count($searchCriteria)) {
+                // Create used criteria array
+                $criteria = [
+                    $operand => call_user_func_array('array_merge', $searchCriteria)
+                ];
 
-            // And attach search term condition to main query
-            $queryBuilder->andWhere($this->getExpression($queryBuilder, $queryBuilder->expr()->andX(), $criteria));
+                // And attach search term condition to main query
+                $queryBuilder->andWhere($this->getExpression($queryBuilder, $queryBuilder->expr()->andX(), $criteria));
+            }
         }
     }
 

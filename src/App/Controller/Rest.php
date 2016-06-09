@@ -417,6 +417,10 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     /**
      * Getter method for used search terms within 'find' method.
      *
+     * @todo improve docs about different use cases.
+     *
+     * @see App\Repository\Base::processSearchTerms
+     *
      * @param   Request $request
      *
      * @return  null|string[]
@@ -426,7 +430,39 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
         $search = $request->get('search', null);
 
         if (!is_null($search)) {
-            $search = array_unique(array_filter(explode(' ', $search)));
+            try {
+                $input = JSON::decode($search, true);
+
+                if (!array_key_exists('and', $input) && !array_key_exists('or', $input)) {
+                    throw new HttpException(
+                        Response::HTTP_BAD_REQUEST,
+                        'Given search parameter is not valid, within JSON provide \'and\' and/or \'or\' property.'
+                    );
+                }
+
+                /**
+                 * Lambda function to normalize JSON search terms.
+                 *
+                 * @param   string|array $terms
+                 */
+                $iterator = function (&$terms) {
+                    if (!is_array($terms)) {
+                        $terms = explode(' ', (string)$terms);
+                    }
+
+                    $terms = array_unique(array_filter($terms));
+                };
+
+                // Normalize user input, note that this support array and string formats on value
+                array_walk($input, $iterator);
+
+                $search = $input;
+            } catch (\LogicException $error) {
+                // By default we want to use 'OR' operand with given search words.
+                $search = [
+                    'or' => array_unique(array_filter(explode(' ', $search)))
+                ];
+            }
         }
 
         return $search;
