@@ -387,7 +387,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
                             $this->parameterCount++;
 
                             $parameters[] = '?' . $this->parameterCount;
-                            $queryBuilder->setParameter($this->parameterCount, $value[0]);
+                            $queryBuilder->setParameter($this->parameterCount, $value[1]);
                         } else { // Otherwise this must be IN or NOT IN expression
                             $parameters[] = array_map(function ($value) use ($queryBuilder) {
                                 return  $queryBuilder->expr()->literal($value);
