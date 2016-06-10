@@ -8,7 +8,6 @@ namespace App\Repository;
 
 use App\Entity;
 use App\Entity\Interfaces\EntityInterface;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Composite as CompositeExpression;
 use Doctrine\ORM\QueryBuilder;
