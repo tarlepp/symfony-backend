@@ -352,55 +352,49 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      */
     protected function getExpression(QueryBuilder $queryBuilder, CompositeExpression $expression, array $criteria)
     {
-        if (count($criteria)) {
-            foreach ($criteria as $key => $comparison) {
-                if ($key === 'or') {
-                    $expression->add($this->getExpression(
-                        $queryBuilder,
-                        $queryBuilder->expr()->orX(),
-                        $comparison
-                    ));
-                } elseif ($key === 'and') {
-                    $expression->add($this->getExpression(
-                        $queryBuilder,
-                        $queryBuilder->expr()->andX(),
-                        $comparison
-                    ));
-                } else {
-                    // list used field, operator and value
-                    list($field, $operator, $value) = $comparison;
+        if (!count($criteria)) {
+            return $expression;
+        }
 
-                    // Increase parameter count
-                    $this->parameterCount++;
+        foreach ($criteria as $key => $comparison) {
+            if ($key === 'or' || array_key_exists('or', $comparison)) {
+                $expression->add($this->getExpression($queryBuilder, $queryBuilder->expr()->orX(), $comparison));
+            } elseif ($key === 'and' || array_key_exists('and', $comparison)) {
+                $expression->add($this->getExpression($queryBuilder, $queryBuilder->expr()->andX(), $comparison));
+            } else {
+                // list used field, operator and value
+                list($field, $operator, $value) = $comparison;
 
-                    // Initialize used callback parameters
-                    $parameters = [$field];
+                // Increase parameter count
+                $this->parameterCount++;
 
-                    // Array values needs some extra work
-                    if (is_array($value)) {
-                        // Operator is between, so we need to add third parameter for Expr method
-                        if (strtolower($operator) === 'between') {
-                            $parameters[] = '?' . $this->parameterCount;
-                            $queryBuilder->setParameter($this->parameterCount, $value[0]);
+                // Initialize used callback parameters
+                $parameters = [$field];
 
-                            $this->parameterCount++;
-
-                            $parameters[] = '?' . $this->parameterCount;
-                            $queryBuilder->setParameter($this->parameterCount, $value[1]);
-                        } else { // Otherwise this must be IN or NOT IN expression
-                            $parameters[] = array_map(function ($value) use ($queryBuilder) {
-                                return  $queryBuilder->expr()->literal($value);
-                            }, $value);
-                        }
-                    } else { // And with "normal" case just add parameter and set it to query builder
+                // Array values needs some extra work
+                if (is_array($value)) {
+                    // Operator is between, so we need to add third parameter for Expr method
+                    if (strtolower($operator) === 'between') {
                         $parameters[] = '?' . $this->parameterCount;
+                        $queryBuilder->setParameter($this->parameterCount, $value[0]);
 
-                        $queryBuilder->setParameter($this->parameterCount, $value);
+                        $this->parameterCount++;
+
+                        $parameters[] = '?' . $this->parameterCount;
+                        $queryBuilder->setParameter($this->parameterCount, $value[1]);
+                    } else { // Otherwise this must be IN or NOT IN expression
+                        $parameters[] = array_map(function ($value) use ($queryBuilder) {
+                            return  $queryBuilder->expr()->literal($value);
+                        }, $value);
                     }
+                } else { // And with "normal" case just add parameter and set it to query builder
+                    $parameters[] = '?' . $this->parameterCount;
 
-                    // And finally add new expression to main one with specified parameters
-                    $expression->add(call_user_func_array([$queryBuilder->expr(), $operator], $parameters));
+                    $queryBuilder->setParameter($this->parameterCount, $value);
                 }
+
+                // And finally add new expression to main one with specified parameters
+                $expression->add(call_user_func_array([$queryBuilder->expr(), $operator], $parameters));
             }
         }
 
