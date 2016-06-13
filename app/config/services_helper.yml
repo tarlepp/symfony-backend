@@ -5,3 +5,7 @@ services:
     app.services.helper.roles:
         class: App\Services\Helper\Roles
         arguments: [ '%security.role_hierarchy.roles%' ]
+
+    app.services.helper.search_term:
+        class: App\Services\Helper\SearchTerm
+
