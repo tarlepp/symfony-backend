@@ -22,7 +22,6 @@ matrix:
   fast_finish: true
 
 before_install:
-  - phpenv config-rm xdebug.ini || true
   - openssl genrsa -out app/var/jwt/private.pem -aes256 -passout pass:thisisfortests 4096
   - openssl rsa -pubout -in app/var/jwt/private.pem -out app/var/jwt/public.pem -passin pass:thisisfortests
   - cp app/config/parameters.yml.travis app/config/parameters.yml
