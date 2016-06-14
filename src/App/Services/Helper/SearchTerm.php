@@ -86,6 +86,11 @@ class SearchTerm
         // Initialize output
         $output = null;
 
+        // Fallback to OR operand if not supported one given
+        if ($operand !== self::OPERAND_AND && $operand !== self::OPERAND_OR) {
+            $operand = self::OPERAND_OR;
+        }
+
         // We have some generated criteria
         if (count($criteria)) {
             // Create used criteria array
