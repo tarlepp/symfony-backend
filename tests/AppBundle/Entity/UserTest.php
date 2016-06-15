@@ -65,6 +65,27 @@ class UserTest extends EntityTestCase
         $this->assertEmpty($this->entity->getPlainPassword());
     }
 
+    public function testThatUserEntityCanBeSerializedAndUnSerializedAsExpected()
+    {
+        // First set some data for entity
+        $this->entity->setUsername('john');
+        $this->entity->setPassword('str_rot13', 'password');
+
+        // Assert that serialization is returning expected value
+        $this->assertEquals(
+            'C:15:"App\Entity\User":46:{a:3:{i:0;N;i:1;s:4:"john";i:2;s:8:"cnffjbeq";}}',
+            serialize($this->entity)
+        );
+
+        /** @var User $entity */
+        $entity = unserialize('C:15:"App\Entity\User":46:{a:3:{i:0;N;i:1;s:4:"john";i:2;s:8:"cnffjbeq";}}');
+
+        // Assert that unserialized object returns expected data
+        $this->assertEquals(null, $entity->getId());
+        $this->assertEquals('john', $entity->getUsername());
+        $this->assertEquals('cnffjbeq', $entity->getPassword());
+    }
+
     /**
      * Data provider for testThatPasswordHashingIsWorkingAsExpected
      *
