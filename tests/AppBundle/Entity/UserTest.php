@@ -41,6 +41,30 @@ class UserTest extends EntityTestCase
         $this->assertEquals($expected, $this->entity->getPassword());
     }
 
+    public function testThatSetPlainPasswordIsWorkingAsExpected()
+    {
+        // First set new password
+        $this->entity->setPassword('str_rot13', 'password');
+
+        // Set plain password
+        $this->entity->setPlainPassword('plainPassword');
+
+        $this->assertEmpty($this->entity->getPassword());
+        $this->assertEquals('plainPassword', $this->entity->getPlainPassword());
+    }
+
+    public function testThatSetEmptyPlainPasswordDoesNotResetPassword()
+    {
+        // First set new password
+        $this->entity->setPassword('str_rot13', 'password');
+
+        // Set plain password
+        $this->entity->setPlainPassword('');
+
+        $this->assertNotEmpty($this->entity->getPassword());
+        $this->assertEmpty($this->entity->getPlainPassword());
+    }
+
     /**
      * Data provider for testThatPasswordHashingIsWorkingAsExpected
      *
