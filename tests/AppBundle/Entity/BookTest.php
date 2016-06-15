@@ -1,29 +1,29 @@
 <?php
 /**
- * /tests/AppBundle/Entity/AuthorTest.php
+ * /tests/AppBundle/Entity/BookTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 namespace AppBundle\Entity;
 
-use App\Entity\Author;
+use App\Entity\Book;
 use App\Tests\EntityTestCase;
 
 /**
- * Class AuthorTest
+ * Class BookTest
  *
  * @package AppBundle\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class AuthorTest extends EntityTestCase
+class BookTest extends EntityTestCase
 {
     /**
-     * @var Author
+     * @var Book
      */
     protected $entity;
 
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\Author';
+    protected $entityName = 'App\Entity\Book';
 }
