@@ -49,7 +49,7 @@ abstract class EntityTestCase extends KernelTestCase
         self::bootKernel();
 
         // Store container and entity manager
-        $this->container = self::$kernel->getContainer();
+        $this->container = static::$kernel->getContainer();
         $this->entityManager = $this->container->get('doctrine.orm.default_entity_manager');
 
         // Create new entity object
@@ -62,6 +62,9 @@ abstract class EntityTestCase extends KernelTestCase
     public function tearDown()
     {
         parent::tearDown();
+
+        $this->entityManager->close();
+        $this->entityManager = null; // avoid memory leaks
 
         self::$kernel->shutdown();
     }
@@ -157,7 +160,7 @@ abstract class EntityTestCase extends KernelTestCase
         self::bootKernel();
 
         // Get entity manager
-        $entityManager = self::$kernel->getContainer()->get('doctrine.orm.default_entity_manager');
+        $entityManager = static::$kernel->getContainer()->get('doctrine.orm.default_entity_manager');
 
         // Get entity class meta data
         $meta = $entityManager->getClassMetadata($this->entityName);
@@ -210,6 +213,11 @@ abstract class EntityTestCase extends KernelTestCase
         $filter = function ($field) use ($fieldsToOmit) {
             return !in_array($field, $fieldsToOmit);
         };
+
+        $entityManager->close();
+        $entityManager = null; // avoid memory leaks
+
+        self::$kernel->shutdown();
 
         return array_map($iterator, array_filter($meta->getFieldNames(), $filter));
     }
