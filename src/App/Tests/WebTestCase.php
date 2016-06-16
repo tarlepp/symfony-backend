@@ -8,6 +8,7 @@ namespace App\Tests;
 
 use App\Tests\Helpers\Auth;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as Base;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class WebTestCase
@@ -23,6 +24,27 @@ abstract class WebTestCase extends Base
     private $authService;
 
     /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
+     * Getter method for container
+     *
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        if (!($this->container instanceof ContainerInterface)) {
+            self::bootKernel();
+
+            $this->container = static::$kernel->getContainer();
+        }
+
+        return $this->container;
+    }
+
+    /**
      * Getter method for auth service
      *
      * @return Auth
@@ -33,7 +55,7 @@ abstract class WebTestCase extends Base
             // We need to boot kernel up to get auth service
             self::bootKernel();
 
-            $this->authService = static::$kernel->getContainer()->get('app.services.tests.helpers.auth');
+            $this->authService = $this->getContainer()->get('app.services.tests.helpers.auth');
         }
 
         return $this->authService;
