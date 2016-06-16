@@ -39,8 +39,15 @@ class PlaygroundController extends Controller
      */
     public function testAction(Request $request)
     {
+        $searchTerm = $this->container->get('app.services.helper.search_term');
+
         $content = 'This is a playground';
 
-        return new Response($content, 200);
+        $content = $searchTerm->getCriteria(['c1', 'c2'], ['dd', '', 'aa', null]);
+
+        dump($content);
+        die();
+
+        return new Response(json_encode($content), 200);
     }
 }
