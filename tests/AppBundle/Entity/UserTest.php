@@ -86,6 +86,16 @@ class UserTest extends EntityTestCase
         $this->assertEquals('cnffjbeq', $entity->getPassword());
     }
 
+    public function testThatGetUserGroupsReturnsInstanceOfArrayCollection()
+    {
+        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $this->entity->getUserGroups());
+    }
+
+    public function testThatGetRolesReturnsAnArray()
+    {
+        $this->assertInternalType('array', $this->entity->getRoles());
+    }
+
     /**
      * Data provider for testThatPasswordHashingIsWorkingAsExpected
      *
