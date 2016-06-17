@@ -115,6 +115,13 @@ $ ./bin/console doctrine:migrations:diff
 
 With this you won't need to write those migration files by yourself, just let doctrine handle those - although remember to really look what those generated migration files really contains...
 
+### Tests
+Project contains bunch of tests (unit, functional, e2e, etc.) which you can run simply by following command:
+
+```bash
+phpunit
+```
+
 ## Useful resources + tips
 * [Symfony Development using PhpStorm](http://blog.jetbrains.com/phpstorm/2014/08/symfony-development-using-phpstorm/) - Guide to configure your PhpStorm for Symfony development
 * [PHP Annotations plugin for PhpStorm](https://plugins.jetbrains.com/plugin/7320) - PhpStorm plugin to make annotations really work
