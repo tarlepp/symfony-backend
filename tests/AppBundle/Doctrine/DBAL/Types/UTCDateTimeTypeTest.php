@@ -97,6 +97,32 @@ class UTCDateTimeTypeTest extends ContainerTestCase
 
     public function dataProviderTestThatConvertToDatabaseValueMethodWorks()
     {
+        return self::getTestValues();
+    }
+
+    public function dataProviderTestThatConvertToPHPValueMethodWorks()
+    {
+        $iterator = function (array $values) {
+            return [
+                $values[1],
+                $values[0],
+            ];
+        };
+
+        return array_map($iterator, self::getTestValues());
+    }
+
+    public function dataProviderTestThatConvertToPHPValueMethodThrowsAnError()
+    {
+        return [
+            ['2016-03-05 xx 16:35:00'],
+            ['2016-03-xx 16:35:00'],
+            [''],
+        ];
+    }
+
+    private static function getTestValues()
+    {
         return [
             [
                 new \DateTime('2016-03-05 18:35:00', new \DateTimeZone('Europe/Helsinki')),
@@ -110,29 +136,6 @@ class UTCDateTimeTypeTest extends ContainerTestCase
                 new \DateTime('2016-06-18 18:35:00', new \DateTimeZone('UTC')),
                 '2016-06-18 18:35:00',
             ],
-        ];
-    }
-
-    public function dataProviderTestThatConvertToPHPValueMethodWorks()
-    {
-        return [
-            [
-                '2016-03-05 16:35:00',
-                new \DateTime('2016-03-05 16:35:00'),
-            ],
-            [
-                '2016-06-18 15:35:00',
-                new \DateTime('2016-06-18 15:35:00'),
-            ],
-        ];
-    }
-
-    public function dataProviderTestThatConvertToPHPValueMethodThrowsAnError()
-    {
-        return [
-            ['2016-03-05 xx 16:35:00'],
-            ['2016-03-xx 16:35:00'],
-            [''],
         ];
     }
 }
