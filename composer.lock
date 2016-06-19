@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "989581bebf54d8f1fe73f7f1748007b4",
-    "content-hash": "4f3d4bef56dc107c1113edab4632c377",
+    "hash": "452b286544e12acc34ed1ff8d3c09faa",
+    "content-hash": "4c613de0a1c575c71c0fe12394d885a2",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1612,16 +1612,16 @@
         },
         {
             "name": "matthiasnoback/symfony-console-form",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/symfony-console-form.git",
-                "reference": "ecf8a8a2910f8e3ddbde7fd93f6ebabccd9fbd98"
+                "reference": "7125849537045710d1d92a61837d677f9dac33b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/ecf8a8a2910f8e3ddbde7fd93f6ebabccd9fbd98",
-                "reference": "ecf8a8a2910f8e3ddbde7fd93f6ebabccd9fbd98",
+                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/7125849537045710d1d92a61837d677f9dac33b9",
+                "reference": "7125849537045710d1d92a61837d677f9dac33b9",
                 "shasum": ""
             },
             "require": {
@@ -1664,7 +1664,7 @@
                 "form",
                 "symfony"
             ],
-            "time": "2016-05-06 08:52:47"
+            "time": "2016-06-18 18:47:26"
         },
         {
             "name": "michelf/php-markdown",
@@ -1909,12 +1909,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "a3a9bb3b700f3ebaed95390292dad23f8141afa0"
+                "reference": "463dea9af6bc182a3958df5d62f4592c8724ce06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/a3a9bb3b700f3ebaed95390292dad23f8141afa0",
-                "reference": "a3a9bb3b700f3ebaed95390292dad23f8141afa0",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/463dea9af6bc182a3958df5d62f4592c8724ce06",
+                "reference": "463dea9af6bc182a3958df5d62f4592c8724ce06",
                 "shasum": ""
             },
             "require": {
@@ -1985,7 +1985,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2016-06-13 09:12:09"
+            "time": "2016-06-16 15:04:18"
         },
         {
             "name": "nelmio/cors-bundle",

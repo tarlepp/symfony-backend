@@ -78,6 +78,16 @@ abstract class Rest implements Interfaces\Rest
     }
 
     /**
+     * Getter method for entity repository.
+     *
+     * @return  AppEntityRepository|EntityRepository
+     */
+    public function getRepository()
+    {
+        return $this->repository;
+    }
+
+    /**
      * Getter method for all associations that current entity contains.
      *
      * @return array

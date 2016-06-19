@@ -7,6 +7,7 @@
 namespace App\Command\User;
 
 use App\Entity\User;
+use App\Entity\UserGroup;
 use App\Form\Console\UserData;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -67,8 +68,19 @@ class EditUserCommand extends Base
         /** @var User $user */
 
         $dto = $this->getUserDto($user);
-        // Note this is just a workaround, see https://github.com/matthiasnoback/symfony-console-form/issues/16
-        $dto->userGroups = null;
+
+        /**
+         * Lambda function to get user group id values.
+         *
+         * @param   UserGroup   $userGroup
+         * @return  integer
+         */
+        $iterator = function (UserGroup $userGroup) {
+            return $userGroup->getId();
+        };
+
+        // Set user groups
+        $dto->userGroups = array_map($iterator, $user->getUserGroups()->toArray());
 
         /** @var UserData $dto */
         $dto = $this->getHelper('form')->interactUsingForm(

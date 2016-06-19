@@ -7,6 +7,7 @@
 namespace App\Services\Interfaces;
 
 use App\Entity\Interfaces\EntityInterface as Entity;
+use App\Repository\Base as AppEntityRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
@@ -47,6 +48,13 @@ interface Rest
      * @return  bool|\Doctrine\Common\Proxy\Proxy|null|object
      */
     public function getReference($id);
+
+    /**
+     * Getter method for entity repository.
+     *
+     * @return  AppEntityRepository|EntityRepository
+     */
+    public function getRepository();
 
     /**
      * Getter method for all associations that current entity contains.
