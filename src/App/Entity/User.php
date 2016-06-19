@@ -354,21 +354,6 @@ class User implements EntityInterface, UserInterface, \Serializable
     }
 
     /**
-     * Simple method to get 'string' presentation about the current record.
-     *
-     * @return  string
-     */
-    public function getRecordTitle()
-    {
-        $parts = [
-            $this->getId(),
-            $this->getUsername(),
-        ];
-
-        return implode(' - ', $parts);
-    }
-
-    /**
      * Setter for username.
      *
      * @param   string  $username

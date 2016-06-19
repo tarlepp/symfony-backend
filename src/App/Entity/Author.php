@@ -158,21 +158,6 @@ class Author implements EntityInterface
     }
 
     /**
-     * Simple method to get 'string' presentation about the current record.
-     *
-     * @return  string
-     */
-    public function getRecordTitle()
-    {
-        $parts = [
-            $this->getId(),
-            $this->getName(),
-        ];
-
-        return implode(' - ', $parts);
-    }
-
-    /**
      * Set name
      *
      * @param string $name

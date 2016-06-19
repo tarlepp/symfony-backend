@@ -9,6 +9,7 @@ namespace App\Command\User;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\User as EntityUser;
 use App\Entity\UserGroup as EntityUserGroup;
+use App\Entity\UserGroup;
 use App\Form\Console\UserData;
 use App\Form\Console\UserGroupData;
 use App\Services\User as ServiceUser;
@@ -372,16 +373,23 @@ abstract class Base extends ContainerAwareCommand
 
             // And we have many-to-many records so map those to get string presentation of each records
             if ($value instanceof PersistentCollection) {
-                $iterator = function (EntityInterface $entity) {
-                    return $entity->getRecordTitle();
+                $iterator = function (UserGroup $entity) {
+                    $data = [
+                        $entity->getId(),
+                        $entity->getName(),
+                        $entity->getRole()
+                    ];
+
+                    return implode(' - ', $data);
                 };
 
+                //$value = implode(' - ', array_map($iterator, $value->toArray()));
                 $value = array_map($iterator, $value->toArray());
             }
 
             return [
                 $attribute,
-                is_array($value) ? implode(', ', $value) : $value,
+                is_array($value) ? implode(",\n", $value) : $value,
             ];
         };
 

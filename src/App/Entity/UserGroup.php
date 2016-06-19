@@ -184,22 +184,6 @@ class UserGroup implements EntityInterface, RoleInterface
     }
 
     /**
-     * Simple method to get 'string' presentation about the current record.
-     *
-     * @return  string
-     */
-    public function getRecordTitle()
-    {
-        $parts = [
-            $this->getId(),
-            $this->getName(),
-            $this->getRole(),
-        ];
-
-        return implode(' - ', $parts);
-    }
-
-    /**
      * Setter for group name.
      *
      * @param   string  $name

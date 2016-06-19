@@ -524,16 +524,6 @@ class UserLogin implements EntityInterface
     }
 
     /**
-     * Simple method to get 'string' presentation about the current record.
-     *
-     * @return  string
-     */
-    public function getRecordTitle()
-    {
-        // TODO: Implement getRecordTitle() method.
-    }
-
-    /**
      * @param UserInterface $user
      *
      * @return UserLogin
