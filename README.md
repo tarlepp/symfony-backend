@@ -128,7 +128,7 @@ phpunit
 * Use 1.1-dev version of composer, so that you can use ```php composer.phar outdated``` command to check package versions
 
 ## Contributing & issues & questions
-Please see the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
+Please see the [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for guidelines.
 
 ## Author
 [Tarmo Leppänen](https://github.com/tarlepp)
