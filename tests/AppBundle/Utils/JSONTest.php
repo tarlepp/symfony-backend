@@ -87,7 +87,7 @@ class JSONTest extends WebTestCase
      */
     public function testThatEncodeThrowsAnExceptionOnInvalidUtfCharacters($input)
     {
-        var_dump(call_user_func('\App\Utils\JSON::encode', $input));
+        call_user_func('\App\Utils\JSON::encode', $input);
     }
 
     /**
@@ -207,6 +207,7 @@ class JSONTest extends WebTestCase
     {
         return [
             ["\xB1\x31"],
+            [mb_convert_encoding('{"data":"äöäö"}', 'ISO-8859-15', 'UTF8')]
         ];
     }
 }
