@@ -19,17 +19,25 @@ class TimestampableTest extends EntityTestCase
 
     public function testThatGetCreatedAtJsonReturnsExpected()
     {
-        $this->entity->setCreatedAt(new \DateTime());
+        $this->entity->setCreatedAt(new \DateTime('2016-06-20 18:00:35'));
 
-        $this->assertInstanceOf('\DateTime', $this->entity->getCreatedAt());
-        $this->assertEquals('UTC', $this->entity->getCreatedAt()->getTimezone()->getName());
+        $this->assertEquals('2016-06-20T18:00:35+00:00', $this->entity->getCreatedAtJson());
+
+        $this->assertEquals(
+            new \DateTime('2016-06-20 18:00:35'),
+            \DateTime::createFromFormat(\DATE_RFC3339, $this->entity->getCreatedAtJson())
+        );
     }
 
     public function testThatGetUpdatedAtJsonReturnsExpected()
     {
-        $this->entity->setUpdatedAt(new \DateTime());
+        $this->entity->setUpdatedAt(new \DateTime('2016-06-20 18:00:35'));
 
-        $this->assertInstanceOf('\DateTime', $this->entity->getUpdatedAt());
-        $this->assertEquals('UTC', $this->entity->getUpdatedAt()->getTimezone()->getName());
+        $this->assertEquals('2016-06-20T18:00:35+00:00', $this->entity->getUpdatedAtJson());
+
+        $this->assertEquals(
+            new \DateTime('2016-06-20 18:00:35'),
+            \DateTime::createFromFormat(\DATE_RFC3339, $this->entity->getUpdatedAtJson())
+        );
     }
 }
