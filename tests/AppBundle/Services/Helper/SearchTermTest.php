@@ -1,10 +1,10 @@
 <?php
 /**
- * /tests/AppBundle/Utils/Helpers/SearchTermTest.php
+ * /tests/AppBundle/Services/Helper/SearchTermTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace Tests\AppBundle\Utils\Helpers;
+namespace Tests\AppBundle\Services\Helpers;
 
 use App\Services\Helper\SearchTerm;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
