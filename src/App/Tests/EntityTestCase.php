@@ -7,7 +7,9 @@
 namespace App\Tests;
 
 use App\Entity\Interfaces\EntityInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -40,6 +42,11 @@ abstract class EntityTestCase extends KernelTestCase
     protected $entityName;
 
     /**
+     * @var \Doctrine\ORM\EntityRepository
+     */
+    protected $repository;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
@@ -54,6 +61,8 @@ abstract class EntityTestCase extends KernelTestCase
 
         // Create new entity object
         $this->entity = new $this->entityName();
+
+        $this->repository = $this->entityManager->getRepository($this->entityName);
     }
 
     /**
@@ -148,6 +157,108 @@ abstract class EntityTestCase extends KernelTestCase
     }
 
     /**
+     * @dataProvider dataProviderTestThatAssociationMethodsExists
+     *
+     * @param   string          $method
+     * @param   string          $field
+     * @param   mixed           $input
+     * @param   boolean|string  $expectedOutput
+     */
+    public function testThatAssociationMethodsExistsAndThoseReturnsCorrectValue(
+        $method,
+        $field,
+        $input,
+        $expectedOutput
+    ) {
+        $this->assertTrue(
+            method_exists($this->entity, $method),
+            sprintf(
+                "Entity '%s' does not have expected association method '%s()' for property '%s'.",
+                $this->entityName,
+                $method,
+                $field
+            )
+        );
+
+        if ($expectedOutput) {
+            $this->assertInstanceOf($expectedOutput, call_user_func([$this->entity, $method], $input));
+        }
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatManyToManyAssociationMethodsWorksAsExpected
+     *
+     */
+    public function testThatManyToManyAssociationMethodsWorksAsExpected(
+        $methodGetter,
+        $methodAdder,
+        $methodRemoval,
+        $field,
+        $targetEntity,
+        $mappings
+    ) {
+        if ($methodGetter === false) {
+            $this->markTestSkipped('Entity does not contain many-to-many relationships.');
+        }
+
+        $this->assertInstanceOf(
+            get_class($this->entity),
+            call_user_func([$this->entity, $methodAdder], $targetEntity),
+            sprintf(
+                "Added method '%s()' for property '%s' did not return instance of the entity itself",
+                $methodAdder,
+                $field
+            )
+        );
+
+        /** @var ArrayCollection $collection */
+        $collection = call_user_func([$this->entity, $methodGetter]);
+
+        $this->assertTrue(
+            $collection->contains($targetEntity)
+        );
+
+        if (isset($mappings['mappedBy'])) {
+            /** @var ArrayCollection $collection */
+            $collection = call_user_func([$targetEntity, 'get' . ucfirst($mappings['mappedBy'])]);
+
+            $this->assertTrue($collection->contains($this->entity));
+        } elseif (isset($mappings['inversedBy'])) {
+            /** @var ArrayCollection $collection */
+            $collection = call_user_func([$targetEntity, 'get' . ucfirst($mappings['inversedBy'])]);
+
+            $this->assertTrue($collection->contains($this->entity));
+        }
+
+        $this->assertInstanceOf(
+            get_class($this->entity),
+            call_user_func([$this->entity, $methodRemoval], $targetEntity),
+            sprintf(
+                "REmoval method '%s()' for property '%s' did not return instance of the entity itself",
+                $methodAdder,
+                $field
+            )
+        );
+
+        /** @var ArrayCollection $collection */
+        $collection = call_user_func([$this->entity, $methodGetter]);
+
+        $this->assertTrue($collection->isEmpty());
+
+        if (isset($mappings['mappedBy'])) {
+            /** @var ArrayCollection $collection */
+            $collection = call_user_func([$targetEntity, 'get' . ucfirst($mappings['mappedBy'])]);
+
+            $this->assertTrue($collection->isEmpty());
+        } elseif (isset($mappings['inversedBy'])) {
+            /** @var ArrayCollection $collection */
+            $collection = call_user_func([$targetEntity, 'get' . ucfirst($mappings['inversedBy'])]);
+
+            $this->assertTrue($collection->isEmpty());
+        }
+    }
+
+    /**
      * Generic data provider for following common entity tests:
      *  - testThatGetterAndSetterExists
      *  - testThatSetterReturnsInstanceOfEntity
@@ -220,5 +331,121 @@ abstract class EntityTestCase extends KernelTestCase
         self::$kernel->shutdown();
 
         return array_map($iterator, array_filter($meta->getFieldNames(), $filter));
+    }
+
+    public function dataProviderTestThatManyToManyAssociationMethodsWorksAsExpected()
+    {
+        self::bootKernel();
+
+        // Get entity manager
+        $entityManager = static::$kernel->getContainer()->get('doctrine.orm.default_entity_manager');
+
+        // Get entity class meta data
+        $meta = $entityManager->getClassMetadata($this->entityName);
+
+        $iterator = function ($mapping) {
+            $targetEntity = new $mapping['targetEntity']();
+
+            $singular = mb_substr($mapping['fieldName'], -1, 1) === 's' ?
+                mb_substr($mapping['fieldName'], 0, -1) : $mapping['fieldName'];
+
+            return [
+                [
+                    'get' . ucfirst($mapping['fieldName']),
+                    'add' . ucfirst($singular),
+                    'remove' . ucfirst($singular),
+                    $mapping['fieldName'],
+                    $targetEntity,
+                    $mapping,
+                ]
+            ];
+        };
+
+        $filter = function ($mapping) {
+            return $mapping['type'] === ClassMetadataInfo::MANY_TO_MANY;
+        };
+
+        $entityManager->close();
+        $entityManager = null; // avoid memory leaks
+
+        self::$kernel->shutdown();
+
+        $items = array_filter($meta->getAssociationMappings(), $filter);
+
+        if (empty($items)) {
+            return [
+                [false, false, false, false, false, false]
+            ];
+        }
+
+        return call_user_func_array('array_merge', array_map($iterator, $items));
+    }
+
+    public function dataProviderTestThatAssociationMethodsExists()
+    {
+        self::bootKernel();
+
+        // Get entity manager
+        $entityManager = static::$kernel->getContainer()->get('doctrine.orm.default_entity_manager');
+
+        // Get entity class meta data
+        $meta = $entityManager->getClassMetadata($this->entityName);
+
+        $iterator = function ($mapping) {
+            $input = new $mapping['targetEntity']();
+
+            $methods = [
+                ['get' . ucfirst($mapping['fieldName']), $mapping['fieldName'], false, false]
+            ];
+
+            switch ($mapping['type']) {
+                case ClassMetadataInfo::ONE_TO_ONE:
+                    break;
+                case ClassMetadataInfo::MANY_TO_ONE:
+                    $methods[] = [
+                        'set' . ucfirst($mapping['fieldName']),
+                        $mapping['fieldName'],
+                        $input,
+                        $this->entityName
+                    ];
+                    break;
+                case ClassMetadataInfo::ONE_TO_MANY:
+                    break;
+                case ClassMetadataInfo::MANY_TO_MANY:
+                    $singular = mb_substr($mapping['fieldName'], -1, 1) === 's' ?
+                        mb_substr($mapping['fieldName'], 0, -1) : $mapping['fieldName'];
+
+                    $methods = [
+                        [
+                            'get' . ucfirst($mapping['fieldName']),
+                            $mapping['fieldName'],
+                            $input,
+                            'Doctrine\Common\Collections\ArrayCollection'
+                        ],
+                        [
+                            'add' . ucfirst($singular),
+                            $mapping['fieldName'],
+                            $input,
+                            $this->entityName
+                        ],
+                        [
+                            'remove' . ucfirst($singular),
+                            $mapping['fieldName'],
+                            $input,
+                            $this->entityName
+                        ],
+                    ];
+                    break;
+            }
+
+            return $methods;
+        };
+
+        $entityManager->close();
+        $entityManager = null; // avoid memory leaks
+
+        self::$kernel->shutdown();
+
+        return call_user_func_array('array_merge', array_map($iterator, $meta->getAssociationMappings()));
     }
 }

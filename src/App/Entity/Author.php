@@ -8,6 +8,7 @@ namespace App\Entity;
 
 use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 
@@ -116,6 +117,16 @@ class Author implements EntityInterface
      *  )
      */
     private $books;
+
+    /**
+     * User constructor.
+     *
+     * return User
+     */
+    public function __construct()
+    {
+        $this->books = new ArrayCollection();
+    }
 
     /**
      * Get id

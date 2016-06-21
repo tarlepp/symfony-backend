@@ -240,6 +240,7 @@ class User implements EntityInterface, UserInterface, \Serializable
     public function __construct()
     {
         $this->userGroups = new ArrayCollection();
+        $this->userLogins = new ArrayCollection();
     }
 
     /**
