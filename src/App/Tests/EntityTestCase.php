@@ -188,6 +188,12 @@ abstract class EntityTestCase extends KernelTestCase
     /**
      * @dataProvider dataProviderTestThatManyToManyAssociationMethodsWorksAsExpected
      *
+     * @param   string  $methodGetter
+     * @param   string  $methodAdder
+     * @param   string  $methodRemoval
+     * @param   string  $field
+     * @param   string  $targetEntity
+     * @param   array   $mappings
      */
     public function testThatManyToManyAssociationMethodsWorksAsExpected(
         $methodGetter,
@@ -195,7 +201,7 @@ abstract class EntityTestCase extends KernelTestCase
         $methodRemoval,
         $field,
         $targetEntity,
-        $mappings
+        array $mappings
     ) {
         if ($methodGetter === false) {
             $this->markTestSkipped('Entity does not contain many-to-many relationships.');
@@ -234,7 +240,7 @@ abstract class EntityTestCase extends KernelTestCase
             get_class($this->entity),
             call_user_func([$this->entity, $methodRemoval], $targetEntity),
             sprintf(
-                "REmoval method '%s()' for property '%s' did not return instance of the entity itself",
+                "Removal method '%s()' for property '%s' did not return instance of the entity itself",
                 $methodAdder,
                 $field
             )
@@ -256,6 +262,46 @@ abstract class EntityTestCase extends KernelTestCase
 
             $this->assertTrue($collection->isEmpty());
         }
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatManyToOneAssociationMethodsWorksAsExpected
+     *
+     * @param   string  $methodSetter
+     * @param   string  $methodGetter
+     * @param   object  $targetEntity
+     * @param   string  $field
+     */
+    public function testThatManyToOneAssociationMethodsWorksAsExpected(
+        $methodSetter,
+        $methodGetter,
+        $targetEntity,
+        $field
+    ) {
+        if ($methodSetter === false) {
+            $this->markTestSkipped('Entity does not contain many-to-one relationships.');
+        }
+
+        $this->assertInstanceOf(
+            get_class($this->entity),
+            call_user_func([$this->entity, $methodSetter], $targetEntity),
+            sprintf(
+                "Setter method '%s()' for property '%s' did not return instance of the entity itself",
+                $methodSetter,
+                $field
+            )
+        );
+
+        $this->assertInstanceOf(
+            get_class($targetEntity),
+            call_user_func([$this->entity, $methodGetter]),
+            sprintf(
+                "Getter method '%s()' for property '%s' did not return expected object '%s'.",
+                $methodSetter,
+                $field,
+                get_class($targetEntity)
+            )
+        );
     }
 
     /**
@@ -374,7 +420,51 @@ abstract class EntityTestCase extends KernelTestCase
 
         if (empty($items)) {
             return [
-                [false, false, false, false, false, false]
+                [false, false, false, false, false, []]
+            ];
+        }
+
+        return call_user_func_array('array_merge', array_map($iterator, $items));
+    }
+
+    public function dataProviderTestThatManyToOneAssociationMethodsWorksAsExpected()
+    {
+        self::bootKernel();
+
+        // Get entity manager
+        $entityManager = static::$kernel->getContainer()->get('doctrine.orm.default_entity_manager');
+
+        // Get entity class meta data
+        $meta = $entityManager->getClassMetadata($this->entityName);
+
+        $iterator = function ($mapping) {
+            $targetEntity = new $mapping['targetEntity']();
+
+            return [
+                [
+                    'set' . ucfirst($mapping['fieldName']),
+                    'get' . ucfirst($mapping['fieldName']),
+                    $targetEntity,
+                    $mapping['fieldName'],
+                    $mapping,
+                ]
+            ];
+        };
+
+        $filter = function ($mapping) {
+            return $mapping['type'] === ClassMetadataInfo::MANY_TO_ONE;
+        };
+
+        $entityManager->close();
+        $entityManager = null; // avoid memory leaks
+
+        self::$kernel->shutdown();
+
+        $items = array_filter($meta->getAssociationMappings(), $filter);
+
+        if (empty($items)) {
+            return [
+                [false, false, false, false, []]
             ];
         }
 
