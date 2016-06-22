@@ -297,9 +297,32 @@ abstract class EntityTestCase extends KernelTestCase
             call_user_func([$this->entity, $methodGetter]),
             sprintf(
                 "Getter method '%s()' for property '%s' did not return expected object '%s'.",
-                $methodSetter,
+                $methodGetter,
                 $field,
                 get_class($targetEntity)
+            )
+        );
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatOneToManyAssociationMethodsWorksAsExpected
+     *
+     * @param   string  $methodGetter
+     * @param   string  $field
+     */
+    public function testThatOneToManyAssociationMethodsWorksAsExpected($methodGetter, $field)
+    {
+        if ($methodGetter === false) {
+            $this->markTestSkipped('Entity does not contain one-to-many relationships.');
+        }
+
+        $this->assertInstanceOf(
+            'Doctrine\Common\Collections\ArrayCollection',
+            call_user_func([$this->entity, $methodGetter]),
+            sprintf(
+                "Getter method '%s()' for property '%s' did not return expected 'ArrayCollection' object.",
+                $methodGetter,
+                $field
             )
         );
     }
@@ -537,5 +560,46 @@ abstract class EntityTestCase extends KernelTestCase
         self::$kernel->shutdown();
 
         return call_user_func_array('array_merge', array_map($iterator, $meta->getAssociationMappings()));
+    }
+
+    public function dataProviderTestThatOneToManyAssociationMethodsWorksAsExpected()
+    {
+        self::bootKernel();
+
+        // Get entity manager
+        $entityManager = static::$kernel->getContainer()->get('doctrine.orm.default_entity_manager');
+
+        // Get entity class meta data
+        $meta = $entityManager->getClassMetadata($this->entityName);
+
+        $iterator = function ($mapping) {
+
+            return [
+                [
+                    'get' . ucfirst($mapping['fieldName']),
+                    $mapping['fieldName'],
+                    $mapping,
+                ]
+            ];
+        };
+
+        $filter = function ($mapping) {
+            return $mapping['type'] === ClassMetadataInfo::ONE_TO_MANY;
+        };
+
+        $entityManager->close();
+        $entityManager = null; // avoid memory leaks
+
+        self::$kernel->shutdown();
+
+        $items = array_filter($meta->getAssociationMappings(), $filter);
+
+        if (empty($items)) {
+            return [
+                [false, false, []]
+            ];
+        }
+
+        return call_user_func_array('array_merge', array_map($iterator, $items));
     }
 }
