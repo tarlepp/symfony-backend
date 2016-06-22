@@ -191,6 +191,7 @@ abstract class EntityTestCase extends KernelTestCase
      * @param   string  $methodGetter
      * @param   string  $methodAdder
      * @param   string  $methodRemoval
+     * @param   string  $methodClear
      * @param   string  $field
      * @param   string  $targetEntity
      * @param   array   $mappings
@@ -199,6 +200,7 @@ abstract class EntityTestCase extends KernelTestCase
         $methodGetter,
         $methodAdder,
         $methodRemoval,
+        $methodClear,
         $field,
         $targetEntity,
         array $mappings
@@ -262,6 +264,25 @@ abstract class EntityTestCase extends KernelTestCase
 
             $this->assertTrue($collection->isEmpty());
         }
+
+        // Test for 'clear' method
+
+        call_user_func([$this->entity, $methodAdder], $targetEntity);
+
+        $this->assertInstanceOf(
+            get_class($this->entity),
+            call_user_func([$this->entity, $methodClear]),
+            sprintf(
+                "Clear method '%s()' for property '%s' did not return instance of the entity itself",
+                $methodAdder,
+                $field
+            )
+        );
+
+        /** @var ArrayCollection $collection */
+        $collection = call_user_func([$this->entity, $methodGetter]);
+
+        $this->assertTrue($collection->isEmpty());
     }
 
     /**
@@ -423,6 +444,7 @@ abstract class EntityTestCase extends KernelTestCase
                     'get' . ucfirst($mapping['fieldName']),
                     'add' . ucfirst($singular),
                     'remove' . ucfirst($singular),
+                    'clear' . ucfirst($mapping['fieldName']),
                     $mapping['fieldName'],
                     $targetEntity,
                     $mapping,
@@ -443,7 +465,7 @@ abstract class EntityTestCase extends KernelTestCase
 
         if (empty($items)) {
             return [
-                [false, false, false, false, false, []]
+                [false, false, false, false, false, false, []]
             ];
         }
 
@@ -543,6 +565,12 @@ abstract class EntityTestCase extends KernelTestCase
                         ],
                         [
                             'remove' . ucfirst($singular),
+                            $mapping['fieldName'],
+                            $input,
+                            $this->entityName
+                        ],
+                        [
+                            'clear' . ucfirst($mapping['fieldName']),
                             $mapping['fieldName'],
                             $input,
                             $this->entityName

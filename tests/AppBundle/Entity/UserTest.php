@@ -96,6 +96,35 @@ class UserTest extends EntityTestCase
         $this->assertInternalType('array', $this->entity->getRoles());
     }
 
+    public function testThatGetSaltMethodReturnsNull()
+    {
+        $this->assertNull($this->entity->getSalt());
+    }
+
+    public function testThatGetLoginDataMethodReturnsExpected()
+    {
+        $expected = [
+            'firstname',
+            'surname',
+            'email',
+        ];
+
+        $data = $this->entity->getLoginData();
+
+        foreach ($expected as $key) {
+            $this->assertArrayHasKey($key, $data);
+        }
+    }
+
+    public function testThatEraseCredentialsMethodWorksAsExpected()
+    {
+        $this->entity->setPlainPassword('password');
+
+        $this->entity->eraseCredentials();
+
+        $this->assertEmpty($this->entity->getPlainPassword());
+    }
+
     /**
      * Data provider for testThatPasswordHashingIsWorkingAsExpected
      *

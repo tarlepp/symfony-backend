@@ -244,4 +244,16 @@ class UserGroup implements EntityInterface, RoleInterface
 
         return $this;
     }
+
+    /**
+     * Method to remove all many-to-many user relations from current user group.
+     *
+     * @return  UserGroup
+     */
+    public function clearUsers()
+    {
+        $this->users->clear();
+
+        return $this;
+    }
 }
