@@ -6,7 +6,6 @@
  */
 namespace App\Entity;
 
-use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,9 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(
  *      name="request_log",
  *      indexes={
- *          @ORM\Index(name="createdBy_id", columns={"createdBy_id"}),
- *          @ORM\Index(name="updatedBy_id", columns={"updatedBy_id"}),
- *          @ORM\Index(name="deletedBy_id", columns={"deletedBy_id"})
+ *          @ORM\Index(name="user_id", columns={"user_id"}),
  *      }
  *  )
  * @ORM\Entity(
@@ -30,10 +27,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RequestLog implements EntityInterface
 {
-    // Traits
-    use ORMBehaviors\Blameable;
-    use ORMBehaviors\Timestampable;
-
     /**
      * @var integer
      *
@@ -48,6 +41,22 @@ class RequestLog implements EntityInterface
      *  )
      */
     private $id;
+
+    /**
+     * @var \App\Entity\User
+     *
+     * @ORM\ManyToOne(
+     *      targetEntity="App\Entity\User",
+     *      inversedBy="userRequests",
+     *  )
+     * @ORM\JoinColumns({
+     *      @ORM\JoinColumn(
+     *          name="user_id",
+     *          referencedColumnName="id",
+     *      ),
+     *  })
+     */
+    private $user;
 
     /**
      * @var string
@@ -136,6 +145,17 @@ class RequestLog implements EntityInterface
      *  )
      */
     private $responseContentLength;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(
+     *      name="time",
+     *      type="datetime",
+     *      nullable=false,
+     *  )
+     */
+    private $time;
 
     /**
      * @return int
@@ -299,6 +319,44 @@ class RequestLog implements EntityInterface
     public function setResponseContentLength($responseContentLength)
     {
         $this->responseContentLength = $responseContentLength;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }
+
+    /**
+     * @param \DateTime $time
+     * @return RequestLog
+     */
+    public function setTime(\DateTime $time)
+    {
+        $this->time = $time;
+
+        return $this;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     * @return RequestLog
+     */
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
 
         return $this;
     }

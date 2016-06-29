@@ -8,7 +8,7 @@ services:
 
     app.event.response_listener:
         class: App\EventListener\ResponseListener
-        arguments: [ '@app.services.response_logger' ]
+        arguments: [ '@app.services.response_logger', '@security.token_storage' ]
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
 

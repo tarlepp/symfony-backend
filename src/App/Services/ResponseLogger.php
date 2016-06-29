@@ -12,6 +12,7 @@ use App\Utils\JSON;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class ResponseLogger
@@ -40,6 +41,11 @@ class ResponseLogger implements Interfaces\ResponseLogger
      * @var Service
      */
     protected $service;
+
+    /**
+     * @var UserInterface
+     */
+    protected $user;
 
     /**
      * ResponseLogger constructor.
@@ -83,6 +89,20 @@ class ResponseLogger implements Interfaces\ResponseLogger
     }
 
     /**
+     * Setter method for current user.
+     *
+     * @param   UserInterface|null $user
+     *
+     * @return  ResponseLogger
+     */
+    public function setUser(UserInterface $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
      * Method to handle current response and log it to database.
      *
      * @return  void
@@ -96,6 +116,7 @@ class ResponseLogger implements Interfaces\ResponseLogger
 
         // Create new request log entity
         $entity = new Entity();
+        $entity->setUser($this->user);
         $entity->setClientIp($this->request->getClientIp());
         $entity->setUri($this->request->getUri());
         $entity->setMethod($this->request->getRealMethod());
@@ -104,6 +125,7 @@ class ResponseLogger implements Interfaces\ResponseLogger
         $entity->setParameters($this->getParameters());
         $entity->setStatusCode($this->response->getStatusCode());
         $entity->setResponseContentLength(mb_strlen($this->response->getContent()));
+        $entity->setTime(new \DateTime());
 
         // Store request log
         try {
