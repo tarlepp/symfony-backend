@@ -7,6 +7,10 @@ services:
         class: App\Services\Book
         arguments: [ '@repository.book', '@validator' ]
 
+    app.services.request_log:
+        class: App\Services\RequestLog
+        arguments: [ '@repository.request_log', '@validator' ]
+
     app.services.user:
         class: App\Services\User
         arguments: [ '@repository.user', '@validator' ]

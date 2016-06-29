@@ -6,6 +6,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
+    app.event.response_listener:
+        class: App\EventListener\ResponseListener
+        arguments: [ '@app.services.response_logger' ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
     app.event.jwt_created_listener:
         class: App\EventListener\JWTCreatedListener
         arguments: [ '@service_container' ]

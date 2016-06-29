@@ -14,6 +14,12 @@ services:
         arguments: [ App\Entity\Book ]
         shared: false
 
+    repository.request_log:
+        class: Doctrine\ORM\EntityRepository
+        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        arguments: [ App\Entity\RequestLog ]
+        shared: false
+
     repository.user:
         class: Doctrine\ORM\EntityRepository
         factory: [ '@doctrine.orm.entity_manager', getRepository ]
