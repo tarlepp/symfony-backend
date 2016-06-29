@@ -111,8 +111,6 @@ class ResponseLogger implements Interfaces\ResponseLogger
         } catch (\Exception $error) { // Silently ignore this error to prevent client to get real error
             $this->logger->err($error->getMessage());
         }
-
-        $this->logger->err(print_r($this->request->headers->all(), true));
     }
 
     /**
