@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Entity/RequestLog.php
  *
@@ -8,6 +9,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 
 /**
  * RequestLog
@@ -28,17 +30,14 @@ use Doctrine\ORM\Mapping as ORM;
 class RequestLog implements EntityInterface
 {
     /**
-     * @var integer
+     * @var string
      *
      * @ORM\Column(
      *      name="id",
-     *      type="integer",
+     *      type="guid",
      *      nullable=false,
      *  )
      * @ORM\Id()
-     * @ORM\GeneratedValue(
-     *      strategy="IDENTITY",
-     *  )
      */
     private $id;
 
@@ -158,9 +157,19 @@ class RequestLog implements EntityInterface
     private $time;
 
     /**
-     * @return int
+     * RequestLog constructor.
+     *
+     * @return RequestLog;
      */
-    public function getId()
+    public function __construct()
+    {
+        $this->id = Uuid::uuid4()->toString();
+    }
+
+    /**
+     * @return string
+     */
+    public function getId() : string
     {
         return $this->id;
     }
@@ -177,7 +186,7 @@ class RequestLog implements EntityInterface
      * @param string $clientIp
      * @return RequestLog
      */
-    public function setClientIp($clientIp)
+    public function setClientIp(string $clientIp) : RequestLog
     {
         $this->clientIp = $clientIp;
 
@@ -196,7 +205,7 @@ class RequestLog implements EntityInterface
      * @param string $uri
      * @return RequestLog
      */
-    public function setUri($uri)
+    public function setUri(string $uri) : RequestLog
     {
         $this->uri = $uri;
 
@@ -215,7 +224,7 @@ class RequestLog implements EntityInterface
      * @param string $method
      * @return RequestLog
      */
-    public function setMethod($method)
+    public function setMethod(string $method) : RequestLog
     {
         $this->method = $method;
 
@@ -242,7 +251,7 @@ class RequestLog implements EntityInterface
      * @param string $queryString
      * @return RequestLog
      */
-    public function setQueryString($queryString)
+    public function setQueryString(string $queryString) : RequestLog
     {
         $this->queryString = $queryString;
 
@@ -253,7 +262,7 @@ class RequestLog implements EntityInterface
      * @param array $headers
      * @return RequestLog
      */
-    public function setHeaders($headers)
+    public function setHeaders(array $headers) : RequestLog
     {
         // Clean possible sensitive data from parameters
         array_walk($headers, [$this, 'cleanParameters']);
@@ -275,7 +284,7 @@ class RequestLog implements EntityInterface
      * @param array $parameters
      * @return RequestLog
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters) : RequestLog
     {
         // Clean possible sensitive data from parameters
         array_walk($parameters, [$this, 'cleanParameters']);
@@ -297,7 +306,7 @@ class RequestLog implements EntityInterface
      * @param int $statusCode
      * @return RequestLog
      */
-    public function setStatusCode($statusCode)
+    public function setStatusCode(int $statusCode) : RequestLog
     {
         $this->statusCode = $statusCode;
 
@@ -316,7 +325,7 @@ class RequestLog implements EntityInterface
      * @param int $responseContentLength
      * @return RequestLog
      */
-    public function setResponseContentLength($responseContentLength)
+    public function setResponseContentLength(int $responseContentLength) : RequestLog
     {
         $this->responseContentLength = $responseContentLength;
 
@@ -335,7 +344,7 @@ class RequestLog implements EntityInterface
      * @param \DateTime $time
      * @return RequestLog
      */
-    public function setTime(\DateTime $time)
+    public function setTime(\DateTime $time) : RequestLog
     {
         $this->time = $time;
 
@@ -354,7 +363,7 @@ class RequestLog implements EntityInterface
      * @param User|null $user
      * @return RequestLog
      */
-    public function setUser(User $user = null)
+    public function setUser(User $user = null) : RequestLog
     {
         $this->user = $user;
 
@@ -367,7 +376,7 @@ class RequestLog implements EntityInterface
      * @param   mixed   $value
      * @param   string  $key
      */
-    protected function cleanParameters(&$value, $key)
+    protected function cleanParameters(&$value, string $key)
     {
         // What keys we should replace so that any sensitive data is not logged
         $replacements = [

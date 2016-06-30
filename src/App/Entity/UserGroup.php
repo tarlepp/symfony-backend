@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Entity/UserGroup.php
  *
@@ -9,8 +10,10 @@ namespace App\Entity;
 use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints as AssertCollection;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -48,7 +51,7 @@ class UserGroup implements EntityInterface, RoleInterface
     /**
      * Group id.
      *
-     * @var integer
+     * @var string
      *
      * @JMS\Groups({
      *      "Default",
@@ -60,10 +63,10 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @ORM\Column(
      *      name="id",
-     *      type="integer"
+     *      type="guid",
+     *      nullable=false
      *  )
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
      */
     private $id;
 
@@ -142,15 +145,17 @@ class UserGroup implements EntityInterface, RoleInterface
      */
     public function __construct()
     {
+        $this->id = Uuid::uuid4()->toString();
+
         $this->users = new ArrayCollection();
     }
 
     /**
      * Getter for group id
      *
-     * @return  integer
+     * @return  string
      */
-    public function getId()
+    public function getId() : string
     {
         return $this->id;
     }
@@ -176,9 +181,9 @@ class UserGroup implements EntityInterface, RoleInterface
     /**
      * Getter for user collection.
      *
-     * @return ArrayCollection
+     * @return Collection|User[]
      */
-    public function getUsers()
+    public function getUsers() : Collection
     {
         return $this->users;
     }
@@ -190,7 +195,7 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @return  UserGroup
      */
-    public function setName($name)
+    public function setName(string $name) : UserGroup
     {
         $this->name = $name;
 
@@ -204,7 +209,7 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @return  UserGroup
      */
-    public function setRole($role)
+    public function setRole(string $role) : UserGroup
     {
         $this->role = $role;
 
@@ -218,7 +223,7 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @return  UserGroup
      */
-    public function addUser(User $user)
+    public function addUser(User $user) : UserGroup
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
@@ -235,7 +240,7 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @return  UserGroup
      */
-    public function removeUser(User $user)
+    public function removeUser(User $user) : UserGroup
     {
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
@@ -250,7 +255,7 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @return  UserGroup
      */
-    public function clearUsers()
+    public function clearUsers() : UserGroup
     {
         $this->users->clear();
 

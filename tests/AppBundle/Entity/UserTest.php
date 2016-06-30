@@ -71,17 +71,11 @@ class UserTest extends EntityTestCase
         $this->entity->setUsername('john');
         $this->entity->setPassword('str_rot13', 'password');
 
-        // Assert that serialization is returning expected value
-        $this->assertEquals(
-            'C:15:"App\Entity\User":46:{a:3:{i:0;N;i:1;s:4:"john";i:2;s:8:"cnffjbeq";}}',
-            serialize($this->entity)
-        );
-
         /** @var User $entity */
-        $entity = unserialize('C:15:"App\Entity\User":46:{a:3:{i:0;N;i:1;s:4:"john";i:2;s:8:"cnffjbeq";}}');
+        $entity = unserialize(serialize($this->entity));
 
         // Assert that unserialized object returns expected data
-        $this->assertEquals(null, $entity->getId());
+        
         $this->assertEquals('john', $entity->getUsername());
         $this->assertEquals('cnffjbeq', $entity->getPassword());
     }
@@ -109,10 +103,17 @@ class UserTest extends EntityTestCase
             'email',
         ];
 
+        foreach ($expected as $key) {
+            $method = 'set' . ucfirst($key);
+
+            call_user_func([$this->entity, $method], $key);
+        }
+
         $data = $this->entity->getLoginData();
 
         foreach ($expected as $key) {
             $this->assertArrayHasKey($key, $data);
+            $this->assertEquals($key, $data[$key]);
         }
     }
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Entity/Book.php
  *
@@ -10,6 +11,7 @@ use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Book
@@ -38,7 +40,7 @@ class Book implements EntityInterface
     use ORMBehaviors\Timestampable;
 
     /**
-     * @var integer
+     * @var string
      *
      * @JMS\Groups({
      *      "Default",
@@ -50,13 +52,10 @@ class Book implements EntityInterface
      *
      * @ORM\Column(
      *      name="id",
-     *      type="integer",
+     *      type="guid",
      *      nullable=false,
      *  )
      * @ORM\Id()
-     * @ORM\GeneratedValue(
-     *      strategy="IDENTITY",
-     *  )
      */
     private $id;
 
@@ -139,11 +138,21 @@ class Book implements EntityInterface
     private $releaseDate;
 
     /**
+     * Book constructor.
+     *
+     * @return  Book
+     */
+    public function __construct()
+    {
+        $this->id = Uuid::uuid4()->toString();
+    }
+
+    /**
      * Get id
      *
-     * @return integer
+     * @return string
      */
-    public function getId()
+    public function getId() : string
     {
         return $this->id;
     }
@@ -151,11 +160,11 @@ class Book implements EntityInterface
     /**
      * Set author
      *
-     * @param integer $author
+     * @param Author $author
      *
      * @return Book
      */
-    public function setAuthor($author)
+    public function setAuthor(Author $author) : Book
     {
         $this->author = $author;
 
@@ -165,9 +174,9 @@ class Book implements EntityInterface
     /**
      * Get author
      *
-     * @return integer
+     * @return Author
      */
-    public function getAuthor()
+    public function getAuthor() : Author
     {
         return $this->author;
     }
@@ -179,7 +188,7 @@ class Book implements EntityInterface
      *
      * @return Book
      */
-    public function setTitle($title)
+    public function setTitle(string $title) : Book
     {
         $this->title = $title;
 
@@ -203,7 +212,7 @@ class Book implements EntityInterface
      *
      * @return Book
      */
-    public function setDescription($description)
+    public function setDescription(string $description) : Book
     {
         $this->description = $description;
 
@@ -227,7 +236,7 @@ class Book implements EntityInterface
      *
      * @return Book
      */
-    public function setReleaseDate(\DateTime $releaseDate)
+    public function setReleaseDate(\DateTime $releaseDate) : Book
     {
         $this->releaseDate = $releaseDate;
 

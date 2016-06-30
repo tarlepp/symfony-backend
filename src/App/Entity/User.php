@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Entity/User.php
  *
@@ -9,8 +10,10 @@ namespace App\Entity;
 use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints as AssertCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -50,7 +53,7 @@ class User implements EntityInterface, UserInterface, \Serializable
     /**
      * User id.
      *
-     * @var integer
+     * @var string
      *
      * @JMS\Groups({
      *      "Default",
@@ -65,11 +68,10 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @ORM\Column(
      *      name="id",
-     *      type="integer",
+     *      type="guid",
      *      nullable=false
      *  )
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id()
      */
     private $id;
 
@@ -239,6 +241,8 @@ class User implements EntityInterface, UserInterface, \Serializable
      */
     public function __construct()
     {
+        $this->id = Uuid::uuid4()->toString();
+
         $this->userGroups = new ArrayCollection();
         $this->userLogins = new ArrayCollection();
     }
@@ -246,9 +250,9 @@ class User implements EntityInterface, UserInterface, \Serializable
     /**
      * Getter for id.
      *
-     * @return integer
+     * @return string
      */
-    public function getId()
+    public function getId() : string
     {
         return $this->id;
     }
@@ -318,7 +322,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @return string[]
      */
-    public function getRoles()
+    public function getRoles() : array
     {
         /**
          * Lambda iterator to get user group role information.
@@ -337,9 +341,9 @@ class User implements EntityInterface, UserInterface, \Serializable
     /**
      * Getter for user groups collection.
      *
-     * @return ArrayCollection
+     * @return Collection|UserGroup[]
      */
-    public function getUserGroups()
+    public function getUserGroups() : Collection
     {
         return $this->userGroups;
     }
@@ -347,9 +351,9 @@ class User implements EntityInterface, UserInterface, \Serializable
     /**
      * Getter for user logins collection.
      *
-     * @return UserLogin[]
+     * @return Collection|UserLogin[]
      */
-    public function getUserLogins()
+    public function getUserLogins() : Collection
     {
         return $this->userLogins;
     }
@@ -361,7 +365,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @return  User
      */
-    public function setUsername($username)
+    public function setUsername(string $username) : User
     {
         $this->username = $username;
 
@@ -375,7 +379,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @return  User
      */
-    public function setFirstname($firstname)
+    public function setFirstname(string $firstname) : User
     {
         $this->firstname = $firstname;
 
@@ -389,7 +393,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @return  User
      */
-    public function setSurname($surname)
+    public function setSurname(string $surname) : User
     {
         $this->surname = $surname;
 
@@ -403,7 +407,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @return  User
      */
-    public function setEmail($email)
+    public function setEmail(string $email) : User
     {
         $this->email = $email;
 
@@ -418,7 +422,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @return  User
      */
-    public function setPassword(callable $encoder, $plainPassword)
+    public function setPassword(callable $encoder, string $plainPassword) : User
     {
         $this->password = $encoder($plainPassword);
 
@@ -432,7 +436,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @return  User
      */
-    public function setPlainPassword($plainPassword)
+    public function setPlainPassword(string $plainPassword) : User
     {
         if (!empty($plainPassword)) {
             $this->plainPassword = $plainPassword;
@@ -483,7 +487,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * This can return null if the password was not encoded using a salt.
      *
-     * @return string|null The salt
+     * @return null The salt
      */
     public function getSalt()
     {
@@ -495,7 +499,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @return array
      */
-    public function getLoginData()
+    public function getLoginData() : array
     {
         return [
             'firstname' => $this->getFirstname(),
@@ -522,7 +526,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @return  User
      */
-    public function addUserGroup(UserGroup $userGroup)
+    public function addUserGroup(UserGroup $userGroup) : User
     {
         if (!$this->userGroups->contains($userGroup)) {
             $this->userGroups->add($userGroup);
@@ -539,7 +543,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @return  User
      */
-    public function removeUserGroup(UserGroup $userGroup)
+    public function removeUserGroup(UserGroup $userGroup) : User
     {
         if ($this->userGroups->contains($userGroup)) {
             $this->userGroups->removeElement($userGroup);
@@ -554,7 +558,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @return  User
      */
-    public function clearUserGroups()
+    public function clearUserGroups() : User
     {
         $this->userGroups->clear();
 

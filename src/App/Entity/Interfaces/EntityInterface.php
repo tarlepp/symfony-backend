@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Entity/Interfaces/EntityInterface.php
  *
@@ -9,10 +10,15 @@ namespace App\Entity\Interfaces;
 /**
  * Interface Entity
  *
- * @category    Interface
- * @package     App\Entity\Interfaces
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Entity\Interfaces
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 interface EntityInterface
 {
+    /**
+     * Get id
+     *
+     * @return string
+     */
+    public function getId() : string;
 }

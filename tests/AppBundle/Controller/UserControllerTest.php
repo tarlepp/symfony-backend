@@ -6,6 +6,7 @@
  */
 namespace AppBundle\Controller;
 
+use App\Entity\User;
 use App\Tests\WebTestCase;
 use App\Utils\JSON;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,12 +79,13 @@ class UserControllerTest extends WebTestCase
      * @param   string  $username
      * @param   string  $password
      * @param   integer $expectedStatus
+     * @param   string  $id
      */
-    public function testThatOnlyAdminUsersCanGetSingleUserData($username, $password, $expectedStatus)
+    public function testThatOnlyAdminUsersCanGetSingleUserData($username, $password, $expectedStatus, $id)
     {
         // Create request
         $client = $this->getClient($username, $password);
-        $client->request('GET', '/user/1');
+        $client->request('GET', '/user/' . $id);
 
         // Check that HTTP status code is correct
         $this->assertEquals(
@@ -148,21 +150,28 @@ class UserControllerTest extends WebTestCase
      */
     public function dataProviderTestThatOnlyAdminUsersCanListUsers()
     {
+        // Fetch users and pick random of those
+        $users = $this->getContainer()->get('app.services.user')->find();
+        $key = array_rand($users, 1);
+
+        /** @var User $user */
+        $user = $users[$key];
+
         return [
-            ['john', 'doe', Response::HTTP_FORBIDDEN],
-            ['john.doe@test.com', 'doe', Response::HTTP_FORBIDDEN],
+            ['john', 'doe', Response::HTTP_FORBIDDEN, $user->getId()],
+            ['john.doe@test.com', 'doe', Response::HTTP_FORBIDDEN, $user->getId()],
 
-            ['john-logged', 'doe-logged', Response::HTTP_FORBIDDEN],
-            ['john.doe-logged@test.com', 'doe-logged', Response::HTTP_FORBIDDEN],
+            ['john-logged', 'doe-logged', Response::HTTP_FORBIDDEN, $user->getId()],
+            ['john.doe-logged@test.com', 'doe-logged', Response::HTTP_FORBIDDEN, $user->getId()],
 
-            ['john-user', 'doe-user', Response::HTTP_FORBIDDEN],
-            ['john.doe-user@test.com', 'doe-user', Response::HTTP_FORBIDDEN],
+            ['john-user', 'doe-user', Response::HTTP_FORBIDDEN, $user->getId()],
+            ['john.doe-user@test.com', 'doe-user', Response::HTTP_FORBIDDEN, $user->getId()],
 
-            ['john-admin', 'doe-admin', Response::HTTP_OK],
-            ['john.doe-admin@test.com', 'doe-admin', Response::HTTP_OK],
+            ['john-admin', 'doe-admin', Response::HTTP_OK, $user->getId()],
+            ['john.doe-admin@test.com', 'doe-admin', Response::HTTP_OK, $user->getId()],
 
-            ['john-root', 'doe-root', Response::HTTP_OK],
-            ['john.doe-root@test.com', 'doe-root', Response::HTTP_OK],
+            ['john-root', 'doe-root', Response::HTTP_OK, $user->getId()],
+            ['john.doe-root@test.com', 'doe-root', Response::HTTP_OK, $user->getId()],
         ];
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Entity/Author.php
  *
@@ -9,8 +10,10 @@ namespace App\Entity;
 use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Author
@@ -40,7 +43,7 @@ class Author implements EntityInterface
     /**
      * Author ID.
      *
-     * @var integer
+     * @var string
      *
      * @JMS\Groups({
      *      "Default",
@@ -52,13 +55,10 @@ class Author implements EntityInterface
      *
      * @ORM\Column(
      *      name="id",
-     *      type="integer",
+     *      type="guid",
      *      nullable=false,
      *  )
      * @ORM\Id()
-     * @ORM\GeneratedValue(
-     *      strategy="IDENTITY",
-     *  )
      */
     private $id;
 
@@ -125,15 +125,17 @@ class Author implements EntityInterface
      */
     public function __construct()
     {
+        $this->id = Uuid::uuid4()->toString();
+
         $this->books = new ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return string
      */
-    public function getId()
+    public function getId() : string
     {
         return $this->id;
     }
@@ -161,9 +163,9 @@ class Author implements EntityInterface
     /**
      * Get author books
      *
-     * @return Book[]
+     * @return Collection|Book[]
      */
-    public function getBooks()
+    public function getBooks() : Collection
     {
         return $this->books;
     }
@@ -175,7 +177,7 @@ class Author implements EntityInterface
      *
      * @return Author
      */
-    public function setName($name)
+    public function setName(string $name) : Author
     {
         $this->name = $name;
 
@@ -189,7 +191,7 @@ class Author implements EntityInterface
      *
      * @return Author
      */
-    public function setDescription($description)
+    public function setDescription(string $description) : Author
     {
         $this->description = $description;
 
