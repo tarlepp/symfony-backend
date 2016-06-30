@@ -85,7 +85,7 @@ At start you have just empty database which you have configured in previous topi
 just run following command:
 
 ```bash
-$ ./bin/console doctrine:migrations:migrate
+$ ./bin/console doctrine:schema:update
 ```
 
 ## Development
