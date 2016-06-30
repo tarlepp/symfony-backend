@@ -389,10 +389,24 @@ abstract class EntityTestCase extends KernelTestCase
                     $type = '\DateTime';
                     break;
                 case 'text':
-                case 'string':
-                default:
                     $value = 'Some text here';
                     $type = 'string';
+                    break;
+                case 'string':
+                    $value = 'Some text here';
+                    $type = 'string';
+                    break;
+                case 'array':
+                    $value = ['some', 'array', 'here'];
+                    $type = 'array';
+                    break;
+                default:
+                    $message = sprintf(
+                        "Currently type '%s' is not supported within generic EntityTestCase",
+                        $type
+                    );
+
+                    throw new \LogicException($message);
                     break;
             }
 
