@@ -79,6 +79,33 @@ abstract class EntityTestCase extends KernelTestCase
     }
 
     /**
+     * Method to test that getId() method exists on entity
+     */
+    public function testThatGetIdMethodExists()
+    {
+        $this->assertTrue(
+            method_exists($this->entity, 'getId'),
+            sprintf(
+                "Entity '%s' does not have expected getter 'getId()' method for 'id' property.",
+                $this->entityName
+            )
+        );
+    }
+
+    /**
+     * Generic method to test that getId method returns a string and it is UUID V4 format
+     */
+    public function testThatGetIdReturnsUuidString()
+    {
+        // Get entity UUID
+        $uuid = $this->entity->getId();
+
+        // Asserts
+        $this->assertInternalType('string', $uuid);
+        $this->assertRegExp('#^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$#', $uuid);
+    }
+
+    /**
      * @dataProvider dataProviderTestThatSetterAndGettersWorks
      *
      * @param   string  $field
