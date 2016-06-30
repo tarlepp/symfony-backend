@@ -227,7 +227,7 @@ class Book implements EntityInterface
      *
      * @return Book
      */
-    public function setReleaseDate($releaseDate)
+    public function setReleaseDate(\DateTime $releaseDate)
     {
         $this->releaseDate = $releaseDate;
 

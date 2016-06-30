@@ -384,6 +384,7 @@ abstract class EntityTestCase extends KernelTestCase
                 case 'integer':
                     $value = 666;
                     break;
+                case 'date':
                 case 'datetime':
                     $value = new \DateTime();
                     $type = '\DateTime';
