@@ -44,6 +44,7 @@ class UserGroupController extends Rest
     /**
      * {@inheritdoc}
      *
+     * @Route("")
      * @Route("/")
      *
      * @Method({"GET"})
@@ -64,7 +65,9 @@ class UserGroupController extends Rest
      *
      * @Route(
      *      "/{id}",
-     *      requirements={"id" = "\d+"}
+     *      requirements={
+     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+     *      }
      *  )
      *
      * @Method({"GET"})
@@ -123,7 +126,9 @@ class UserGroupController extends Rest
      *
      * @Route(
      *      "/{id}",
-     *      requirements={"id" = "\d+"}
+     *      requirements={
+     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+     *      }
      *  )
      *
      * @Method({"PUT"})
@@ -145,7 +150,9 @@ class UserGroupController extends Rest
      *
      * @Route(
      *      "/{id}",
-     *      requirements={"id" = "\d+"}
+     *      requirements={
+     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+     *      }
      *  )
      *
      * @Method({"DELETE"})

@@ -61,6 +61,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
     /**
      * Generic 'find' method for REST endpoints.
      *
+     * @Route("")
      * @Route("/")
      *
      * @Method({"GET"})
@@ -95,7 +96,9 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      *
      * @Route(
      *      "/{id}",
-     *      requirements={"id" = "\d+"}
+     *      requirements={
+     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+     *      }
      *  )
      *
      * @Method({"GET"})
@@ -175,7 +178,9 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      *
      * @Route(
      *      "/{id}",
-     *      requirements={"id" = "\d+"}
+     *      requirements={
+     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+     *      }
      *  )
      *
      * @Method({"PUT"})
@@ -203,7 +208,9 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      *
      * @Route(
      *      "/{id}",
-     *      requirements={"id" = "\d+"}
+     *      requirements={
+     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+     *      }
      *  )
      *
      * @Method({"DELETE"})

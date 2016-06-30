@@ -68,7 +68,9 @@ class UserController extends Rest
      *
      * @Route(
      *      "/{id}",
-     *      requirements={"id" = "\d+"}
+     *      requirements={
+     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+     *      }
      *  )
      *
      * @Method({"GET"})
@@ -127,7 +129,9 @@ class UserController extends Rest
      *
      * @Route(
      *      "/{id}",
-     *      requirements={"id" = "\d+"}
+     *      requirements={
+     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+     *      }
      *  )
      *
      * @Method({"PUT"})
@@ -149,7 +153,9 @@ class UserController extends Rest
      *
      * @Route(
      *      "/{id}",
-     *      requirements={"id" = "\d+"}
+     *      requirements={
+     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+     *      }
      *  )
      *
      * @ParamConverter(
@@ -168,7 +174,7 @@ class UserController extends Rest
      */
     public function deleteUser(Request $request, UserEntity $user)
     {
-        /** @var UserEntity $user */
+        /** @var UserEntity $currentUser */
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
 
         if ($currentUser === $user) {
