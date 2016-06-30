@@ -127,9 +127,10 @@ class ResponseLogger implements Interfaces\ResponseLogger
         $entity->setResponseContentLength(mb_strlen($this->response->getContent()));
         $entity->setTime(new \DateTime());
 
-        // Store request log
+        // Store request log and  clean history
         try {
             $this->service->save($entity);
+            $this->service->getRepository()->cleanHistory();
         } catch (\Exception $error) { // Silently ignore this error to prevent client to get real error
             $this->logger->err($error->getMessage());
         }
