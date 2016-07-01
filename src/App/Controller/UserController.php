@@ -7,7 +7,7 @@
 namespace App\Controller;
 
 use App\Entity\User as UserEntity;
-use App\Services\User as UserService;
+use App\Services\Rest\User as UserService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -42,7 +42,7 @@ class UserController extends Rest
      *
      * @var string
      */
-    protected $serviceName = 'app.services.user';
+    protected $serviceName = 'app.services.rest.user';
 
     /**
      * {@inheritdoc}

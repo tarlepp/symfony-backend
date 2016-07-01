@@ -6,7 +6,7 @@
  */
 namespace App\Controller;
 
-use App\Services\UserGroup;
+use App\Services\Rest\UserGroup;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -39,7 +39,7 @@ class UserGroupController extends Rest
      *
      * @var string
      */
-    protected $serviceName = 'app.services.user_group';
+    protected $serviceName = 'app.services.rest.user_group';
 
     /**
      * {@inheritdoc}

@@ -6,7 +6,7 @@
  */
 namespace App\Controller;
 
-use App\Services\Author;
+use App\Services\Rest\Author;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -36,5 +36,5 @@ class AuthorController extends Rest
      *
      * @var string
      */
-    protected $serviceName = 'app.services.author';
+    protected $serviceName = 'app.services.rest.author';
 }

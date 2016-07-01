@@ -1,12 +1,12 @@
 <?php
 /**
- * /src/App/Controller/Interfaces/Rest.php
+ * /src/App/Controller/Interfaces/Base.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 namespace App\Controller\Interfaces;
 
-use App\Services\Rest as RestService;
+use App\Services\Rest\Base as RestService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

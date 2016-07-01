@@ -1,6 +1,6 @@
 <?php
 /**
- * /src/App/Controller/Rest.php
+ * /src/App/Controller/Base.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
