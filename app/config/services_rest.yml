@@ -1,24 +1,24 @@
 services:
-    app.services.author:
-        class: App\Services\Author
+    app.services.rest.author:
+        class: App\Services\Rest\Author
         arguments: [ '@repository.author', '@validator' ]
 
-    app.services.book:
-        class: App\Services\Book
+    app.services.rest.book:
+        class: App\Services\Rest\Book
         arguments: [ '@repository.book', '@validator' ]
 
-    app.services.request_log:
-        class: App\Services\RequestLog
+    app.services.rest.request_log:
+        class: App\Services\Rest\RequestLog
         arguments: [ '@repository.request_log', '@validator' ]
 
-    app.services.user:
-        class: App\Services\User
+    app.services.rest.user:
+        class: App\Services\Rest\User
         arguments: [ '@repository.user', '@validator' ]
 
-    app.services.user_group:
-        class: App\Services\UserGroup
+    app.services.rest.user_group:
+        class: App\Services\Rest\UserGroup
         arguments: [ '@repository.user_group', '@validator' ]
 
-    app.services.user_login:
-        class: App\Services\UserLogin
+    app.services.rest.user_login:
+        class: App\Services\Rest\UserLogin
         arguments: [ '@repository.user_login', '@validator' ]

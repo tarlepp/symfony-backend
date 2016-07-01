@@ -11,4 +11,4 @@ services:
 
     app.services.response_logger:
         class: App\Services\ResponseLogger
-        arguments: [ '@logger', '@app.services.request_log' ]
+        arguments: [ '@logger', '@app.services.rest.request_log' ]
