@@ -151,7 +151,7 @@ class UserControllerTest extends WebTestCase
     public function dataProviderTestThatOnlyAdminUsersCanListUsers()
     {
         // Fetch users and pick random of those
-        $users = $this->getContainer()->get('app.services.user')->find();
+        $users = $this->getContainer()->get('app.services.rest.user')->find();
         $key = array_rand($users, 1);
 
         /** @var User $user */
