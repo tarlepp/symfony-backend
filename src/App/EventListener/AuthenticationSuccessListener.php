@@ -7,7 +7,7 @@
 namespace App\EventListener;
 
 use App\Entity\UserLogin as Entity;
-use App\Services\UserLogin as Service;
+use App\Services\Rest\UserLogin as Service;
 use DeviceDetector\DeviceDetector;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
