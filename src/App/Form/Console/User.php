@@ -7,7 +7,7 @@
 namespace App\Form\Console;
 
 use App\Entity\UserGroup;
-use App\Services\UserGroup as UserGroupService;
+use App\Services\Rest\UserGroup as UserGroupService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
