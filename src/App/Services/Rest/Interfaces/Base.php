@@ -1,12 +1,14 @@
 <?php
+declare(strict_types=1);
 /**
- * /src/App/Services/Interfaces/Rest.php
+ * /src/App/Services/Rest/Interfaces/Base.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace App\Services\Interfaces;
+namespace App\Services\Rest\Interfaces;
 
 use App\Entity\Interfaces\EntityInterface as Entity;
+use App\Entity\Interfaces\EntityInterface;
 use App\Repository\Base as AppEntityRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -16,11 +18,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * Interface for REST based services.
  *
- * @category    Interfaces
- * @package     App\Services\Interfaces
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Services\Rest\Interfaces
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-interface Rest
+interface Base
 {
     /**
      * Class constructor.
@@ -35,7 +36,7 @@ interface Rest
      *
      * @return  string
      */
-    public function getEntityName();
+    public function getEntityName() : string;
 
     /**
      * Gets a reference to the entity identified by the given type and identifier without actually loading it,
@@ -54,14 +55,14 @@ interface Rest
      *
      * @return  AppEntityRepository|EntityRepository
      */
-    public function getRepository();
+    public function getRepository() : AppEntityRepository;
 
     /**
      * Getter method for all associations that current entity contains.
      *
      * @return array
      */
-    public function getAssociations();
+    public function getAssociations() : array;
 
     /**
      * Generic find method to return an array of items from database. Return value is an array of specified repository
@@ -78,8 +79,8 @@ interface Rest
     public function find(
         array $criteria = [],
         array $orderBy = null,
-        $limit = null,
-        $offset = null,
+        int $limit = null,
+        int $offset = null,
         array $search = null
     );
 
@@ -87,7 +88,7 @@ interface Rest
      * Generic findOne method to return single item from database. Return value is single entity from specified
      * repository.
      *
-     * @param   integer $id
+     * @param   mixed   $id
      * @param   boolean $throwExceptionIfNotFound
      *
      * @return  null|Entity
@@ -113,7 +114,7 @@ interface Rest
      *
      * @return  integer
      */
-    public function count(array $criteria = [], array $search = null);
+    public function count(array $criteria = [], array $search = null) : int;
 
     /**
      * Generic method to create new item (entity) to specified database repository. Return value is created entity for
@@ -125,7 +126,7 @@ interface Rest
      *
      * @return  Entity
      */
-    public function create(\stdClass $data);
+    public function create(\stdClass $data) : EntityInterface;
 
     /**
      * Generic method to save given entity to specified repository. Return value is created entity.
@@ -137,7 +138,7 @@ interface Rest
      *
      * @return  Entity
      */
-    public function save(Entity $entity, $skipValidation = false);
+    public function save(Entity $entity, bool $skipValidation = false) : EntityInterface;
 
     /**
      * Generic method to update specified entity with new data.
@@ -145,21 +146,21 @@ interface Rest
      * @throws  HttpException
      * @throws  ValidatorException
      *
-     * @param   integer     $id
+     * @param   mixed       $id
      * @param   \stdClass   $data
      *
      * @return  Entity
      */
-    public function update($id, \stdClass $data);
+    public function update($id, \stdClass $data) : EntityInterface;
 
     /**
      * Generic method to delete specified entity from database.
      *
-     * @param   integer $id
+     * @param   mixed   $id
      *
      * @return  Entity
      */
-    public function delete($id);
+    public function delete($id) : EntityInterface;
 
     /**
      * Before lifecycle method for find method.
@@ -169,7 +170,12 @@ interface Rest
      * @param   null|integer    $limit
      * @param   null|integer    $offset
      */
-    public function beforeFind(array &$criteria = [], array &$orderBy = null, &$limit = null, &$offset = null);
+    public function beforeFind(
+        array &$criteria = [],
+        array &$orderBy = null,
+        int &$limit = null,
+        int &$offset = null
+    );
 
     /**
      * After lifecycle method for find method.
@@ -183,22 +189,22 @@ interface Rest
     public function afterFind(
         array &$criteria = [],
         array &$orderBy = null,
-        &$limit = null,
-        &$offset = null,
+        int &$limit = null,
+        int &$offset = null,
         array &$entities = []
     );
 
     /**
      * Before lifecycle method for findOne method.
      *
-     * @param   integer $id
+     * @param   mixed   $id
      */
     public function beforeFindOne(&$id);
 
     /**
      * After lifecycle method for findOne method.
      *
-     * @param   integer     $id
+     * @param   mixed       $id
      * @param   null|Entity $entity
      */
     public function afterFindOne(&$id, Entity $entity = null);
@@ -253,7 +259,7 @@ interface Rest
     /**
      * Before lifecycle method for update method.
      *
-     * @param   integer     $id
+     * @param   mixed       $id
      * @param   \stdClass   $data
      * @param   Entity      $entity
      */
@@ -262,7 +268,7 @@ interface Rest
     /**
      * After lifecycle method for update method.
      *
-     * @param   integer     $id
+     * @param   mixed       $id
      * @param   \stdClass   $data
      * @param   Entity      $entity
      */
@@ -271,7 +277,7 @@ interface Rest
     /**
      * Before lifecycle method for delete method.
      *
-     * @param   integer $id
+     * @param   mixed   $id
      * @param   Entity  $entity
      */
     public function beforeDelete(&$id, Entity $entity);
@@ -279,7 +285,7 @@ interface Rest
     /**
      * After lifecycle method for delete method.
      *
-     * @param   integer $id
+     * @param   mixed   $id
      * @param   Entity  $entity
      */
     public function afterDelete(&$id, Entity $entity);

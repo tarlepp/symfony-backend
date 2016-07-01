@@ -7,7 +7,7 @@
 namespace App\Services;
 
 use App\Entity\RequestLog as Entity;
-use App\Services\RequestLog as Service;
+use App\Services\Rest\RequestLog as Service;
 use App\Utils\JSON;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,8 +50,8 @@ class ResponseLogger implements Interfaces\ResponseLogger
     /**
      * ResponseLogger constructor.
      *
-     * @param   Logger      $logger
-     * @param   RequestLog  $service
+     * @param   Logger  $logger
+     * @param   Service $service
      */
     public function __construct(Logger $logger, Service $service)
     {
