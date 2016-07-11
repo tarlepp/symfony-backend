@@ -122,7 +122,7 @@ class UserControllerTest extends WebTestCase
             $this->assertEquals('403', $responseData->status);
             $this->assertEquals('0', $responseData->code);
         } else { // Otherwise check that response has correct output
-            $attributes = ['id', 'username', 'firstname', 'surname', 'email', 'createdAt', 'updatedAt'];
+            $attributes = ['id', 'username', 'firstname', 'surname', 'email'];
 
             foreach ($attributes as $attribute) {
                 $this->assertObjectHasAttribute(

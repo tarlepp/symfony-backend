@@ -100,7 +100,7 @@ class AuthController extends Controller
 
         // Create serializer context
         $context = SerializationContext::create();
-        $context->setGroups(['User', 'UserGroups']);
+        $context->setGroups(['User', 'UserGroups', 'User.createdAt', 'User.updatedAt']);
         $context->setSerializeNull(true);
 
         // Create response
