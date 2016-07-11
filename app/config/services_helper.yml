@@ -9,6 +9,10 @@ services:
     app.services.helper.search_term:
         class: App\Services\Helper\SearchTerm
 
+    app.services.login_logger:
+        class: App\Services\LoginLogger
+        arguments: [ '@logger', '@app.services.rest.user_login' ]
+
     app.services.response_logger:
         class: App\Services\ResponseLogger
         arguments: [ '@logger', '@app.services.rest.request_log' ]

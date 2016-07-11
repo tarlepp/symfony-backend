@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/EventListener/AuthenticationSuccessListener.php
  *
@@ -6,11 +7,8 @@
  */
 namespace App\EventListener;
 
-use App\Entity\UserLogin as Entity;
-use App\Services\Rest\UserLogin as Service;
-use DeviceDetector\DeviceDetector;
+use App\Services\LoginLogger;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AuthenticationSuccessListener
@@ -23,20 +21,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class AuthenticationSuccessListener
 {
     /**
-     * @var ContainerInterface
+     * @var LoginLogger
      */
-    protected $service;
+    protected $loginLogger;
 
     /**
      * AuthenticationSuccessListener constructor.
      *
-     * @param   Service  $service
+     * @param   LoginLogger $loginLogger
      *
      * @return  AuthenticationSuccessListener
      */
-    public function __construct(Service $service)
+    public function __construct(LoginLogger $loginLogger)
     {
-        $this->service = $service;
+        $this->loginLogger = $loginLogger;
     }
 
     /**
@@ -50,37 +48,11 @@ class AuthenticationSuccessListener
      */
     public function onAuthenticationSuccess(AuthenticationSuccessEvent $event)
     {
-        // Get request object
-        $request = $event->getRequest();
+        // Set request and user to LoginLogger class
+        $this->loginLogger->setRequest($event->getRequest());
+        $this->loginLogger->setUser($event->getUser());
 
-        // Specify user agent
-        $agent = $request->headers->get('User-Agent');
-
-        // Parse user agent data with device detector
-        $deviceDetector = new DeviceDetector($agent);
-        $deviceDetector->parse();
-
-        // Create new login entry
-        $userLogin = new Entity();
-        $userLogin->setUser($event->getUser());
-        $userLogin->setIp($request->getClientIp());
-        $userLogin->setHost($request->getHost());
-        $userLogin->setAgent($agent);
-        $userLogin->setClientType($deviceDetector->getClient('type'));
-        $userLogin->setClientName($deviceDetector->getClient('name'));
-        $userLogin->setClientShortName($deviceDetector->getClient('short_name'));
-        $userLogin->setClientVersion($deviceDetector->getClient('version'));
-        $userLogin->setClientEngine($deviceDetector->getClient('engine'));
-        $userLogin->setOsName($deviceDetector->getOs('name'));
-        $userLogin->setOsShortName($deviceDetector->getOs('short_name'));
-        $userLogin->setOsVersion($deviceDetector->getOs('version'));
-        $userLogin->setOsPlatform($deviceDetector->getOs('platform'));
-        $userLogin->setDeviceName($deviceDetector->getDeviceName());
-        $userLogin->setBrandName($deviceDetector->getBrandName());
-        $userLogin->setModel($deviceDetector->getModel());
-        $userLogin->setLoginTime(new \DateTime());
-
-        // And store entry to database
-        $this->service->save($userLogin);
+        // Handle login logger
+        $this->loginLogger->handle();
     }
 }
