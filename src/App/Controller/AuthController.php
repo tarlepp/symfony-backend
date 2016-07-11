@@ -48,13 +48,10 @@ class AuthController extends Controller
      * @Method("POST")
      *
      * @Route("/getToken")
-     *
-     * @return  Response
      */
     public function getTokenAction()
     {
         // The security layer will intercept this request
-        return new Response('', 401);
     }
 
     /**
