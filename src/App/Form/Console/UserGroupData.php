@@ -11,9 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class UserGroupData
  *
- * @category    Form
- * @package     App\Form\Console
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Form\Console
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UserGroupData
 {

@@ -13,9 +13,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * Class GetTokenOutput
  *
- * @category    APIDoc
- * @package     App\ApiDoc\Auth
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\ApiDoc\Auth
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class GetTokenOutput extends AbstractType
 {

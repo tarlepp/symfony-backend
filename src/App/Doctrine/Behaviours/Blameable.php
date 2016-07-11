@@ -18,9 +18,8 @@ use Knp\DoctrineBehaviors\Model\Blameable\BlameableMethods;
  * Note that this uses KnpLabs/DoctrineBehaviors (https://github.com/KnpLabs/DoctrineBehaviors) and we just need to
  * override property definitions and add some custom functions to it.
  *
- * @category    Doctrine
- * @package     App\Doctrine\Behaviours
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Doctrine\Behaviours
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 trait Blameable
 {

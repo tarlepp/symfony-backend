@@ -17,9 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @see /app/config/services_listeners.yml
  *
- * @category    Listener
- * @package     App\EventListener
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\EventListener
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class AuthenticationSuccessListener
 {

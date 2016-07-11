@@ -38,9 +38,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      repositoryClass="App\Repository\UserGroup"
  *  )
  *
- * @category    Model
- * @package     App\Entity
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Entity
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UserGroup implements EntityInterface, RoleInterface
 {

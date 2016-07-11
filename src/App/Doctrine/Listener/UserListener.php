@@ -15,9 +15,8 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 /**
  * Class UserListener
  *
- * @category    Listener
- * @package     App\Doctrine\Listener
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Doctrine\Listener
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UserListener
 {
@@ -105,7 +104,7 @@ class UserListener
             $encoder = $this->getEncoder($user);
 
             // Password hash callback
-            $callback = function($plainPassword) use ($encoder, $user) {
+            $callback = function ($plainPassword) use ($encoder, $user) {
                 return $encoder->encodePassword($plainPassword, $user->getSalt());
             };
 

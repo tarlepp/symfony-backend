@@ -11,9 +11,8 @@ use App\Entity\Interfaces\EntityInterface;
 /**
  * Generic interface for all application repository classes that extends Base repository.
  *
- * @category    Interfaces
- * @package     App\Repository\Interfaces
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Repository\Interfaces
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 interface Base
 {

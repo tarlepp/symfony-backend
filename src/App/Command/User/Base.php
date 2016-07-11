@@ -26,11 +26,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
- * Class Base
+ * Class Base which all 'user' specified commands extends. This class contains commonly used methods that all user
+ * specified commands use.
  *
- * @category    Console
- * @package     App\Command\User
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Command\User
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 abstract class Base extends ContainerAwareCommand
 {
@@ -135,8 +135,8 @@ abstract class Base extends ContainerAwareCommand
         $this->io = new SymfonyStyle($this->input, $this->output);
 
         // Store user and user group service objects
-        $this->serviceUser = $this->getContainer()->get('app.services.user');
-        $this->serviceUserGroup = $this->getContainer()->get('app.services.user_group');
+        $this->serviceUser = $this->getContainer()->get('app.services.rest.user');
+        $this->serviceUserGroup = $this->getContainer()->get('app.services.rest.user_group');
 
         // Set title
         $this->io->title($this->getDescription());

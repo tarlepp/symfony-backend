@@ -18,9 +18,8 @@ use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableMethods;
  * Note that this uses KnpLabs/DoctrineBehaviors (https://github.com/KnpLabs/DoctrineBehaviors) and we just need to
  * override property definitions and add some custom functions to it.
  *
- * @category    Doctrine
- * @package     App\Doctrine\Behaviours
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Doctrine\Behaviours
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 trait Timestampable
 {
@@ -33,11 +32,7 @@ trait Timestampable
      * @var null|\DateTime
      *
      * @JMS\Groups({
-     *      "Default",
-     *      "Author",
-     *      "Book",
-     *      "User",
-     *      "UserGroup",
+     *      "CreatedAt",
      *      "Author.createdAt",
      *      "Book.createdAt",
      *      "User.createdAt",
@@ -58,11 +53,7 @@ trait Timestampable
      * @var null|\DateTime
      *
      * @JMS\Groups({
-     *      "Default",
-     *      "Author",
-     *      "Book",
-     *      "User",
-     *      "UserGroup",
+     *      "UpdatedAt",
      *      "Author.updatedAt",
      *      "Book.updatedAt",
      *      "User.updatedAt",

@@ -20,9 +20,8 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 /**
  * Class ExceptionListener
  *
- * @category    Listener
- * @package     App\EventListener
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\EventListener
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class ExceptionListener
 {

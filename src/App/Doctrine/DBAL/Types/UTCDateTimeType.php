@@ -15,9 +15,8 @@ use Doctrine\DBAL\Types\DateTimeType;
  *
  * @see http://doctrine-orm.readthedocs.org/en/latest/cookbook/working-with-datetime.html
  *
- * @category    Doctrine
- * @package     App\Doctrine\DBAL\Types
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Doctrine\DBAL\Types
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UTCDateTimeType extends DateTimeType
 {

@@ -27,9 +27,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *      repositoryClass="App\Repository\UserLogin"
  *  )
  *
- * @category    Model
- * @package     App\Entity
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Entity
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UserLogin implements EntityInterface
 {

@@ -11,9 +11,8 @@ namespace App\Services\Helper;
  *
  * @see /app/config/services_helper.yml
  *
- * @category    Service
- * @package     App\Services\Helper
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Services\Helper
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class Roles
 {

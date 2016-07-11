@@ -14,9 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class EditUserGroupCommand
  *
- * @category    Console
- * @package     App\Command\User
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Command\User
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class EditUserGroupCommand extends Base
 {

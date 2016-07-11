@@ -16,9 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Interface Rest
  *
- * @category    Interface
- * @package     App\Controller\Interfaces
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Controller\Interfaces
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 interface Rest
 {

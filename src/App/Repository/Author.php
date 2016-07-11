@@ -11,9 +11,8 @@ use App\Entity;
 /**
  * Doctrine repository class for Author entities.
  *
- * @category    Doctrine
- * @package     App\Repository
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Repository
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class Author extends Base
 {

@@ -15,9 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class UserGroup
  *
- * @category    Form
- * @package     App\Form\Console
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Form\Console
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UserGroup extends AbstractType
 {

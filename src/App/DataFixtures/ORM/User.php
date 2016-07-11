@@ -18,50 +18,50 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 /**
  * Class User
  *
- * This fixture will create following data to test environment database:
+ * This fixture will create following data to test environment database, also note that some values change on each
+ * fixture load:
  * -
- *  id: 1
+ *  id: UUID_V4
  *  username: "john-logged"
  *  firstname: "John"
  *  surname: "Doe"
  *  email: "john.doe-logged@test.com"
- *  password: "$2y$12$YhoZ4RTSYtzsN2z22zS7Wu3TPuzKTXotkSK/btoLqw09WrsWoCRoe"
+ *  password: ENCRYPTED_PASSWORD
  * -
- *  id: 2
+ *  id: UUID_V4
  *  username: "john-user"
  *  firstname: "John"
  *  surname: "Doe"
  *  email: "john.doe-user@test.com"
- *  password: "$2y$12$HMuprf24Ew6I4z58BGYDY.qsG1YKwkQesI7a47iUWXLQn4y6Jsf2C"
+ *  password: ENCRYPTED_PASSWORD
  * -
- *  id: 3
+ *  id: UUID_V4
  *  username: "john-admin"
  *  firstname: "John"
  *  surname: "Doe"
  *  email: "john.doe-admin@test.com"
- *  password: "$2y$12$3Zewr/ZVD//xq5QgBXRpiekmexCHXI6N.8tBlTtExbsly7e9acA3K"
+ *  password: ENCRYPTED_PASSWORD
  * -
- *  id: 4
+ *  id: UUID_V4
  *  username: "john-root"
  *  firstname: "John"
  *  surname: "Doe"
  *  email: "john.doe-root@test.com"
- *  password: "$2y$12$ZS.tAjKrQwqsWKRsl7FpnO5OUBc6bTiQ2NMtyVaDPqd4VSmdHXHVK"
+ *  password: ENCRYPTED_PASSWORD
  * -
- *  id: 5
+ *  id: UUID_V4
  *  username: "john"
  *  firstname: "John"
  *  surname: "Doe"
  *  email: "john.doe@test.com"
- *  password: "$2y$12$CsfxsAnRCQ3n51eXRWkLiu5YHc7UhWWrfirNFQphL5PD1MAy53Apm"
+ *  password: ENCRYPTED_PASSWORD
  *
  * Also note that users with username 'john-{user_group_role}' has also added to that specified user group.
  *
  * Passwords for these users are just 'doe' OR 'doe-{user_group_role}' depending on which user group he belongs.
  *
- * @category    Fixtures
- * @package     App\DataFixtures\ORM
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\DataFixtures\ORM
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class User extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface, ContainerAwareInterface
 {

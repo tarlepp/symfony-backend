@@ -17,9 +17,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  *
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  *
- * @category    Controller
- * @package     App\Controller
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Controller
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class AuthorController extends Rest
 {

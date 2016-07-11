@@ -20,9 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  *
- * @category    Controller
- * @package     App\Controller
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Controller
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UserGroupController extends Rest
 {

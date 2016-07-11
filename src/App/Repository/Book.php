@@ -11,9 +11,8 @@ use App\Entity;
 /**
  * Doctrine repository class for Book entities.
  *
- * @category    Doctrine
- * @package     App\Repository
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Repository
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class Book extends Base
 {

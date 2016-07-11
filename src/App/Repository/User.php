@@ -17,9 +17,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 /**
  * Doctrine repository class for User entities.
  *
- * @category    Doctrine
- * @package     App\Repository
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Repository
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class User extends Base implements UserProviderInterface, UserLoaderInterface
 {

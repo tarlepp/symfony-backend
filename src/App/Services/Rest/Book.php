@@ -29,4 +29,5 @@ use App\Repository\Book as Repository;
  */
 class Book extends Base
 {
+    // Implement custom service methods here
 }

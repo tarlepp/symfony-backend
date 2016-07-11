@@ -29,4 +29,5 @@ use App\Repository\Author as Repository;
  */
 class Author extends Base
 {
+    // Implement custom service methods here
 }

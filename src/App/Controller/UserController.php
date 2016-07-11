@@ -23,9 +23,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  *
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  *
- * @category    Controller
- * @package     App\Controller
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Controller
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UserController extends Rest
 {

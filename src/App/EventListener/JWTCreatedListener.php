@@ -17,9 +17,8 @@ use Symfony\Component\Security\Core\Role\RoleInterface;
  *
  * @see /app/config/services.yml
  *
- * @category    Listener
- * @package     App\EventListener
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\EventListener
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class JWTCreatedListener
 {
@@ -121,7 +120,7 @@ class JWTCreatedListener
 
         // We need to make sure that User object is right one
         if (!($user instanceof User)) {
-            $user = $this->container->get('app.services.user')->getByUsername($payload['username']);
+            $user = $this->container->get('app.services.rest.user')->getByUsername($payload['username']);
         }
 
         // Determine all roles for current user

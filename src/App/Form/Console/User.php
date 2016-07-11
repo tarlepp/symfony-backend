@@ -16,9 +16,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class User
  *
- * @category    Form
- * @package     App\Form\Console
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Form\Console
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class User extends AbstractType
 {

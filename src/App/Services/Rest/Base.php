@@ -20,9 +20,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * Base doctrine repository class for entities.
  *
- * @category    Service
- * @package     App\Services\Rest
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Services\Rest
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 abstract class Base implements Interfaces\Base
 {

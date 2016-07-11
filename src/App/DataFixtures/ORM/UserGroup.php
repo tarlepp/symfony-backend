@@ -18,28 +18,28 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 /**
  * Class UserGroup
  *
- * This fixture will create following data to test environment database:
+ * This fixture will create following data to test environment database, also note that id value will change on each
+ * time you load fixtures:
  *
  * -
- *  id: 1
+ *  id: UUID_V4
  *  name: "Logged in users"
  *  role: "ROLE_LOGGED"
  * -
- *  id: 2
+ *  id: UUID_V4
  *  name: "Normal users"
  *  role: "ROLE_USER"
  * -
- *  id: 3
+ *  id: UUID_V4
  *  name: "Admin users"
  *  role: "ROLE_ADMIN"
  * -
- *  id: 4
+ *  id: UUID_V4
  *  name: "Root users"
  *  role: "ROLE_ROOT"
  *
- * @category    Fixtures
- * @package     App\DataFixtures\ORM
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\DataFixtures\ORM
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UserGroup extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface, ContainerAwareInterface
 {

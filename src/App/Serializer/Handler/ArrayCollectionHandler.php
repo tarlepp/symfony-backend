@@ -15,9 +15,8 @@ use JMS\Serializer\VisitorInterface;
  *
  * @link        https://github.com/schmittjoh/JMSSerializerBundle/issues/373
  *
- * @category    Model
- * @package     App\Serializer\Handler
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Serializer\Handler
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class ArrayCollectionHandler extends \JMS\Serializer\Handler\ArrayCollectionHandler
 {

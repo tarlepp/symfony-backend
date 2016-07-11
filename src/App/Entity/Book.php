@@ -29,9 +29,8 @@ use Ramsey\Uuid\Uuid;
  *      repositoryClass="App\Repository\Book"
  *  )
  *
- * @category    Model
- * @package     App\Entity
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Entity
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class Book implements EntityInterface
 {

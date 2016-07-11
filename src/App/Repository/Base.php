@@ -15,9 +15,8 @@ use Doctrine\ORM\QueryBuilder;
 /**
  * Base doctrine repository class for entities.
  *
- * @category    Doctrine
- * @package     App\Repository
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Repository
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 abstract class Base extends EntityRepository implements Interfaces\Base
 {

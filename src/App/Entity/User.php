@@ -40,9 +40,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      repositoryClass="App\Repository\User"
  *  )
  *
- * @category    Model
- * @package     App\Entity
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Entity
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class User implements EntityInterface, UserInterface, \Serializable
 {

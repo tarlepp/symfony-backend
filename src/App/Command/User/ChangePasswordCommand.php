@@ -14,9 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class ChangePasswordCommand
  *
- * @category    Console
- * @package     App\Command\User
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Command\User
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class ChangePasswordCommand extends Base
 {

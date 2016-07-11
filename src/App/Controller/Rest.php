@@ -7,7 +7,7 @@
 namespace App\Controller;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Services\Rest as RestService;
+use App\Services\Rest\Base as RestService;
 use App\Utils\JSON;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -23,9 +23,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  *
  * This abstract class contains basic REST functionality that you can use on your own controllers.
  *
- * @category    Controller
- * @package     App\Controller
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Controller
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 abstract class Rest extends FOSRestController implements Interfaces\Rest
 {

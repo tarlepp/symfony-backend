@@ -14,9 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class DefaultController
  *
- * @category    Controller
- * @package     App\Controller
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Controller
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class DefaultController extends Controller
 {

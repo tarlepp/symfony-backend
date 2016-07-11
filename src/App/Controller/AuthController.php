@@ -20,9 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("/auth")
  *
- * @category    Controller
- * @package     App\Controller
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Controller
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class AuthController extends Controller
 {

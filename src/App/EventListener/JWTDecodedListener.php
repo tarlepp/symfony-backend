@@ -13,9 +13,8 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTDecodedEvent;
  *
  * @see /app/config/services.yml
  *
- * @category    Listener
- * @package     App\EventListener
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\EventListener
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class JWTDecodedListener
 {

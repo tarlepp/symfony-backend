@@ -14,9 +14,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class UserPassword
  *
- * @category    Form
- * @package     App\Form\Console
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Form\Console
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UserPassword extends AbstractType
 {

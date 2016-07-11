@@ -9,9 +9,8 @@ namespace App\Utils;
 /**
  * Class JSON
  *
- * @category    Utils
- * @package     App\Util
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App\Util
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class JSON
 {
