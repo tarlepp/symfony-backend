@@ -18,7 +18,6 @@ php:
 env:
   - SYMFONY_ENV=dev
   - SYMFONY_ENV=test
-  - SYMFONY_ENV=prod
 
 matrix:
   fast_finish: true
@@ -29,7 +28,6 @@ before_install:
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - touch app/config/parameters_dev.yml
   - touch app/config/parameters_test.yml
-  - touch app/config/parameters_prod.yml
 
 install:
   - composer install
@@ -44,6 +42,3 @@ script:
 
 after_script:
  - php vendor/bin/coveralls -v
-
-after_failure:
- - more app/config/parameters.yml
