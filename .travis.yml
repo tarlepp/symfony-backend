@@ -14,7 +14,11 @@ services:
 
 php:
   - 7.0
-  - hhvm-nightly
+
+env:
+  - SYMFONY_ENV=dev
+  - SYMFONY_ENV=test
+  - SYMFONY_ENV=prod
 
 matrix:
   fast_finish: true
