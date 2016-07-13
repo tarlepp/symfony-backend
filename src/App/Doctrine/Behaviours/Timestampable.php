@@ -32,7 +32,6 @@ trait Timestampable
      * @var null|\DateTime
      *
      * @JMS\Groups({
-     *      "CreatedAt",
      *      "Author.createdAt",
      *      "Book.createdAt",
      *      "User.createdAt",
@@ -53,7 +52,6 @@ trait Timestampable
      * @var null|\DateTime
      *
      * @JMS\Groups({
-     *      "UpdatedAt",
      *      "Author.updatedAt",
      *      "Book.updatedAt",
      *      "User.updatedAt",

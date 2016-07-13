@@ -32,7 +32,6 @@ trait Blameable
      * @var null|\App\Entity\User
      *
      * @JMS\Groups({
-     *      "CreatedBy",
      *      "Author.createdBy",
      *      "Book.createdBy",
      *      "User.createdBy",
@@ -56,7 +55,6 @@ trait Blameable
      * @var null|\App\Entity\User
      *
      * @JMS\Groups({
-     *      "UpdatedBy",
      *      "Author.updatedBy",
      *      "Book.updatedBy",
      *      "User.updatedBy",
