@@ -27,7 +27,9 @@ before_install:
   - openssl genrsa -out app/var/jwt/private.pem -aes256 -passout pass:thisisfortests 4096
   - openssl rsa -pubout -in app/var/jwt/private.pem -out app/var/jwt/public.pem -passin pass:thisisfortests
   - cp app/config/parameters.yml.travis app/config/parameters.yml
+  - touch app/config/parameters_dev.yml
   - touch app/config/parameters_test.yml
+  - touch app/config/parameters_prod.yml
 
 install:
   - composer install
