@@ -120,7 +120,11 @@ class JWTCreatedListener
 
         // We need to make sure that User object is right one
         if (!($user instanceof User)) {
-            $user = $this->container->get('app.services.rest.user')->getByUsername($payload['username']);
+            $user = $this->container
+                ->get('app.services.rest.user')
+                ->getRepository()
+                ->loadUserByUsername($payload['username'])
+            ;
         }
 
         // Determine all roles for current user

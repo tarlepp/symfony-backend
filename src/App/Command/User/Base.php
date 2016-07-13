@@ -158,7 +158,7 @@ abstract class Base extends ContainerAwareCommand
             $username = $this->io->askQuestion($question);
 
             try {
-                $user = $this->serviceUser->getByUsername($username);
+                $user = $this->serviceUser->getRepository()->loadUserByUsername($username);
             } catch (UsernameNotFoundException $error) {
                 $this->io->warning($error->getMessage());
             }

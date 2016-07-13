@@ -29,15 +29,5 @@ use App\Repository\User as Repository;
  */
 class User extends Base
 {
-    /**
-     * Getter method to load user object via 'username' or 'email'.
-     *
-     * @param   string  $username
-     *
-     * @return  Entity
-     */
-    public function getByUsername($username)
-    {
-        return $this->getRepository()->loadUserByUsername($username);
-    }
+    // Implement custom service methods here
 }
