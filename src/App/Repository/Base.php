@@ -314,18 +314,36 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      *  notLike     ['u.id',  'notLike',   'abc']   u.id NOT LIKE ?1            -
      *  between     ['u.id',  'between'   [1,6]]    u.id BETWEEN ?1 AND ?2      third value must contain two values
      *
+     * Also note that you can easily combine 'and' and 'or' queries like following examples:
+     *
+     * EXAMPLE INPUT ARRAY                                  GENERATED QUERY RESULT
+     *  [
+     *      'and' => [
+     *          ['u.firstname', 'eq',   'foo bar']
+     *          ['u.surname',   'neq',  'not this one']
+     *      ]
+     *  ]                                                   (u.firstname = ?1 AND u.surname <> ?2)
+     *  [
+     *      'or' => [
+     *          ['u.firstname', 'eq',   'foo bar']
+     *          ['u.surname',   'neq',  'not this one']
+     *      ]
+     *  ]                                                   (u.firstname = ?1 OR u.surname <> ?2)
+     *
+     * Also note that you can nest these criteria arrays as many levels as you need - only the sky is the limit...
+     *
      * @example
-     * $criteria = array(
-     *      'or' => array(
-     *          array('entity.field1', 'like', '%field1Value%'),
-     *          array('entity.field2', 'like', '%field2Value%')
-     *      ),
-     *      'and' => array(
-     *          array('entity.field3', 'eq', 3),
-     *          array('entity.field4', 'eq', 'four')
-     *      ),
-     *      array('entity.field5', 'neq', 5)
-     * );
+     *  $criteria = [
+     *      'or' => [
+     *          ['entity.field1', 'like', '%field1Value%'],
+     *          ['entity.field2', 'like', '%field2Value%'],
+     *      ],
+     *      'and' => [
+     *          ['entity.field3', 'eq', 3],
+     *          ['entity.field4', 'eq', 'four'],
+     *      ],
+     *      ['entity.field5', 'neq', 5].
+     *  ];
      *
      * $qb = $this->createQueryBuilder('entity');
      * $qb->where($this->getExpression($qb, $qb->expr()->andX(), $criteria));
