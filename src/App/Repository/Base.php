@@ -404,6 +404,8 @@ abstract class Base extends EntityRepository implements Interfaces\Base
                             return  $queryBuilder->expr()->literal($value);
                         }, $value);
                     }
+                } elseif (strtolower($operator) === 'isnull' || strtolower($operator) === 'isnotnull') {
+                    // In these cases we don't want to bind any parameters to query - because it's not needed
                 } else { // And with "normal" case just add parameter and set it to query builder
                     $parameters[] = '?' . $this->parameterCount;
 
