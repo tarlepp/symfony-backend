@@ -7,9 +7,11 @@
 namespace App\EventListener;
 
 use App\Entity\User;
+use App\Services\Rest\User as UserService;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 
 /**
@@ -23,20 +25,25 @@ use Symfony\Component\Security\Core\Role\RoleInterface;
 class JWTCreatedListener
 {
     /**
-     * @var ContainerInterface
+     * @var UserService
      */
-    protected $container;
+    protected $userService;
+
+    /**
+     * @var RoleHierarchy
+     */
+    protected $roleHierarchy;
 
     /**
      * JWTCreatedListener constructor.
      *
-     * @param   ContainerInterface  $container
-     *
-     * @return  JWTCreatedListener
+     * @param   UserService     $userService
+     * @param   RoleHierarchy   $roleHierarchy
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(UserService $userService, RoleHierarchy $roleHierarchy)
     {
-        $this->container = $container;
+        $this->userService = $userService;
+        $this->roleHierarchy = $roleHierarchy;
     }
 
     /**
@@ -120,8 +127,7 @@ class JWTCreatedListener
 
         // We need to make sure that User object is right one
         if (!($user instanceof User)) {
-            $user = $this->container
-                ->get('app.services.rest.user')
+            $user = $this->userService
                 ->getRepository()
                 ->loadUserByUsername($payload['username'])
             ;
@@ -133,7 +139,7 @@ class JWTCreatedListener
                 function (RoleInterface $role) {
                     return $role->getRole();
                 },
-                $this->container->get('security.role_hierarchy')->getReachableRoles($user->getUserGroups()->toArray())
+                $this->roleHierarchy->getReachableRoles($user->getUserGroups()->toArray())
             )
         );
 

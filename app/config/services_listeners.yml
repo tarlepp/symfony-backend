@@ -14,7 +14,7 @@ services:
 
     app.event.jwt_created_listener:
         class: App\EventListener\JWTCreatedListener
-        arguments: [ '@service_container' ]
+        arguments: [ '@app.services.rest.user', '@security.role_hierarchy' ]
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
