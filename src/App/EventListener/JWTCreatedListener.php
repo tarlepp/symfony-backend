@@ -9,7 +9,6 @@ namespace App\EventListener;
 use App\Entity\User;
 use App\Services\Rest\User as UserService;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleInterface;
@@ -57,11 +56,6 @@ class JWTCreatedListener
      */
     public function onJWTCreated(JWTCreatedEvent $event)
     {
-        // Oh noes, cannot get request...
-        if (!($request = $event->getRequest())) {
-            return;
-        }
-
         // Get current original payload
         $payload = $event->getData();
 
@@ -69,7 +63,7 @@ class JWTCreatedListener
         $this->setExpiration($payload);
 
         // Add some extra security data to payload
-        $this->setSecurityData($payload, $request);
+        $this->setSecurityData($payload, $event->getRequest());
 
         // Add necessary user data to payload
         $this->setUserData($payload, $event);

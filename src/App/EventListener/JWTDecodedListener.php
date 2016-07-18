@@ -29,18 +29,13 @@ class JWTDecodedListener
      */
     public function onJWTDecoded(JWTDecodedEvent $event)
     {
-        // Oh noes, cannot get request...
-        if (!($request = $event->getRequest())) {
-            return;
-        }
-
         // Get current payload and request object
         $payload = $event->getPayload();
         $request = $event->getRequest();
 
         // Custom checks to validate user's JWT
-        if ((!isset($payload['ip']) || $payload['ip'] !== $request->getClientIp())
-            || (!isset($payload['agent']) || $payload['agent'] !== $request->headers->get('User-Agent'))
+        if ((!array_key_exists('ip', $payload) || $payload['ip'] !== $request->getClientIp())
+            || (!array_key_exists('agent', $payload) || $payload['agent'] !== $request->headers->get('User-Agent'))
         ) {
             $event->markAsInvalid();
         }
