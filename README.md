@@ -4,7 +4,10 @@
 
 Simple JSON API which is build on top of [Symfony](https://symfony.com/) framework.
 
-# Table of contents
+Table of Contents
+=================
+  * [What is this?](#what-is-this)
+  * [Table of contents](#table-of-contents)
   * [Main points](#main-points)
     * [TODO](#todo)
   * [Requirements](#requirements)
@@ -18,11 +21,11 @@ Simple JSON API which is build on top of [Symfony](https://symfony.com/) framewo
     * [PHP Code Sniffer](#php-code-sniffer)
     * [Database changes](#database-changes)
     * [Tests](#tests)
+    * [XDebug](#xdebug)
   * [Useful resources + tips](#useful-resources--tips)
   * [Contributing &amp; issues &amp; questions](#contributing--issues--questions)
-  * [Author](#author)
+  * [Authors](#authors)
   * [LICENSE](#license)
-
 
 # Main points
 * This is just an API, nothing else
