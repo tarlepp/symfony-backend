@@ -18,7 +18,7 @@ Simple JSON API which is build on top of [Symfony](https://symfony.com/) framewo
     * [PHP Code Sniffer](#php-code-sniffer)
     * [Database changes](#database-changes)
     * [Tests](#tests)
-  * [Useful resources   tips](#useful-resources--tips)
+  * [Useful resources + tips](#useful-resources--tips)
   * [Contributing &amp; issues &amp; questions](#contributing--issues--questions)
   * [Author](#author)
   * [LICENSE](#license)
@@ -140,6 +140,14 @@ Project contains bunch of tests (unit, functional, e2e, etc.) which you can run 
 
 ```bash
 phpunit
+```
+
+## XDebug
+Add following lines to your ```xdebug.ini``` file to get XDebug work:
+
+```
+xdebug.remote_enable=on
+xdebug.remote_autostart=off
 ```
 
 # Useful resources + tips
