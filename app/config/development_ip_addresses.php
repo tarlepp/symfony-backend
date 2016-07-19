@@ -14,9 +14,8 @@
  *  ];
  * </code>
  *
- * @category    Config
- * @package     App
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 
 $configFile = __DIR__ . '/development_ip_addresses_local.php';

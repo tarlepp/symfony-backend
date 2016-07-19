@@ -2,9 +2,8 @@
 /**
  * /app/phpunit_bootstrap.php
  *
- * @category    Tests
- * @package     App
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 use Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand;
 use Doctrine\Bundle\DoctrineBundle\Command\DropDatabaseDoctrineCommand;

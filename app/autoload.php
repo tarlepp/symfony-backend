@@ -2,9 +2,8 @@
 /**
  * /app/autoload.php
  *
- * @category    Autoload
- * @package     App
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Composer\Autoload\ClassLoader;

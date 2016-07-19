@@ -10,9 +10,8 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 /**
  * Class AppKernel
  *
- * @category    Kernel
- * @package     App
- * @author      TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @package App
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class AppKernel extends Kernel
 {
@@ -27,15 +26,15 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new JMS\SerializerBundle\JMSSerializerBundle(),
             new FOS\RestBundle\FOSRestBundle(),
-            new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
             new Gfreeau\Bundle\GetJWTBundle\GfreeauGetJWTBundle(),
             new Gesdinet\JWTRefreshTokenBundle\GesdinetJWTRefreshTokenBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Knp\DoctrineBehaviors\Bundle\DoctrineBehaviorsBundle(),
+            new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
             new Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
@@ -44,10 +43,10 @@ class AppKernel extends Kernel
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
-            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
+            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
         }
 
         return $bundles;
