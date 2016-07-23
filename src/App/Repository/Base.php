@@ -300,7 +300,11 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     protected function processOrderBy(QueryBuilder $queryBuilder, array $orderBy)
     {
         foreach ($orderBy as $column => $order) {
-            $queryBuilder->addOrderBy('entity.' . $column, $order);
+            if (strpos($column, '.') === false) {
+                $column = 'entity.' . $column;
+            }
+
+            $queryBuilder->addOrderBy($column, $order);
         }
     }
 

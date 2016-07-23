@@ -9,6 +9,7 @@ namespace App\Tests;
 use App\Entity\Interfaces\EntityInterface;
 use App\Tests\Helpers\PHPUnitUtil;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Expr\OrderBy;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -117,6 +118,29 @@ abstract class RepositoryTestCase extends KernelTestCase
     }
 
     /**
+     * @dataProvider DataProviderTestThatProcessOrderByCreatesExpectedOrderByClause
+     *
+     * @param   array   $orderBy
+     * @param   string  $expectedResult
+     */
+    public function testThatProcessOrderByCreatesExpectedOrderByClause(array $orderBy, string $expectedResult)
+    {
+        $queryBuilder= $this->repository->createQueryBuilder('e');
+
+        PHPUnitUtil::callMethod($this->repository, 'processOrderBy', [$queryBuilder, $orderBy]);
+
+        $iterator = function (OrderBy $orderBy) {
+            return (string)$orderBy;
+        };
+
+        $this->assertEquals(
+            $expectedResult,
+            implode(', ', array_map($iterator, $queryBuilder->getDQLPart('orderBy'))),
+            'processOrderBy method did not create expected query WHERE part.'
+        );
+    }
+
+    /**
      * Data provider for 'testThatProcessCriteriaCreatesExpectedCondition'
      *
      * @return array
@@ -181,6 +205,51 @@ abstract class RepositoryTestCase extends KernelTestCase
                     ],
                 ],
                 "SELECT e FROM %s e WHERE entity.id = ?1 AND (e.foo IN('foo', 'bar') OR e.bar IN('bar', 'foo'))"
+            ],
+        ];
+    }
+
+    /**
+     * Data provider for 'testThatProcessOrderByCreatesExpectedOrderByClause'
+     *
+     * @return array
+     */
+    function DataProviderTestThatProcessOrderByCreatesExpectedOrderByClause()
+    {
+        return [
+            [
+                [
+                    'e.id' => 'ASC',
+                ],
+                'e.id ASC',
+            ],
+            [
+                [
+                    'id' => 'ASC',
+                ],
+                'entity.id ASC',
+            ],
+            [
+                [
+                    'id'    => 'ASC',
+                    'foo'   => 'DESC',
+                ],
+                'entity.id ASC, entity.foo DESC',
+            ],
+            [
+                [
+                    'e.id'  => 'ASC',
+                    'b.foo' => 'DESC',
+                ],
+                'e.id ASC, b.foo DESC',
+            ],
+            [
+                [
+                    'e.id'  => 'ASC',
+                    'b.foo' => 'DESC',
+                    'f.bar' => 'ASC',
+                ],
+                'e.id ASC, b.foo DESC, f.bar ASC',
             ],
         ];
     }
