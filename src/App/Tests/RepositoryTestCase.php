@@ -218,6 +218,10 @@ abstract class RepositoryTestCase extends KernelTestCase
     {
         return [
             [
+                [],
+                '',
+            ],
+            [
                 [
                     'e.id' => 'ASC',
                 ],
