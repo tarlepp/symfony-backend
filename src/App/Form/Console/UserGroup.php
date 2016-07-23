@@ -48,7 +48,7 @@ class UserGroup extends AbstractType
     {
         $helper = $this->roles;
 
-        $getRoleLabel = function($role) use ($helper) {
+        $getRoleLabel = function ($role) use ($helper) {
             return $helper->getRoleLabel($role);
         };
 
