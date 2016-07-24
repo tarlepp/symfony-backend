@@ -9,7 +9,6 @@ namespace App\Tests;
 use App\Entity\Interfaces\EntityInterface;
 use App\Tests\Helpers\PHPUnitUtil;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query\Expr\OrderBy;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -91,56 +90,6 @@ abstract class RepositoryTestCase extends KernelTestCase
     }
 
     /**
-     * Method to test that 'getAssociations' method return an array.
-     */
-    public function testThatGetAssociationsReturnsAnArray()
-    {
-        $this->assertInternalType('array', $this->repository->getAssociations());
-    }
-
-    /**
-     * @dataProvider dataProviderTestThatProcessCriteriaCreatesExpectedCondition
-     *
-     * @param   array   $criteria
-     * @param   string  $expectedDQL
-     */
-    public function testThatProcessCriteriaCreatesExpectedCondition(array $criteria, $expectedDQL)
-    {
-        $queryBuilder = $this->repository->createQueryBuilder('e');
-
-        PHPUnitUtil::callMethod($this->repository, 'processCriteria', [$queryBuilder, $criteria]);
-
-        $this->assertEquals(
-            sprintf($expectedDQL, $this->entityName),
-            $queryBuilder->getQuery()->getDQL(),
-            'processCriteria method did not create expected query criteria.'
-        );
-    }
-
-    /**
-     * @dataProvider dataProviderTestThatProcessOrderByCreatesExpectedOrderByClause
-     *
-     * @param   array   $orderBy
-     * @param   string  $expectedResult
-     */
-    public function testThatProcessOrderByCreatesExpectedOrderByClause(array $orderBy, string $expectedResult)
-    {
-        $queryBuilder= $this->repository->createQueryBuilder('e');
-
-        PHPUnitUtil::callMethod($this->repository, 'processOrderBy', [$queryBuilder, $orderBy]);
-
-        $iterator = function (OrderBy $orderBy) {
-            return (string)$orderBy;
-        };
-
-        $this->assertEquals(
-            $expectedResult,
-            implode(', ', array_map($iterator, $queryBuilder->getDQLPart('orderBy'))),
-            'processOrderBy method did not create expected query WHERE part.'
-        );
-    }
-
-    /**
      * @dataProvider dataProviderTestThatProcessSearchTermsCreatesExpectedCriteria
      *
      * @param   array   $searchTerms
@@ -152,6 +101,15 @@ abstract class RepositoryTestCase extends KernelTestCase
         string $operand,
         string $expectedDQL
     ) {
+        if (count($this->repository->getSearchColumns()) === 0) {
+            $message = sprintf(
+                "Repository for entity '%s' doesn't contain any defined search columns.",
+                $this->entityName
+            );
+
+            $this->markTestSkipped($message);
+        }
+
         $queryBuilder= $this->repository->createQueryBuilder('e');
 
         PHPUnitUtil::callMethod($this->repository, 'processSearchTerms', [$queryBuilder, [$operand => $searchTerms]]);
@@ -186,125 +144,6 @@ abstract class RepositoryTestCase extends KernelTestCase
         );
     }
 
-
-    /**
-     * Data provider for 'testThatProcessCriteriaCreatesExpectedCondition'
-     *
-     * @return array
-     */
-    public function dataProviderTestThatProcessCriteriaCreatesExpectedCondition()
-    {
-        return [
-            [
-                ['e.id' => 1],
-                'SELECT e FROM %s e WHERE e.id = ?1'
-            ],
-            [
-                ['e.id' => [1,2,3]],
-                'SELECT e FROM %s e WHERE e.id IN(1, 2, 3)'
-            ],
-            [
-                [
-                    'e.foo' => 'foo',
-                    'e.bar' => 'bar'
-                ],
-                'SELECT e FROM %s e WHERE e.foo = ?1 AND e.bar = ?2'
-            ],
-            [
-                [
-                    'e.foo' => ['foo', 'bar'],
-                    'e.bar' => ['bar', 'foo']
-                ],
-                "SELECT e FROM %s e WHERE e.foo IN('foo', 'bar') AND e.bar IN('bar', 'foo')"
-            ],
-            [
-                [
-                    'e.id' => 1,
-                    'e.foo' => ['foo', 'bar'],
-                    'e.bar' => ['bar', 'foo']
-                ],
-                "SELECT e FROM %s e WHERE e.id = ?1 AND e.foo IN('foo', 'bar') AND e.bar IN('bar', 'foo')"
-            ],
-            [
-                [
-                    'id' => 1,
-                    'foo' => ['foo', 'bar'],
-                    'bar' => ['bar', 'foo'],
-                ],
-                "SELECT e FROM %s e WHERE entity.id = ?1 AND entity.foo IN('foo', 'bar') AND entity.bar IN('bar', 'foo')"
-            ],
-            [
-                [
-                    'id' => 1,
-                    'and' => [
-                        ['e.foo', 'in', ['foo', 'bar']],
-                        ['e.bar', 'in', ['bar', 'foo']],
-                    ],
-                ],
-                "SELECT e FROM %s e WHERE entity.id = ?1 AND (e.foo IN('foo', 'bar') AND e.bar IN('bar', 'foo'))"
-            ],
-            [
-                [
-                    'id' => 1,
-                    'or' => [
-                        ['e.foo', 'in', ['foo', 'bar']],
-                        ['e.bar', 'in', ['bar', 'foo']],
-                    ],
-                ],
-                "SELECT e FROM %s e WHERE entity.id = ?1 AND (e.foo IN('foo', 'bar') OR e.bar IN('bar', 'foo'))"
-            ],
-        ];
-    }
-
-    /**
-     * Data provider for 'testThatProcessOrderByCreatesExpectedOrderByClause'
-     *
-     * @return array
-     */
-    function dataProviderTestThatProcessOrderByCreatesExpectedOrderByClause()
-    {
-        return [
-            [
-                [],
-                '',
-            ],
-            [
-                [
-                    'e.id' => 'ASC',
-                ],
-                'e.id ASC',
-            ],
-            [
-                [
-                    'id' => 'ASC',
-                ],
-                'entity.id ASC',
-            ],
-            [
-                [
-                    'id'    => 'ASC',
-                    'foo'   => 'DESC',
-                ],
-                'entity.id ASC, entity.foo DESC',
-            ],
-            [
-                [
-                    'e.id'  => 'ASC',
-                    'b.foo' => 'DESC',
-                ],
-                'e.id ASC, b.foo DESC',
-            ],
-            [
-                [
-                    'e.id'  => 'ASC',
-                    'b.foo' => 'DESC',
-                    'f.bar' => 'ASC',
-                ],
-                'e.id ASC, b.foo DESC, f.bar ASC',
-            ],
-        ];
-    }
-
     /**
      * Data provider for 'testThatProcessSearchTermsCreatesExpectedCriteria' method.
      *
@@ -316,31 +155,37 @@ abstract class RepositoryTestCase extends KernelTestCase
             [
                 [],
                 'or',
+                /** @lang text */
                 'SELECT e FROM %s e'
             ],
             [
                 ['foo'],
                 'or',
+                /** @lang text */
                 'SELECT e FROM %s e WHERE %s'
             ],
             [
                 ['foo', 'bar'],
                 'or',
+                /** @lang text */
                 'SELECT e FROM %s e WHERE %s'
             ],
             [
                 [],
                 'and',
+                /** @lang text */
                 'SELECT e FROM %s e'
             ],
             [
                 ['foo'],
                 'and',
+                /** @lang text */
                 'SELECT e FROM %s e WHERE %s'
             ],
             [
                 ['foo', 'bar'],
                 'and',
+                /** @lang text */
                 'SELECT e FROM %s e WHERE %s'
             ],
         ];
