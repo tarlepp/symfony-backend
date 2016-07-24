@@ -70,6 +70,16 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     }
 
     /**
+     * Getter method for search columns of current entity.
+     *
+     * @return \string[]
+     */
+    public function getSearchColumns()
+    {
+        return $this->searchColumns;
+    }
+
+    /**
      * Helper method to persist specified entity to database.
      *
      * @param   EntityInterface $entity
@@ -266,7 +276,11 @@ abstract class Base extends EntityRepository implements Interfaces\Base
          */
         $iteratorTerm = function ($term) use ($columns) {
             $iteratorColumn = function ($column) use ($term) {
-                return ['entity.' . $column, 'LIKE', '%' . $term . '%'];
+                if (strpos($column, '.') === false) {
+                    $column = 'entity.' . $column;
+                }
+
+                return [$column, 'LIKE', '%' . $term . '%'];
             };
 
             return array_map($iteratorColumn, $columns);

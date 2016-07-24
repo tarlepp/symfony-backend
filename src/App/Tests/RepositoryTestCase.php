@@ -118,7 +118,7 @@ abstract class RepositoryTestCase extends KernelTestCase
     }
 
     /**
-     * @dataProvider DataProviderTestThatProcessOrderByCreatesExpectedOrderByClause
+     * @dataProvider dataProviderTestThatProcessOrderByCreatesExpectedOrderByClause
      *
      * @param   array   $orderBy
      * @param   string  $expectedResult
@@ -139,6 +139,53 @@ abstract class RepositoryTestCase extends KernelTestCase
             'processOrderBy method did not create expected query WHERE part.'
         );
     }
+
+    /**
+     * @dataProvider dataProviderTestThatProcessSearchTermsCreatesExpectedCriteria
+     *
+     * @param   array   $searchTerms
+     * @param   string  $operand
+     * @param   string  $expectedDQL
+     */
+    public function testThatProcessSearchTermsCreatesExpectedCriteria(
+        array $searchTerms,
+        string $operand,
+        string $expectedDQL
+    ) {
+        $queryBuilder= $this->repository->createQueryBuilder('e');
+
+        PHPUnitUtil::callMethod($this->repository, 'processSearchTerms', [$queryBuilder, [$operand => $searchTerms]]);
+
+        $criteria = [];
+        $index = 1;
+
+        $iterator = function ($column) use (&$index) {
+            if (strpos($column, '.') === false) {
+                $column = 'entity.' . $column;
+            }
+
+            $output = sprintf(
+                '%s LIKE ?%d',
+                $column,
+                $index
+            );
+
+            $index++;
+
+            return $output;
+        };
+
+        for ($i = 0; $i < count($searchTerms); $i++) {
+            $criteria = array_merge($criteria, array_map($iterator, $this->repository->getSearchColumns()));
+        }
+
+        $this->assertEquals(
+            sprintf($expectedDQL, $this->entityName, implode(' ' . strtoupper($operand) . ' ', $criteria)),
+            $queryBuilder->getQuery()->getDQL(),
+            'processSearchTerms method did not create expected query criteria.'
+        );
+    }
+
 
     /**
      * Data provider for 'testThatProcessCriteriaCreatesExpectedCondition'
@@ -254,6 +301,47 @@ abstract class RepositoryTestCase extends KernelTestCase
                     'f.bar' => 'ASC',
                 ],
                 'e.id ASC, b.foo DESC, f.bar ASC',
+            ],
+        ];
+    }
+
+    /**
+     * Data provider for 'testThatProcessSearchTermsCreatesExpectedCriteria' method.
+     *
+     * @return array
+     */
+    public function dataProviderTestThatProcessSearchTermsCreatesExpectedCriteria()
+    {
+        return [
+            [
+                [],
+                'or',
+                'SELECT e FROM %s e'
+            ],
+            [
+                ['foo'],
+                'or',
+                'SELECT e FROM %s e WHERE %s'
+            ],
+            [
+                ['foo', 'bar'],
+                'or',
+                'SELECT e FROM %s e WHERE %s'
+            ],
+            [
+                [],
+                'and',
+                'SELECT e FROM %s e'
+            ],
+            [
+                ['foo'],
+                'and',
+                'SELECT e FROM %s e WHERE %s'
+            ],
+            [
+                ['foo', 'bar'],
+                'and',
+                'SELECT e FROM %s e WHERE %s'
             ],
         ];
     }
