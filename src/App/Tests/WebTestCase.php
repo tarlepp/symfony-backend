@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Tests/WebTestCase.php
  *
@@ -71,7 +72,7 @@ abstract class WebTestCase extends Base
      *
      * @return \Symfony\Bundle\FrameworkBundle\Client
      */
-    public function getClient($username, $password, array $options = [], array $server = [])
+    public function getClient(string $username, string $password, array $options = [], array $server = [])
     {
         return static::createClient(
             $options,

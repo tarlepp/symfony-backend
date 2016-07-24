@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Tests/EntityTestCase.php
  *
@@ -110,7 +111,7 @@ abstract class EntityTestCase extends KernelTestCase
      *
      * @param   string  $field
      */
-    public function testThatGetterAndSetterExists($field)
+    public function testThatGetterAndSetterExists(string $field)
     {
         $getter = 'get' . ucfirst($field);
         $setter = 'set' . ucfirst($field);
@@ -142,7 +143,7 @@ abstract class EntityTestCase extends KernelTestCase
      * @param   string  $field
      * @param   mixed   $value
      */
-    public function testThatSetterReturnsInstanceOfEntity($field, $value)
+    public function testThatSetterReturnsInstanceOfEntity(string $field, $value)
     {
         $setter = 'set' . ucfirst($field);
 
@@ -162,10 +163,10 @@ abstract class EntityTestCase extends KernelTestCase
      * @dataProvider dataProviderTestThatSetterAndGettersWorks
      *
      * @param   string  $field
-     * @param   string  $value
+     * @param   mixed   $value
      * @param   string  $type
      */
-    public function testThatGetterReturnsExpectedValue($field, $value, $type)
+    public function testThatGetterReturnsExpectedValue(string $field, $value, string $type)
     {
         $getter = 'get' . ucfirst($field);
         $setter = 'set' . ucfirst($field);
@@ -192,8 +193,8 @@ abstract class EntityTestCase extends KernelTestCase
      * @param   boolean|string  $expectedOutput
      */
     public function testThatAssociationMethodsExistsAndThoseReturnsCorrectValue(
-        $method,
-        $field,
+        string $method,
+        string $field,
         $input,
         $expectedOutput
     ) {
@@ -215,25 +216,27 @@ abstract class EntityTestCase extends KernelTestCase
     /**
      * @dataProvider dataProviderTestThatManyToManyAssociationMethodsWorksAsExpected
      *
-     * @param   string  $methodGetter
-     * @param   string  $methodAdder
-     * @param   string  $methodRemoval
-     * @param   string  $methodClear
-     * @param   string  $field
-     * @param   string  $targetEntity
-     * @param   array   $mappings
+     * @param   string|boolean  $methodGetter
+     * @param   string          $methodAdder
+     * @param   string          $methodRemoval
+     * @param   string          $methodClear
+     * @param   string          $field
+     * @param   object          $targetEntity
+     * @param   array           $mappings
      */
     public function testThatManyToManyAssociationMethodsWorksAsExpected(
         $methodGetter,
-        $methodAdder,
-        $methodRemoval,
-        $methodClear,
-        $field,
+        string $methodAdder,
+        string $methodRemoval,
+        string $methodClear,
+        string $field,
         $targetEntity,
         array $mappings
     ) {
         if ($methodGetter === false) {
             $this->markTestSkipped('Entity does not contain many-to-many relationships.');
+
+            return;
         }
 
         $this->assertInstanceOf(
@@ -315,16 +318,16 @@ abstract class EntityTestCase extends KernelTestCase
     /**
      * @dataProvider dataProviderTestThatManyToOneAssociationMethodsWorksAsExpected
      *
-     * @param   string  $methodSetter
-     * @param   string  $methodGetter
-     * @param   object  $targetEntity
-     * @param   string  $field
+     * @param   string|boolean  $methodSetter
+     * @param   string          $methodGetter
+     * @param   object          $targetEntity
+     * @param   string          $field
      */
     public function testThatManyToOneAssociationMethodsWorksAsExpected(
         $methodSetter,
-        $methodGetter,
+        string $methodGetter,
         $targetEntity,
-        $field
+        string $field
     ) {
         if ($methodSetter === false) {
             $this->markTestSkipped('Entity does not contain many-to-one relationships.');
@@ -355,10 +358,10 @@ abstract class EntityTestCase extends KernelTestCase
     /**
      * @dataProvider dataProviderTestThatOneToManyAssociationMethodsWorksAsExpected
      *
-     * @param   string  $methodGetter
-     * @param   string  $field
+     * @param   string|boolean  $methodGetter
+     * @param   string          $field
      */
-    public function testThatOneToManyAssociationMethodsWorksAsExpected($methodGetter, $field)
+    public function testThatOneToManyAssociationMethodsWorksAsExpected($methodGetter, string $field)
     {
         if ($methodGetter === false) {
             $this->markTestSkipped('Entity does not contain one-to-many relationships.');
@@ -383,7 +386,7 @@ abstract class EntityTestCase extends KernelTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatSetterAndGettersWorks()
+    public function dataProviderTestThatSetterAndGettersWorks() : array
     {
         self::bootKernel();
 
@@ -465,7 +468,7 @@ abstract class EntityTestCase extends KernelTestCase
         return array_map($iterator, array_filter($meta->getFieldNames(), $filter));
     }
 
-    public function dataProviderTestThatManyToManyAssociationMethodsWorksAsExpected()
+    public function dataProviderTestThatManyToManyAssociationMethodsWorksAsExpected() : array
     {
         self::bootKernel();
 
@@ -514,7 +517,7 @@ abstract class EntityTestCase extends KernelTestCase
         return call_user_func_array('array_merge', array_map($iterator, $items));
     }
 
-    public function dataProviderTestThatManyToOneAssociationMethodsWorksAsExpected()
+    public function dataProviderTestThatManyToOneAssociationMethodsWorksAsExpected() : array
     {
         self::bootKernel();
 
@@ -558,7 +561,7 @@ abstract class EntityTestCase extends KernelTestCase
         return call_user_func_array('array_merge', array_map($iterator, $items));
     }
 
-    public function dataProviderTestThatAssociationMethodsExists()
+    public function dataProviderTestThatAssociationMethodsExists() : array
     {
         self::bootKernel();
 
@@ -632,7 +635,7 @@ abstract class EntityTestCase extends KernelTestCase
         return call_user_func_array('array_merge', array_map($iterator, $meta->getAssociationMappings()));
     }
 
-    public function dataProviderTestThatOneToManyAssociationMethodsWorksAsExpected()
+    public function dataProviderTestThatOneToManyAssociationMethodsWorksAsExpected() : array
     {
         self::bootKernel();
 

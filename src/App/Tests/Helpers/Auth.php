@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Tests/Helpers/Auth.php
  *
@@ -26,7 +27,7 @@ class Auth
     /**
      * Credential cache
      *
-     * @var array
+     * @var \string[]
      */
     private $cache = [];
 
@@ -52,7 +53,7 @@ class Auth
      *
      * @throws  \Exception
      */
-    public function getAuthorizationHeadersForUser($username = null, $password = null)
+    public function getAuthorizationHeadersForUser(string $username = null, string $password = null)
     {
         $key = sha1($username . $password);
 
@@ -71,11 +72,11 @@ class Auth
      *
      * @return  array
      */
-    public function getAuthorizationHeaders($token)
+    public function getAuthorizationHeaders(string $token)
     {
         return [
             'CONTENT_TYPE'          => 'application/json',
-            'HTTP_AUTHORIZATION'    => 'Bearer ' . (string)$token,
+            'HTTP_AUTHORIZATION'    => 'Bearer ' . $token,
         ];
     }
 
@@ -89,7 +90,7 @@ class Auth
      *
      * @return  string
      */
-    private function makeLogin($username, $password)
+    private function makeLogin(string $username, string $password)
     {
         // Get client
         $client = $this->container->get('test.client');

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Tests/ContainerTestCase.php
  *
@@ -27,7 +28,7 @@ class ContainerTestCase extends KernelTestCase
      *
      * @return ContainerInterface
      */
-    public function getContainer()
+    public function getContainer() : ContainerInterface
     {
         if (!($this->container instanceof ContainerInterface)) {
             self::bootKernel();
