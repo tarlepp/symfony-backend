@@ -261,7 +261,7 @@ abstract class RepositoryTestCase extends KernelTestCase
      *
      * @return array
      */
-    function DataProviderTestThatProcessOrderByCreatesExpectedOrderByClause()
+    function dataProviderTestThatProcessOrderByCreatesExpectedOrderByClause()
     {
         return [
             [
