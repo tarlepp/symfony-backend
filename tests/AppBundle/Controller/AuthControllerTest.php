@@ -36,7 +36,7 @@ class AuthControllerTest extends WebTestCase
         $this->assertEquals(
             200,
             $client->getResponse()->getStatusCode(),
-            'User login was not successfully.\n' . $client->getResponse()
+            "User login was not successfully.\n" . $client->getResponse()
         );
 
         // Get response object
@@ -81,7 +81,7 @@ class AuthControllerTest extends WebTestCase
         $this->assertEquals(
             401,
             $client->getResponse()->getStatusCode(),
-            implode('\n', $message)
+            implode("\n", $message)
         );
     }
 
@@ -103,14 +103,14 @@ class AuthControllerTest extends WebTestCase
         $this->assertEquals(
             $expectedStatusCode,
             $client->getResponse()->getStatusCode(),
-            'HTTP status code was not expected for method \'' . $method . '\'\n' . $client->getResponse()
+            "HTTP status code was not expected for method '" . $method . "'\n" . $client->getResponse()
         );
 
         // Check that actual response content is correct
         $this->assertEquals(
             $expectedContent,
             $client->getResponse()->getContent(),
-            'HTTP response was not expected for method \'' . $method . '\'\n' . $client->getResponse()
+            "HTTP response was not expected for method '" . $method . "'\n" . $client->getResponse()
         );
     }
 
@@ -130,13 +130,13 @@ class AuthControllerTest extends WebTestCase
         $this->assertEquals(
             401,
             $client->getResponse()->getStatusCode(),
-            'HTTP status code was not expected for /auth/profile request\n' . $client->getResponse()
+            "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
         );
 
         $this->assertEquals(
             '{"code":401,"message":"Invalid credentials"}',
             $client->getResponse()->getContent(),
-            'Response content was not expected for /auth/profile request\n' . $client->getResponse()
+            "Response content was not expected for /auth/profile request\n" . $client->getResponse()
         );
     }
 
@@ -156,13 +156,77 @@ class AuthControllerTest extends WebTestCase
         $this->assertEquals(
             401,
             $client->getResponse()->getStatusCode(),
-            'HTTP status code was not expected for /auth/profile request\n' . $client->getResponse()
+            "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
         );
 
         $this->assertEquals(
             '{"code":401,"message":"Invalid JWT Token"}',
             $client->getResponse()->getContent(),
-            'Response content was not expected for /auth/profile request\n' . $client->getResponse()
+            "Response content was not expected for /auth/profile request\n" . $client->getResponse()
+        );
+    }
+
+    /**
+     * Method tests that after successfully login, if user IP address changes for some reason obtained Json Web Token
+     * is marked invalid.
+     *
+     * @dataProvider providerTestThatValidCredentialsWork
+     *
+     * @param   string  $username
+     * @param   string  $password
+     */
+    public function testThatChangeOfIpMarksJsonWebTokenInvalid($username, $password)
+    {
+        $client = $this->getClient($username, $password);
+        $client->setServerParameter('REMOTE_ADDR', '666.666.666.666');
+        $client->request(
+            'GET',
+            '/auth/profile'
+        );
+
+        // Check that HTTP status code is correct
+        $this->assertEquals(
+            401,
+            $client->getResponse()->getStatusCode(),
+            "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
+        );
+
+        $this->assertEquals(
+            '{"code":401,"message":"Invalid JWT Token"}',
+            $client->getResponse()->getContent(),
+            "Response content was not expected for /auth/profile request\n" . $client->getResponse()
+        );
+    }
+
+    /**
+     * Method tests that after successfully login, if user user-agent changes for some reason obtained Json Web Token
+     * is marked invalid.
+     *
+     * @dataProvider providerTestThatValidCredentialsWork
+     *
+     * @param   string  $username
+     * @param   string  $password
+     */
+    public function testThatChangeOfUserAgentMarksJsonWebTokenInvalid($username, $password)
+    {
+        $client = $this->getClient($username, $password);
+        $client->setServerParameter('HTTP_USER_AGENT', 'Changed user-agent');
+        $client->request(
+            'GET',
+            '/auth/profile'
+        );
+
+        // Check that HTTP status code is correct
+        $this->assertEquals(
+            401,
+            $client->getResponse()->getStatusCode(),
+            "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
+        );
+
+        $this->assertEquals(
+            '{"code":401,"message":"Invalid JWT Token"}',
+            $client->getResponse()->getContent(),
+            "Response content was not expected for /auth/profile request\n" . $client->getResponse()
         );
     }
 
@@ -188,7 +252,7 @@ class AuthControllerTest extends WebTestCase
         $this->assertEquals(
             200,
             $client->getResponse()->getStatusCode(),
-            'HTTP status code was not expected for /auth/profile request\n' . $client->getResponse()
+            "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
         );
 
         $profileData = JSON::decode($client->getResponse()->getContent());
