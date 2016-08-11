@@ -1,4 +1,5 @@
 # What is this?
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Build Status](https://travis-ci.org/tarlepp/symfony-backend.png?branch=master)](https://travis-ci.org/tarlepp/symfony-backend)
 [![Coverage Status](https://coveralls.io/repos/github/tarlepp/symfony-backend/badge.svg?branch=master)](https://coveralls.io/github/tarlepp/symfony-backend?branch=master)
 
