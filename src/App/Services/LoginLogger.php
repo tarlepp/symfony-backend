@@ -12,6 +12,7 @@ use App\Services\Rest\UserLogin;
 use DeviceDetector\DeviceDetector;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -55,30 +56,18 @@ class LoginLogger
     /**
      * LoginLogger constructor.
      *
-     * @param   Logger      $logger
-     * @param   UserLogin   $service
+     * @param   Logger          $logger
+     * @param   UserLogin       $service
+     * @param   RequestStack    $requestStack
      *
      * @return  LoginLogger
      */
-    public function __construct(Logger $logger, UserLogin $service)
+    public function __construct(Logger $logger, UserLogin $service, RequestStack $requestStack)
     {
         // Store used services
         $this->logger = $logger;
         $this->service = $service;
-    }
-
-    /**
-     * Setter for Request object
-     *
-     * @param   Request $request
-     *
-     * @return  LoginLogger
-     */
-    public function setRequest(Request $request) : LoginLogger
-    {
-        $this->request = $request;
-
-        return $this;
+        $this->request = $requestStack->getCurrentRequest();
     }
 
     /**

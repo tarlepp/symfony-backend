@@ -7,6 +7,7 @@
 namespace App\EventListener;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTDecodedEvent;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class JWTDecodedListener
@@ -18,6 +19,21 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTDecodedEvent;
  */
 class JWTDecodedListener
 {
+    /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
+     * JWTDecodedListener constructor.
+     *
+     * @param   RequestStack    $requestStack
+     */
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
+
     /**
      * Event listener method to attach some custom JWT payload checks.
      *
@@ -31,7 +47,9 @@ class JWTDecodedListener
     {
         // Get current payload and request object
         $payload = $event->getPayload();
-        $request = $event->getRequest();
+        $request = $this->requestStack->getCurrentRequest();
+
+        $event->getRequest();
 
         // Custom checks to validate user's JWT
         if ((!array_key_exists('ip', $payload) || $payload['ip'] !== $request->getClientIp())

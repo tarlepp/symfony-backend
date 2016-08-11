@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Services\Rest\User as UserService;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 
@@ -34,15 +35,22 @@ class JWTCreatedListener
     protected $roleHierarchy;
 
     /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
      * JWTCreatedListener constructor.
      *
      * @param   UserService     $userService
      * @param   RoleHierarchy   $roleHierarchy
+     * @param   RequestStack    $requestStack
      */
-    public function __construct(UserService $userService, RoleHierarchy $roleHierarchy)
+    public function __construct(UserService $userService, RoleHierarchy $roleHierarchy, RequestStack $requestStack)
     {
         $this->userService = $userService;
         $this->roleHierarchy = $roleHierarchy;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -63,7 +71,7 @@ class JWTCreatedListener
         $this->setExpiration($payload);
 
         // Add some extra security data to payload
-        $this->setSecurityData($payload, $event->getRequest());
+        $this->setSecurityData($payload, $this->requestStack->getCurrentRequest());
 
         // Add necessary user data to payload
         $this->setUserData($payload, $event);

@@ -9,6 +9,7 @@ namespace App\EventListener;
 
 use App\Services\LoginLogger;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class AuthenticationSuccessListener
@@ -48,8 +49,7 @@ class AuthenticationSuccessListener
      */
     public function onAuthenticationSuccess(AuthenticationSuccessEvent $event)
     {
-        // Set request and user to LoginLogger class
-        $this->loginLogger->setRequest($event->getRequest());
+        // Set user to LoginLogger class
         $this->loginLogger->setUser($event->getUser());
 
         // Handle login logger

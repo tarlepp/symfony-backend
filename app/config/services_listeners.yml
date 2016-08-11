@@ -14,12 +14,13 @@ services:
 
     app.event.jwt_created_listener:
         class: App\EventListener\JWTCreatedListener
-        arguments: [ '@app.services.rest.user', '@security.role_hierarchy' ]
+        arguments: [ '@app.services.rest.user', '@security.role_hierarchy', '@request_stack' ]
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
 
     app.event.jwt_decoded_listener:
         class: App\EventListener\JWTDecodedListener
+        arguments: [ '@request_stack' ]
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }
 
