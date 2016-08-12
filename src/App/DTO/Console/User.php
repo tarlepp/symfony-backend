@@ -1,20 +1,20 @@
 <?php
 /**
- * /src/App/Form/Console/UserData.php
+ * /src/App/DTO/Console/User.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace App\Form\Console;
+namespace App\DTO\Console;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UserData
+ * Class User
  *
- * @package App\Form\Console
+ * @package App\DTO\Console
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class UserData
+class User
 {
     /**
      * @var string

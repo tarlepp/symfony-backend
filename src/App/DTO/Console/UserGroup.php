@@ -1,20 +1,20 @@
 <?php
 /**
- * /src/App/Form/Console/UserGroupData.php
+ * /src/App/DTO/Console/UserGroup.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace App\Form\Console;
+namespace App\DTO\Console;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UserGroupData
+ * Class UserGroup
  *
- * @package App\Form\Console
+ * @package App\DTO\Console
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class UserGroupData
+class UserGroup
 {
     /**
      * @var string

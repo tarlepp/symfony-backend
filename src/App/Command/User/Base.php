@@ -9,9 +9,8 @@ namespace App\Command\User;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\User as EntityUser;
 use App\Entity\UserGroup as EntityUserGroup;
-use App\Entity\UserGroup;
-use App\Form\Console\UserData;
-use App\Form\Console\UserGroupData;
+use App\DTO\Console\User as DTOUser;
+use App\DTO\Console\UserGroup as DTOUserGroup;
 use App\Services\Rest\User as ServiceUser;
 use App\Services\Rest\UserGroup as ServiceUserGroup;
 use Doctrine\ORM\PersistentCollection;
@@ -230,7 +229,7 @@ abstract class Base extends ContainerAwareCommand
      *
      * @param   EntityUser  $user
      *
-     * @return  UserData
+     * @return  DTOUser
      */
     protected function getUserDto(EntityUser $user)
     {
@@ -246,7 +245,7 @@ abstract class Base extends ContainerAwareCommand
         };
 
         // Create DTO for user
-        $dto = new UserData();
+        $dto = new DTOUser();
         $dto->username = $user->getUsername();
         $dto->firstname = $user->getFirstname();
         $dto->surname = $user->getSurname();
@@ -300,13 +299,13 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to store user entity.
      *
-     * @param   UserData    $userData
+     * @param   DTOUser     $userData
      * @param   EntityUser  $user
      * @param   Boolean     $skipValidation
      *
      * @return  EntityUser
      */
-    protected function storeUser(UserData $userData, EntityUser $user = null, $skipValidation = false)
+    protected function storeUser(DTOUser $userData, EntityUser $user = null, $skipValidation = false)
     {
         // Create new UserGroup entity OR use provided one
         $user = $user ?: new EntityUser();
@@ -314,7 +313,8 @@ abstract class Base extends ContainerAwareCommand
         $user->setFirstname($userData->firstname);
         $user->setSurname($userData->surname);
         $user->setEmail($userData->email);
-        $user->setPlainPassword($userData->plainPassword);
+
+        empty($userData->plainPassword) ?: $user->setPlainPassword($userData->plainPassword);
 
         // Clear current user groups, we just want to create those relations from scratch
         $user->clearUserGroups();
@@ -331,12 +331,12 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to store user group entity. Note that this uses DTO pattern.
      *
-     * @param   UserGroupData   $userGroupData
+     * @param   DTOUserGroup    $userGroupData
      * @param   EntityUserGroup $userGroup
      *
      * @return  EntityUserGroup
      */
-    protected function storeUserGroup(UserGroupData $userGroupData, EntityUserGroup $userGroup = null)
+    protected function storeUserGroup(DTOUserGroup $userGroupData, EntityUserGroup $userGroup = null)
     {
         // Create new UserGroup entity OR use provided one
         $userGroup = $userGroup ?: new EntityUserGroup();
@@ -373,7 +373,7 @@ abstract class Base extends ContainerAwareCommand
 
             // And we have many-to-many records so map those to get string presentation of each records
             if ($value instanceof PersistentCollection) {
-                $iterator = function (UserGroup $entity) {
+                $iterator = function (EntityUserGroup $entity) {
                     $data = [
                         $entity->getId(),
                         $entity->getName(),

@@ -79,7 +79,7 @@ class UserGroup extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'App\Form\Console\UserGroupData'
+            'data_class' => 'App\DTO\Console\UserGroup'
         ]);
     }
 }

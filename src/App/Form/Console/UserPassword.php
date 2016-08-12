@@ -42,7 +42,7 @@ class UserPassword extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'App\Form\Console\UserData',
+            'data_class' => 'App\DTO\Console\User',
         ]);
     }
 }

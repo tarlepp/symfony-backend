@@ -28,6 +28,7 @@
                 <directory>src/*/Bundle/*Bundle/Resources</directory>
                 <directory>src/*/Interfaces</directory>
                 <directory>src/*/Tests</directory>
+                <directory>src/*/DTO</directory>
                 <directory>src/*/Form</directory>
                 <directory>src/*/Command</directory>
                 <directory>src/*/DataFixtures</directory>
