@@ -2,38 +2,31 @@
 #
 # Note that these are only used with REST services.
 services:
-    repository.author:
+    repository:
         class: Doctrine\ORM\EntityRepository
         factory: [ '@doctrine.orm.entity_manager', getRepository ]
-        arguments: [ App\Entity\Author ]
         shared: false
+
+    repository.author:
+        parent: repository
+        arguments: [ App\Entity\Author ]
 
     repository.book:
-        class: Doctrine\ORM\EntityRepository
-        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        parent: repository
         arguments: [ App\Entity\Book ]
-        shared: false
 
     repository.request_log:
-        class: Doctrine\ORM\EntityRepository
-        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        parent: repository
         arguments: [ App\Entity\RequestLog ]
-        shared: false
 
     repository.user:
-        class: Doctrine\ORM\EntityRepository
-        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        parent: repository
         arguments: [ App\Entity\User ]
-        shared: false
 
     repository.user_group:
-        class: Doctrine\ORM\EntityRepository
-        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        parent: repository
         arguments: [ App\Entity\UserGroup ]
-        shared: false
 
     repository.user_login:
-        class: Doctrine\ORM\EntityRepository
-        factory: [ '@doctrine.orm.entity_manager', getRepository ]
+        parent: repository
         arguments: [ App\Entity\UserLogin ]
-        shared: false
