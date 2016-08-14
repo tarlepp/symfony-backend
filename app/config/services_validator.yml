@@ -1,0 +1,12 @@
+services:
+    validator.unique_email:
+        class: App\Validator\Constraints\UniqueEmailValidator
+        arguments: [ '@repository.user' ]
+        tags:
+            - { name: validator.constraint_validator }
+
+    validator.unique_username:
+        class: App\Validator\Constraints\UniqueUsernameValidator
+        arguments: [ '@repository.user' ]
+        tags:
+            - { name: validator.constraint_validator }

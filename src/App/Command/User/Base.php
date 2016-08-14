@@ -246,6 +246,7 @@ abstract class Base extends ContainerAwareCommand
 
         // Create DTO for user
         $dto = new DTOUser();
+        $dto->id = $user->getId();
         $dto->username = $user->getUsername();
         $dto->firstname = $user->getFirstname();
         $dto->surname = $user->getSurname();

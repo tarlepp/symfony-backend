@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Repository/User.php
  *
@@ -45,7 +46,7 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      *
      * @throws  UsernameNotFoundException if the user is not found
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($username) : UserInterface
     {
         // Build query
         $query = $this
@@ -84,7 +85,7 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      *
      * @throws  UnsupportedUserException    if the account is not supported
      */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user) : UserInterface
     {
         $class = get_class($user);
 
@@ -102,8 +103,76 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      *
      * @return  bool
      */
-    public function supportsClass($class)
+    public function supportsClass($class) : bool
     {
         return $this->getEntityName() === $class || is_subclass_of($class, $this->getEntityName());
+    }
+
+    /**
+     * Method to check if specified username is available or not.
+     *
+     * @param   string      $username   Username to check
+     * @param   string|null $id         User id to ignore
+     *
+     * @return  bool
+     */
+    public function isUsernameAvailable(string $username, string $id = null) : bool
+    {
+        // Build query
+        $query = $this
+            ->createQueryBuilder('u')
+            ->select('u')
+            ->where('u.username = :username')
+            ->setParameter('username', $username)
+        ;
+
+        if (!is_null($id)) {
+            $query
+                ->andWhere('u.id <> :id')
+                ->setParameter('id', $id)
+            ;
+        }
+
+        try {
+            $query->getQuery()->getSingleResult();
+
+            return false;
+        } catch (NoResultException $exception) {
+            return true;
+        }
+    }
+
+    /**
+     * Method to check if specified email is available or not.
+     *
+     * @param   string      $email  Username to check
+     * @param   string|null $id     User id to ignore
+     *
+     * @return  bool
+     */
+    public function isEmailAvailable(string $email, string $id = null) : bool
+    {
+        // Build query
+        $query = $this
+            ->createQueryBuilder('u')
+            ->select('u')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+        ;
+
+        if (!is_null($id)) {
+            $query
+                ->andWhere('u.id <> :id')
+                ->setParameter('id', $id)
+            ;
+        }
+
+        try {
+            $query->getQuery()->getSingleResult();
+
+            return false;
+        } catch (NoResultException $exception) {
+            return true;
+        }
     }
 }
