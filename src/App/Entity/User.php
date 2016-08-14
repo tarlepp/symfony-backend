@@ -508,6 +508,21 @@ class User implements EntityInterface, UserInterface, \Serializable
     }
 
     /**
+     * Method to get user checksum string.
+     *
+     * @return string
+     */
+    public function getChecksum() : string
+    {
+        $bits = [
+            $this->getId(),
+            $this->getPassword(),
+        ];
+
+        return hash('sha512', implode('', $bits));
+    }
+
+    /**
      * Removes sensitive data from the user.
      *
      * This is important if, at any given point, sensitive information like

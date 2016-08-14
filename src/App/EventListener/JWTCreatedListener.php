@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/EventListener/JWTCreatedListener.php
  *
@@ -67,14 +68,17 @@ class JWTCreatedListener
         // Get current original payload
         $payload = $event->getData();
 
+        // Get User entity
+        $user = $this->getUser($event, (string)$payload['username']);
+
         // Update JWT expiration data
         $this->setExpiration($payload);
 
         // Add some extra security data to payload
-        $this->setSecurityData($payload, $this->requestStack->getCurrentRequest());
+        $this->setSecurityData($payload, $this->requestStack->getCurrentRequest(), $user);
 
         // Add necessary user data to payload
-        $this->setUserData($payload, $event);
+        $this->setUserData($payload, $user);
 
         // And set new payload for JWT
         $event->setData($payload);
@@ -102,13 +106,15 @@ class JWTCreatedListener
      *
      * @param   array   $payload
      * @param   Request $request
+     * @param   User    $user
      *
      * @return  void
      */
-    private function setSecurityData(array &$payload, Request $request)
+    private function setSecurityData(array &$payload, Request $request, User $user)
     {
         $payload['ip'] = $request->getClientIp();
         $payload['agent'] = $request->headers->get('User-Agent');
+        $payload['checksum'] = $user->getChecksum();
     }
 
     /**
@@ -117,24 +123,13 @@ class JWTCreatedListener
      * Magic thing here is to determine all user's roles to single dimensional array, which is used on the frontend
      * side application to check access to different routes.
      *
-     * @param   array           $payload
-     * @param   JWTCreatedEvent $event
+     * @param   array   $payload
+     * @param   User    $user
      *
      * @return  void
      */
-    private function setUserData(array &$payload, JWTCreatedEvent $event)
+    private function setUserData(array &$payload, User $user)
     {
-        /** @var User $user */
-        $user = $event->getUser();
-
-        // We need to make sure that User object is right one
-        if (!($user instanceof User)) {
-            $user = $this->userService
-                ->getRepository()
-                ->loadUserByUsername($payload['username'])
-            ;
-        }
-
         // Determine all roles for current user
         $payload['roles'] = array_unique(
             array_map(
@@ -147,5 +142,29 @@ class JWTCreatedListener
 
         // Merge payload with user's login data
         $payload = array_merge($payload, $user->getLoginData());
+    }
+
+    /**
+     * Method to get user entity from current event.
+     *
+     * @param   JWTCreatedEvent $event
+     * @param   string          $username
+     *
+     * @return  User
+     */
+    private function getUser(JWTCreatedEvent $event, string $username) : User
+    {
+        /** @var User $user */
+        $user = $event->getUser();
+
+        // We need to make sure that User object is right one
+        if (!($user instanceof User)) {
+            $user = $this->userService
+                ->getRepository()
+                ->loadUserByUsername($username)
+            ;
+        }
+
+        return $user;
     }
 }

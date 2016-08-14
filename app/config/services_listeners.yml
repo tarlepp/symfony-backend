@@ -20,7 +20,7 @@ services:
 
     app.event.jwt_decoded_listener:
         class: App\EventListener\JWTDecodedListener
-        arguments: [ '@request_stack' ]
+        arguments: [ '@request_stack', '@app.services.rest.user' ]
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }
 
