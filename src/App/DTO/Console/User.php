@@ -6,16 +6,25 @@
  */
 namespace App\DTO\Console;
 
+use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class User
  *
+ * @AppAssert\UniqueUsername()
+ * @AppAssert\UniqueEmail()
+ *
  * @package App\DTO\Console
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class User
+class User implements Interfaces\User
 {
+    /**
+     * @var string
+     */
+    public $id;
+
     /**
      * @var string
      *
@@ -61,4 +70,34 @@ class User
      * @var array
      */
     public $userGroups;
+
+    /**
+     * Getter method for user ID value.
+     *
+     * @return string|null
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Getter method for username value.
+     *
+     * @return string|null
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Getter method for email value.
+     *
+     * @return string|null
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 }
