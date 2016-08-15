@@ -118,7 +118,6 @@ class User extends AbstractType
                     'choices'           => $this->getUserGroupChoices(),
                     'multiple'          => true,
                     'required'          => true,
-                    'choices_as_values' => true,
                 ]
             )
         ;
