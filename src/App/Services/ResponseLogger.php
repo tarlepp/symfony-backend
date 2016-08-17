@@ -125,6 +125,7 @@ class ResponseLogger implements Interfaces\ResponseLogger
         $entity->setParameters($this->getParameters());
         $entity->setStatusCode($this->response->getStatusCode());
         $entity->setResponseContentLength(mb_strlen($this->response->getContent()));
+        $entity->setIsXmlHttpRequest($this->request->isXmlHttpRequest());
         $entity->setTime(new \DateTime());
 
         // Store request log and  clean history

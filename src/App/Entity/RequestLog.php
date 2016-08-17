@@ -146,6 +146,17 @@ class RequestLog implements EntityInterface
     private $responseContentLength;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(
+     *      name="is_xml_http_request",
+     *      type="boolean",
+     *      nullable=false,
+     *  )
+     */
+    private $isXmlHttpRequest;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(
@@ -366,6 +377,25 @@ class RequestLog implements EntityInterface
     public function setUser(User $user = null) : RequestLog
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIsXmlHttpRequest() : bool
+    {
+        return $this->isXmlHttpRequest;
+    }
+
+    /**
+     * @param boolean $isXmlHttpRequest
+     * @return RequestLog
+     */
+    public function setIsXmlHttpRequest(bool $isXmlHttpRequest) : RequestLog
+    {
+        $this->isXmlHttpRequest = $isXmlHttpRequest;
 
         return $this;
     }
