@@ -133,13 +133,7 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
             ;
         }
 
-        try {
-            $query->getQuery()->getSingleResult();
-
-            return false;
-        } catch (NoResultException $exception) {
-            return true;
-        }
+        return is_null($query->getQuery()->getOneOrNullResult());
     }
 
     /**
@@ -167,12 +161,6 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
             ;
         }
 
-        try {
-            $query->getQuery()->getSingleResult();
-
-            return false;
-        } catch (NoResultException $exception) {
-            return true;
-        }
+        return is_null($query->getQuery()->getOneOrNullResult());
     }
 }
