@@ -202,7 +202,7 @@ class User implements EntityInterface, UserInterface, \Serializable
     /**
      * Collection of user's user groups.
      *
-     * @var ArrayCollection
+     * @var ArrayCollection|\App\Entity\UserGroup[]
      *
      * @JMS\Groups({
      *      "UserGroups",
@@ -219,7 +219,7 @@ class User implements EntityInterface, UserInterface, \Serializable
     /**
      * User logins
      *
-     * @var \App\Entity\UserLogin[]
+     * @var ArrayCollection|\App\Entity\UserLogin[]
      *
      * @JMS\Groups({
      *      "UserLogins",
@@ -234,6 +234,23 @@ class User implements EntityInterface, UserInterface, \Serializable
     private $userLogins;
 
     /**
+     * User requests
+     *
+     * @var ArrayCollection|\App\Entity\RequestLog[]
+     *
+     * @JMS\Groups({
+     *      "UserRequests",
+     *      "User.userRequests",
+     *  })
+     *
+     * @ORM\OneToMany(
+     *      targetEntity="App\Entity\RequestLog",
+     *      mappedBy="user",
+     *  )
+     */
+    private $userRequests;
+
+    /**
      * User constructor.
      *
      * return User
@@ -244,6 +261,7 @@ class User implements EntityInterface, UserInterface, \Serializable
 
         $this->userGroups = new ArrayCollection();
         $this->userLogins = new ArrayCollection();
+        $this->userRequests = new ArrayCollection();
     }
 
     /**
