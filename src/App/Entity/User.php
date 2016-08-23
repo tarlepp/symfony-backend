@@ -376,6 +376,16 @@ class User implements EntityInterface, UserInterface, \Serializable
     }
 
     /**
+     * Getter method for user requests.
+     *
+     * @return Collection|RequestLog[]
+     */
+    public function getUserRequests() : Collection
+    {
+        return $this->userRequests;
+    }
+
+    /**
      * Setter for username.
      *
      * @param   string  $username
