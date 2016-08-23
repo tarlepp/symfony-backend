@@ -7,8 +7,10 @@ declare(strict_types=1);
  */
 namespace App\Services;
 
+use App\Entity\User;
+use App\Services\Rest\User as UserService;
 use App\Entity\UserLogin as Entity;
-use App\Services\Rest\UserLogin;
+use App\Services\Rest\UserLogin as UserLoginService;
 use DeviceDetector\DeviceDetector;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,9 +31,14 @@ class LoginLogger
     private $logger;
 
     /**
-     * @var UserLogin
+     * @var UserLoginService
      */
-    private $service;
+    private $userLoginService;
+
+    /**
+     * @var UserService
+     */
+    protected $userService;
 
     /**
      * @var Request
@@ -56,17 +63,23 @@ class LoginLogger
     /**
      * LoginLogger constructor.
      *
-     * @param   Logger          $logger
-     * @param   UserLogin       $service
-     * @param   RequestStack    $requestStack
+     * @param   Logger              $logger
+     * @param   UserLoginService    $userLoginService
+     * @param   UserService         $userService
+     * @param   RequestStack        $requestStack
      *
      * @return  LoginLogger
      */
-    public function __construct(Logger $logger, UserLogin $service, RequestStack $requestStack)
-    {
+    public function __construct(
+        Logger $logger,
+        UserLoginService $userLoginService,
+        UserService $userService,
+        RequestStack $requestStack
+    ) {
         // Store used services
         $this->logger = $logger;
-        $this->service = $service;
+        $this->userLoginService = $userLoginService;
+        $this->userService = $userService;
         $this->request = $requestStack->getCurrentRequest();
     }
 
@@ -79,6 +92,14 @@ class LoginLogger
      */
     public function setUser(UserInterface $user) : LoginLogger
     {
+        // We need to make sure that User object is right one
+        if (!($user instanceof User)) {
+            $user = $this->userService
+                ->getRepository()
+                ->loadUserByUsername($user->getUsername())
+            ;
+        }
+
         $this->user = $user;
 
         return $this;
@@ -132,6 +153,6 @@ class LoginLogger
         $userLogin->setLoginTime(new \DateTime('now', new \DateTimeZone('UTC')));
 
         // And store entry to database
-        return $this->service->save($userLogin);
+        return $this->userLoginService->save($userLogin);
     }
 }
