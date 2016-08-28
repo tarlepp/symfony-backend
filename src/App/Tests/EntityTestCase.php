@@ -110,11 +110,17 @@ abstract class EntityTestCase extends KernelTestCase
      * @dataProvider dataProviderTestThatSetterAndGettersWorks
      *
      * @param   string  $field
+     * @param   mixed   $value
+     * @param   string  $type
      */
-    public function testThatGetterAndSetterExists(string $field)
+    public function testThatGetterAndSetterExists(string $field, $value, string $type)
     {
         $getter = 'get' . ucfirst($field);
         $setter = 'set' . ucfirst($field);
+
+        if ($type === 'boolean') {
+            $getter = 'is' . ucfirst($field);
+        }
 
         $this->assertTrue(
             method_exists($this->entity, $getter),
@@ -170,6 +176,10 @@ abstract class EntityTestCase extends KernelTestCase
     {
         $getter = 'get' . ucfirst($field);
         $setter = 'set' . ucfirst($field);
+
+        if ($type === 'boolean') {
+            $getter = 'is' . ucfirst($field);
+        }
 
         call_user_func([$this->entity, $setter], $value);
 
@@ -430,6 +440,10 @@ abstract class EntityTestCase extends KernelTestCase
                 case 'array':
                     $value = ['some', 'array', 'here'];
                     $type = 'array';
+                    break;
+                case 'boolean':
+                    $value = true;
+                    $type = 'boolean';
                     break;
                 default:
                     $message = sprintf(
