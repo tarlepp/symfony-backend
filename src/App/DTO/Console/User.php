@@ -6,6 +6,7 @@
  */
 namespace App\DTO\Console;
 
+use App\Entity\User as UserEntity;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -99,5 +100,24 @@ class User implements Interfaces\User
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Method to load DTO data from user entity.
+     *
+     * @param   UserEntity  $user
+     *
+     * @return  User
+     */
+    public function loadFromEntity(UserEntity $user)
+    {
+        $this->id = $user->getId();
+        $this->username = $user->getUsername();
+        $this->firstname = $user->getFirstname();
+        $this->surname = $user->getSurname();
+        $this->email = $user->getEmail();
+        $this->userGroups = $user->getUserGroups();
+
+        return $this;
     }
 }
