@@ -56,6 +56,10 @@ class ResponseListener
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {
+        if ($event->getRequest()->getRealMethod() === 'OPTIONS') {
+            return;
+        }
+
         // Set needed data to logger and handle actual log
         $this->logger->setRequest($event->getRequest());
         $this->logger->setResponse($event->getResponse());
