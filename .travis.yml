@@ -17,7 +17,6 @@ php:
 
 env:
   - SYMFONY_ENV=dev
-  - SYMFONY_ENV=test
 
 matrix:
   fast_finish: true
@@ -27,7 +26,6 @@ before_install:
   - openssl rsa -pubout -in app/var/jwt/private.pem -out app/var/jwt/public.pem -passin pass:thisisfortests
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - touch app/config/parameters_dev.yml
-  - touch app/config/parameters_test.yml
 
 install:
   - composer install
