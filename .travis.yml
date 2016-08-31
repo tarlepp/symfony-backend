@@ -26,6 +26,7 @@ before_install:
   - openssl rsa -pubout -in app/var/jwt/private.pem -out app/var/jwt/public.pem -passin pass:thisisfortests
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - touch app/config/parameters_dev.yml
+  - touch app/config/parameters_test.yml
 
 install:
   - composer install
@@ -35,8 +36,8 @@ before_script:
   - php bin/console doctrine:database:create
 
 script:
- - mkdir -p build/logs
- - phpunit --coverage-clover build/logs/clover.xml
+  - mkdir -p build/logs
+  - phpunit --coverage-clover build/logs/clover.xml
 
 after_script:
  - php vendor/bin/coveralls -v
