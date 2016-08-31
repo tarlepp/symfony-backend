@@ -174,4 +174,26 @@ abstract class RestServiceTestCase extends ContainerTestCase
             $this->markTestIncomplete($message);
         }
     }
+
+    /**
+     * Method to test that 'findOne' method throws a HttpException with invalid id.
+     *
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedExceptionMessage Not found
+     */
+    public function testThatFindOneThrowsAnException()
+    {
+        $this->service->findOne('this id does not exists', true);
+    }
+
+    /**
+     * Method to test that 'findOneBy' method throws a HttpException with invalid id.
+     *
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedExceptionMessage Not found
+     */
+    public function testThatFindOneByThrowsAnException()
+    {
+        $this->service->findOneBy(['id' => 'this id does not exists'], null, true);
+    }
 }
