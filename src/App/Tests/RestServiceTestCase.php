@@ -109,7 +109,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
             $proxy
         );
 
-        $this->assertTrue($this->service->getReference('testReference') instanceof $proxy, $message);
+        $this->assertInstanceOf($proxy, $this->service->getReference('testReference'), $message);
     }
 
     /**
@@ -127,7 +127,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
             $this->repositoryName
         );
 
-        $this->assertTrue($this->service->getRepository() instanceof $this->repositoryName, $message);
+        $this->assertInstanceOf($this->repositoryName, $this->service->getRepository(), $message);
     }
 
     /**
