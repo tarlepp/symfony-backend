@@ -36,4 +36,9 @@ class RequestLogTest extends RestServiceTestCase
      * @var string
      */
     protected $repositoryName = 'App\Repository\RequestLog';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $entityCount = false;
 }

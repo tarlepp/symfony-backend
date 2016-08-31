@@ -36,4 +36,9 @@ class UserLoginTest extends RestServiceTestCase
      * @var string
      */
     protected $repositoryName = 'App\Repository\UserLogin';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $entityCount = false;
 }

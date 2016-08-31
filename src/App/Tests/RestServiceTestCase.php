@@ -43,6 +43,14 @@ abstract class RestServiceTestCase extends ContainerTestCase
     protected $repositoryName;
 
     /**
+     * How many entities should be found with 'find()' method without parameters. Set to false if you want to skip
+     * "proper" checks - otherwise marks test as incomplete.
+     *
+     * @var int|boolean
+     */
+    protected $entityCount = 0;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
@@ -128,5 +136,42 @@ abstract class RestServiceTestCase extends ContainerTestCase
     public function testThatGetAssociationsReturnsAnArray()
     {
         $this->assertInternalType('array', $this->service->getAssociations());
+    }
+
+    /**
+     * Method to test that 'find' method returns an array of entity objects.
+     */
+    public function testThatFindMethodReturnsAnArray()
+    {
+        $data = $this->service->find();
+
+        $this->assertInternalType('array', $data);
+
+        // Skip proper checks of entity
+        if ($this->entityCount === false) {
+            return;
+        } elseif ($this->entityCount > 0) {
+            $message = sprintf(
+                "Rest service '%s->find()' did not return expected count of entities.",
+                $this->serviceName
+            );
+
+            $this->assertEquals($this->entityCount, count($data), $message);
+
+            $message = sprintf(
+                "Rest service '%s->find()' did not return an array of '%s' entities.",
+                $this->serviceName,
+                $this->entityName
+            );
+
+            $this->assertInstanceOf($this->entityName, $data[0], $message);
+        } else {
+            $message = sprintf(
+                "Cannot test service '%s->find()' method properly because test class doesn't have 'entityCount' property",
+                $this->serviceName
+            );
+
+            $this->markTestIncomplete($message);
+        }
     }
 }

@@ -36,4 +36,9 @@ class UserGroupTest extends RestServiceTestCase
      * @var string
      */
     protected $repositoryName = 'App\Repository\UserGroup';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $entityCount = 4;
 }
