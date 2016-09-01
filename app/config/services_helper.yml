@@ -11,7 +11,7 @@ services:
 
     app.services.login_logger:
         class: App\Services\LoginLogger
-        arguments: [ '@logger', '@app.services.rest.user_login', '@app.services.rest.user', '@request_stack' ]
+        arguments: [ '@logger', '@app.services.rest.user_login', '@repository.user', '@request_stack' ]
 
     app.services.response_logger:
         class: App\Services\ResponseLogger

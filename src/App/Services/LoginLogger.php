@@ -8,10 +8,11 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Entity\User;
-use App\Services\Rest\User as UserService;
 use App\Entity\UserLogin as Entity;
+use App\Repository\User as UserRepository;
 use App\Services\Rest\UserLogin as UserLoginService;
 use DeviceDetector\DeviceDetector;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -36,9 +37,9 @@ class LoginLogger
     private $userLoginService;
 
     /**
-     * @var UserService
+     * @var UserRepository
      */
-    protected $userService;
+    protected $userRepository;
 
     /**
      * @var Request
@@ -65,21 +66,19 @@ class LoginLogger
      *
      * @param   Logger              $logger
      * @param   UserLoginService    $userLoginService
-     * @param   UserService         $userService
+     * @param   EntityRepository    $userRepository
      * @param   RequestStack        $requestStack
-     *
-     * @return  LoginLogger
      */
     public function __construct(
         Logger $logger,
         UserLoginService $userLoginService,
-        UserService $userService,
+        EntityRepository $userRepository,
         RequestStack $requestStack
     ) {
         // Store used services
         $this->logger = $logger;
         $this->userLoginService = $userLoginService;
-        $this->userService = $userService;
+        $this->userRepository = $userRepository;
         $this->request = $requestStack->getCurrentRequest();
     }
 
@@ -93,12 +92,7 @@ class LoginLogger
     public function setUser(UserInterface $user) : LoginLogger
     {
         // We need to make sure that User object is right one
-        if (!($user instanceof User)) {
-            $user = $this->userService
-                ->getRepository()
-                ->loadUserByUsername($user->getUsername())
-            ;
-        }
+        $user = $user instanceof User ? $user : $this->userRepository->loadUserByUsername($user->getUsername());
 
         $this->user = $user;
 
