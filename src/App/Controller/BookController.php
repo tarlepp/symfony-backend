@@ -17,18 +17,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  *
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  *
+ * @method  Book    getService()
+ *
  * @package App\Controller
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class BookController extends Rest
 {
-    /**
-     * Service object for controller.
-     *
-     * @var Book
-     */
-    protected $service;
-
     /**
      * Name of the service that controller uses. This is used on setContainer method to invoke specified service to
      * class context.

@@ -29,19 +29,19 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 abstract class Rest extends FOSRestController implements Interfaces\Rest
 {
     /**
-     * Service object for controller.
-     *
-     * @var RestService
-     */
-    protected $service;
-
-    /**
      * Name of the service that controller uses. This is used on setContainer method to invoke specified service to
      * class context.
      *
      * @var string
      */
     protected $serviceName;
+
+    /**
+     * Service object for controller.
+     *
+     * @var RestService
+     */
+    private $service;
 
     /**
      * Get service.
@@ -425,7 +425,7 @@ abstract class Rest extends FOSRestController implements Interfaces\Rest
      *
      * @todo improve docs about different use cases.
      *
-     * @see App\Repository\Base::processSearchTerms
+     * @see \App\Repository\Base::processSearchTerms
      *
      * @param   Request $request
      *
