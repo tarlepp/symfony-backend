@@ -51,7 +51,7 @@
         "nelmio/api-doc-bundle": "dev-master",
         "nelmio/cors-bundle": "1.4.1",
         "piwik/device-detector": "3.7.2",
-        "sensio/distribution-bundle": "5.0.10",
+        "sensio/distribution-bundle": "5.0.11",
         "sensio/framework-extra-bundle": "3.0.16",
         "symfony/monolog-bundle": "2.11.1",
         "symfony/swiftmailer-bundle": "2.3.11",
