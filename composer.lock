@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "817155c513c7639cfcd9f7b86f383f9a",
-    "content-hash": "ff2ce94795441e6b096a7d1c5e354360",
+    "hash": "0fde380a2883ec2e92f245f4b8034b2a",
+    "content-hash": "92166d2ab4069d780bd5a52a9dc5f2a5",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2400,16 +2400,16 @@
         },
         {
             "name": "piwik/device-detector",
-            "version": "3.7.2",
+            "version": "3.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/piwik/device-detector.git",
-                "reference": "0487a6752211b8e458e9744908c6925d88e5c575"
+                "reference": "64f60998c31cebbec01b3b47247b96d742973f1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/piwik/device-detector/zipball/0487a6752211b8e458e9744908c6925d88e5c575",
-                "reference": "0487a6752211b8e458e9744908c6925d88e5c575",
+                "url": "https://api.github.com/repos/piwik/device-detector/zipball/64f60998c31cebbec01b3b47247b96d742973f1c",
+                "reference": "64f60998c31cebbec01b3b47247b96d742973f1c",
                 "shasum": ""
             },
             "require": {
@@ -2447,7 +2447,7 @@
                 "parser",
                 "useragent"
             ],
-            "time": "2016-09-04 16:45:07"
+            "time": "2016-09-16 22:16:58"
         },
         {
             "name": "psr/cache",
