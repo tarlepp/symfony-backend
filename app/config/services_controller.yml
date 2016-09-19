@@ -1,0 +1,4 @@
+services:
+    app.controller.auth:
+        class:     App\Controller\AuthController
+        arguments: [ '@security.token_storage', '@jms_serializer' ]

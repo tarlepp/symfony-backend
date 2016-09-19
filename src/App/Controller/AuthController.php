@@ -8,23 +8,46 @@ namespace App\Controller;
 
 use App\Entity\User;
 use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class AuthController
  *
- * @Route("/auth")
+ * @Route(service="app.controller.auth", path="/auth")
  *
  * @package App\Controller
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class AuthController extends Controller
+class AuthController
 {
+    /**
+     * @var TokenStorageInterface
+     */
+    protected $tokenStorage;
+
+    /**
+     * @var SerializerInterface
+     */
+    protected $serializer;
+
+    /**
+     * AuthController constructor.
+     *
+     * @param   TokenStorageInterface   $tokenStorage
+     * @param   SerializerInterface     $serializer
+     */
+    public function __construct(TokenStorageInterface $tokenStorage, SerializerInterface $serializer)
+    {
+        $this->tokenStorage = $tokenStorage;
+        $this->serializer = $serializer;
+    }
+
     /**
      * Action to get user's Json Web Token (JWT) for authentication.
      *
@@ -93,7 +116,7 @@ class AuthController extends Controller
          *
          * @var User $user
          */
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
 
         // Create serializer context
         $context = SerializationContext::create();
@@ -102,7 +125,7 @@ class AuthController extends Controller
 
         // Create response
         $response = new Response();
-        $response->setContent($this->container->get('jms_serializer')->serialize($user, 'json', $context));
+        $response->setContent($this->serializer->serialize($user, 'json', $context));
         $response->setStatusCode(200);
         $response->headers->set('Content-Type', 'application/json');
 
