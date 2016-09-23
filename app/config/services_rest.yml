@@ -1,4 +1,8 @@
 services:
+    app.services.rest.helper.response:
+        class: App\Services\Rest\Helper\Response
+        arguments: [ '@serializer' ]
+
     app.services.rest.author:
         class: App\Services\Rest\Author
         arguments: [ '@repository.author', '@validator' ]
