@@ -85,8 +85,8 @@ class Response implements ResponseInterface
     public function createResponse(
         HttpFoundationRequest $request,
         $data,
-        integer $httpStatus = 200,
-        string $format = 'json'
+        $httpStatus = 200,
+        $format = 'json'
     ) : HttpFoundationResponse {
         // Create new response
         $response = new HttpFoundationResponse();

@@ -57,8 +57,8 @@ interface Response
     public function createResponse(
         HttpFoundationRequest $request,
         $data,
-        integer $httpStatus = 200,
-        string $format = 'json'
+        $httpStatus = 200,
+        $format = 'json'
     ) : HttpFoundationResponse;
 
     /**
