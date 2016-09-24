@@ -200,6 +200,10 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      */
     protected function processCriteria(QueryBuilder $queryBuilder, array $criteria)
     {
+        if (empty($criteria)) {
+            return;
+        }
+
         // Initialize condition array
         $condition = [];
 
@@ -252,7 +256,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      * Helper method to process given search terms and create criteria about those. Note that each repository
      * has 'searchColumns' property which contains the fields where search term will be affected.
      *
-     * @see App\Controller\Rest::getSearchTerms
+     * @see \App\Controller\Rest::getSearchTerms
      *
      * @param   QueryBuilder $queryBuilder
      * @param   array        $searchTerms
