@@ -1,4 +1,8 @@
 services:
     app.controller.auth:
-        class:     App\Controller\AuthController
-        arguments: [ '@security.token_storage', '@jms_serializer' ]
+        class:      App\Controller\AuthController
+        arguments:  [ '@security.token_storage', '@jms_serializer' ]
+
+    app.controller.author:
+        class:      App\Controller\AuthorController
+        arguments:  ['@app.services.rest.author', '@app.services.rest.helper.response' ]

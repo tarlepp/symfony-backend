@@ -1,8 +1,3 @@
-author:
-    type:         rest
-    resource:     "App\\Controller\\AuthorController"
-    name_prefix:  api_
-
 book:
     type:         rest
     resource:     "App\\Controller\\BookController"
