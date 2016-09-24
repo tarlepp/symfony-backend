@@ -1,0 +1,133 @@
+<?php
+declare(strict_types=1);
+/**
+ * /src/App/Traits/Rest/Find.php
+ *
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ */
+namespace App\Traits\Rest;
+
+use App\Controller\Interfaces\RestController;
+use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
+use App\Services\Rest\Helper\Request as RestHelperRequest;
+use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * Trait for generic 'Find' action for REST controllers. Trait will add following route definition to your controller
+ * where you use this:
+ *
+ *  GET /_your_controller_path_
+ *  GET /_your_controller_path_/
+ *
+ * Response of this request is an array of your resource service entities. Response can be JSON or XML which you can
+ * change with request headers, JSON output is default one. Examples below:
+ *
+ * JSON response:
+ *  [
+ *      {
+ *          "id": "60b0333b-b10e-48b7-982b-a217d031e6bb",
+ *          "name": "foo",
+ *          "description": "description"
+ *      },
+ *      {
+ *          "id": "60b0333b-b10e-48b7-982b-a217d031e6bb",
+ *          "name": "bar",
+ *          "description": "description"
+ *      },
+ *      ...
+ *  ]
+ *
+ * XML response:
+ *  <?xml version="1.0" encoding="UTF-8"?>
+ *  <results>
+ *      <entry>
+ *          <id>
+ *              <![CDATA[60b0333b-b10e-48b7-982b-a217d031e6bb]>
+ *          </id>
+ *          <name>
+ *              <![CDATA[foo]]>
+ *          </name>
+ *          <description>
+ *              <![CDATA[description]]>
+ *          </description>
+ *      </entry>
+ *      <entry>
+ *          <id>
+ *              <![CDATA[60b0333b-b10e-48b7-982b-a217d031e6bb]>
+ *          </id>
+ *          <name>
+ *              <![CDATA[bar]]>
+ *          </name>
+ *          <description>
+ *              <![CDATA[description]]>
+ *          </description>
+ *      </entry>
+ *      ...
+ *  </results>
+ *
+ * Note that this API endpoint supports following query parameters:
+ *  - where,        see \App\Services\Rest\Helper\Request::getCriteria()
+ *  - order,        see \App\Services\Rest\Helper\Request::getOrderBy()
+ *  - limit,        see \App\Services\Rest\Helper\Request::getLimit()
+ *  - offset,       see \App\Services\Rest\Helper\Request::getOffset()
+ *  - search,       see \App\Services\Rest\Helper\Request::getSearchTerms()
+ *  - populate      see \App\Services\Rest\Helper\Response::createResponse()
+ *  - populateAll   see \App\Services\Rest\Helper\Response::createResponse()
+ *  - populateOnly  see \App\Services\Rest\Helper\Response::createResponse()
+ *
+ * Note that controllers that uses this trait _must_ implement App\Controller\Interfaces\RestController interface.
+ *
+ * @method  RestHelperResponseInterface getResponseService()
+ * @method  ResourceServiceInterface    getResourceService()
+ *
+ * @package App\Traits\Rest
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ */
+trait Find
+{
+    /**
+     * Find action for current resource.
+     *
+     * @Route("")
+     * @Route("/")
+     *
+     * @Method({"GET"})
+     *
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @param   Request $request
+     *
+     * @return  Response
+     */
+    public function find(Request $request) : Response
+    {
+        // Make sure that we have everything we need to make this  work
+        if (!($this instanceof RestController)) {
+            throw new \LogicException(
+                'You cannot use App\Traits\Rest\Find trait within class that does not implement ' .
+                'App\Controller\Interfaces\RestController interface.'
+            );
+        }
+
+        // Determine used parameters
+        $criteria   = RestHelperRequest::getCriteria($request);
+        $orderBy    = RestHelperRequest::getOrderBy($request);
+        $limit      = RestHelperRequest::getLimit($request);
+        $offset     = RestHelperRequest::getOffset($request);
+        $search     = RestHelperRequest::getSearchTerms($request);
+
+        if (method_exists($this, 'processCriteria')) {
+            $this->processCriteria($criteria);
+        }
+
+        return $this->getResponseService()->createResponse(
+            $request,
+            $this->getResourceService()->find($criteria, $orderBy, $limit, $offset, $search)
+        );
+    }
+}
