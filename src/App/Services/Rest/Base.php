@@ -206,12 +206,12 @@ abstract class Base implements Interfaces\Base
     public function count(array $criteria = [], array $search = null) : int
     {
         // Before callback method call
-        $this->beforeFindOneBy($criteria, $search);
+        $this->beforeFind($criteria);
 
         $count = $this->repository->count($criteria, $search);
 
         // After callback method call
-        $this->afterFindOneBy($criteria, $search, $count);
+        $this->afterFind($criteria);
 
         return $count;
     }
