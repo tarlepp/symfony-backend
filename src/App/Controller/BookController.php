@@ -6,29 +6,26 @@
  */
 namespace App\Controller;
 
-use App\Services\Rest\Book;
+use App\Traits\Rest\Roles as RestMethod;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * Class AuthorController
+ * Class BookController
  *
- * @Route("/book")
+ * @Route(service="app.controller.book", path="/book")
  *
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
- *
- * @method  Book    getService()
  *
  * @package App\Controller
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class BookController extends Rest
+class BookController extends RestController
 {
-    /**
-     * Name of the service that controller uses. This is used on setContainer method to invoke specified service to
-     * class context.
-     *
-     * @var string
-     */
-    protected $serviceName = 'app.services.rest.book';
+    use RestMethod\User\Find;
+    use RestMethod\User\FindOne;
+    use RestMethod\User\Count;
+    use RestMethod\Admin\Create;
+    use RestMethod\Admin\Update;
+    use RestMethod\Admin\Delete;
 }

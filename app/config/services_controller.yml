@@ -5,4 +5,8 @@ services:
 
     app.controller.author:
         class:      App\Controller\AuthorController
-        arguments:  ['@app.services.rest.author', '@app.services.rest.helper.response' ]
+        arguments:  [ '@app.services.rest.author', '@app.services.rest.helper.response' ]
+
+    app.controller.book:
+        class:      App\Controller\BookController
+        arguments:  [ '@app.services.rest.book', '@app.services.rest.helper.response' ]
