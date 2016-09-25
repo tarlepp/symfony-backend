@@ -58,7 +58,7 @@ interface Response
         HttpFoundationRequest $request,
         $data,
         $httpStatus = 200,
-        $format = 'json'
+        $format = null
     ) : HttpFoundationResponse;
 
     /**
