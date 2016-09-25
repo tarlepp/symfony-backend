@@ -71,11 +71,6 @@ swiftmailer:
     password:  '%mailer_password%'
     spool:     { type: memory }
 
-# http://symfony.com/doc/current/bundles/FOSRestBundle/configuration-reference.html
-fos_rest:
-    routing_loader:
-        default_format: json
-
 # http://jmsyst.com/bundles/JMSSerializerBundle/master/configuration
 jms_serializer:
     handlers:

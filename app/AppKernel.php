@@ -29,7 +29,6 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new FOS\RestBundle\FOSRestBundle(),
             new Gfreeau\Bundle\GetJWTBundle\GfreeauGetJWTBundle(),
             new Gesdinet\JWTRefreshTokenBundle\GesdinetJWTRefreshTokenBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
