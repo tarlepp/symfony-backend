@@ -11,8 +11,3 @@ gesdinet_jwt_refresh_token:
 NelmioApiDocBundle:
     resource: '@NelmioApiDocBundle/Resources/config/routing.yml'
     prefix:   /api/doc
-
-api:
-    type: rest  # Required for ``RestYamlLoader`` to process imported routes
-    prefix: /api
-    resource: 'api_routes.yml'

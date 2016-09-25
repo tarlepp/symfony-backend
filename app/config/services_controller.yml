@@ -10,3 +10,9 @@ services:
     app.controller.book:
         class:      App\Controller\BookController
         arguments:  [ '@app.services.rest.book', '@app.services.rest.helper.response' ]
+
+    app.controller.user:
+        class:      App\Controller\UserController
+        arguments:  [ '@app.services.rest.user', '@app.services.rest.helper.response' ]
+        calls:
+            - [ setTokenStorage, [ '@security.token_storage'] ]

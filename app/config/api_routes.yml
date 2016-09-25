@@ -1,4 +1,0 @@
-user:
-    type:         rest
-    resource:     "App\\Controller\\UserController"
-    name_prefix:  api_

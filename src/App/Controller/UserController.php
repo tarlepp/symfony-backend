@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Controller/UserController.php
  *
@@ -7,7 +8,8 @@
 namespace App\Controller;
 
 use App\Entity\User as UserEntity;
-use App\Services\Rest\User as UserService;
+use App\Traits\Rest\Methods as RestMethod;
+use App\Traits\Rest\Roles as RestAction;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -15,131 +17,45 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class UserController
  *
- * @Route("/user")
+ * @Route(service="app.controller.user", path="/user")
  *
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
- *
- * @method  UserService getService()
  *
  * @package App\Controller
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class UserController extends Rest
+class UserController extends RestController
 {
-    /**
-     * Name of the service that controller uses. This is used on setContainer method to invoke specified service to
-     * class context.
-     *
-     * @var string
-     */
-    protected $serviceName = 'app.services.rest.user';
+    // Traits
+    use RestAction\Admin\Find;
+    use RestAction\Admin\FindOne;
+    use RestAction\Admin\Count;
+    use RestAction\Root\Create;
+    use RestAction\Root\Update;
+    use RestMethod\Delete;
 
     /**
-     * {@inheritdoc}
-     *
-     * @Route("")
-     * @Route("/")
-     *
-     * @Method({"GET"})
-     *
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param   Request     $request
-     *
-     * @return  Response
+     * @var TokenStorageInterface
      */
-    public function find(Request $request)
-    {
-        return parent::find($request);
-    }
+    protected $tokenStorage;
 
     /**
-     * {@inheritdoc}
+     * Setter for token storage.
      *
-     * @Route(
-     *      "/{id}",
-     *      requirements={
-     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-     *      }
-     *  )
+     * @param   TokenStorageInterface   $tokenStorage
      *
-     * @Method({"GET"})
-     *
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param   Request $request
-     * @param   integer $id
-     *
-     * @return  Response
+     * @return  UserController
      */
-    public function findOne(Request $request, $id)
+    public function setTokenStorage(TokenStorageInterface $tokenStorage) : UserController
     {
-        return parent::findOne($request, $id);
-    }
+        $this->tokenStorage = $tokenStorage;
 
-    /**
-     * {@inheritdoc}
-     *
-     * @Route("/count")
-     *
-     * @Method({"GET"})
-     *
-     * @Security("has_role('ROLE_ADMIN')")
-     *
-     * @param   Request     $request
-     *
-     * @return  Response
-     */
-    public function count(Request $request)
-    {
-        return parent::count($request);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @Route("")
-     * @Route("/")
-     *
-     * @Method({"POST"})
-     *
-     * @Security("has_role('ROLE_ROOT')")
-     *
-     * @param   Request $request
-     *
-     * @return  Response
-     */
-    public function create(Request $request)
-    {
-        return parent::create($request);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @Route(
-     *      "/{id}",
-     *      requirements={
-     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-     *      }
-     *  )
-     *
-     * @Method({"PUT"})
-     *
-     * @Security("has_role('ROLE_ROOT')")
-     *
-     * @param   Request $request
-     * @param   integer $id
-     *
-     * @return  Response
-     */
-    public function update(Request $request, $id)
-    {
-        return parent::update($request, $id);
+        return $this;
     }
 
     /**
@@ -161,20 +77,20 @@ class UserController extends Rest
      *
      * @Security("has_role('ROLE_ROOT')")
      *
-     * @param   Request $request
-     * @param   integer $id
+     * @param   Request     $request
+     * @param   UserEntity  $user
      *
      * @return  Response
      */
-    public function deleteUser(Request $request, UserEntity $user)
+    public function delete(Request $request, UserEntity $user) : Response
     {
         /** @var UserEntity $currentUser */
-        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+        $currentUser = $this->tokenStorage->getToken()->getUser();
 
         if ($currentUser === $user) {
             throw new HttpException(400, 'You can\'t remove yourself...');
         }
 
-        return parent::delete($request, $user->getId());
+        return $this->deleteMethod($request, $user->getId());
     }
 }
