@@ -16,3 +16,7 @@ services:
         arguments:  [ '@app.services.rest.user', '@app.services.rest.helper.response' ]
         calls:
             - [ setTokenStorage, [ '@security.token_storage'] ]
+
+    app.controller.user_group:
+        class:      App\Controller\UserGroupController
+        arguments:  [ '@app.services.rest.user_group', '@app.services.rest.helper.response' ]
