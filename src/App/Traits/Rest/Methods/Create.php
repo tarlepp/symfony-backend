@@ -1,34 +1,30 @@
 <?php
 declare(strict_types=1);
 /**
- * /src/App/Traits/Rest/Update.php
+ * /src/App/Traits/Rest/Methods/Count.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace App\Traits\Rest;
+namespace App\Traits\Rest\Methods;
 
 use App\Controller\Interfaces\RestController;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use App\Utils\JSON;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Trait for generic 'Update' action for REST controllers. Trait will add following route definition to your controller
+ * Trait for generic 'Create' action for REST controllers. Trait will add following route definition to your controller
  * where you use this:
  *
- *  PUT /_your_controller_path_/_your_entity_id_
+ *  POST /_your_controller_path_
+ *  POST /_your_controller_path_/
  *
  * Request must contain body that present your endpoint entity, note that only JSON is supported atm.
  *
- * Response of this request is presentation of your requested entity as in JSON or XML format depending your request
- * headers. By default response is JSON. If entity is not found from your resource service you will get 404 response.
- * Examples of responses (JSON / XML) below assuming that your resource service entity has 'id', 'name' and
- * 'description' properties.
+ * Response of this request can be JSON or XML examples below. By default response is JSON but you can change it by
+ * request headers. Responses are generated for entity that has id, name and description properties.
  *
  * JSON response:
  *  {
@@ -56,36 +52,26 @@ use Symfony\Component\Routing\Annotation\Route;
  * @method  RestHelperResponseInterface getResponseService()
  * @method  ResourceServiceInterface    getResourceService()
  *
- * @package App\Traits\Rest
+ * @package App\Traits\Rest\Methods
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-trait Update
+trait Create
 {
     /**
-     * Generic 'update' method for REST endpoints.
+     * Generic 'Create' method for REST endpoints.
      *
-     * @Route(
-     *      "/{id}",
-     *      requirements={
-     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-     *      }
-     *  )
-     *
-     * @Method({"PUT"})
-     *
-     * @Security("has_role('ROLE_ADMIN')")
+     * @throws  \LogicException
      *
      * @param   Request $request
-     * @param   integer $id
      *
      * @return  Response
      */
-    public function update(Request $request, $id)
+    protected function createMethod(Request $request) : Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
             throw new \LogicException(
-                'You cannot use App\Traits\Rest\Count trait within class that does not implement ' .
+                'You cannot use App\Traits\Rest\Methods\Create trait within class that does not implement ' .
                 'App\Controller\Interfaces\RestController interface.'
             );
         }
@@ -93,9 +79,6 @@ trait Update
         // Determine entity / DTO data from request
         $data = JSON::decode($request->getContent());
 
-        // Update entity
-        $entity = $this->getResourceService()->update($id, $data);
-
-        return $this->getResponseService()->createResponse($request, $entity);
+        return $this->getResponseService()->createResponse($request, $this->getResourceService()->create($data), 201);
     }
 }

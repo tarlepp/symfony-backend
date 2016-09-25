@@ -6,7 +6,7 @@
  */
 namespace App\Controller;
 
-use App\Traits\Rest as RestMethod;
+use App\Traits\Rest\Roles as RestMethod;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -22,9 +22,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class AuthorController extends RestController
 {
-    use RestMethod\Find;
-    use RestMethod\FindOne;
-    use RestMethod\Count;
-    use RestMethod\Create;
-    use RestMethod\Update;
+    use RestMethod\User\Find;
+    use RestMethod\User\FindOne;
+    use RestMethod\User\Count;
+    use RestMethod\Admin\Create;
+    use RestMethod\Admin\Update;
+    use RestMethod\Admin\Delete;
 }

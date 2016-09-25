@@ -1,20 +1,17 @@
 <?php
 declare(strict_types=1);
 /**
- * /src/App/Traits/Rest/Delete.php
+ * /src/App/Traits/Rest/Methods/Delete.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace App\Traits\Rest;
+namespace App\Traits\Rest\Methods;
 
 use App\Controller\Interfaces\RestController;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Trait for generic 'Delete' action for REST controllers. Trait will add following route definition to your controller
@@ -52,36 +49,27 @@ use Symfony\Component\Routing\Annotation\Route;
  * @method  RestHelperResponseInterface getResponseService()
  * @method  ResourceServiceInterface    getResourceService()
  *
- * @package App\Traits\Rest
+ * @package App\Traits\Rest\Methods
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 trait Delete
 {
     /**
-     * Generic 'delete' method for REST endpoints.
+     * Generic 'Delete' method for REST endpoints.
      *
-     * @Route(
-     *      "/{id}",
-     *      requirements={
-     *          "id" = "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-     *      }
-     *  )
-     *
-     * @Method({"DELETE"})
-     *
-     * @Security("has_role('ROLE_ADMIN')")
+     * @throws  \LogicException
      *
      * @param   Request $request
-     * @param   integer $id
+     * @param   string  $id
      *
      * @return  Response
      */
-    public function delete(Request $request, $id)
+    protected function deleteMethod(Request $request, string $id) : Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
             throw new \LogicException(
-                'You cannot use App\Traits\Rest\Count trait within class that does not implement ' .
+                'You cannot use App\Traits\Rest\Methods\Delete trait within class that does not implement ' .
                 'App\Controller\Interfaces\RestController interface.'
             );
         }

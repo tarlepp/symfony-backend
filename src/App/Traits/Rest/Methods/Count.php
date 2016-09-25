@@ -1,21 +1,18 @@
 <?php
 declare(strict_types=1);
 /**
- * /src/App/Traits/Rest/Count.php
+ * /src/App/Traits/Rest/Methods/Count.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace App\Traits\Rest;
+namespace App\Traits\Rest\Methods;
 
 use App\Controller\Interfaces\RestController;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Helper\Request as RestHelperRequest;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Trait for generic 'Count' action for REST controllers. Trait will add following route definition to your controller
@@ -35,39 +32,34 @@ use Symfony\Component\Routing\Annotation\Route;
  *  <result>4</result>
  *
  * Note that this API endpoint supports following query parameters:
- *  - where, see \App\Services\Rest\Helper\Request::getCriteria()
- *  - search, see \App\Services\Rest\Helper\Request::getSearchTerms()
+ *  - where, see App\Services\Rest\Helper\Request::getCriteria
+ *  - search, see \App\Services\Rest\Helper\Request::getSearchTerms
  *
  * Note that controllers that uses this trait _must_ implement App\Controller\Interfaces\RestController interface.
  *
  * @method  RestHelperResponseInterface getResponseService()
  * @method  ResourceServiceInterface    getResourceService()
  *
- * @package App\Traits\Rest
+ * @package App\Traits\Rest\Methods
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 trait Count
 {
     /**
-     * Count action for current resource.
+     * Generic 'Count' method for REST endpoints.
      *
-     * @Route("/count")
-     * @Route("/count/")
-     *
-     * @Method({"GET"})
-     *
-     * @Security("has_role('ROLE_USER')")
+     * @throws  \LogicException
      *
      * @param   Request     $request
      *
      * @return  Response
      */
-    public function count(Request $request) : Response
+    protected function countMethod(Request $request) : Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
             throw new \LogicException(
-                'You cannot use App\Traits\Rest\Count trait within class that does not implement ' .
+                'You cannot use App\Traits\Rest\Methods\Count trait within class that does not implement ' .
                 'App\Controller\Interfaces\RestController interface.'
             );
         }

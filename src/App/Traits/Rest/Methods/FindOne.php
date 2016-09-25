@@ -1,33 +1,28 @@
 <?php
 declare(strict_types=1);
 /**
- * /src/App/Traits/Rest/Create.php
+ * /src/App/Traits/Rest/Methods/Find.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace App\Traits\Rest;
+namespace App\Traits\Rest\Methods;
 
 use App\Controller\Interfaces\RestController;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
-use App\Utils\JSON;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Trait for generic 'Create' action for REST controllers. Trait will add following route definition to your controller
+ * Trait for generic 'FindOne' action for REST controllers. Trait will add following route definition to your controller
  * where you use this:
  *
- *  POST /_your_controller_path_
- *  POST /_your_controller_path_/
+ *  GET /_your_controller_path_/_your_entity_id_
  *
- * Request must contain body that present your endpoint entity, note that only JSON is supported atm.
- *
- * Response of this request can be JSON or XML examples below. By default response is JSON but you can change it by
- * request headers. Responses are generated for entity that has id, name and description properties.
+ * Response of this request is presentation of your requested entity as in JSON or XML format depending your request
+ * headers. By default response is JSON. If entity is not found from your resource service you will get 404 response.
+ * Examples of responses (JSON / XML) below assuming that your resource service entity has 'id', 'name' and
+ * 'description' properties.
  *
  * JSON response:
  *  {
@@ -55,41 +50,32 @@ use Symfony\Component\Routing\Annotation\Route;
  * @method  RestHelperResponseInterface getResponseService()
  * @method  ResourceServiceInterface    getResourceService()
  *
- * @package App\Traits\Rest
+ * @package App\Traits\Rest\Methods
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-trait Create
+trait FindOne
 {
     /**
-     * Generic 'create' method for REST endpoints.
+     * Generic 'FindOne' method for REST endpoints.
      *
-     * @Route("")
-     * @Route("/")
-     *
-     * @Method({"POST"})
-     *
-     * @Security("has_role('ROLE_ADMIN')")
+     * @throws  \LogicException
      *
      * @param   Request $request
+     * @param   string  $id
      *
      * @return  Response
      */
-    public function create(Request $request) : Response
+    protected function findOneMethod(Request $request, string $id) : Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
             throw new \LogicException(
-                'You cannot use App\Traits\Rest\Count trait within class that does not implement ' .
+                'You cannot use App\Traits\Rest\Methods\FindOne trait within class that does not implement ' .
                 'App\Controller\Interfaces\RestController interface.'
             );
         }
 
-        // Determine entity / DTO data from request
-        $data = JSON::decode($request->getContent());
-
-        // Create new entity
-        $entity = $this->getResourceService()->create($data);
-
-        return $this->getResponseService()->createResponse($request, $entity, 201);
+        // Fetch data from database
+        return $this->getResponseService()->createResponse($request, $this->getResourceService()->findOne($id, true));
     }
 }
