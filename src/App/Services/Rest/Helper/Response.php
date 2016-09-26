@@ -115,15 +115,20 @@ class Response implements ResponseInterface
         $entityName = $this->getResourceService()->getEntityName();
 
         $bits = explode('\\', $entityName);
+        $entityName = end($bits);
 
         // Determine used default group
-        $defaultGroup = $populateAll ? 'Default' : end($bits);
+        $defaultGroup = $populateAll ? 'Default' : $entityName;
 
         // Set all associations to be populated
         if (count($populate) === 0 && $populateAll) {
             $associations = $this->getResourceService()->getAssociations();
 
-            $populate = array_map('ucfirst', $associations);
+            $iterator = function (string $assocName) use ($entityName) : string {
+                return $entityName . '.' . $assocName;
+            };
+
+            $populate = array_map($iterator, $associations);
         }
 
         if ($populateOnly) {
