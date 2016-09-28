@@ -37,6 +37,7 @@ trait Timestampable
      *      "User.createdAt",
      *      "UserGroup.createdAt",
      *  })
+     * @JMS\Type("DateTime")
      *
      * @ORM\Column(
      *      name="createdAt",
@@ -57,6 +58,7 @@ trait Timestampable
      *      "User.updatedAt",
      *      "UserGroup.updatedAt",
      *  })
+     * @JMS\Type("DateTime")
      *
      * @ORM\Column(
      *      name="updatedAt",
