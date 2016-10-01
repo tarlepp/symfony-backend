@@ -3,7 +3,7 @@
 **Please follow these basic steps to simplify pull request reviews - if you don't you'll probably just be asked to anyway.**
 
 * Please rebase your branch against the current master
-* Run ```php composer.phar update``` to make sure your development dependencies are up-to-date
+* Run ```composer update``` to make sure that all dependencies are up-to-date
 * Make reference to possible [issue(s)](https://github.com/tarlepp/symfony-backend/issues) on your PR comment
 
 ## Submitting bug reports
@@ -12,4 +12,4 @@
 
 ## Security Disclosure
 Security is very important to me. If you have any issue regarding security, please disclose the information responsibly 
-by contacting me via IRC (da_wunder@IRCnet) or email (you'll find my address) and not by creating a github issue
+by contacting me via IRC (da_wunder@IRCnet) or email (you'll find my address) and not by creating a github issue.
