@@ -30,6 +30,8 @@ use Ramsey\Uuid\Uuid;
  *      repositoryClass="App\Repository\Author"
  *  )
  *
+ * @JMS\XmlRoot("author")
+ *
  * @package App\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
@@ -51,6 +53,7 @@ class Author implements EntityInterface
      *      "Author.books",
      *      "Book.author",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="id",
@@ -71,6 +74,7 @@ class Author implements EntityInterface
      *      "Author",
      *      "Author.name",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="name",
@@ -91,6 +95,7 @@ class Author implements EntityInterface
      *      "Author",
      *      "Author.description",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="description",
@@ -103,12 +108,13 @@ class Author implements EntityInterface
     /**
      * Author books.
      *
-     * @var \App\Entity\Book[]
+     * @var ArrayCollection|\App\Entity\Book[]
      *
      * @JMS\Groups({
-     *      "Books",
      *      "Author.books",
      *  })
+     * @JMS\Type("ArrayCollection<App\Entity\Book>")
+     * @JMS\XmlList(entry = "book")
      *
      * @ORM\OneToMany(
      *      targetEntity="App\Entity\Book",
@@ -119,8 +125,6 @@ class Author implements EntityInterface
 
     /**
      * User constructor.
-     *
-     * return User
      */
     public function __construct()
     {

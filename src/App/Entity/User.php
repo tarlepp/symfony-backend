@@ -40,6 +40,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      repositoryClass="App\Repository\User"
  *  )
  *
+ * @JMS\XmlRoot("user")
+ *
  * @package App\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
@@ -57,13 +59,20 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @JMS\Groups({
      *      "Default",
      *      "User",
-     *      "Users",
-     *      "UserGroups",
      *      "User.id",
-     *      "User.userGroups",
      *      "UserGroup.users",
      *      "UserLogin.user",
+     *      "RequestLog.user",
+     *      "Author.createdBy",
+     *      "Author.updatedBy",
+     *      "Book.createdBy",
+     *      "Book.updatedBy",
+     *      "User.createdBy",
+     *      "User.updatedBy",
+     *      "UserGroup.createdBy",
+     *      "UserGroup.updatedBy",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="id",
@@ -82,9 +91,9 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @JMS\Groups({
      *      "Default",
      *      "User",
-     *      "Users",
      *      "User.username",
      *  })
+     * @JMS\Type("string")
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -107,9 +116,9 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @JMS\Groups({
      *      "Default",
      *      "User",
-     *      "Users",
      *      "User.firstname",
      *  })
+     * @JMS\Type("string")
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -132,9 +141,9 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @JMS\Groups({
      *      "Default",
      *      "User",
-     *      "Users",
      *      "User.surname",
      *  })
+     * @JMS\Type("string")
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -157,9 +166,9 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @JMS\Groups({
      *      "Default",
      *      "User",
-     *      "Users",
      *      "User.email",
      *  })
+     * @JMS\Type("string")
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -179,7 +188,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @var string
      *
-     * @JMS\Exclude
+     * @JMS\Exclude()
      *
      * @ORM\Column(
      *      name="password",
@@ -195,7 +204,7 @@ class User implements EntityInterface, UserInterface, \Serializable
      *
      * @var  string
      *
-     * @JMS\Exclude
+     * @JMS\Exclude()
      */
     private $plainPassword;
 
@@ -205,9 +214,10 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @var ArrayCollection|\App\Entity\UserGroup[]
      *
      * @JMS\Groups({
-     *      "UserGroups",
      *      "User.userGroups",
      *  })
+     * @JMS\Type("ArrayCollection<App\Entity\UserGroup>")
+     * @JMS\XmlList(entry = "userGroup")
      *
      * @ORM\ManyToMany(
      *     targetEntity="UserGroup",
@@ -222,9 +232,10 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @var ArrayCollection|\App\Entity\UserLogin[]
      *
      * @JMS\Groups({
-     *      "UserLogins",
-     *      "User.userLogins",
+     *      "User.userLogin",
      *  })
+     * @JMS\Type("ArrayCollection<App\Entity\UserLogin>")
+     * @JMS\XmlList(entry = "userLogin")
      *
      * @ORM\OneToMany(
      *      targetEntity="App\Entity\UserLogin",
@@ -239,9 +250,10 @@ class User implements EntityInterface, UserInterface, \Serializable
      * @var ArrayCollection|\App\Entity\RequestLog[]
      *
      * @JMS\Groups({
-     *      "UserRequests",
-     *      "User.userRequests",
+     *      "User.requestLog",
      *  })
+     * @JMS\Type("ArrayCollection<App\Entity\RequestLog>")
+     * @JMS\XmlList(entry = "requestLog")
      *
      * @ORM\OneToMany(
      *      targetEntity="App\Entity\RequestLog",
@@ -252,8 +264,6 @@ class User implements EntityInterface, UserInterface, \Serializable
 
     /**
      * User constructor.
-     *
-     * return User
      */
     public function __construct()
     {

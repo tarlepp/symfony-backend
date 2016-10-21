@@ -27,6 +27,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *      repositoryClass="App\Repository\UserLogin"
  *  )
  *
+ * @JMS\XmlRoot("userLogin")
+ *
  * @package App\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
@@ -38,10 +40,10 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.id",
-     *      "User.userLogins",
+     *      "User.userLogin",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="id",
@@ -58,9 +60,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.user",
      *  })
+     * @JMS\Type("App\Entity\User")
      *
      * @ORM\ManyToOne(
      *      targetEntity="App\Entity\User",
@@ -81,9 +83,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.ip",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="ip",
@@ -100,9 +102,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.host",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="host",
@@ -119,9 +121,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.agent",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="agent",
@@ -137,9 +139,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.clientType",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="client_type",
@@ -156,9 +158,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.clientName",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="client_name",
@@ -175,9 +177,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.clientShortName",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="client_short_name",
@@ -194,9 +196,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.clientVersion",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="client_version",
@@ -213,9 +215,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.clientEngine",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="client_engine",
@@ -232,9 +234,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.osName",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="os_name",
@@ -251,9 +253,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.osShortName",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="os_short_name",
@@ -270,9 +272,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.osVersion",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="os_version",
@@ -289,9 +291,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.osPlatform",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="os_platform",
@@ -308,9 +310,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.deviceName",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="device_name",
@@ -327,9 +329,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.brandName",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="brand_name",
@@ -346,9 +348,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.model",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="model",
@@ -365,9 +367,9 @@ class UserLogin implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserLogin",
-     *      "UserLogins",
      *      "UserLogin.loginTime",
      *  })
+     * @JMS\Type("DateTime")
      *
      * @ORM\Column(
      *      name="login_time",
@@ -379,8 +381,6 @@ class UserLogin implements EntityInterface
 
     /**
      * UserLogin constructor.
-     *
-     * @return UserLogin
      */
     public function __construct()
     {

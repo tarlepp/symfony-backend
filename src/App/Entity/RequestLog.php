@@ -9,6 +9,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -24,6 +25,8 @@ use Ramsey\Uuid\Uuid;
  *      repositoryClass="App\Repository\RequestLog"
  *  )
  *
+ * @JMS\XmlRoot("requestLog")
+ *
  * @package App\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
@@ -31,6 +34,14 @@ class RequestLog implements EntityInterface
 {
     /**
      * @var string
+     *
+     * @JMS\Groups({
+     *      "Default",
+     *      "RequestLog",
+     *      "RequestLog.id",
+     *      "User.requestLog",
+     *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="id",
@@ -43,6 +54,11 @@ class RequestLog implements EntityInterface
 
     /**
      * @var \App\Entity\User
+     *
+     * @JMS\Groups({
+     *      "RequestLog.user",
+     *  })
+     * @JMS\Type("App\Entity\User")
      *
      * @ORM\ManyToOne(
      *      targetEntity="App\Entity\User",
@@ -60,6 +76,13 @@ class RequestLog implements EntityInterface
     /**
      * @var string
      *
+     * @JMS\Groups({
+     *      "Default",
+     *      "RequestLog",
+     *      "RequestLog.clientIp",
+     *  })
+     * @JMS\Type("string")
+     *
      * @ORM\Column(
      *      name="client_ip",
      *      type="string",
@@ -72,6 +95,13 @@ class RequestLog implements EntityInterface
     /**
      * @var string
      *
+     * @JMS\Groups({
+     *      "Default",
+     *      "RequestLog",
+     *      "RequestLog.uri",
+     *  })
+     * @JMS\Type("string")
+     *
      * @ORM\Column(
      *      name="uri",
      *      type="text",
@@ -82,6 +112,13 @@ class RequestLog implements EntityInterface
 
     /**
      * @var string
+     *
+     * @JMS\Groups({
+     *      "Default",
+     *      "RequestLog",
+     *      "RequestLog.method",
+     *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="method",
@@ -95,6 +132,13 @@ class RequestLog implements EntityInterface
     /**
      * @var string
      *
+     * @JMS\Groups({
+     *      "Default",
+     *      "RequestLog",
+     *      "RequestLog.queryString",
+     *  })
+     * @JMS\Type("string")
+     *
      * @ORM\Column(
      *      name="query_string",
      *      type="text",
@@ -106,6 +150,13 @@ class RequestLog implements EntityInterface
     /**
      * @var array
      *
+     * @JMS\Groups({
+     *      "Default",
+     *      "RequestLog",
+     *      "RequestLog.headers",
+     *  })
+     * @JMS\Type("array")
+     *
      * @ORM\Column(
      *      name="headers",
      *      type="array",
@@ -116,6 +167,13 @@ class RequestLog implements EntityInterface
     /**
      * @var array
      *
+     * @JMS\Groups({
+     *      "Default",
+     *      "RequestLog",
+     *      "RequestLog.parameters",
+     *  })
+     * @JMS\Type("array")
+     *
      * @ORM\Column(
      *      name="parameters",
      *      type="array",
@@ -125,6 +183,13 @@ class RequestLog implements EntityInterface
 
     /**
      * @var integer
+     *
+     * @JMS\Groups({
+     *      "Default",
+     *      "RequestLog",
+     *      "RequestLog.statusCode",
+     *  })
+     * @JMS\Type("integer")
      *
      * @ORM\Column(
      *      name="status_code",
@@ -137,6 +202,13 @@ class RequestLog implements EntityInterface
     /**
      * @var integer
      *
+     * @JMS\Groups({
+     *      "Default",
+     *      "RequestLog",
+     *      "RequestLog.responseContentLength",
+     *  })
+     * @JMS\Type("integer")
+     *
      * @ORM\Column(
      *      name="response_content_length",
      *      type="integer",
@@ -147,6 +219,13 @@ class RequestLog implements EntityInterface
 
     /**
      * @var bool
+     *
+     * @JMS\Groups({
+     *      "Default",
+     *      "RequestLog",
+     *      "RequestLog.isXmlHttpRequest",
+     *  })
+     * @JMS\Type("boolean")
      *
      * @ORM\Column(
      *      name="is_xml_http_request",
@@ -159,6 +238,13 @@ class RequestLog implements EntityInterface
     /**
      * @var \DateTime
      *
+     * @JMS\Groups({
+     *      "Default",
+     *      "RequestLog",
+     *      "RequestLog.time",
+     *  })
+     * @JMS\Type("DateTime")
+     *
      * @ORM\Column(
      *      name="time",
      *      type="datetime",
@@ -169,8 +255,6 @@ class RequestLog implements EntityInterface
 
     /**
      * RequestLog constructor.
-     *
-     * @return RequestLog;
      */
     public function __construct()
     {

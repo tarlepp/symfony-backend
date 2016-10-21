@@ -38,6 +38,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      repositoryClass="App\Repository\UserGroup"
  *  )
  *
+ * @JMS\XmlRoot("userGroup")
+ *
  * @package App\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
@@ -55,10 +57,10 @@ class UserGroup implements EntityInterface, RoleInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserGroup",
-     *      "UserGroups",
-     *      "User.userGroups",
      *      "UserGroup.id",
+     *      "User.userGroups",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="id",
@@ -77,9 +79,9 @@ class UserGroup implements EntityInterface, RoleInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserGroup",
-     *      "UserGroups",
      *      "UserGroup.name",
      *  })
+     * @JMS\Type("string")
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -102,9 +104,9 @@ class UserGroup implements EntityInterface, RoleInterface
      * @JMS\Groups({
      *      "Default",
      *      "UserGroup",
-     *      "UserGroups",
      *      "UserGroup.role",
      *  })
+     * @JMS\Type("string")
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
@@ -123,12 +125,13 @@ class UserGroup implements EntityInterface, RoleInterface
     /**
      * Array collection of users of group.
      *
-     * @var ArrayCollection
+     * @var ArrayCollection|User[]
      *
      * @JMS\Groups({
      *      "Users",
      *      "UserGroup.users",
      *  })
+     * @JMS\Type("ArrayCollection<App\Entity\User>")
      *
      * @ORM\ManyToMany(
      *      targetEntity="User",
@@ -139,8 +142,6 @@ class UserGroup implements EntityInterface, RoleInterface
 
     /**
      * Group constructor.
-     *
-     * @return  UserGroup
      */
     public function __construct()
     {

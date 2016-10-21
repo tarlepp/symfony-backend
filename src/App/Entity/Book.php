@@ -29,6 +29,8 @@ use Ramsey\Uuid\Uuid;
  *      repositoryClass="App\Repository\Book"
  *  )
  *
+ * @JMS\XmlRoot("book")
+ *
  * @package App\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
@@ -44,10 +46,10 @@ class Book implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "Book",
-     *      "Books",
-     *      "Book.author",
+     *      "Book.id",
      *      "Author.books",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="id",
@@ -64,9 +66,9 @@ class Book implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "Book",
-     *      "Books",
      *      "Book.author",
      *  })
+     * @JMS\Type("App\Entity\Author")
      *
      * @ORM\ManyToOne(
      *      targetEntity="App\Entity\Author",
@@ -87,9 +89,9 @@ class Book implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "Book",
-     *      "Books",
      *      "Book.title",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="title",
@@ -106,9 +108,9 @@ class Book implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "Book",
-     *      "Books",
      *      "Book.description",
      *  })
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="description",
@@ -124,9 +126,9 @@ class Book implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "Book",
-     *      "Books",
      *      "Book.releaseDate",
      *  })
+     * @JMS\Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(
      *      name="releaseDate",
@@ -138,8 +140,6 @@ class Book implements EntityInterface
 
     /**
      * Book constructor.
-     *
-     * @return  Book
      */
     public function __construct()
     {
