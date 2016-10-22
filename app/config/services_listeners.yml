@@ -1,5 +1,10 @@
 # Application specified listener services configuration.
 services:
+    app.event.body_listener:
+        class: App\EventListener\BodyListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 10 }
+
     app.event.exception_listener:
         class: App\EventListener\ExceptionListener
         arguments: [ '@kernel', '@logger' ]
