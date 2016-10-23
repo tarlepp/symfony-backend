@@ -56,7 +56,9 @@ security:
         api:
             pattern: ^/
             stateless: true
-            lexik_jwt: ~
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
     role_hierarchy:
         ROLE_USER:    [ROLE_LOGGED]

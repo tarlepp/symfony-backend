@@ -45,7 +45,7 @@
         "incenteev/composer-parameter-handler": "2.1.2",
         "jms/serializer-bundle": "1.1.0",
         "knplabs/doctrine-behaviors": "1.4.0",
-        "lexik/jwt-authentication-bundle": "1.7.1",
+        "lexik/jwt-authentication-bundle": "2.0.1",
         "matthiasnoback/symfony-console-form": "2.0.2",
         "nelmio/api-doc-bundle": "dev-master",
         "nelmio/cors-bundle": "1.4.1",

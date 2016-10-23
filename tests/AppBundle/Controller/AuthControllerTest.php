@@ -119,7 +119,7 @@ class AuthControllerTest extends WebTestCase
      *
      * Expected response is
      *  Status: 401
-     *  Body: {"code":401,"message":"Invalid credentials"}
+     *  Body: {"code":401,"message":"JWT Token not found"}
      */
     public function testThatGetAuthProfileReturns401WithoutToken()
     {
@@ -134,7 +134,7 @@ class AuthControllerTest extends WebTestCase
         );
 
         $this->assertEquals(
-            '{"code":401,"message":"Invalid credentials"}',
+            '{"code":401,"message":"JWT Token not found"}',
             $client->getResponse()->getContent(),
             "Response content was not expected for /auth/profile request\n" . $client->getResponse()
         );

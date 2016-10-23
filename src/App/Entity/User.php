@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints as AssertCollection;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -45,7 +46,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class User implements EntityInterface, UserInterface, \Serializable
+class User implements EntityInterface, UserInterface, EquatableInterface, \Serializable
 {
     // Traits
     use ORMBehaviors\Blameable;
@@ -358,11 +359,12 @@ class User implements EntityInterface, UserInterface, \Serializable
          *
          * @return  string
          */
-        $iterator = function ($userGroup) {
+        $iterator = function (UserGroup $userGroup) {
             return $userGroup->getRole();
         };
 
-        return array_map($iterator, $this->userGroups->toArray());
+        // Add '_' to roles, see https://github.com/lexik/LexikJWTAuthenticationBundle/issues/259
+        return array_merge(array_map($iterator, $this->userGroups->toArray()), ['_']);
     }
 
     /**
@@ -615,5 +617,24 @@ class User implements EntityInterface, UserInterface, \Serializable
         $this->userGroups->clear();
 
         return $this;
+    }
+
+    /**
+     * The equality comparison should neither be done by referential equality
+     * nor by comparing identities (i.e. getId() === getId()).
+     *
+     * However, you do not need to compare every attribute, but only those that
+     * are relevant for assessing whether re-authentication is required.
+     *
+     * Also implementation should consider that $user instance may implement
+     * the extended user interface `AdvancedUserInterface`.
+     *
+     * @param   UserInterface|User  $user
+     *
+     * @return  bool
+     */
+    public function isEqualTo(UserInterface $user)
+    {
+        return $user->getId() === $this->getId();
     }
 }
