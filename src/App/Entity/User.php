@@ -363,8 +363,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
             return $userGroup->getRole();
         };
 
-        // Add '_' to roles, see https://github.com/lexik/LexikJWTAuthenticationBundle/issues/259
-        return array_merge(array_map($iterator, $this->userGroups->toArray()), ['_']);
+        return array_map($iterator, $this->userGroups->toArray());
     }
 
     /**
