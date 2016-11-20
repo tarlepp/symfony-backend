@@ -26,6 +26,7 @@ class UserGroupController extends RestController
     use RestAction\Admin\Find;
     use RestAction\Admin\FindOne;
     use RestAction\Admin\Count;
+    use RestAction\Admin\Ids;
     use RestAction\Root\Create;
     use RestAction\Root\Update;
     use RestAction\Root\Delete;

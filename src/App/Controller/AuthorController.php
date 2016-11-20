@@ -25,6 +25,7 @@ class AuthorController extends RestController
     use RestAction\User\Find;
     use RestAction\User\FindOne;
     use RestAction\User\Count;
+    use RestAction\User\Ids;
     use RestAction\Admin\Create;
     use RestAction\Admin\Update;
     use RestAction\Admin\Delete;
