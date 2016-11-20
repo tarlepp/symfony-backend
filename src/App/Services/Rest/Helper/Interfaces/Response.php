@@ -51,6 +51,7 @@ interface Response
      * @param   mixed                   $data
      * @param   integer                 $httpStatus
      * @param   string                  $format
+     * @param   Context                 $context
      *
      * @return  HttpFoundationResponse
      */
@@ -58,7 +59,8 @@ interface Response
         HttpFoundationRequest $request,
         $data,
         $httpStatus = 200,
-        $format = null
+        $format = null,
+        Context $context = null
     ) : HttpFoundationResponse;
 
     /**

@@ -86,15 +86,20 @@ class Response implements ResponseInterface
         HttpFoundationRequest $request,
         $data,
         $httpStatus = 200,
-        $format = null
+        $format = null,
+        Context $context = null
     ) : HttpFoundationResponse {
         if (is_null($format)) {
-            $format = $request->getContentType() === 'xml' ? 'xml' : 'json';
+            $format = $request->getContentType() === self::FORMAT_XML ? self::FORMAT_XML : self::FORMAT_JSON;
+        }
+
+        if (is_null($context)) {
+            $context = $this->getSerializeContext($request);
         }
 
         // Create new response
         $response = new HttpFoundationResponse();
-        $response->setContent($this->serializer->serialize($data, $format, $this->getSerializeContext($request)));
+        $response->setContent($this->serializer->serialize($data, $format, $context));
         $response->setStatusCode($httpStatus);
         $response->headers->set('Content-Type', $this->contentTypes[$format]);
 
