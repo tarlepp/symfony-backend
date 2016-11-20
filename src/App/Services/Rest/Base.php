@@ -127,10 +127,7 @@ abstract class Base implements Interfaces\Base
         $this->beforeFind($criteria, $orderBy, $limit, $offset);
 
         // Fetch data
-        $entities = is_null($search)
-            ? $this->repository->findBy($criteria, $orderBy, $limit, $offset)
-            : $this->repository->findByWithSearchTerms($search, $criteria, $orderBy, $limit, $offset)
-        ;
+        $entities = $this->repository->findByWithSearchTerms($search, $criteria, $orderBy, $limit, $offset);
 
         // After callback method call
         $this->afterFind($criteria, $orderBy, $limit, $offset, $entities);
@@ -349,6 +346,23 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
+    public function ids(array $criteria = [], array $search = null) : array
+    {
+        // Before callback method call
+        $this->beforeIds($criteria, $search);
+
+        // Fetch data
+        $ids = $this->repository->findIds($criteria, $search);
+
+        // After callback method call
+        $this->afterIds($ids, $criteria, $search);
+
+        return $ids;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function beforeFind(array &$criteria = [], array &$orderBy = null, int &$limit = null, int &$offset = null)
     {
     }
@@ -446,6 +460,20 @@ abstract class Base implements Interfaces\Base
      * {@inheritdoc}
      */
     public function afterDelete(&$id, Entity $entity)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeIds(array &$criteria = [], array &$search = null)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterIds(array &$ids, array &$criteria = [], array &$search = null)
     {
     }
 

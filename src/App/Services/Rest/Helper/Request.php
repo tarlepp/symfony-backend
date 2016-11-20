@@ -162,14 +162,14 @@ class Request
      *
      * @param   HttpFoundationRequest   $request
      *
-     * @return  null|[]
+     * @return  array
      */
     public static function getSearchTerms(HttpFoundationRequest $request)
     {
         $search = $request->get('search', null);
 
         if (is_null($search)) {
-            return null;
+            return [];
         }
 
         try {

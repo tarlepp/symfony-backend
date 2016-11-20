@@ -88,4 +88,14 @@ interface Base
         $limit = null,
         $offset = null
     );
+
+    /**
+     * Repository method to fetch current entity id values from database and return those as an array.
+     *
+     * @param   array   $criteria
+     * @param   array   $search
+     *
+     * @return  array
+     */
+    public function findIds(array $criteria, array $search);
 }

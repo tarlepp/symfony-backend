@@ -163,6 +163,31 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     }
 
     /**
+     * Repository method to fetch current entity id values from database and return those as an array.
+     *
+     * @param   array   $criteria
+     * @param   array   $search
+     *
+     * @return  array
+     */
+    public function findIds(array $criteria, array $search)
+    {
+        // Create new query builder
+        $queryBuilder = $this->createQueryBuilder('entity');
+
+        // Process normal and search term criteria
+        $this->processCriteria($queryBuilder, $criteria);
+        $this->processSearchTerms($queryBuilder, $search);
+
+        $queryBuilder
+            ->select('entity.id')
+            ->distinct(true)
+        ;
+
+        return array_map('current', $queryBuilder->getQuery()->getArrayResult());
+    }
+
+    /**
      * Process given criteria which is given by ?where parameter. This is given as JSON string, which is converted
      * to assoc array for this process.
      *

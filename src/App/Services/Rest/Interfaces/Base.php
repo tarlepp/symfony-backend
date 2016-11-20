@@ -81,7 +81,7 @@ interface Base
         array $orderBy = null,
         int $limit = null,
         int $offset = null,
-        array $search = null
+        array $search = []
     );
 
     /**
@@ -109,12 +109,12 @@ interface Base
     /**
      * Generic count method to return entity count for specified criteria and search terms.
      *
-     * @param   array       $criteria
-     * @param   array|null  $search
+     * @param   array   $criteria
+     * @param   array   $search
      *
      * @return  integer
      */
-    public function count(array $criteria = [], array $search = null) : int;
+    public function count(array $criteria = [], array $search = []) : int;
 
     /**
      * Generic method to create new item (entity) to specified database repository. Return value is created entity for
@@ -161,6 +161,17 @@ interface Base
      * @return  Entity
      */
     public function delete($id) : EntityInterface;
+
+    /**
+     * Generic ids method to return an array of id values from database. Return value is an array of specified
+     * repository entity id values.
+     *
+     * @param   array           $criteria
+     * @param   null|array      $search
+     *
+     * @return array
+     */
+    public function ids(array $criteria = [], array $search = []) : array;
 
     /**
      * Before lifecycle method for find method.
@@ -289,4 +300,21 @@ interface Base
      * @param   Entity  $entity
      */
     public function afterDelete(&$id, Entity $entity);
+
+    /**
+     * Before lifecycle method for ids method.
+     *
+     * @param   array   $criteria
+     * @param   array   $search
+     */
+    public function beforeIds(array &$criteria, array &$search);
+
+    /**
+     * Before lifecycle method for ids method.
+     *
+     * @param   array   $ids
+     * @param   array   $criteria
+     * @param   array   $search
+     */
+    public function afterIds(array &$ids, array &$criteria, array &$search);
 }
