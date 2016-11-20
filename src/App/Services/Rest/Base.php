@@ -112,7 +112,7 @@ abstract class Base implements Interfaces\Base
      * @param   null|array      $orderBy
      * @param   null|integer    $limit
      * @param   null|integer    $offset
-     * @param   null|array      $search
+     * @param   array           $search
      *
      * @return  Entity[]
      */
@@ -121,7 +121,7 @@ abstract class Base implements Interfaces\Base
         array $orderBy = null,
         int $limit = null,
         int $offset = null,
-        array $search = null
+        array $search = []
     ) {
         // Before callback method call
         $this->beforeFind($criteria, $orderBy, $limit, $offset);
