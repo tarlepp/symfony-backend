@@ -7,10 +7,7 @@ declare(strict_types=1);
  */
 namespace App\Traits\Rest\Roles\Root;
 
-use App\Controller\Interfaces\RestController;
-use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
-use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
-use App\Utils\JSON;
+use App\Traits\Rest\Methods\Update as UpdateMethod;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 trait Update
 {
-    use \App\Traits\Rest\Methods\Update;
+    use UpdateMethod;
 
     /**
      * Update action for current resource.

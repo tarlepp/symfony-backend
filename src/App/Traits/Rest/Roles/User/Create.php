@@ -7,10 +7,7 @@ declare(strict_types=1);
  */
 namespace App\Traits\Rest\Roles\User;
 
-use App\Controller\Interfaces\RestController;
-use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
-use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
-use App\Utils\JSON;
+use App\Traits\Rest\Methods\Create as CreateMethod;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 trait Create
 {
-    use \App\Traits\Rest\Methods\Create;
+    use CreateMethod;
 
     /**
      * Create action for current resource.

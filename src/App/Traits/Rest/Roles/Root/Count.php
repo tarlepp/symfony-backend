@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 namespace App\Traits\Rest\Roles\Root;
 
+use App\Traits\Rest\Methods\Count as CountMethod;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 trait Count
 {
-    use \App\Traits\Rest\Methods\Count;
+    use CountMethod;
 
     /**
      * Count action for current resource.

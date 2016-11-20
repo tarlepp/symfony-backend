@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 namespace App\Traits\Rest\Roles\User;
 
+use App\Traits\Rest\Methods\Delete as DeleteMethod;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 trait Delete
 {
-    use \App\Traits\Rest\Methods\Delete;
+    use DeleteMethod;
 
     /**
      * Delete action for current resource.

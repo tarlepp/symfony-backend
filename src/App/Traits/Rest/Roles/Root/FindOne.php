@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 namespace App\Traits\Rest\Roles\Root;
 
+use App\Traits\Rest\Methods\FindOne as FindOneMethod;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 trait FindOne
 {
-    use \App\Traits\Rest\Methods\FindOne;
+    use FindOneMethod;
 
     /**
      * FindOne action for current resource.
