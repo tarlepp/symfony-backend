@@ -54,6 +54,10 @@ use Symfony\Component\HttpFoundation\Response;
  *      </entry>
  *  </result>
  *
+ * Note that this API endpoint supports following query parameters:
+ *  - where,        see \App\Services\Rest\Helper\Request::getCriteria()
+ *  - search,       see \App\Services\Rest\Helper\Request::getSearchTerms()
+ *
  * Note that controllers that uses this trait _must_ implement App\Controller\Interfaces\RestController interface.
  *
  * @method  RestHelperResponseInterface getResponseService()
