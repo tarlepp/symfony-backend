@@ -7,12 +7,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -37,15 +39,25 @@ class AuthController
     protected $serializer;
 
     /**
+     * @var RestHelperResponseInterface
+     */
+    protected $restHelperResponse;
+
+    /**
      * AuthController constructor.
      *
-     * @param   TokenStorageInterface   $tokenStorage
-     * @param   SerializerInterface     $serializer
+     * @param   TokenStorageInterface       $tokenStorage
+     * @param   SerializerInterface         $serializer
+     * @param   RestHelperResponseInterface $restHelperResponse
      */
-    public function __construct(TokenStorageInterface $tokenStorage, SerializerInterface $serializer)
-    {
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        SerializerInterface $serializer,
+        RestHelperResponseInterface $restHelperResponse
+    ) {
         $this->tokenStorage = $tokenStorage;
         $this->serializer = $serializer;
+        $this->restHelperResponse = $restHelperResponse;
     }
 
     /**
@@ -107,9 +119,11 @@ class AuthController
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
-     * @return Response
+     * @param   Request $request
+     *
+     * @return  Response
      */
-    public function getProfile()
+    public function getProfile(Request $request)
     {
         /**
          * Get current user
@@ -124,11 +138,6 @@ class AuthController
         $context->setSerializeNull(true);
 
         // Create response
-        $response = new Response();
-        $response->setContent($this->serializer->serialize($user, 'json', $context));
-        $response->setStatusCode(200);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+        return $this->restHelperResponse->createResponse($request, $user, 200, null, $context);
     }
 }
