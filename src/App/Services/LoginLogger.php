@@ -10,6 +10,7 @@ namespace App\Services;
 use App\Entity\User as UserEntity;
 use App\Entity\UserLogin as UserLoginEntity;
 use App\Repository\User as UserRepository;
+use App\Services\Interfaces\LoginLogger as LoginLoggerInterface;
 use App\Services\Rest\UserLogin as UserLoginService;
 use DeviceDetector\DeviceDetector;
 use Doctrine\ORM\EntityRepository;
@@ -24,7 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @package App\Services
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class LoginLogger
+class LoginLogger implements LoginLoggerInterface
 {
     /**
      * @var Logger
@@ -39,7 +40,7 @@ class LoginLogger
     /**
      * @var UserRepository
      */
-    protected $userRepository;
+    private $userRepository;
 
     /**
      * @var Request
@@ -62,12 +63,7 @@ class LoginLogger
     private $deviceDetector;
 
     /**
-     * LoginLogger constructor.
-     *
-     * @param   Logger              $logger
-     * @param   UserLoginService    $userLoginService
-     * @param   EntityRepository    $userRepository
-     * @param   RequestStack        $requestStack
+     * {@inheritdoc}
      */
     public function __construct(
         Logger $logger,
@@ -83,13 +79,9 @@ class LoginLogger
     }
 
     /**
-     * Setter for User object
-     *
-     * @param   UserInterface   $user
-     *
-     * @return  LoginLogger
+     * {@inheritdoc}
      */
-    public function setUser(UserInterface $user) : LoginLogger
+    public function setUser(UserInterface $user) : LoginLoggerInterface
     {
         // We need to make sure that User object is right one
         $user = $user instanceof UserEntity ? $user : $this->userRepository->loadUserByUsername($user->getUsername());
@@ -100,9 +92,7 @@ class LoginLogger
     }
 
     /**
-     * Method to handle login event.
-     *
-     * @return  void
+     * {@inheritdoc}
      */
     public function handle()
     {
