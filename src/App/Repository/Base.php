@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Repository/Base.php
  *
@@ -35,56 +36,39 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     private $parameterCount = 0;
 
     /**
-     * Getter method for entity name.
-     *
-     * @return  string
+     * {@inheritdoc}
      */
-    public function getEntityName()
+    public function getEntityName() : string
     {
         return parent::getEntityName();
     }
 
     /**
-     * Gets a reference to the entity identified by the given type and identifier without actually loading it,
-     * if the entity is not yet loaded.
-     *
-     * @throws  \Doctrine\ORM\ORMException
-     *
-     * @param   integer $id
-     *
-     * @return  bool|\Doctrine\Common\Proxy\Proxy|null|object
+     * {@inheritdoc}
      */
-    public function getReference($id)
+    public function getReference(string $id)
     {
         return $this->_em->getReference($this->getClassName(), $id);
     }
 
     /**
-     * Gets all association mappings of the class.
-     *
-     * @return  array
+     * {@inheritdoc}
      */
-    public function getAssociations()
+    public function getAssociations() : array
     {
         return $this->_em->getClassMetadata($this->getClassName())->getAssociationMappings();
     }
 
     /**
-     * Getter method for search columns of current entity.
-     *
-     * @return \string[]
+     * {@inheritdoc}
      */
-    public function getSearchColumns()
+    public function getSearchColumns() : array
     {
         return $this->searchColumns;
     }
 
     /**
-     * Helper method to persist specified entity to database.
-     *
-     * @param   EntityInterface $entity
-     *
-     * @return  void
+     * {@inheritdoc}
      */
     public function save(EntityInterface $entity)
     {
@@ -94,11 +78,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     }
 
     /**
-     * Helper method to remove specified entity from database.
-     *
-     * @param   EntityInterface $entity
-     *
-     * @return  void
+     * {@inheritdoc}
      */
     public function remove(EntityInterface $entity)
     {
@@ -108,14 +88,9 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     }
 
     /**
-     * Generic count method to determine count of entities for specified criteria and search term(s).
-     *
-     * @param   array       $criteria
-     * @param   array|null  $search
-     *
-     * @return  integer
+     * {@inheritdoc}
      */
-    public function count(array $criteria = [], array $search = null)
+    public function count(array $criteria = [], array $search = null) : int
     {
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
@@ -130,15 +105,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     }
 
     /**
-     * Generic replacement for basic 'findBy' method if/when you want to use generic LIKE search.
-     *
-     * @param   array           $search
-     * @param   array           $criteria
-     * @param   null|array      $orderBy
-     * @param   null|integer    $limit
-     * @param   null|integer    $offset
-     *
-     * @return  array
+     * {@inheritdoc}
      */
     public function findByWithSearchTerms(
         array $search,
@@ -146,7 +113,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
         array $orderBy = null,
         $limit = null,
         $offset = null
-    ) {
+    ) : array {
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
 
@@ -163,14 +130,9 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     }
 
     /**
-     * Repository method to fetch current entity id values from database and return those as an array.
-     *
-     * @param   array   $criteria
-     * @param   array   $search
-     *
-     * @return  array
+     * {@inheritdoc}
      */
-    public function findIds(array $criteria, array $search)
+    public function findIds(array $criteria, array $search) : array
     {
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
@@ -403,8 +365,11 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      *
      * @return  CompositeExpression
      */
-    protected function getExpression(QueryBuilder $queryBuilder, CompositeExpression $expression, array $criteria)
-    {
+    protected function getExpression(
+        QueryBuilder $queryBuilder,
+        CompositeExpression $expression,
+        array $criteria
+    ) : CompositeExpression {
         if (!count($criteria)) {
             return $expression;
         }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Repository/Interfaces/Base.php
  *
@@ -29,18 +30,25 @@ interface Base
      *
      * @throws  \Doctrine\ORM\ORMException
      *
-     * @param   integer $id
+     * @param   string $id
      *
      * @return  bool|\Doctrine\Common\Proxy\Proxy|null|object
      */
-    public function getReference($id);
+    public function getReference(string $id);
 
     /**
      * Gets all association mappings of the class.
      *
      * @return  array
      */
-    public function getAssociations();
+    public function getAssociations() : array;
+
+    /**
+     * Getter method for search columns of current entity.
+     *
+     * @return string[]
+     */
+    public function getSearchColumns() : array;
 
     /**
      * Helper method to persist specified entity to database.
@@ -68,7 +76,7 @@ interface Base
      *
      * @return  integer
      */
-    public function count(array $criteria = [], array $search = null);
+    public function count(array $criteria = [], array $search = null) : int;
 
     /**
      * Generic replacement for basic 'findBy' method if/when you want to use generic LIKE search.
@@ -87,7 +95,7 @@ interface Base
         array $orderBy = null,
         $limit = null,
         $offset = null
-    );
+    ) : array;
 
     /**
      * Repository method to fetch current entity id values from database and return those as an array.
@@ -97,5 +105,5 @@ interface Base
      *
      * @return  array
      */
-    public function findIds(array $criteria, array $search);
+    public function findIds(array $criteria, array $search) : array;
 }
