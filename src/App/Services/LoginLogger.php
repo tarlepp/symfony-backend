@@ -7,8 +7,8 @@ declare(strict_types=1);
  */
 namespace App\Services;
 
-use App\Entity\User;
-use App\Entity\UserLogin as Entity;
+use App\Entity\User as UserEntity;
+use App\Entity\UserLogin as UserLoginEntity;
 use App\Repository\User as UserRepository;
 use App\Services\Rest\UserLogin as UserLoginService;
 use DeviceDetector\DeviceDetector;
@@ -92,7 +92,7 @@ class LoginLogger
     public function setUser(UserInterface $user) : LoginLogger
     {
         // We need to make sure that User object is right one
-        $user = $user instanceof User ? $user : $this->userRepository->loadUserByUsername($user->getUsername());
+        $user = $user instanceof UserEntity ? $user : $this->userRepository->loadUserByUsername($user->getUsername());
 
         $this->user = $user;
 
@@ -122,12 +122,12 @@ class LoginLogger
     /**
      * Method to create new login entry and store it to database.
      *
-     * @return Entity
+     * @return UserLoginEntity
      */
-    private function createEntry()
+    private function createEntry() : UserLoginEntity
     {
         // Create new login entry
-        $userLogin = new Entity();
+        $userLogin = new UserLoginEntity();
         $userLogin->setUser($this->user);
         $userLogin->setIp($this->request->getClientIp());
         $userLogin->setHost($this->request->getHost());
