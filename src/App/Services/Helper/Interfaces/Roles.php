@@ -15,6 +15,12 @@ namespace App\Services\Helper\Interfaces;
  */
 interface Roles
 {
+    // Used role constants
+    const ROLE_LOGGED   = 'ROLE_LOGGED';
+    const ROLE_USER     = 'ROLE_USER';
+    const ROLE_ADMIN    = 'ROLE_ADMIN';
+    const ROLE_ROOT     = 'ROLE_ROOT';
+
     /**
      * RolesHelper constructor.
      *

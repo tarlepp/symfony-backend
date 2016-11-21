@@ -19,11 +19,6 @@ use App\Services\Helper\Interfaces\Roles as RolesInterface;
  */
 class Roles implements RolesInterface
 {
-    const ROLE_LOGGED   = 'ROLE_LOGGED';
-    const ROLE_USER     = 'ROLE_USER';
-    const ROLE_ADMIN    = 'ROLE_ADMIN';
-    const ROLE_ROOT     = 'ROLE_ROOT';
-
     /**
      * Roles hierarchy.
      *
