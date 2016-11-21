@@ -6,8 +6,8 @@
  */
 namespace App\Repository;
 
-use App\Entity;
 use App\Entity\Interfaces\EntityInterface;
+use App\Services\Helper\SearchTerm;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Composite as CompositeExpression;
 use Doctrine\ORM\QueryBuilder;
@@ -296,37 +296,11 @@ abstract class Base extends EntityRepository implements Interfaces\Base
             return;
         }
 
-        /**
-         * Lambda function to process each search term to specified search columns.
-         *
-         * @param   string  $term
-         *
-         * @return  array
-         */
-        $iteratorTerm = function ($term) use ($columns) {
-            $iteratorColumn = function ($column) use ($term) {
-                if (strpos($column, '.') === false) {
-                    $column = 'entity.' . $column;
-                }
-
-                return [$column, 'LIKE', '%' . $term . '%'];
-            };
-
-            return array_map($iteratorColumn, $columns);
-        };
-
-        // Iterate given search terms
+        // Iterate search term sets
         foreach ($searchTerms as $operand => $terms) {
-            // Create search criteria for each search term
-            $searchCriteria = array_map($iteratorTerm, $terms);
+            $criteria = SearchTerm::getCriteria($columns, $terms, $operand);
 
-            if (count($searchCriteria)) {
-                // Create used criteria array
-                $criteria = [
-                    $operand => call_user_func_array('array_merge', $searchCriteria)
-                ];
-
-                // And attach search term condition to main query
+            if (!is_null($criteria)) {
                 $queryBuilder->andWhere($this->getExpression($queryBuilder, $queryBuilder->expr()->andX(), $criteria));
             }
         }
