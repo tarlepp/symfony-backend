@@ -7,7 +7,6 @@ declare(strict_types=1);
  */
 namespace App\Repository;
 
-use App\Entity;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;

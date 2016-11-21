@@ -1,12 +1,11 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Repository/Author.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 namespace App\Repository;
-
-use App\Entity;
 
 /**
  * Doctrine repository class for Author entities.
