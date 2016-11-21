@@ -1,10 +1,13 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Services/Helper/Roles.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 namespace App\Services\Helper;
+
+use App\Services\Helper\Interfaces\Roles as RolesInterface;
 
 /**
  * Class Roles
@@ -14,7 +17,7 @@ namespace App\Services\Helper;
  * @package App\Services\Helper
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class Roles
+class Roles implements RolesInterface
 {
     const ROLE_LOGGED   = 'ROLE_LOGGED';
     const ROLE_USER     = 'ROLE_USER';
@@ -29,11 +32,7 @@ class Roles
     private $rolesHierarchy;
 
     /**
-     * RolesHelper constructor.
-     *
-     * @param   array   $rolesHierarchy This is a 'security.role_hierarchy.roles' parameter value
-     *
-     * @return  Roles
+     * {@inheritdoc}
      */
     public function __construct(array $rolesHierarchy)
     {
@@ -41,11 +40,9 @@ class Roles
     }
 
     /**
-     * Getter method to return all roles in single dimensional array.
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
-    public function getRoles()
+    public function getRoles() : array
     {
         $roles = [
             self::ROLE_LOGGED,
@@ -58,13 +55,9 @@ class Roles
     }
 
     /**
-     * Getter method for role label.
-     *
-     * @param   string  $role
-     *
-     * @return  string
+     * {@inheritdoc}
      */
-    public function getRoleLabel($role)
+    public function getRoleLabel(string $role) : string
     {
         switch ($role) {
             case self::ROLE_LOGGED:
@@ -88,13 +81,9 @@ class Roles
     }
 
     /**
-     * Getter method for short role.
-     *
-     * @param   string $role
-     *
-     * @return  string
+     * {@inheritdoc}
      */
-    public function getShort($role)
+    public function getShort(string $role) : string
     {
         return mb_strtolower(mb_substr($role, (mb_strpos($role, '_') + 1)));
     }
