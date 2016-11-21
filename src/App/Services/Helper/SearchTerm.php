@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Services/Helper/SearchTerm.php
  *
@@ -6,22 +7,19 @@
  */
 namespace App\Services\Helper;
 
+use App\Services\Helper\Interfaces\SearchTerm as SearchTermInterface;
+
 /**
  * Class SearchTerm
  *
  * @package App\Services\Helper
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class SearchTerm
+class SearchTerm implements SearchTermInterface
 {
-    const OPERAND_OR = 'or';
-    const OPERAND_AND = 'and';
-
-    const MODE_STARTS_WITH = 1;
-    const MODE_ENDS_WITH = 2;
-    const MODE_FULL = 3;
-
     /**
+     * Static method to get search term criteria for specified columns and search terms with specified operand and mode.
+     *
      * @param   string|array    $column     Search column(s), could be a string or an array of strings.
      * @param   string|array    $search     Search term(s), could be a string or an array of strings.
      * @param   string          $operand    Used operand with multiple search terms. See OPERAND_* constants.
@@ -29,8 +27,12 @@ class SearchTerm
      *
      * @return  array|null
      */
-    public function getCriteria($column, $search, $operand = self::OPERAND_OR, $mode = self::MODE_FULL)
-    {
+    public static function getCriteria(
+        $column,
+        $search,
+        string $operand = self::OPERAND_OR,
+        int $mode = self::MODE_FULL
+    ) {
         /**
          * Lambda function to filter out all "empty" values.
          *
@@ -45,13 +47,37 @@ class SearchTerm
         // Normalize column and search parameters
         $columns = array_filter(array_map('trim', (is_array($column) ? $column : [$column])), $iterator);
         $searchTerms = array_unique(
-            array_filter(array_map('trim', (is_array($search) ? $search : explode(' ', $search))), $iterator)
+            array_filter(array_map('trim', (is_array($search) ? $search : explode(' ', (string)$search))), $iterator)
         );
 
+        // Fallback to OR operand if not supported one given
+        if ($operand !== self::OPERAND_AND && $operand !== self::OPERAND_OR) {
+            $operand = self::OPERAND_OR;
+        }
+
+        return self::createCriteria($columns, $searchTerms, $operand, $mode);
+    }
+
+    /**
+     * Helper method to create used criteria array with given columns and search terms.
+     *
+     * @param   array   $columns
+     * @param   array   $searchTerms
+     * @param   string  $operand
+     * @param   integer $mode
+     *
+     * @return  array|null
+     */
+    private static function createCriteria(
+        array $columns,
+        array $searchTerms,
+        string $operand,
+        int $mode
+    ) {
         /**
          * Lambda function to process each search term to specified search columns.
          *
-         * @param   string  $term
+         * @param   string $term
          *
          * @return  array
          */
@@ -85,11 +111,6 @@ class SearchTerm
 
         // Initialize output
         $output = null;
-
-        // Fallback to OR operand if not supported one given
-        if ($operand !== self::OPERAND_AND && $operand !== self::OPERAND_OR) {
-            $operand = self::OPERAND_OR;
-        }
 
         // We have some generated criteria
         if (count($criteria)) {

@@ -28,8 +28,6 @@ class SearchTermTest extends KernelTestCase
     public static function setUpBeforeClass()
     {
         self::bootKernel();
-
-        self::$service = static::$kernel->getContainer()->get('app.services.helper.search_term');
     }
 
     /**
@@ -40,7 +38,7 @@ class SearchTermTest extends KernelTestCase
      */
     public function testThatWithoutColumnOrSearchTermCriteriaIsNull($column, $search)
     {
-        $this->assertNull(self::$service->getCriteria($column, $search), 'Criteria was not NULL with given parameters');
+        $this->assertNull(SearchTerm::getCriteria($column, $search), 'Criteria was not NULL with given parameters');
     }
 
     /**
@@ -51,7 +49,9 @@ class SearchTermTest extends KernelTestCase
      */
     public function testThatReturnedCriteriaIsExpected(array $inputArguments, array $expected)
     {
-        $this->assertEquals($expected, call_user_func_array([self::$service, 'getCriteria'], $inputArguments));
+        $class = '\App\Services\Helper\SearchTerm';
+
+        $this->assertEquals($expected, call_user_func_array([$class, 'getCriteria'], $inputArguments));
     }
 
     /**
@@ -247,7 +247,7 @@ class SearchTermTest extends KernelTestCase
                 ],
             ],
             [
-                ['c1', 'search word', SearchTerm::OPERAND_OR, 'notSupportedMode'],
+                ['c1', 'search word', SearchTerm::OPERAND_OR, 666],
                 [
                     'and' => [
                         'or' => [

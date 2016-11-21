@@ -6,9 +6,6 @@ services:
         class: App\Services\Helper\Roles
         arguments: [ '%security.role_hierarchy.roles%' ]
 
-    app.services.helper.search_term:
-        class: App\Services\Helper\SearchTerm
-
     app.services.login_logger:
         class: App\Services\LoginLogger
         arguments: [ '@logger', '@app.services.rest.user_login', '@repository.user', '@request_stack' ]
