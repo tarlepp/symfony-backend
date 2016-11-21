@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Services/Interfaces/ResponseLogger.php
  *
@@ -6,6 +7,8 @@
  */
 namespace App\Services\Interfaces;
 
+use App\Services\Rest\RequestLog as RequestLogService;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -19,22 +22,30 @@ use Symfony\Component\Security\Core\User\UserInterface;
 interface ResponseLogger
 {
     /**
+     * ResponseLogger constructor.
+     *
+     * @param   Logger              $logger
+     * @param   RequestLogService   $service
+     */
+    public function __construct(Logger $logger, RequestLogService $service);
+
+    /**
      * Setter for response object.
      *
      * @param   Response $response
      *
      * @return  ResponseLogger
      */
-    public function setResponse(Response $response);
+    public function setResponse(Response $response) : ResponseLogger;
 
     /**
      * Setter for request object.
      *
-     * @param   Request     $request
+     * @param   Request $request
      *
      * @return  ResponseLogger
      */
-    public function setRequest(Request $request);
+    public function setRequest(Request $request) : ResponseLogger;
 
     /**
      * Setter method for current user.
@@ -43,7 +54,7 @@ interface ResponseLogger
      *
      * @return  ResponseLogger
      */
-    public function setUser(UserInterface $user = null);
+    public function setUser(UserInterface $user = null) : ResponseLogger;
 
     /**
      * Method to handle current response and log it to database.

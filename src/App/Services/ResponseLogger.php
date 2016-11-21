@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * /src/App/Services/ResponseLogger.php
  *
@@ -6,8 +7,9 @@
  */
 namespace App\Services;
 
-use App\Entity\RequestLog as Entity;
-use App\Services\Rest\RequestLog as Service;
+use App\Entity\RequestLog as RequestLogEntity;
+use App\Services\Interfaces\ResponseLogger as ResponseLoggerInterface;
+use App\Services\Rest\RequestLog as RequestLogService;
 use App\Utils\JSON;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @package App\Services
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class ResponseLogger implements Interfaces\ResponseLogger
+class ResponseLogger implements ResponseLoggerInterface
 {
     /**
      * @var Response
@@ -38,7 +40,7 @@ class ResponseLogger implements Interfaces\ResponseLogger
     protected $logger;
 
     /**
-     * @var Service
+     * @var RequestLogService
      */
     protected $service;
 
@@ -48,12 +50,9 @@ class ResponseLogger implements Interfaces\ResponseLogger
     protected $user;
 
     /**
-     * ResponseLogger constructor.
-     *
-     * @param   Logger  $logger
-     * @param   Service $service
+     * {@inheritdoc}
      */
-    public function __construct(Logger $logger, Service $service)
+    public function __construct(Logger $logger, RequestLogService $service)
     {
         // Store user services
         $this->logger = $logger;
@@ -61,13 +60,9 @@ class ResponseLogger implements Interfaces\ResponseLogger
     }
 
     /**
-     * Setter for response object.
-     *
-     * @param   Response $response
-     *
-     * @return  ResponseLogger
+     * {@inheritdoc}
      */
-    public function setResponse(Response $response)
+    public function setResponse(Response $response) : ResponseLoggerInterface
     {
         $this->response = $response;
 
@@ -75,13 +70,9 @@ class ResponseLogger implements Interfaces\ResponseLogger
     }
 
     /**
-     * Setter for request object.
-     *
-     * @param   Request $request
-     *
-     * @return  ResponseLogger
+     * {@inheritdoc}
      */
-    public function setRequest(Request $request)
+    public function setRequest(Request $request) : ResponseLoggerInterface
     {
         $this->request = $request;
 
@@ -89,13 +80,9 @@ class ResponseLogger implements Interfaces\ResponseLogger
     }
 
     /**
-     * Setter method for current user.
-     *
-     * @param   UserInterface|null $user
-     *
-     * @return  ResponseLogger
+     * {@inheritdoc}
      */
-    public function setUser(UserInterface $user = null)
+    public function setUser(UserInterface $user = null) : ResponseLoggerInterface
     {
         $this->user = $user;
 
@@ -103,9 +90,7 @@ class ResponseLogger implements Interfaces\ResponseLogger
     }
 
     /**
-     * Method to handle current response and log it to database.
-     *
-     * @return  void
+     * {@inheritdoc}
      */
     public function handle()
     {
@@ -115,7 +100,7 @@ class ResponseLogger implements Interfaces\ResponseLogger
         }
 
         // Create new request log entity
-        $entity = new Entity();
+        $entity = new RequestLogEntity();
         $entity->setUser($this->user);
         $entity->setClientIp($this->request->getClientIp());
         $entity->setUri($this->request->getUri());
@@ -126,7 +111,7 @@ class ResponseLogger implements Interfaces\ResponseLogger
         $entity->setStatusCode($this->response->getStatusCode());
         $entity->setResponseContentLength(mb_strlen($this->response->getContent()));
         $entity->setIsXmlHttpRequest($this->request->isXmlHttpRequest());
-        $entity->setTime(new \DateTime());
+        $entity->setTime(new \DateTime('now', new \DateTimeZone('UTC')));
 
         // Store request log and  clean history
         try {
@@ -142,7 +127,7 @@ class ResponseLogger implements Interfaces\ResponseLogger
      *
      * @return array
      */
-    private function getParameters()
+    private function getParameters() : array
     {
         // Content given so parse it
         if ($this->request->getContent()) {
