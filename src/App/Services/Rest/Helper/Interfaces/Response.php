@@ -22,6 +22,14 @@ use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 interface Response
 {
     /**
+     * Constants for response output formats.
+     *
+     * @var string
+     */
+    const FORMAT_JSON = 'json';
+    const FORMAT_XML = 'xml';
+
+    /**
      * Response constructor.
      *
      * @param   Serializer  $serializer

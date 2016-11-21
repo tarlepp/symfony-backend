@@ -24,19 +24,11 @@ use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 class Response implements ResponseInterface
 {
     /**
-     * Constants for response output formats.
-     *
-     * @var string
-     */
-    const FORMAT_JSON = 'json';
-    const FORMAT_XML = 'xml';
-
-    /**
      * Content types for supported response output formats.
      *
      * @var array
      */
-    protected $contentTypes = [
+    private $contentTypes = [
         self::FORMAT_JSON   => 'application/json',
         self::FORMAT_XML    => 'application/xml',
     ];
@@ -44,12 +36,12 @@ class Response implements ResponseInterface
     /**
      * @var Serializer
      */
-    protected $serializer;
+    private $serializer;
 
     /**
      * @var ResourceServiceInterface
      */
-    protected $resourceService;
+    private $resourceService;
 
     /**
      * Response constructor.
