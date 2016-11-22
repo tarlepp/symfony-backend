@@ -134,7 +134,7 @@ class Request
     {
         $limit = $request->get('limit', null);
 
-        return is_null($limit) ? null : (int)$limit;
+        return is_null($limit) ? null : abs($limit);
     }
 
     /**
@@ -149,7 +149,9 @@ class Request
      */
     public static function getOffset(HttpFoundationRequest $request)
     {
-        return $request->get('offset', null);
+        $offset = $request->get('offset', null);
+
+        return is_null($offset) ? null : abs($offset);
     }
 
     /**
@@ -174,6 +176,10 @@ class Request
 
         try {
             $input = JSON::decode($search, true);
+
+            if (!is_array($input)) {
+                throw new \LogicException('Search term is not an array, fallback to string handling');
+            }
 
             if (!array_key_exists('and', $input) && !array_key_exists('or', $input)) {
                 throw new HttpException(
