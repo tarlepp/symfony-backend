@@ -113,6 +113,53 @@ class RequestTest extends KernelTestCase
         );
     }
 
+    public function testThatGetSearchTermsReturnsEmptyArrayWithoutParameters()
+    {
+        $fakeRequest = Request::create('/', 'GET');
+
+        $this->assertEquals(
+            [],
+            RequestHelper::getSearchTerms($fakeRequest),
+            'getSearchTerms method did not return empty array ([]) as it should without any parameters'
+        );
+    }
+
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedExceptionMessage Given search parameter is not valid, within JSON provide 'and' and/or 'or' property.
+     */
+    public function testThatGetSearchTermsThrowsAnExceptionWithInvalidJson()
+    {
+        $parameters = [
+            'search' => '{"foo": "bar"}'
+        ];
+
+        $fakeRequest = Request::create('/', 'GET', $parameters);
+
+        RequestHelper::getSearchTerms($fakeRequest);
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatGetSearchTermsReturnsExpectedValue
+     *
+     * @param   array   $expected
+     * @param   string  $search
+     */
+    public function testThatGetSearchTermsReturnsExpectedValue(array $expected, string $search)
+    {
+        $parameters = [
+            'search' => $search,
+        ];
+
+        $fakeRequest = Request::create('/', 'GET', $parameters);
+
+        $this->assertEquals(
+            $expected,
+            RequestHelper::getSearchTerms($fakeRequest),
+            'getSearchTerms method did not return expected value'
+        );
+    }
+
     /**
      * Data provider method for 'testThatGetOrderByReturnsExpectedValue' test.
      *
@@ -286,6 +333,91 @@ class RequestTest extends KernelTestCase
             [
                 ['offset' => -10],
                 10,
+            ],
+        ];
+    }
+
+    /**
+     * Data provider method for 'testThatGetSearchTermsReturnsExpectedValue' test.
+     *
+     * @return array
+     */
+    public function dataProviderTestThatGetSearchTermsReturnsExpectedValue()
+    {
+        return [
+            [
+                [
+                    'or' => [
+                        'bar',
+                    ],
+                ],
+                'bar',
+            ],
+            [
+                [
+                    'or' => [
+                        'bar',
+                        'foo',
+                    ],
+                ],
+                'bar foo',
+            ],
+            [
+                [
+                    'or' => [
+                        'bar',
+                        'f',
+                        'oo',
+                    ],
+                ],
+                'bar  f    oo ',
+            ],
+            [
+                [
+                    'and' => [
+                        'foo',
+                    ],
+                ],
+                '{"and": ["foo"]}'
+            ],
+            [
+                [
+                    'or' => [
+                        'bar',
+                    ],
+                ],
+                '{"or": ["bar"]}'
+            ],
+            [
+                [
+                    'and' => [
+                        'foo',
+                        'bar',
+                    ],
+                ],
+                '{"and": ["foo", "bar"]}'
+            ],
+            [
+                [
+                    'or' => [
+                        'bar',
+                        'foo',
+                    ],
+                ],
+                '{"or": ["bar", "foo"]}'
+            ],
+            [
+                [
+                    'or' => [
+                        'bar',
+                        'foo',
+                    ],
+                    'and' => [
+                        'foo',
+                        'bar',
+                    ],
+                ],
+                '{"or": ["bar", "foo"], "and": ["foo", "bar"]}'
             ],
         ];
     }
