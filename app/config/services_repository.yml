@@ -11,6 +11,10 @@ services:
         parent: repository
         arguments: [ App\Entity\Author ]
 
+    repository.date_dimension:
+        parent: repository
+        arguments: [ App\Entity\DateDimension ]
+
     repository.book:
         parent: repository
         arguments: [ App\Entity\Book ]
