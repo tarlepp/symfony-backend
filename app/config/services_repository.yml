@@ -10,27 +10,34 @@ services:
     repository.author:
         parent: repository
         arguments: [ App\Entity\Author ]
+        class: App\Repository\Author
 
     repository.date_dimension:
         parent: repository
         arguments: [ App\Entity\DateDimension ]
+        class: App\Repository\DateDimension
 
     repository.book:
         parent: repository
         arguments: [ App\Entity\Book ]
+        class: App\Repository\Book
 
     repository.request_log:
         parent: repository
         arguments: [ App\Entity\RequestLog ]
+        class: App\Repository\RequestLog
 
     repository.user:
         parent: repository
         arguments: [ App\Entity\User ]
+        class: App\Repository\User
 
     repository.user_group:
         parent: repository
         arguments: [ App\Entity\UserGroup ]
+        class: App\Repository\UserGroup
 
     repository.user_login:
         parent: repository
         arguments: [ App\Entity\UserLogin ]
+        class: App\Repository\UserLogin
