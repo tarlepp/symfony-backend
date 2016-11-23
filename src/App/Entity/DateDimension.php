@@ -269,7 +269,7 @@ class DateDimension implements EntityInterface
      *
      * @ORM\Column(
      *      name="unix_time",
-     *      type="integer",
+     *      type="bigint",
      *      nullable=false,
      *      options={
      *          "comment": "Seconds since the Unix Epoch (January 1 1970 00:00:00 GMT)",
