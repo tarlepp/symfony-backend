@@ -70,6 +70,14 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
+    public function getEntityManager()
+    {
+        return parent::getEntityManager();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function save(EntityInterface $entity)
     {
         // Persist on database
