@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Command/User/Base.php
  *
@@ -6,13 +7,13 @@
  */
 namespace App\Command\User;
 
+use App\DTO\Console\User as UserDto;
+use App\DTO\Console\UserGroup as UserGroupDto;
 use App\Entity\Interfaces\EntityInterface;
-use App\Entity\User as EntityUser;
-use App\Entity\UserGroup as EntityUserGroup;
-use App\DTO\Console\User as DTOUser;
-use App\DTO\Console\UserGroup as DTOUserGroup;
-use App\Services\Rest\User as ServiceUser;
-use App\Services\Rest\UserGroup as ServiceUserGroup;
+use App\Entity\User as UserEntity;
+use App\Entity\UserGroup as UserGroupEntity;
+use App\Services\Rest\User as UserService;
+use App\Services\Rest\UserGroup as UserGroupService;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -80,14 +81,14 @@ abstract class Base extends ContainerAwareCommand
     protected $io;
 
     /**
-     * @var ServiceUser
+     * @var UserService
      */
-    protected $serviceUser;
+    protected $userService;
 
     /**
-     * @var ServiceUserGroup
+     * @var UserGroupService
      */
-    protected $serviceUserGroup;
+    protected $userGroupService;
 
     /**
      * {@inheritdoc}
@@ -134,8 +135,8 @@ abstract class Base extends ContainerAwareCommand
         $this->io = new SymfonyStyle($this->input, $this->output);
 
         // Store user and user group service objects
-        $this->serviceUser = $this->getContainer()->get('app.services.rest.user');
-        $this->serviceUserGroup = $this->getContainer()->get('app.services.rest.user_group');
+        $this->userService = $this->getContainer()->get('app.services.rest.user');
+        $this->userGroupService = $this->getContainer()->get('app.services.rest.user_group');
 
         // Set title
         $this->io->title($this->getDescription());
@@ -146,9 +147,9 @@ abstract class Base extends ContainerAwareCommand
      *
      * @param   bool    $showUserInformation
      *
-     * @return  EntityUser
+     * @return  UserEntity
      */
-    protected function getUser($showUserInformation = false)
+    protected function getUser($showUserInformation = false): UserEntity
     {
         $user = null;
 
@@ -157,7 +158,7 @@ abstract class Base extends ContainerAwareCommand
             $username = $this->io->askQuestion($question);
 
             try {
-                $user = $this->serviceUser->getRepository()->loadUserByUsername($username);
+                $user = $this->userService->getRepository()->loadUserByUsername($username);
             } catch (UsernameNotFoundException $error) {
                 $this->io->warning($error->getMessage());
             }
@@ -177,20 +178,20 @@ abstract class Base extends ContainerAwareCommand
      *
      * @param   bool    $showInformation
      *
-     * @return  EntityUserGroup
+     * @return  UserGroupEntity
      */
-    protected function getUserGroup($showInformation = false)
+    protected function getUserGroup($showInformation = false): UserGroupEntity
     {
         $userGroup = null;
 
         /**
          * Lambda function to format UserGroup data for io table.
          *
-         * @param   EntityUserGroup $userGroup
+         * @param   UserGroupEntity $userGroup
          *
          * @return  array
          */
-        $iterator = function (EntityUserGroup $userGroup) {
+        $iterator = function (UserGroupEntity $userGroup) {
             return [
                 $userGroup->getId(),
                 $userGroup->getName(),
@@ -204,13 +205,13 @@ abstract class Base extends ContainerAwareCommand
         // And do while user has "selected" one valid user group
         while (null === $userGroup) {
             // Print console table
-            $this->io->table($headers, array_map($iterator, $this->serviceUserGroup->find()));
+            $this->io->table($headers, array_map($iterator, $this->userGroupService->find()));
 
             $question = new Question('User group ID: ', $this->input->getOption('id'));
             $userGroupId = $this->io->askQuestion($question);
 
             try {
-                $userGroup = $this->serviceUserGroup->findOne($userGroupId, true);
+                $userGroup = $this->userGroupService->findOne($userGroupId, true);
             } catch (HttpException $error) {
                 $this->io->warning($error->getMessage());
             }
@@ -227,25 +228,25 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to get DTO for user entity.
      *
-     * @param   EntityUser  $user
+     * @param   UserEntity  $user
      *
-     * @return  DTOUser
+     * @return  UserDto
      */
-    protected function getUserDto(EntityUser $user)
+    protected function getUserDto(UserEntity $user): UserDto
     {
         /**
          * Lambda function to extract user group ID values from UserGroup entity
          *
-         * @param   EntityUserGroup $userGroup
+         * @param   UserGroupEntity $userGroup
          *
          * @return  integer
          */
-        $iterator = function (EntityUserGroup $userGroup) {
+        $iterator = function (UserGroupEntity $userGroup) {
             return $userGroup->getId();
         };
 
         // Create DTO for user
-        $dto = new DTOUser();
+        $dto = new UserDto();
         $dto->id = $user->getId();
         $dto->username = $user->getUsername();
         $dto->firstname = $user->getFirstname();
@@ -259,11 +260,11 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Private helper method to print user information to console.
      *
-     * @param   EntityUser  $user
+     * @param   UserEntity  $user
      *
      * @return  void
      */
-    protected function printUserInformation(EntityUser $user)
+    protected function printUserInformation(UserEntity $user)
     {
         // Attributes to print out
         $attributes = [
@@ -281,11 +282,11 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to print user information to console.
      *
-     * @param   EntityUserGroup $userGroup
+     * @param   UserGroupEntity $userGroup
      *
      * @return  void
      */
-    protected function printUserGroupInformation(EntityUserGroup $userGroup)
+    protected function printUserGroupInformation(UserGroupEntity $userGroup)
     {
         // Attributes to print out
         $attributes = [
@@ -300,16 +301,16 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to store user entity.
      *
-     * @param   DTOUser     $userData
-     * @param   EntityUser  $user
+     * @param   UserDto     $userData
+     * @param   UserEntity  $user
      * @param   Boolean     $skipValidation
      *
-     * @return  EntityUser
+     * @return  UserEntity
      */
-    protected function storeUser(DTOUser $userData, EntityUser $user = null, $skipValidation = false)
+    protected function storeUser(UserDto $userData, UserEntity $user = null, $skipValidation = false): UserEntity
     {
         // Create new UserGroup entity OR use provided one
-        $user = $user ?: new EntityUser();
+        $user = $user ?: new UserEntity();
         $user->setUsername($userData->username);
         $user->setFirstname($userData->firstname);
         $user->setSurname($userData->surname);
@@ -322,30 +323,30 @@ abstract class Base extends ContainerAwareCommand
 
         // Iterate user groups and attach those to current user
         foreach ($userData->userGroups as $groupId) {
-            $user->addUserGroup($this->serviceUserGroup->getReference($groupId));
+            $user->addUserGroup($this->userGroupService->getReference($groupId));
         }
 
         // Store user to database
-        return $this->serviceUser->save($user, $skipValidation);
+        return $this->userService->save($user, $skipValidation);
     }
 
     /**
      * Helper method to store user group entity. Note that this uses DTO pattern.
      *
-     * @param   DTOUserGroup    $userGroupData
-     * @param   EntityUserGroup $userGroup
+     * @param   UserGroupDto    $userGroupData
+     * @param   UserGroupEntity $userGroup
      *
-     * @return  EntityUserGroup
+     * @return  UserGroupEntity
      */
-    protected function storeUserGroup(DTOUserGroup $userGroupData, EntityUserGroup $userGroup = null)
+    protected function storeUserGroup(UserGroupDto $userGroupData, UserGroupEntity $userGroup = null): UserGroupEntity
     {
         // Create new UserGroup entity OR use provided one
-        $userGroup = $userGroup ?: new EntityUserGroup();
+        $userGroup = $userGroup ?: new UserGroupEntity();
         $userGroup->setName($userGroupData->name);
         $userGroup->setRole($userGroupData->role);
 
         // Store user group to database
-        return $this->serviceUserGroup->save($userGroup);
+        return $this->userGroupService->save($userGroup);
     }
 
     /**
@@ -374,7 +375,7 @@ abstract class Base extends ContainerAwareCommand
 
             // And we have many-to-many records so map those to get string presentation of each records
             if ($value instanceof PersistentCollection) {
-                $iterator = function (EntityUserGroup $entity) {
+                $iterator = function (UserGroupEntity $entity) {
                     $data = [
                         $entity->getId(),
                         $entity->getName(),

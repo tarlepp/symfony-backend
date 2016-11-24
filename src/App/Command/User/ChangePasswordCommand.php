@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Command/User/CreateCommand.php
  *
@@ -7,7 +8,7 @@
 namespace App\Command\User;
 
 use App\Entity\User;
-use App\Form\Console\UserData;
+use App\DTO\Console\User as UserDto;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -68,9 +69,10 @@ class ChangePasswordCommand extends Base
 
         /** @var User $user */
 
+        // Get DTO for current user
         $dto = $this->getUserDto($user);
 
-        /** @var UserData $dto */
+        /** @var UserDto $dto */
         $dto = $this->getHelper('form')->interactUsingForm(
             'App\Form\Console\UserPassword',
             $this->input,

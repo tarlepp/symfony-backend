@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Command/User/CreateCommand.php
  *
@@ -6,7 +7,7 @@
  */
 namespace App\Command\User;
 
-use App\Form\Console\UserGroupData;
+use App\DTO\Console\UserGroup as UserGroupDto;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -52,7 +53,7 @@ class CreateUserGroupCommand extends Base
         // Initialize common console command
         parent::execute($input, $output);
 
-        /** @var UserGroupData $dto */
+        /** @var UserGroupDto $dto */
         $dto = $this->getHelper('form')->interactUsingForm(
             'App\Form\Console\UserGroup',
             $this->input,

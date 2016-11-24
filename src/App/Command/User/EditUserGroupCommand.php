@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Command/User/EditUserGroupCommand.php
  *
@@ -6,8 +7,8 @@
  */
 namespace App\Command\User;
 
-use App\Entity\UserGroup;
-use App\Form\Console\UserGroupData;
+use App\Entity\UserGroup as UserGroupEntity;
+use App\DTO\Console\UserGroup as UserGroupDto;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -63,14 +64,14 @@ class EditUserGroupCommand extends Base
             $groupFound = $this->io->confirm('Is this the group which information you want to change?', false);
         }
 
-        /** @var UserGroup $userGroup */
+        /** @var UserGroupEntity $userGroup */
 
         // Create new DTO with selected user group data
-        $dto = new UserGroupData();
+        $dto = new UserGroupDto();
         $dto->name = $userGroup->getName();
         $dto->role = $userGroup->getRole();
 
-        /** @var UserGroupData $dto */
+        /** @var UserGroupDto $dto */
         $dto = $this->getHelper('form')->interactUsingForm(
             'App\Form\Console\UserGroup',
             $this->input,

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Command/User/CreateUserCommand.php
  *
@@ -6,7 +7,7 @@
  */
 namespace App\Command\User;
 
-use App\Form\Console\UserData;
+use App\DTO\Console\User as UserDto;
 use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -70,13 +71,13 @@ class CreateUserCommand extends Base
         parent::execute($input, $output);
 
         // Ensure that we have user groups
-        if (count($this->serviceUserGroup->find()) === 0) {
+        if ($this->userGroupService->count() === 0) {
             throw new LogicException(
                 'You need to have at least one user group. Use \'user:createGroup\' command to create groups.'
             );
         }
 
-        /** @var UserData $dto */
+        /** @var UserDto $dto */
         $dto = $this->getHelper('form')->interactUsingForm('App\Form\Console\User', $this->input, $this->output);
 
         // Store user

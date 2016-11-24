@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Command/User/EditUserCommand.php
  *
@@ -6,9 +7,9 @@
  */
 namespace App\Command\User;
 
-use App\Entity\User;
-use App\Entity\UserGroup;
-use App\Form\Console\UserData;
+use App\Entity\User as UserEntity;
+use App\Entity\UserGroup as UserGroupEntity;
+use App\DTO\Console\User as UserDto;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -64,24 +65,26 @@ class EditUserCommand extends Base
             $userFound = $this->io->confirm('Is this the user who\'s information you want to change?', false);
         }
 
-        /** @var User $user */
+        /** @var UserEntity $user */
 
+        // Get DTO for current user
         $dto = $this->getUserDto($user);
 
         /**
          * Lambda function to get user group id values.
          *
-         * @param   UserGroup   $userGroup
-         * @return  integer
+         * @param   UserGroupEntity   $userGroup
+         *
+         * @return  string
          */
-        $iterator = function (UserGroup $userGroup) {
+        $iterator = function (UserGroupEntity $userGroup): string {
             return $userGroup->getId();
         };
 
         // Set user groups
         $dto->userGroups = array_map($iterator, $user->getUserGroups()->toArray());
 
-        /** @var UserData $dto */
+        /** @var UserDto $dto */
         $dto = $this->getHelper('form')->interactUsingForm(
             'App\Form\Console\User',
             $this->input,
