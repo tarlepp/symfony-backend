@@ -24,14 +24,19 @@ class RequestLog extends Base
     {
         // Determine date
         $date = new \DateTime('now', new \DateTimeZone('UTC'));
-        $date->sub(new \DateInterval('P2M'));
+        $date->sub(new \DateInterval('P3Y'));
 
-        // Create query
-        $query = $this->getEntityManager()
-            ->createQuery('DELETE FROM App\Entity\RequestLog rl WHERE rl.time < :time')
-            ->setParameter('time', $date->format('Y-m-d'));
+        // Create query builder
+        $queryBuilder = $this->createQueryBuilder('requestLog');
+
+        // Define delete query
+        $queryBuilder
+            ->delete()
+            ->where('requestLog.time < :time')
+            ->setParameter('time', $date)
+        ;
 
         // Return deleted row count
-        return $query->execute();
+        return $queryBuilder->getQuery()->execute();
     }
 }
