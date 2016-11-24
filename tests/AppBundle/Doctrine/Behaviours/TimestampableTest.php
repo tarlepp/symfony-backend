@@ -1,10 +1,16 @@
 <?php
+declare(strict_types = 1);
 
 namespace AppBundle\Doctrine\Behaviours;
 
 use App\Entity\Author;
 use App\Tests\EntityTestCase;
 
+/**
+ * Class TimestampableTest
+ *
+ * @package AppBundle\Doctrine\Behaviours
+ */
 class TimestampableTest extends EntityTestCase
 {
     /**
@@ -21,9 +27,9 @@ class TimestampableTest extends EntityTestCase
     {
         $this->entity->setCreatedAt(new \DateTime('2016-06-20 18:00:35'));
 
-        $this->assertEquals('2016-06-20T18:00:35+00:00', $this->entity->getCreatedAtJson());
+        static::assertEquals('2016-06-20T18:00:35+00:00', $this->entity->getCreatedAtJson());
 
-        $this->assertEquals(
+        static::assertEquals(
             new \DateTime('2016-06-20 18:00:35'),
             \DateTime::createFromFormat(\DATE_RFC3339, $this->entity->getCreatedAtJson())
         );
@@ -33,9 +39,9 @@ class TimestampableTest extends EntityTestCase
     {
         $this->entity->setUpdatedAt(new \DateTime('2016-06-20 18:00:35'));
 
-        $this->assertEquals('2016-06-20T18:00:35+00:00', $this->entity->getUpdatedAtJson());
+        static::assertEquals('2016-06-20T18:00:35+00:00', $this->entity->getUpdatedAtJson());
 
-        $this->assertEquals(
+        static::assertEquals(
             new \DateTime('2016-06-20 18:00:35'),
             \DateTime::createFromFormat(\DATE_RFC3339, $this->entity->getUpdatedAtJson())
         );
