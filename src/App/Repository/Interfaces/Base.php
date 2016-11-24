@@ -106,4 +106,12 @@ interface Base
      * @return  array
      */
     public function findIds(array $criteria, array $search) : array;
+
+    /**
+     * Helper method to 'reset' repository entity table - in other words delete all records - so be carefully with
+     * this...
+     *
+     * @return  integer
+     */
+    public function reset(): int;
 }

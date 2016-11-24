@@ -135,15 +135,18 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
         $dateEnd = new \DateTime($yearEnd . '-12-31', new \DateTimeZone('UTC'));
 
         $progress = $this->getProgressBar(
-            (int)$dateEnd->diff($dateStart)->format('%a'),
+            (int)$dateEnd->diff($dateStart)->format('%a') + 1,
             sprintf('Creating DateDimension entities between years %d and %d...', $yearStart, $yearEnd)
         );
 
-        // Get entity manager for _fast_ database handling.
-        $em = $this->getContainer()->get('repository.date_dimension')->getEntityManager();
+        // Get repository
+        $repository = $this->getContainer()->get('repository.date_dimension');
 
         // Remove existing entities
-        $em->createQuery('DELETE FROM App\Entity\DateDimension')->execute();
+        $repository->reset();
+
+        // Get entity manager for _fast_ database handling.
+        $em = $repository->getEntityManager();
 
         // Initialize used temp variable
         $currentYear = $yearStart;

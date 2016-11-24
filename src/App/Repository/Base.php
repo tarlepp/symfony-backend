@@ -158,6 +158,21 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function reset(): int
+    {
+        // Create query builder
+        $queryBuilder = $this->createQueryBuilder('entity');
+
+        // Define delete query
+        $queryBuilder->delete();
+
+        // Return deleted row count
+        return $queryBuilder->getQuery()->execute();
+    }
+
+    /**
      * Process given criteria which is given by ?where parameter. This is given as JSON string, which is converted
      * to assoc array for this process.
      *
