@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Controller/DefaultController.php
  *
@@ -25,8 +26,10 @@ class DefaultController extends Controller
      * @Route("/")
      *
      * @Method("GET");
+     *
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         return new Response('', Response::HTTP_OK);
     }

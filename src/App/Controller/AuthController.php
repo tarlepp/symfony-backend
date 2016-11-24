@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Controller/AuthController.php
  *
@@ -123,7 +124,7 @@ class AuthController
      *
      * @return  Response
      */
-    public function getProfile(Request $request)
+    public function getProfile(Request $request): Response
     {
         /**
          * Get current user

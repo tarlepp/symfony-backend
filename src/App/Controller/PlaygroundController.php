@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Controller/PlaygroundController.php
  *
@@ -37,7 +38,7 @@ class PlaygroundController extends Controller
      *
      * @return  Response
      */
-    public function testAction(Request $request)
+    public function testAction(Request $request): Response
     {
         $output = 'Hello world';
 

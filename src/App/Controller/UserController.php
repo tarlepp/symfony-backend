@@ -52,7 +52,7 @@ class UserController extends RestController
      *
      * @return  UserController
      */
-    public function setTokenStorage(TokenStorageInterface $tokenStorage) : UserController
+    public function setTokenStorage(TokenStorageInterface $tokenStorage): UserController
     {
         $this->tokenStorage = $tokenStorage;
 
@@ -83,7 +83,7 @@ class UserController extends RestController
      *
      * @return  Response
      */
-    public function delete(Request $request, UserEntity $user) : Response
+    public function delete(Request $request, UserEntity $user): Response
     {
         /** @var UserEntity $currentUser */
         $currentUser = $this->tokenStorage->getToken()->getUser();

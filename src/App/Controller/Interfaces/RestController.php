@@ -7,8 +7,8 @@ declare(strict_types=1);
  */
 namespace App\Controller\Interfaces;
 
-use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
+use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 
 /**
  * Interface RestController
@@ -21,7 +21,7 @@ interface RestController
     /**
      * RestController constructor.
      *
-     * @param   ResourceServiceInterface    $resourceService
+     * @param   ResourceServiceInterface $resourceService
      * @param   RestHelperResponseInterface $restHelperResponse
      */
     public function __construct(
@@ -34,12 +34,12 @@ interface RestController
      *
      * @return ResourceServiceInterface
      */
-    public function getResourceService() : ResourceServiceInterface;
+    public function getResourceService(): ResourceServiceInterface;
 
     /**
      * Getter method for REST response helper service.
      *
      * @return RestHelperResponseInterface
      */
-    public function getResponseService() : RestHelperResponseInterface;
+    public function getResponseService(): RestHelperResponseInterface;
 }
