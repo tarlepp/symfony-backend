@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/ApiDoc/Auth/GetTokenInput.php
  *

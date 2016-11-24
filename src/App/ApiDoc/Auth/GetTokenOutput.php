@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/ApiDoc/Auth/GetTokenOutput.php
  *
@@ -28,15 +29,15 @@ class GetTokenOutput extends AbstractType
                 'token',
                 Type\TextType::class,
                 [
-                    'label'         => 'Username',
-                    'required'      => true,
+                    'label'     => 'Username',
+                    'required'  => true,
                 ]
             )
             ->add(
                 'refresh_token',
                 Type\TextType::class,
                 [
-                    'required'      => true,
+                    'required'  => true,
                 ]
             )
         ;
