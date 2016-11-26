@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/DTO/Console/User.php
  *
@@ -75,9 +76,9 @@ class User implements Interfaces\User
     /**
      * Getter method for user ID value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -85,9 +86,9 @@ class User implements Interfaces\User
     /**
      * Getter method for username value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -95,9 +96,9 @@ class User implements Interfaces\User
     /**
      * Getter method for email value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -109,7 +110,7 @@ class User implements Interfaces\User
      *
      * @return  User
      */
-    public function loadFromEntity(UserEntity $user)
+    public function loadFromEntity(UserEntity $user): User
     {
         $this->id = $user->getId();
         $this->username = $user->getUsername();
