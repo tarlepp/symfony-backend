@@ -37,7 +37,7 @@ class Roles implements RolesInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoles() : array
+    public function getRoles(): array
     {
         $roles = [
             self::ROLE_LOGGED,
@@ -52,7 +52,7 @@ class Roles implements RolesInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoleLabel(string $role) : string
+    public function getRoleLabel(string $role): string
     {
         switch ($role) {
             case self::ROLE_LOGGED:
@@ -78,7 +78,7 @@ class Roles implements RolesInterface
     /**
      * {@inheritdoc}
      */
-    public function getShort(string $role) : string
+    public function getShort(string $role): string
     {
         return mb_strtolower(mb_substr($role, (mb_strpos($role, '_') + 1)));
     }

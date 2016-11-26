@@ -25,8 +25,6 @@ interface Roles
      * RolesHelper constructor.
      *
      * @param   array   $rolesHierarchy This is a 'security.role_hierarchy.roles' parameter value
-     *
-     * @return  Roles
      */
     public function __construct(array $rolesHierarchy);
 
@@ -35,7 +33,7 @@ interface Roles
      *
      * @return string[]
      */
-    public function getRoles() : array;
+    public function getRoles(): array;
 
     /**
      * Getter method for role label.
@@ -44,7 +42,7 @@ interface Roles
      *
      * @return  string
      */
-    public function getRoleLabel(string $role) : string;
+    public function getRoleLabel(string $role): string;
 
     /**
      * Getter method for short role.
@@ -53,5 +51,5 @@ interface Roles
      *
      * @return  string
      */
-    public function getShort(string $role) : string;
+    public function getShort(string $role): string;
 }
