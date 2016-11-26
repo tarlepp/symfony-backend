@@ -9,7 +9,6 @@ namespace App\EventListener;
 
 use App\Services\LoginLogger;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class AuthenticationSuccessListener
@@ -30,8 +29,6 @@ class AuthenticationSuccessListener
      * AuthenticationSuccessListener constructor.
      *
      * @param   LoginLogger $loginLogger
-     *
-     * @return  AuthenticationSuccessListener
      */
     public function __construct(LoginLogger $loginLogger)
     {

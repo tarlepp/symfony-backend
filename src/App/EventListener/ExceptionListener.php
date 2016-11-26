@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/EventListener/ExceptionListener.php
  *
@@ -113,7 +114,7 @@ class ExceptionListener
      *
      * @return  string
      */
-    private function getExceptionMessage(\Exception $exception)
+    private function getExceptionMessage(\Exception $exception): string
     {
         // Within AccessDeniedHttpException we need to hide actual real message from users
         if ($exception instanceof AccessDeniedHttpException) {

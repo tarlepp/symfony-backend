@@ -49,7 +49,7 @@ class JWTDecodedListener
      *
      * This method is called when 'lexik_jwt_authentication.on_jwt_decoded' event is broadcast.
      *
-     * @param   JWTDecodedEvent     $event
+     * @param   JWTDecodedEvent $event
      *
      * @return  void
      */

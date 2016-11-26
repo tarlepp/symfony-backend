@@ -52,7 +52,7 @@ class BodyListener
      *
      * @return  bool
      */
-    private function isJsonRequest(Request $request)
+    private function isJsonRequest(Request $request): bool
     {
         return in_array($request->getContentType(), ['', 'json', 'txt']);
     }

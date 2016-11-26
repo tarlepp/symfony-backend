@@ -152,7 +152,7 @@ class JWTCreatedListener
      *
      * @return  User
      */
-    private function getUser(JWTCreatedEvent $event, string $username) : User
+    private function getUser(JWTCreatedEvent $event, string $username): User
     {
         /** @var User $user */
         $user = $event->getUser();
