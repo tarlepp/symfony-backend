@@ -20,7 +20,7 @@ class RequestLog extends Base
      *
      * @return  integer
      */
-    public function cleanHistory()
+    public function cleanHistory(): int
     {
         // Determine date
         $date = new \DateTime('now', new \DateTimeZone('UTC'));

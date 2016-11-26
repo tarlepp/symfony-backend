@@ -45,7 +45,7 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      *
      * @throws  UsernameNotFoundException if the user is not found
      */
-    public function loadUserByUsername($username) : UserInterface
+    public function loadUserByUsername($username): UserInterface
     {
         // Build query
         $query = $this
@@ -84,7 +84,7 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      *
      * @throws  UnsupportedUserException    if the account is not supported
      */
-    public function refreshUser(UserInterface $user) : UserInterface
+    public function refreshUser(UserInterface $user): UserInterface
     {
         $class = get_class($user);
 
@@ -102,7 +102,7 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      *
      * @return  bool
      */
-    public function supportsClass($class) : bool
+    public function supportsClass($class): bool
     {
         return $this->getEntityName() === $class || is_subclass_of($class, $this->getEntityName());
     }
@@ -115,7 +115,7 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      *
      * @return  bool
      */
-    public function isUsernameAvailable(string $username, string $id = null) : bool
+    public function isUsernameAvailable(string $username, string $id = null): bool
     {
         // Build query
         $query = $this
@@ -143,7 +143,7 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      *
      * @return  bool
      */
-    public function isEmailAvailable(string $email, string $id = null) : bool
+    public function isEmailAvailable(string $email, string $id = null): bool
     {
         // Build query
         $query = $this

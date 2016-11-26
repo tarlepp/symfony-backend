@@ -22,7 +22,7 @@ interface Base
      *
      * @return  string
      */
-    public function getEntityName();
+    public function getEntityName(): string;
 
     /**
      * Gets a reference to the entity identified by the given type and identifier without actually loading it,
@@ -41,14 +41,14 @@ interface Base
      *
      * @return  array
      */
-    public function getAssociations() : array;
+    public function getAssociations(): array;
 
     /**
      * Getter method for search columns of current entity.
      *
      * @return string[]
      */
-    public function getSearchColumns() : array;
+    public function getSearchColumns(): array;
 
     /**
      * Helper method to persist specified entity to database.
@@ -76,7 +76,7 @@ interface Base
      *
      * @return  integer
      */
-    public function count(array $criteria = [], array $search = null) : int;
+    public function count(array $criteria = [], array $search = null): int;
 
     /**
      * Generic replacement for basic 'findBy' method if/when you want to use generic LIKE search.
@@ -95,7 +95,7 @@ interface Base
         array $orderBy = null,
         $limit = null,
         $offset = null
-    ) : array;
+    ): array;
 
     /**
      * Repository method to fetch current entity id values from database and return those as an array.
@@ -105,7 +105,7 @@ interface Base
      *
      * @return  array
      */
-    public function findIds(array $criteria, array $search) : array;
+    public function findIds(array $criteria, array $search): array;
 
     /**
      * Helper method to 'reset' repository entity table - in other words delete all records - so be carefully with

@@ -9,6 +9,7 @@ namespace App\Repository;
 
 use App\Entity\Interfaces\EntityInterface;
 use App\Services\Helper\SearchTerm;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Composite as CompositeExpression;
 use Doctrine\ORM\QueryBuilder;
@@ -38,7 +39,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function getEntityName() : string
+    public function getEntityName(): string
     {
         return parent::getEntityName();
     }
@@ -54,7 +55,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function getAssociations() : array
+    public function getAssociations(): array
     {
         return $this->_em->getClassMetadata($this->getClassName())->getAssociationMappings();
     }
@@ -62,7 +63,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function getSearchColumns() : array
+    public function getSearchColumns(): array
     {
         return $this->searchColumns;
     }
@@ -70,7 +71,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function getEntityManager()
+    public function getEntityManager(): EntityManager
     {
         return parent::getEntityManager();
     }
@@ -98,7 +99,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function count(array $criteria = [], array $search = null) : int
+    public function count(array $criteria = [], array $search = null): int
     {
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
@@ -121,7 +122,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
         array $orderBy = null,
         $limit = null,
         $offset = null
-    ) : array {
+    ): array {
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
 
@@ -140,7 +141,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function findIds(array $criteria, array $search) : array
+    public function findIds(array $criteria, array $search): array
     {
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
@@ -392,7 +393,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
         QueryBuilder $queryBuilder,
         CompositeExpression $expression,
         array $criteria
-    ) : CompositeExpression {
+    ): CompositeExpression {
         if (!count($criteria)) {
             return $expression;
         }
