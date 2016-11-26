@@ -22,7 +22,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * Class UserController
  *
- * @Route(service="app.controller.user", path="/user")
+ * @Route(
+ *      service="app.controller.user",
+ *      path="/user",
+ *  )
  *
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  *

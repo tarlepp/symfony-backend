@@ -22,7 +22,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * Class AuthController
  *
- * @Route(service="app.controller.auth", path="/auth")
+ * @Route(
+ *      service="app.controller.auth",
+ *      path="/auth",
+ *  )
  *
  * @package App\Controller
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>

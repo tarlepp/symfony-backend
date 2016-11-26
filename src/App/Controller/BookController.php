@@ -14,7 +14,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * Class BookController
  *
- * @Route(service="app.controller.book", path="/book")
+ * @Route(
+ *      service="app.controller.book",
+ *      path="/book",
+ *  )
  *
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  *

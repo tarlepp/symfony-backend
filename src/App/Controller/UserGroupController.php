@@ -14,7 +14,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * Class UserGroupController
  *
- * @Route(service="app.controller.user_group", path="/user_group")
+ * @Route(
+ *      service="app.controller.user_group",
+ *      path="/user_group",
+ *  )
  *
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  *

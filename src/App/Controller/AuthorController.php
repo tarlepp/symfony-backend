@@ -14,7 +14,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * Class AuthorController
  *
- * @Route(service="app.controller.author", path="/author")
+ * @Route(
+ *      service="app.controller.author",
+ *      path="/author",
+ *  )
  *
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  *
