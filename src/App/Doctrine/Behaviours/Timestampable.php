@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Doctrine/Behaviours/Timestampable.php
  *
@@ -40,7 +41,7 @@ trait Timestampable
      * @JMS\Type("DateTime")
      *
      * @ORM\Column(
-     *      name="createdAt",
+     *      name="created_at",
      *      type="datetime",
      *      nullable=true,
      *  )
@@ -61,7 +62,7 @@ trait Timestampable
      * @JMS\Type("DateTime")
      *
      * @ORM\Column(
-     *      name="updatedAt",
+     *      name="updated_at",
      *      type="datetime",
      *      nullable=true,
      *  )
@@ -73,7 +74,7 @@ trait Timestampable
      *
      * @return string
      */
-    public function getCreatedAtJson()
+    public function getCreatedAtJson(): string
     {
         return $this->formatDatetime($this->getCreatedAt());
     }
@@ -83,7 +84,7 @@ trait Timestampable
      *
      * @return string
      */
-    public function getUpdatedAtJson()
+    public function getUpdatedAtJson(): string
     {
         return $this->formatDatetime($this->getUpdatedAt());
     }

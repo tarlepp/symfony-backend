@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Doctrine/Behaviours/Blameable.php
  *
@@ -42,7 +43,7 @@ trait Blameable
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumns({
      *      @ORM\JoinColumn(
-     *          name="createdBy_id",
+     *          name="created_by_id",
      *          referencedColumnName="id",
      *          nullable=true,
      *      ),
@@ -66,7 +67,7 @@ trait Blameable
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumns({
      *      @ORM\JoinColumn(
-     *          name="updatedBy_id",
+     *          name="updated_by_id",
      *          referencedColumnName="id",
      *          nullable=true,
      *      ),
@@ -93,7 +94,7 @@ trait Blameable
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumns({
      *      @ORM\JoinColumn(
-     *          name="deletedBy_id",
+     *          name="deleted_by_id",
      *          referencedColumnName="id",
      *          nullable=true,
      *      ),
