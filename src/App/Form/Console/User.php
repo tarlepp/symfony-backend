@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Form/Console/User.php
  *
@@ -43,7 +44,7 @@ class User extends AbstractType
      *
      * @return  array
      */
-    public function getUserGroupChoices()
+    public function getUserGroupChoices(): array
     {
         // Initialize output
         $choices = [];
