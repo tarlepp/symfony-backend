@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/DataFixtures/ORM/UserGroup.php
  *
@@ -75,7 +76,7 @@ class UserGroup extends AbstractFixture implements FixtureInterface, OrderedFixt
      *
      * @return integer
      */
-    public function getOrder()
+    public function getOrder(): int
     {
         return 0;
     }

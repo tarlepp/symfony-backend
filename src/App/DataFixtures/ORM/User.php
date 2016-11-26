@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/DataFixtures/ORM/User.php
  *
@@ -119,7 +120,7 @@ class User extends AbstractFixture implements FixtureInterface, OrderedFixtureIn
      *
      * @return integer
      */
-    public function getOrder()
+    public function getOrder(): int
     {
         return 1;
     }
