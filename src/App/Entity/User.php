@@ -328,9 +328,9 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
     /**
      * Getter for password.
      *
-     * @return string
+     * @return string|null
      */
-    public function getPassword(): string
+    public function getPassword()
     {
         return $this->password;
     }
@@ -338,9 +338,9 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
     /**
      * Getter for plain password.
      *
-     * @return string
+     * @return string|null
      */
-    public function getPlainPassword(): string
+    public function getPlainPassword()
     {
         return $this->plainPassword;
     }
