@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Doctrine/Listener/UserListener.php
  *
@@ -31,8 +32,6 @@ class UserListener
      * Constructor
      *
      * @param   EncoderFactoryInterface $encoderFactory
-     *
-     * @return  UserListener
      */
     public function __construct(EncoderFactoryInterface $encoderFactory)
     {
@@ -46,7 +45,7 @@ class UserListener
      *
      * @return  PasswordEncoderInterface
      */
-    public function getEncoder(User $user)
+    public function getEncoder(User $user): PasswordEncoderInterface
     {
         return $this->encoderFactory->getEncoder($user);
     }
