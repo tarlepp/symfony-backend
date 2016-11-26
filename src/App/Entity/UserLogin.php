@@ -390,7 +390,7 @@ class UserLogin implements EntityInterface
     /**
      * @return  string
      */
-    public function getId() : string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -398,7 +398,7 @@ class UserLogin implements EntityInterface
     /**
      * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -406,7 +406,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getIp()
+    public function getIp(): string
     {
         return $this->ip;
     }
@@ -414,7 +414,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getHost()
+    public function getHost(): string
     {
         return $this->host;
     }
@@ -422,7 +422,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getAgent()
+    public function getAgent(): string
     {
         return $this->agent;
     }
@@ -430,7 +430,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getClientType()
+    public function getClientType(): string
     {
         return $this->clientType;
     }
@@ -438,7 +438,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getClientName()
+    public function getClientName(): string
     {
         return $this->clientName;
     }
@@ -446,7 +446,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getClientShortName()
+    public function getClientShortName(): string
     {
         return $this->clientShortName;
     }
@@ -454,7 +454,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getClientVersion()
+    public function getClientVersion(): string
     {
         return $this->clientVersion;
     }
@@ -462,7 +462,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getClientEngine()
+    public function getClientEngine(): string
     {
         return $this->clientEngine;
     }
@@ -470,7 +470,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getOsName()
+    public function getOsName(): string
     {
         return $this->osName;
     }
@@ -478,7 +478,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getOsShortName()
+    public function getOsShortName(): string
     {
         return $this->osShortName;
     }
@@ -486,7 +486,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getOsVersion()
+    public function getOsVersion(): string
     {
         return $this->osVersion;
     }
@@ -494,7 +494,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getOsPlatform()
+    public function getOsPlatform(): string
     {
         return $this->osPlatform;
     }
@@ -502,7 +502,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getDeviceName()
+    public function getDeviceName(): string
     {
         return $this->deviceName;
     }
@@ -510,7 +510,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getBrandName()
+    public function getBrandName(): string
     {
         return $this->brandName;
     }
@@ -518,7 +518,7 @@ class UserLogin implements EntityInterface
     /**
      * @return string
      */
-    public function getModel()
+    public function getModel(): string
     {
         return $this->model;
     }
@@ -526,7 +526,7 @@ class UserLogin implements EntityInterface
     /**
      * @return \DateTime
      */
-    public function getLoginTime() : \DateTime
+    public function getLoginTime(): \DateTime
     {
         return $this->loginTime;
     }
@@ -536,7 +536,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setUser(UserInterface $user) : UserLogin
+    public function setUser(UserInterface $user): UserLogin
     {
         $this->user = $user;
 
@@ -548,7 +548,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setIp(string $ip) : UserLogin
+    public function setIp(string $ip): UserLogin
     {
         $this->ip = $ip;
 
@@ -560,7 +560,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setHost(string $host) : UserLogin
+    public function setHost(string $host): UserLogin
     {
         $this->host = $host;
 
@@ -572,7 +572,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setAgent(string $agent) : UserLogin
+    public function setAgent(string $agent): UserLogin
     {
         $this->agent = $agent;
 
@@ -584,7 +584,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setClientType(string $clientType) : UserLogin
+    public function setClientType(string $clientType): UserLogin
     {
         $this->clientType = $clientType;
 
@@ -596,7 +596,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setClientName(string $clientName) : UserLogin
+    public function setClientName(string $clientName): UserLogin
     {
         $this->clientName = $clientName;
 
@@ -608,7 +608,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setClientShortName(string $clientShortName) : UserLogin
+    public function setClientShortName(string $clientShortName): UserLogin
     {
         $this->clientShortName = $clientShortName;
 
@@ -620,7 +620,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setClientVersion(string $clientVersion) : UserLogin
+    public function setClientVersion(string $clientVersion): UserLogin
     {
         $this->clientVersion = $clientVersion;
 
@@ -632,7 +632,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setClientEngine(string $clientEngine) : UserLogin
+    public function setClientEngine(string $clientEngine): UserLogin
     {
         $this->clientEngine = $clientEngine;
 
@@ -644,7 +644,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setOsName(string $osName) : UserLogin
+    public function setOsName(string $osName): UserLogin
     {
         $this->osName = $osName;
 
@@ -656,7 +656,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setOsShortName(string $osShortName) : UserLogin
+    public function setOsShortName(string $osShortName): UserLogin
     {
         $this->osShortName = $osShortName;
 
@@ -668,7 +668,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setOsVersion(string $osVersion) : UserLogin
+    public function setOsVersion(string $osVersion): UserLogin
     {
         $this->osVersion = $osVersion;
 
@@ -680,7 +680,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setOsPlatform(string $osPlatform) : UserLogin
+    public function setOsPlatform(string $osPlatform): UserLogin
     {
         $this->osPlatform = $osPlatform;
 
@@ -692,7 +692,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setDeviceName(string $deviceName) : UserLogin
+    public function setDeviceName(string $deviceName): UserLogin
     {
         $this->deviceName = $deviceName;
 
@@ -704,7 +704,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setBrandName(string $brandName) : UserLogin
+    public function setBrandName(string $brandName): UserLogin
     {
         $this->brandName = $brandName;
 
@@ -716,7 +716,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setModel(string $model) : UserLogin
+    public function setModel(string $model): UserLogin
     {
         $this->model = $model;
 
@@ -728,7 +728,7 @@ class UserLogin implements EntityInterface
      *
      * @return UserLogin
      */
-    public function setLoginTime(\DateTime $loginTime) : UserLogin
+    public function setLoginTime(\DateTime $loginTime): UserLogin
     {
         $this->loginTime = $loginTime;
 

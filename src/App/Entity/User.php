@@ -212,7 +212,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
     /**
      * Collection of user's user groups.
      *
-     * @var ArrayCollection|\App\Entity\UserGroup[]
+     * @var ArrayCollection<UserGroup>
      *
      * @JMS\Groups({
      *      "User.userGroups",
@@ -230,7 +230,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
     /**
      * User logins
      *
-     * @var ArrayCollection|\App\Entity\UserLogin[]
+     * @var ArrayCollection<UserLogin>
      *
      * @JMS\Groups({
      *      "User.userLogin",
@@ -248,7 +248,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
     /**
      * User requests
      *
-     * @var ArrayCollection|\App\Entity\RequestLog[]
+     * @var ArrayCollection<RequestLog>
      *
      * @JMS\Groups({
      *      "User.requestLog",
@@ -280,7 +280,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return string
      */
-    public function getId() : string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -290,7 +290,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return string
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -300,7 +300,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return string
      */
-    public function getFirstname()
+    public function getFirstname(): string
     {
         return $this->firstname;
     }
@@ -310,7 +310,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return string
      */
-    public function getSurname()
+    public function getSurname(): string
     {
         return $this->surname;
     }
@@ -320,7 +320,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -330,7 +330,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -340,7 +340,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return string
      */
-    public function getPlainPassword()
+    public function getPlainPassword(): string
     {
         return $this->plainPassword;
     }
@@ -350,7 +350,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return string[]
      */
-    public function getRoles() : array
+    public function getRoles(): array
     {
         /**
          * Lambda iterator to get user group role information.
@@ -369,9 +369,9 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
     /**
      * Getter for user groups collection.
      *
-     * @return Collection|UserGroup[]
+     * @return Collection|ArrayCollection<UserGroup>
      */
-    public function getUserGroups() : Collection
+    public function getUserGroups(): Collection
     {
         return $this->userGroups;
     }
@@ -379,9 +379,9 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
     /**
      * Getter for user logins collection.
      *
-     * @return Collection|UserLogin[]
+     * @return Collection|ArrayCollection<UserLogin>
      */
-    public function getUserLogins() : Collection
+    public function getUserLogins(): Collection
     {
         return $this->userLogins;
     }
@@ -389,9 +389,9 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
     /**
      * Getter method for user requests.
      *
-     * @return Collection|RequestLog[]
+     * @return Collection|ArrayCollection<RequestLog>
      */
-    public function getUserRequests() : Collection
+    public function getUserRequests(): Collection
     {
         return $this->userRequests;
     }
@@ -403,7 +403,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return  User
      */
-    public function setUsername(string $username) : User
+    public function setUsername(string $username): User
     {
         $this->username = $username;
 
@@ -417,7 +417,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return  User
      */
-    public function setFirstname(string $firstname) : User
+    public function setFirstname(string $firstname): User
     {
         $this->firstname = $firstname;
 
@@ -431,7 +431,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return  User
      */
-    public function setSurname(string $surname) : User
+    public function setSurname(string $surname): User
     {
         $this->surname = $surname;
 
@@ -445,7 +445,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return  User
      */
-    public function setEmail(string $email) : User
+    public function setEmail(string $email): User
     {
         $this->email = $email;
 
@@ -460,7 +460,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return  User
      */
-    public function setPassword(callable $encoder, string $plainPassword) : User
+    public function setPassword(callable $encoder, string $plainPassword): User
     {
         $this->password = $encoder($plainPassword);
 
@@ -474,7 +474,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return  User
      */
-    public function setPlainPassword(string $plainPassword) : User
+    public function setPlainPassword(string $plainPassword): User
     {
         if (!empty($plainPassword)) {
             $this->plainPassword = $plainPassword;
@@ -493,7 +493,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return  string  the string representation of the object or null
      */
-    public function serialize()
+    public function serialize(): string
     {
         return serialize([
             $this->id,
@@ -537,7 +537,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return array
      */
-    public function getLoginData() : array
+    public function getLoginData(): array
     {
         return [
             'firstname' => $this->getFirstname(),
@@ -551,7 +551,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return string
      */
-    public function getChecksum() : string
+    public function getChecksum(): string
     {
         $bits = [
             $this->getId(),
@@ -579,7 +579,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return  User
      */
-    public function addUserGroup(UserGroup $userGroup) : User
+    public function addUserGroup(UserGroup $userGroup): User
     {
         if (!$this->userGroups->contains($userGroup)) {
             $this->userGroups->add($userGroup);
@@ -596,7 +596,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return  User
      */
-    public function removeUserGroup(UserGroup $userGroup) : User
+    public function removeUserGroup(UserGroup $userGroup): User
     {
         if ($this->userGroups->contains($userGroup)) {
             $this->userGroups->removeElement($userGroup);
@@ -611,7 +611,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return  User
      */
-    public function clearUserGroups() : User
+    public function clearUserGroups(): User
     {
         $this->userGroups->clear();
 
@@ -632,7 +632,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      *
      * @return  bool
      */
-    public function isEqualTo(UserInterface $user)
+    public function isEqualTo(UserInterface $user): bool
     {
         return $user->getId() === $this->getId();
     }

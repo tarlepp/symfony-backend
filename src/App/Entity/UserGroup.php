@@ -155,7 +155,7 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @return  string
      */
-    public function getId() : string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -181,9 +181,9 @@ class UserGroup implements EntityInterface, RoleInterface
     /**
      * Getter for user collection.
      *
-     * @return Collection|User[]
+     * @return Collection|ArrayCollection<User>
      */
-    public function getUsers() : Collection
+    public function getUsers(): Collection
     {
         return $this->users;
     }
@@ -195,7 +195,7 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @return  UserGroup
      */
-    public function setName(string $name) : UserGroup
+    public function setName(string $name): UserGroup
     {
         $this->name = $name;
 
@@ -209,7 +209,7 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @return  UserGroup
      */
-    public function setRole(string $role) : UserGroup
+    public function setRole(string $role): UserGroup
     {
         $this->role = $role;
 
@@ -223,7 +223,7 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @return  UserGroup
      */
-    public function addUser(User $user) : UserGroup
+    public function addUser(User $user): UserGroup
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
@@ -240,7 +240,7 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @return  UserGroup
      */
-    public function removeUser(User $user) : UserGroup
+    public function removeUser(User $user): UserGroup
     {
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
@@ -255,7 +255,7 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @return  UserGroup
      */
-    public function clearUsers() : UserGroup
+    public function clearUsers(): UserGroup
     {
         $this->users->clear();
 

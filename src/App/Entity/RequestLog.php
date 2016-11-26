@@ -264,7 +264,7 @@ class RequestLog implements EntityInterface
     /**
      * @return string
      */
-    public function getId() : string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -272,7 +272,7 @@ class RequestLog implements EntityInterface
     /**
      * @return string
      */
-    public function getClientIp()
+    public function getClientIp(): string
     {
         return $this->clientIp;
     }
@@ -281,7 +281,7 @@ class RequestLog implements EntityInterface
      * @param string $clientIp
      * @return RequestLog
      */
-    public function setClientIp(string $clientIp) : RequestLog
+    public function setClientIp(string $clientIp): RequestLog
     {
         $this->clientIp = $clientIp;
 
@@ -291,7 +291,7 @@ class RequestLog implements EntityInterface
     /**
      * @return string
      */
-    public function getUri()
+    public function getUri(): string
     {
         return $this->uri;
     }
@@ -300,7 +300,7 @@ class RequestLog implements EntityInterface
      * @param string $uri
      * @return RequestLog
      */
-    public function setUri(string $uri) : RequestLog
+    public function setUri(string $uri): RequestLog
     {
         $this->uri = $uri;
 
@@ -310,7 +310,7 @@ class RequestLog implements EntityInterface
     /**
      * @return string
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }
@@ -319,7 +319,7 @@ class RequestLog implements EntityInterface
      * @param string $method
      * @return RequestLog
      */
-    public function setMethod(string $method) : RequestLog
+    public function setMethod(string $method): RequestLog
     {
         $this->method = $method;
 
@@ -329,7 +329,7 @@ class RequestLog implements EntityInterface
     /**
      * @return string
      */
-    public function getQueryString()
+    public function getQueryString(): string
     {
         return $this->queryString;
     }
@@ -337,7 +337,7 @@ class RequestLog implements EntityInterface
     /**
      * @return array
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
@@ -346,7 +346,7 @@ class RequestLog implements EntityInterface
      * @param string $queryString
      * @return RequestLog
      */
-    public function setQueryString(string $queryString) : RequestLog
+    public function setQueryString(string $queryString): RequestLog
     {
         $this->queryString = $queryString;
 
@@ -357,7 +357,7 @@ class RequestLog implements EntityInterface
      * @param array $headers
      * @return RequestLog
      */
-    public function setHeaders(array $headers) : RequestLog
+    public function setHeaders(array $headers): RequestLog
     {
         // Clean possible sensitive data from parameters
         array_walk($headers, [$this, 'cleanParameters']);
@@ -370,7 +370,7 @@ class RequestLog implements EntityInterface
     /**
      * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -379,7 +379,7 @@ class RequestLog implements EntityInterface
      * @param array $parameters
      * @return RequestLog
      */
-    public function setParameters(array $parameters) : RequestLog
+    public function setParameters(array $parameters): RequestLog
     {
         // Clean possible sensitive data from parameters
         array_walk($parameters, [$this, 'cleanParameters']);
@@ -392,7 +392,7 @@ class RequestLog implements EntityInterface
     /**
      * @return int
      */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
@@ -401,7 +401,7 @@ class RequestLog implements EntityInterface
      * @param int $statusCode
      * @return RequestLog
      */
-    public function setStatusCode(int $statusCode) : RequestLog
+    public function setStatusCode(int $statusCode): RequestLog
     {
         $this->statusCode = $statusCode;
 
@@ -411,7 +411,7 @@ class RequestLog implements EntityInterface
     /**
      * @return int
      */
-    public function getResponseContentLength()
+    public function getResponseContentLength(): int
     {
         return $this->responseContentLength;
     }
@@ -420,7 +420,7 @@ class RequestLog implements EntityInterface
      * @param int $responseContentLength
      * @return RequestLog
      */
-    public function setResponseContentLength(int $responseContentLength) : RequestLog
+    public function setResponseContentLength(int $responseContentLength): RequestLog
     {
         $this->responseContentLength = $responseContentLength;
 
@@ -430,7 +430,7 @@ class RequestLog implements EntityInterface
     /**
      * @return \DateTime
      */
-    public function getTime()
+    public function getTime(): \DateTime
     {
         return $this->time;
     }
@@ -439,7 +439,7 @@ class RequestLog implements EntityInterface
      * @param \DateTime $time
      * @return RequestLog
      */
-    public function setTime(\DateTime $time) : RequestLog
+    public function setTime(\DateTime $time): RequestLog
     {
         $this->time = $time;
 
@@ -458,7 +458,7 @@ class RequestLog implements EntityInterface
      * @param User|null $user
      * @return RequestLog
      */
-    public function setUser(User $user = null) : RequestLog
+    public function setUser(User $user = null): RequestLog
     {
         $this->user = $user;
 
@@ -468,7 +468,7 @@ class RequestLog implements EntityInterface
     /**
      * @return boolean
      */
-    public function isIsXmlHttpRequest() : bool
+    public function isIsXmlHttpRequest(): bool
     {
         return $this->isXmlHttpRequest;
     }
@@ -477,7 +477,7 @@ class RequestLog implements EntityInterface
      * @param boolean $isXmlHttpRequest
      * @return RequestLog
      */
-    public function setIsXmlHttpRequest(bool $isXmlHttpRequest) : RequestLog
+    public function setIsXmlHttpRequest(bool $isXmlHttpRequest): RequestLog
     {
         $this->isXmlHttpRequest = $isXmlHttpRequest;
 

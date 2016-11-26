@@ -10,7 +10,6 @@ namespace App\Entity;
 use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
@@ -108,7 +107,7 @@ class Author implements EntityInterface
     /**
      * Author books.
      *
-     * @var ArrayCollection|\App\Entity\Book[]
+     * @var ArrayCollection<Book>
      *
      * @JMS\Groups({
      *      "Author.books",
@@ -138,7 +137,7 @@ class Author implements EntityInterface
      *
      * @return string
      */
-    public function getId() : string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -148,7 +147,7 @@ class Author implements EntityInterface
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -166,9 +165,9 @@ class Author implements EntityInterface
     /**
      * Get author books
      *
-     * @return Collection|Book[]
+     * @return ArrayCollection<Book>
      */
-    public function getBooks() : Collection
+    public function getBooks(): ArrayCollection
     {
         return $this->books;
     }
@@ -180,7 +179,7 @@ class Author implements EntityInterface
      *
      * @return Author
      */
-    public function setName(string $name) : Author
+    public function setName(string $name): Author
     {
         $this->name = $name;
 
@@ -194,7 +193,7 @@ class Author implements EntityInterface
      *
      * @return Author
      */
-    public function setDescription(string $description) : Author
+    public function setDescription(string $description): Author
     {
         $this->description = $description;
 

@@ -151,7 +151,7 @@ class Book implements EntityInterface
      *
      * @return string
      */
-    public function getId() : string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -163,7 +163,7 @@ class Book implements EntityInterface
      *
      * @return Book
      */
-    public function setAuthor(Author $author) : Book
+    public function setAuthor(Author $author): Book
     {
         $this->author = $author;
 
@@ -175,7 +175,7 @@ class Book implements EntityInterface
      *
      * @return Author
      */
-    public function getAuthor() : Author
+    public function getAuthor(): Author
     {
         return $this->author;
     }
@@ -187,7 +187,7 @@ class Book implements EntityInterface
      *
      * @return Book
      */
-    public function setTitle(string $title) : Book
+    public function setTitle(string $title): Book
     {
         $this->title = $title;
 
@@ -199,7 +199,7 @@ class Book implements EntityInterface
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -211,7 +211,7 @@ class Book implements EntityInterface
      *
      * @return Book
      */
-    public function setDescription(string $description) : Book
+    public function setDescription(string $description): Book
     {
         $this->description = $description;
 
@@ -223,7 +223,7 @@ class Book implements EntityInterface
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -235,7 +235,7 @@ class Book implements EntityInterface
      *
      * @return Book
      */
-    public function setReleaseDate(\DateTime $releaseDate) : Book
+    public function setReleaseDate(\DateTime $releaseDate): Book
     {
         $this->releaseDate = $releaseDate;
 
@@ -247,7 +247,7 @@ class Book implements EntityInterface
      *
      * @return \DateTime
      */
-    public function getReleaseDate()
+    public function getReleaseDate(): \DateTime
     {
         return $this->releaseDate;
     }
