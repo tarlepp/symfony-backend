@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Doctrine/DBAL/Types/UTCDateTimeType.php
  *
@@ -42,7 +43,7 @@ class UTCDateTimeType extends DateTimeType
     /**
      * {@inheritdoc}
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): \DateTime
     {
         if (null === $value || $value instanceof \DateTime) {
             return $value;
