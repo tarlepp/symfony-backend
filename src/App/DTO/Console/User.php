@@ -25,7 +25,7 @@ class User implements Interfaces\User
     /**
      * @var string
      */
-    public $id;
+    public $id = '';
 
     /**
      * @var string
@@ -34,7 +34,7 @@ class User implements Interfaces\User
      * @Assert\NotNull()
      * @Assert\Length(min = 2, max = 255)
      */
-    public $username;
+    public $username = '';
 
     /**
      * @var string
@@ -43,7 +43,7 @@ class User implements Interfaces\User
      * @Assert\NotNull()
      * @Assert\Length(min = 2, max = 255)
      */
-    public $firstname;
+    public $firstname = '';
 
     /**
      * @var string
@@ -52,7 +52,7 @@ class User implements Interfaces\User
      * @Assert\NotNull()
      * @Assert\Length(min = 2, max = 255)
      */
-    public $surname;
+    public $surname = '';
 
     /**
      * @var string
@@ -61,17 +61,17 @@ class User implements Interfaces\User
      * @Assert\NotNull()
      * @Assert\Email()
      */
-    public $email;
+    public $email = '';
 
     /**
      * @var string
      */
-    public $plainPassword;
+    public $plainPassword = '';
 
     /**
      * @var array
      */
-    public $userGroups;
+    public $userGroups = [];
 
     /**
      * Getter method for user ID value.
