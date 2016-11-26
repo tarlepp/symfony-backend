@@ -29,9 +29,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          @ORM\UniqueConstraint(name="uq_role", columns={"role"}),
  *      },
  *      indexes={
- *          @ORM\Index(name="createdBy_id", columns={"createdBy_id"}),
- *          @ORM\Index(name="updatedBy_id", columns={"updatedBy_id"}),
- *          @ORM\Index(name="deletedBy_id", columns={"deletedBy_id"})
+ *          @ORM\Index(name="created_by_id", columns={"created_by_id"}),
+ *          @ORM\Index(name="updated_by_id", columns={"updated_by_id"}),
+ *          @ORM\Index(name="deleted_by_id", columns={"deleted_by_id"})
  *      }
  *  )
  * @ORM\Entity(
