@@ -56,7 +56,7 @@ class Response implements ResponseInterface
     /**
      * {@inheritdoc}
      */
-    public function setResourceService(ResourceServiceInterface $resourceService) : ResponseInterface
+    public function setResourceService(ResourceServiceInterface $resourceService): ResponseInterface
     {
         $this->resourceService = $resourceService;
 
@@ -66,7 +66,7 @@ class Response implements ResponseInterface
     /**
      * {@inheritdoc}
      */
-    public function getResourceService() : ResourceServiceInterface
+    public function getResourceService(): ResourceServiceInterface
     {
         return $this->resourceService;
     }
@@ -80,7 +80,7 @@ class Response implements ResponseInterface
         $httpStatus = 200,
         $format = null,
         Context $context = null
-    ) : HttpFoundationResponse {
+    ): HttpFoundationResponse {
         if (is_null($format)) {
             $format = $request->getContentType() === self::FORMAT_XML ? self::FORMAT_XML : self::FORMAT_JSON;
         }
@@ -101,7 +101,7 @@ class Response implements ResponseInterface
     /**
      * {@inheritdoc}
      */
-    public function getSerializeContext(HttpFoundationRequest $request) : Context
+    public function getSerializeContext(HttpFoundationRequest $request): Context
     {
         // Specify used populate settings
         $populate = (array)$request->get('populate', []);
@@ -121,7 +121,7 @@ class Response implements ResponseInterface
         if (count($populate) === 0 && $populateAll) {
             $associations = $this->getResourceService()->getAssociations();
 
-            $iterator = function (string $assocName) use ($entityName) : string {
+            $iterator = function (string $assocName) use ($entityName): string {
                 return $entityName . '.' . $assocName;
             };
 

@@ -44,7 +44,7 @@ class Request
      *
      * @return  array
      */
-    public static function getCriteria(HttpFoundationRequest $request)
+    public static function getCriteria(HttpFoundationRequest $request): array
     {
         try {
             $where = array_filter(JSON::decode($request->get('where', '{}'), true));
@@ -166,7 +166,7 @@ class Request
      *
      * @return  array
      */
-    public static function getSearchTerms(HttpFoundationRequest $request)
+    public static function getSearchTerms(HttpFoundationRequest $request): array
     {
         $search = $request->get('search', null);
 

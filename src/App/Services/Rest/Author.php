@@ -10,6 +10,7 @@ namespace App\Services\Rest;
 use App\Entity\Author as Entity;
 use App\Entity\Interfaces\EntityInterface as EntityInterface;
 use App\Repository\Author as Repository;
+use App\Repository\Base as Foo;
 
 /**
  * Class Author
@@ -21,7 +22,7 @@ use App\Repository\Author as Repository;
  * @method  Repository      getRepository()
  * @method  Entity[]        find(array $criteria = [], array $orderBy = null, int $limit = null, int $offset = null, array $search = null)
  * @method  null|Entity     findOne($id, $throwExceptionIfNotFound = false)
- * @method  null|Entity     findOneBy(array $criteria, array $orderBy = null)
+ * @method  null|Entity     findOneBy(array $criteria, array $orderBy = null, $throwExceptionIfNotFound = false)
  * @method  Entity          create(\stdClass $data)
  * @method  Entity          save(EntityInterface $entity, bool $skipValidation = false)
  * @method  Entity          update($id, \stdClass $data)

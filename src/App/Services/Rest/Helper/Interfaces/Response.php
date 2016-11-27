@@ -43,14 +43,14 @@ interface Response
      *
      * @return  Response
      */
-    public function setResourceService(ResourceServiceInterface $resourceService) : Response;
+    public function setResourceService(ResourceServiceInterface $resourceService): Response;
 
     /**
      * Getter for current resource service.
      *
      * @return ResourceServiceInterface
      */
-    public function getResourceService() : ResourceServiceInterface;
+    public function getResourceService(): ResourceServiceInterface;
 
     /**
      * Helper method to create response for request.
@@ -69,7 +69,7 @@ interface Response
         $httpStatus = 200,
         $format = null,
         Context $context = null
-    ) : HttpFoundationResponse;
+    ): HttpFoundationResponse;
 
     /**
      * Helper method to get serialization context for query.
@@ -78,5 +78,5 @@ interface Response
      *
      * @return  Context
      */
-    public function getSerializeContext(HttpFoundationRequest $request) : Context;
+    public function getSerializeContext(HttpFoundationRequest $request): Context;
 }

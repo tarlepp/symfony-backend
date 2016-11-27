@@ -62,7 +62,7 @@ class ResponseLogger implements ResponseLoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function setResponse(Response $response) : ResponseLoggerInterface
+    public function setResponse(Response $response): ResponseLoggerInterface
     {
         $this->response = $response;
 
@@ -72,7 +72,7 @@ class ResponseLogger implements ResponseLoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function setRequest(Request $request) : ResponseLoggerInterface
+    public function setRequest(Request $request): ResponseLoggerInterface
     {
         $this->request = $request;
 
@@ -82,7 +82,7 @@ class ResponseLogger implements ResponseLoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function setUser(UserInterface $user = null) : ResponseLoggerInterface
+    public function setUser(UserInterface $user = null): ResponseLoggerInterface
     {
         $this->user = $user;
 
@@ -127,7 +127,7 @@ class ResponseLogger implements ResponseLoggerInterface
      *
      * @return array
      */
-    private function getParameters() : array
+    private function getParameters(): array
     {
         // Content given so parse it
         if ($this->request->getContent()) {

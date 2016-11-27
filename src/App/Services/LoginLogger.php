@@ -81,7 +81,7 @@ class LoginLogger implements LoginLoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function setUser(UserInterface $user) : LoginLoggerInterface
+    public function setUser(UserInterface $user): LoginLoggerInterface
     {
         // We need to make sure that User object is right one
         $user = $user instanceof UserEntity ? $user : $this->userRepository->loadUserByUsername($user->getUsername());
@@ -114,7 +114,7 @@ class LoginLogger implements LoginLoggerInterface
      *
      * @return UserLoginEntity
      */
-    private function createEntry() : UserLoginEntity
+    private function createEntry(): UserLoginEntity
     {
         // Create new login entry
         $userLogin = new UserLoginEntity();

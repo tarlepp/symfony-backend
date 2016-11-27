@@ -43,7 +43,7 @@ interface LoginLogger
      *
      * @return  LoginLogger
      */
-    public function setUser(UserInterface $user) : LoginLogger;
+    public function setUser(UserInterface $user): LoginLogger;
 
     /**
      * Method to handle login event.

@@ -8,8 +8,7 @@ declare(strict_types=1);
 namespace App\Services\Rest;
 
 use App\Entity\Interfaces\EntityInterface as Entity;
-use App\Repository\Base as AppEntityRepository;
-use Doctrine\ORM\EntityRepository;
+use App\Repository\Base as Repository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
@@ -28,7 +27,7 @@ abstract class Base implements Interfaces\Base
     /**
      * REST service entity repository.
      *
-     * @var AppEntityRepository
+     * @var Repository
      */
     protected $repository;
 
@@ -47,12 +46,9 @@ abstract class Base implements Interfaces\Base
     protected $ignoredPropertiesOnPersistEntity = [];
 
     /**
-     * Class constructor.
-     *
-     * @param   EntityRepository    $repository
-     * @param   ValidatorInterface  $validator
+     * {@inheritdoc}
      */
-    public function __construct(EntityRepository $repository, ValidatorInterface $validator)
+    public function __construct(Repository $repository, ValidatorInterface $validator)
     {
         // Store class variables
         $this->repository = $repository;
@@ -60,61 +56,38 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * Getter method for current entity name.
-     *
-     * @return  string
+     * {@inheritdoc}
      */
-    public function getEntityName() : string
+    public function getEntityName(): string
     {
         return $this->repository->getEntityName();
     }
 
     /**
-     * Gets a reference to the entity identified by the given type and identifier without actually loading it,
-     * if the entity is not yet loaded.
-     *
-     * @throws  \Doctrine\ORM\ORMException
-     *
-     * @param   mixed   $id The entity identifier.
-     *
-     * @return  bool|\Doctrine\Common\Proxy\Proxy|null|object
+     * {@inheritdoc}
      */
     public function getReference($id)
     {
         return $this->repository->getReference($id);
     }
 
-    /**
-     * Getter method for entity repository.
-     *
-     * @return  AppEntityRepository|EntityRepository
-     */
-    public function getRepository() : AppEntityRepository
+
+
+    public function getRepository(): Repository
     {
         return $this->repository;
     }
 
     /**
-     * Getter method for all associations that current entity contains.
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getAssociations() : array
+    public function getAssociations(): array
     {
         return array_keys($this->repository->getAssociations());
     }
 
     /**
-     * Generic find method to return an array of items from database. Return value is an array of specified repository
-     * entities.
-     *
-     * @param   array           $criteria
-     * @param   null|array      $orderBy
-     * @param   null|integer    $limit
-     * @param   null|integer    $offset
-     * @param   array           $search
-     *
-     * @return  Entity[]
+     * {@inheritdoc}
      */
     public function find(
         array $criteria = [],
@@ -136,15 +109,7 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * Generic findOne method to return single item from database. Return value is single entity from specified
-     * repository.
-     *
-     * @throws  HttpException
-     *
-     * @param   integer $id
-     * @param   boolean $throwExceptionIfNotFound
-     *
-     * @return  null|Entity
+     * {@inheritdoc}
      */
     public function findOne($id, $throwExceptionIfNotFound = false)
     {
@@ -165,14 +130,7 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * Generic findOneBy method to return single item from database by given criteria. Return value is single entity
-     * from specified repository or null if entity was not found.
-     *
-     * @param   array       $criteria
-     * @param   null|array  $orderBy
-     * @param   boolean     $throwExceptionIfNotFound
-     *
-     * @return  null|Entity
+     * {@inheritdoc}
      */
     public function findOneBy(array $criteria, array $orderBy = null, $throwExceptionIfNotFound = false)
     {
@@ -193,14 +151,9 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * Generic count method to return entity count for specified criteria and search terms.
-     *
-     * @param   array       $criteria
-     * @param   array|null  $search
-     *
-     * @return  integer
+     * {@inheritdoc}
      */
-    public function count(array $criteria = [], array $search = null) : int
+    public function count(array $criteria = [], array $search = null): int
     {
         // Before callback method call
         $this->beforeFind($criteria);
@@ -214,16 +167,9 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * Generic method to create new item (entity) to specified database repository. Return value is created entity for
-     * specified repository.
-     *
-     * @throws  ValidatorException
-     *
-     * @param   \stdClass   $data
-     *
-     * @return  Entity
+     * {@inheritdoc}
      */
-    public function create(\stdClass $data) : Entity
+    public function create(\stdClass $data): Entity
     {
         // Determine entity name
         $entity = $this->repository->getClassName();
@@ -248,16 +194,9 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * Generic method to save given entity to specified repository. Return value is created entity.
-     *
-     * @throws  ValidatorException
-     *
-     * @param   Entity  $entity
-     * @param   boolean $skipValidation
-     *
-     * @return  Entity
+     * {@inheritdoc}
      */
-    public function save(Entity $entity, bool $skipValidation = false) : Entity
+    public function save(Entity $entity, bool $skipValidation = false): Entity
     {
         // Before callback method call
         $this->beforeSave($entity);
@@ -282,17 +221,9 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * Generic method to update specified entity with new data.
-     *
-     * @throws  HttpException
-     * @throws  ValidatorException
-     *
-     * @param   mixed       $id
-     * @param   \stdClass   $data
-     *
-     * @return  Entity
+     * {@inheritdoc}
      */
-    public function update($id, \stdClass $data) : Entity
+    public function update($id, \stdClass $data): Entity
     {
         /** @var Entity $entity */
         $entity = $this->repository->find($id);
@@ -315,13 +246,9 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * Generic method to delete specified entity from database.
-     *
-     * @param   mixed   $id
-     *
-     * @return  Entity
+     * {@inheritdoc}
      */
-    public function delete($id) : Entity
+    public function delete($id): Entity
     {
         /** @var Entity $entity */
         $entity = $this->repository->find($id);
@@ -346,7 +273,7 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function ids(array $criteria = [], array $search = null) : array
+    public function getIds(array $criteria = [], array $search = null): array
     {
         // Before callback method call
         $this->beforeIds($criteria, $search);

@@ -36,7 +36,7 @@ interface ResponseLogger
      *
      * @return  ResponseLogger
      */
-    public function setResponse(Response $response) : ResponseLogger;
+    public function setResponse(Response $response): ResponseLogger;
 
     /**
      * Setter for request object.
@@ -45,7 +45,7 @@ interface ResponseLogger
      *
      * @return  ResponseLogger
      */
-    public function setRequest(Request $request) : ResponseLogger;
+    public function setRequest(Request $request): ResponseLogger;
 
     /**
      * Setter method for current user.
@@ -54,7 +54,7 @@ interface ResponseLogger
      *
      * @return  ResponseLogger
      */
-    public function setUser(UserInterface $user = null) : ResponseLogger;
+    public function setUser(UserInterface $user = null): ResponseLogger;
 
     /**
      * Method to handle current response and log it to database.
