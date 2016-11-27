@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /src/App/Utils/JSON.php
  *
@@ -31,7 +32,7 @@ class JSON
      *
      * @return  string
      */
-    public static function encode($input, $options = 0, $depth = 512)
+    public static function encode($input, $options = 0, $depth = 512): string
     {
         $output = json_encode($input, $options, $depth);
 
@@ -90,7 +91,7 @@ class JSON
      *
      * @return  string
      */
-    private static function getErrorMessage($error)
+    private static function getErrorMessage($error): string
     {
         switch ($error) {
             case JSON_ERROR_DEPTH:
