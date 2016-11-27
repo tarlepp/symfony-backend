@@ -45,7 +45,7 @@ trait Delete
      *
      * @return  Response
      */
-    public function delete(Request $request, string $id) : Response
+    public function delete(Request $request, string $id): Response
     {
         return $this->deleteMethod($request, $id);
     }

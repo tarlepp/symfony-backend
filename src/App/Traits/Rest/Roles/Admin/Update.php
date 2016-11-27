@@ -45,7 +45,7 @@ trait Update
      *
      * @return  Response
      */
-    public function update(Request $request, string $id) : Response
+    public function update(Request $request, string $id): Response
     {
         return $this->updateMethod($request, $id);
     }

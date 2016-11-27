@@ -40,7 +40,7 @@ trait Find
      *
      * @return  Response
      */
-    public function find(Request $request) : Response
+    public function find(Request $request): Response
     {
         return $this->findMethod($request);
     }

@@ -54,7 +54,7 @@ trait Count
      *
      * @return  Response
      */
-    protected function countMethod(Request $request) : Response
+    protected function countMethod(Request $request): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {

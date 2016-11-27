@@ -40,7 +40,7 @@ trait Create
      *
      * @return  Response
      */
-    public function create(Request $request) : Response
+    public function create(Request $request): Response
     {
         return $this->createMethod($request);
     }

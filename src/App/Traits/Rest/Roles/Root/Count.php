@@ -40,7 +40,7 @@ trait Count
      *
      * @return  Response
      */
-    public function count(Request $request) : Response
+    public function count(Request $request): Response
     {
         return $this->countMethod($request);
     }

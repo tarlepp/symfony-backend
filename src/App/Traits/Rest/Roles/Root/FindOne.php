@@ -45,7 +45,7 @@ trait FindOne
      *
      * @return  Response
      */
-    public function findOne(Request $request, string $id) : Response
+    public function findOne(Request $request, string $id): Response
     {
         return $this->findOneMethod($request, $id);
     }

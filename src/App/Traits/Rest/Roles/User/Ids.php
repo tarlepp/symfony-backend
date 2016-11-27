@@ -39,7 +39,7 @@ trait Ids
      *
      * @return  Response
      */
-    public function ids(Request $request) : Response
+    public function ids(Request $request): Response
     {
         return $this->idsMethod($request);
     }

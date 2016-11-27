@@ -77,7 +77,7 @@ trait Ids
      *
      * @return  Response
      */
-    protected function idsMethod(Request $request) : Response
+    protected function idsMethod(Request $request): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
@@ -97,7 +97,7 @@ trait Ids
 
         return $this->getResponseService()->createResponse(
             $request,
-            $this->getResourceService()->ids($criteria, $search)
+            $this->getResourceService()->getIds($criteria, $search)
         );
     }
 }

@@ -96,7 +96,7 @@ trait Find
      *
      * @return  Response
      */
-    protected function findMethod(Request $request) : Response
+    protected function findMethod(Request $request): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {

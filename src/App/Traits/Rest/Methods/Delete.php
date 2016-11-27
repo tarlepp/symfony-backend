@@ -64,7 +64,7 @@ trait Delete
      *
      * @return  Response
      */
-    protected function deleteMethod(Request $request, string $id) : Response
+    protected function deleteMethod(Request $request, string $id): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {

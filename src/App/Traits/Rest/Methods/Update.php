@@ -68,7 +68,7 @@ trait Update
      *
      * @return  Response
      */
-    protected function updateMethod(Request $request, string $id) : Response
+    protected function updateMethod(Request $request, string $id): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {

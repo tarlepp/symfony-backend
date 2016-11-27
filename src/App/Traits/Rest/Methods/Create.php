@@ -66,7 +66,7 @@ trait Create
      *
      * @return  Response
      */
-    protected function createMethod(Request $request) : Response
+    protected function createMethod(Request $request): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
