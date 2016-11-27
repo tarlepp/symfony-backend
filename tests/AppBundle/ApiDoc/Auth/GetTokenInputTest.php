@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/ApiDoc/Auth/GetTokenInputTest.php
  *
@@ -30,14 +31,14 @@ class GetTokenInputTest extends TypeTestCase
         $form = $this->factory->create(GetTokenInput::class);
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($formData, $form->getData());
+        static::assertTrue($form->isSynchronized());
+        static::assertEquals($formData, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
+            static::assertArrayHasKey($key, $children);
         }
     }
 
@@ -54,14 +55,14 @@ class GetTokenInputTest extends TypeTestCase
         $form = $this->factory->create(GetTokenInput::class);
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($expectedFormData, $form->getData());
+        static::assertTrue($form->isSynchronized());
+        static::assertEquals($expectedFormData, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
+            static::assertArrayHasKey($key, $children);
         }
     }
 
@@ -70,7 +71,7 @@ class GetTokenInputTest extends TypeTestCase
      *
      * @return array
      */
-    public function dataProviderTestSubmitInvalidData()
+    public function dataProviderTestSubmitInvalidData(): array
     {
         return [
             [

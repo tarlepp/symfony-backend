@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/ApiDoc/Auth/GetTokenOutputTest.php
  *
@@ -9,6 +10,12 @@ namespace AppBundle\ApiDoc\Auth;
 use App\ApiDoc\Auth\GetTokenOutput;
 use Symfony\Component\Form\Test\TypeTestCase;
 
+/**
+ * Class GetTokenOutputTest
+ *
+ * @package AppBundle\ApiDoc\Auth
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ */
 class GetTokenOutputTest extends TypeTestCase
 {
     /**
@@ -24,14 +31,14 @@ class GetTokenOutputTest extends TypeTestCase
         $form = $this->factory->create(GetTokenOutput::class);
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($formData, $form->getData());
+        static::assertTrue($form->isSynchronized());
+        static::assertEquals($formData, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
+            static::assertArrayHasKey($key, $children);
         }
     }
 
@@ -48,14 +55,14 @@ class GetTokenOutputTest extends TypeTestCase
         $form = $this->factory->create(GetTokenOutput::class);
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($expectedFormData, $form->getData());
+        static::assertTrue($form->isSynchronized());
+        static::assertEquals($expectedFormData, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
+            static::assertArrayHasKey($key, $children);
         }
     }
 
@@ -64,7 +71,7 @@ class GetTokenOutputTest extends TypeTestCase
      *
      * @return array
      */
-    public function dataProviderTestSubmitInvalidData()
+    public function dataProviderTestSubmitInvalidData(): array
     {
         return [
             [
