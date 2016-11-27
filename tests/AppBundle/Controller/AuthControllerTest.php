@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Controller/AuthControllerTest.php
  *
@@ -27,13 +28,13 @@ class AuthControllerTest extends WebTestCase
      * @param   string  $username
      * @param   string  $password
      */
-    public function testThatValidCredentialsWork($username, $password)
+    public function testThatValidCredentialsWork(string $username, string $password)
     {
         $client = static::createClient();
         $client->request('POST', '/auth/getToken', ['username' => $username, 'password' => $password]);
 
         // Check that HTTP status code is correct
-        $this->assertEquals(
+        static::assertEquals(
             200,
             $client->getResponse()->getStatusCode(),
             "User login was not successfully.\n" . $client->getResponse()
@@ -53,8 +54,8 @@ class AuthControllerTest extends WebTestCase
             $messageNotPresent = 'getToken did not return all expected attributes, missing \'' . $attribute . '\'.';
             $messageEmpty = 'Attribute \'' . $attribute . '\' is empty, this is fail...';
 
-            $this->assertObjectHasAttribute($attribute, $response, $messageNotPresent);
-            $this->assertNotEmpty($response->{$attribute}, $messageEmpty);
+            static::assertObjectHasAttribute($attribute, $response, $messageNotPresent);
+            static::assertNotEmpty($response->{$attribute}, $messageEmpty);
         }
     }
 
@@ -78,7 +79,7 @@ class AuthControllerTest extends WebTestCase
         ];
 
         // Check that HTTP status code is correct
-        $this->assertEquals(
+        static::assertEquals(
             401,
             $client->getResponse()->getStatusCode(),
             implode("\n", $message)
@@ -94,20 +95,23 @@ class AuthControllerTest extends WebTestCase
      * @param   integer $expectedStatusCode
      * @param   string  $expectedContent
      */
-    public function testThatNotSupportedMethodsReturn405($method, $expectedStatusCode, $expectedContent)
-    {
+    public function testThatNotSupportedMethodsReturn405(
+        string $method,
+        int $expectedStatusCode,
+        string $expectedContent
+    ) {
         $client = static::createClient();
         $client->request($method, '/auth/getToken');
 
         // Check that HTTP status code is correct
-        $this->assertEquals(
+        static::assertEquals(
             $expectedStatusCode,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for method '" . $method . "'\n" . $client->getResponse()
         );
 
         // Check that actual response content is correct
-        $this->assertEquals(
+        static::assertEquals(
             $expectedContent,
             $client->getResponse()->getContent(),
             "HTTP response was not expected for method '" . $method . "'\n" . $client->getResponse()
@@ -127,13 +131,13 @@ class AuthControllerTest extends WebTestCase
         $client->request('GET', '/auth/profile');
 
         // Check that HTTP status code is correct
-        $this->assertEquals(
+        static::assertEquals(
             401,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '{"code":401,"message":"JWT Token not found"}',
             $client->getResponse()->getContent(),
             "Response content was not expected for /auth/profile request\n" . $client->getResponse()
@@ -153,13 +157,13 @@ class AuthControllerTest extends WebTestCase
         $client->request('GET', '/auth/profile');
 
         // Check that HTTP status code is correct
-        $this->assertEquals(
+        static::assertEquals(
             401,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '{"code":401,"message":"Invalid JWT Token"}',
             $client->getResponse()->getContent(),
             "Response content was not expected for /auth/profile request\n" . $client->getResponse()
@@ -185,13 +189,13 @@ class AuthControllerTest extends WebTestCase
         );
 
         // Check that HTTP status code is correct
-        $this->assertEquals(
+        static::assertEquals(
             401,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '{"code":401,"message":"Invalid JWT Token"}',
             $client->getResponse()->getContent(),
             "Response content was not expected for /auth/profile request\n" . $client->getResponse()
@@ -217,13 +221,13 @@ class AuthControllerTest extends WebTestCase
         );
 
         // Check that HTTP status code is correct
-        $this->assertEquals(
+        static::assertEquals(
             401,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             '{"code":401,"message":"Invalid JWT Token"}',
             $client->getResponse()->getContent(),
             "Response content was not expected for /auth/profile request\n" . $client->getResponse()
@@ -249,7 +253,7 @@ class AuthControllerTest extends WebTestCase
         );
 
         // Check that HTTP status code is correct
-        $this->assertEquals(
+        static::assertEquals(
             200,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
@@ -262,7 +266,7 @@ class AuthControllerTest extends WebTestCase
         ];
 
         foreach ($attributes as $attribute) {
-            $this->assertObjectHasAttribute($attribute, $profileData);
+            static::assertObjectHasAttribute($attribute, $profileData);
         }
     }
 
@@ -271,7 +275,7 @@ class AuthControllerTest extends WebTestCase
      *
      * @return array
      */
-    public function providerTestThatValidCredentialsWork()
+    public function providerTestThatValidCredentialsWork(): array
     {
         return [
             ['john', 'doe'],
@@ -296,7 +300,7 @@ class AuthControllerTest extends WebTestCase
      *
      * @return array
      */
-    public function providerTestThatInvalidCredentialsWontWork()
+    public function providerTestThatInvalidCredentialsWontWork(): array
     {
         return [
             [null, null],
@@ -315,7 +319,7 @@ class AuthControllerTest extends WebTestCase
      *
      * @return array
      */
-    public function providerTestThatNotSupportedMethodsReturn405()
+    public function providerTestThatNotSupportedMethodsReturn405(): array
     {
         return [
             ['GET',     Response::HTTP_METHOD_NOT_ALLOWED, $this->getContent('GET')],
@@ -336,7 +340,7 @@ class AuthControllerTest extends WebTestCase
      *
      * @return  string
      */
-    private function getContent($method)
+    private function getContent($method): string
     {
         return JSON::encode([
             'message'   => 'No route found for "' . $method . ' /auth/getToken": Method Not Allowed (Allow: POST)',

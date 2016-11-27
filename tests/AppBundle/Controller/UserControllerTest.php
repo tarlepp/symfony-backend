@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Controller/UserControllerTest.php
  *
@@ -27,14 +28,14 @@ class UserControllerTest extends WebTestCase
      * @param   string  $password
      * @param   integer $expectedStatus
      */
-    public function testThatOnlyAdminUsersCanListUsers($username, $password, $expectedStatus)
+    public function testThatOnlyAdminUsersCanListUsers(string $username, string $password, int $expectedStatus)
     {
         // Create request
         $client = $this->getClient($username, $password);
         $client->request('GET', '/user');
 
         // Check that HTTP status code is correct
-        $this->assertEquals(
+        static::assertEquals(
             $expectedStatus,
             $client->getResponse()->getStatusCode(),
             'HTTP status code was not expected for /user request\n' . $client->getResponse()
@@ -48,7 +49,7 @@ class UserControllerTest extends WebTestCase
             $attributes = ['message', 'status', 'code'];
 
             foreach ($attributes as $attribute) {
-                $this->assertObjectHasAttribute(
+                static::assertObjectHasAttribute(
                     $attribute,
                     $responseData,
                     'Response did not contain expected attribute'
@@ -58,18 +59,18 @@ class UserControllerTest extends WebTestCase
             // Get response object keys
             $keys = array_keys(get_object_vars($responseData));
 
-            $this->assertEquals(
+            static::assertEquals(
                 sort($attributes),
                 sort($keys),
                 'Response contains keys that are not expected'
             );
 
-            $this->assertEquals('Access denied.', $responseData->message);
-            $this->assertEquals('403', $responseData->status);
-            $this->assertEquals('0', $responseData->code);
+            static::assertEquals('Access denied.', $responseData->message);
+            static::assertEquals('403', $responseData->status);
+            static::assertEquals('0', $responseData->code);
         } else { // Otherwise check that response has correct output
-            $this->assertTrue(is_array($responseData), 'Response did not return array of users.');
-            $this->assertEquals(5, count($responseData), 'Response did not contain expected number of users.');
+            static::assertTrue(is_array($responseData), 'Response did not return array of users.');
+            static::assertEquals(5, count($responseData), 'Response did not contain expected number of users.');
         }
     }
 
@@ -81,14 +82,18 @@ class UserControllerTest extends WebTestCase
      * @param   integer $expectedStatus
      * @param   string  $id
      */
-    public function testThatOnlyAdminUsersCanGetSingleUserData($username, $password, $expectedStatus, $id)
-    {
+    public function testThatOnlyAdminUsersCanGetSingleUserData(
+        string $username,
+        string $password,
+        int $expectedStatus,
+        string $id
+    ) {
         // Create request
         $client = $this->getClient($username, $password);
         $client->request('GET', '/user/' . $id);
 
         // Check that HTTP status code is correct
-        $this->assertEquals(
+        static::assertEquals(
             $expectedStatus,
             $client->getResponse()->getStatusCode(),
             'HTTP status code was not expected for /user request\n' . $client->getResponse()
@@ -102,7 +107,7 @@ class UserControllerTest extends WebTestCase
             $attributes = ['message', 'status', 'code'];
 
             foreach ($attributes as $attribute) {
-                $this->assertObjectHasAttribute(
+                static::assertObjectHasAttribute(
                     $attribute,
                     $responseData,
                     'Response did not contain expected attribute'
@@ -112,20 +117,20 @@ class UserControllerTest extends WebTestCase
             // Get response object keys
             $keys = array_keys(get_object_vars($responseData));
 
-            $this->assertEquals(
+            static::assertEquals(
                 sort($attributes),
                 sort($keys),
                 'Response contains keys that are not expected'
             );
 
-            $this->assertEquals('Access denied.', $responseData->message);
-            $this->assertEquals('403', $responseData->status);
-            $this->assertEquals('0', $responseData->code);
+            static::assertEquals('Access denied.', $responseData->message);
+            static::assertEquals('403', $responseData->status);
+            static::assertEquals('0', $responseData->code);
         } else { // Otherwise check that response has correct output
             $attributes = ['id', 'username', 'firstname', 'surname', 'email'];
 
             foreach ($attributes as $attribute) {
-                $this->assertObjectHasAttribute(
+                static::assertObjectHasAttribute(
                     $attribute,
                     $responseData,
                     'Response did not contain expected attribute'
@@ -135,7 +140,7 @@ class UserControllerTest extends WebTestCase
             // Get response object keys
             $keys = array_keys(get_object_vars($responseData));
 
-            $this->assertEquals(
+            static::assertEquals(
                 sort($attributes),
                 sort($keys),
                 'Response contains keys that are not expected'
@@ -148,7 +153,7 @@ class UserControllerTest extends WebTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatOnlyAdminUsersCanListUsers()
+    public function dataProviderTestThatOnlyAdminUsersCanListUsers(): array
     {
         // Fetch users and pick random of those
         $users = $this->getContainer()->get('app.services.rest.user')->find();

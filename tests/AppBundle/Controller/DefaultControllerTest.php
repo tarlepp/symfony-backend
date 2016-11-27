@@ -1,10 +1,11 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Controller/DefaultControllerTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace Tests\AppBundle\Controller;
+namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,23 +26,23 @@ class DefaultControllerTest extends WebTestCase
      *
      * @param   string  $method             HTTP method (GET, POST, etc.)
      * @param   integer $expectedStatusCode Expected HTTP status code
-     * @param   string  $ExpectedContent    Expected content
+     * @param   string  $expectedContent    Expected content
      */
-    public function testIndex($method, $expectedStatusCode, $ExpectedContent)
+    public function testIndex(string $method, int $expectedStatusCode, string $expectedContent)
     {
         $client = static::createClient();
         $client->request($method, '/');
 
         // Check that HTTP status code is correct
-        $this->assertEquals(
+        static::assertEquals(
             $expectedStatusCode,
             $client->getResponse()->getStatusCode(),
             'HTTP status code was not expected for method \'' . $method . '\''
         );
 
         // Check that actual response content is correct
-        $this->assertEquals(
-            $ExpectedContent,
+        static::assertEquals(
+            $expectedContent,
             $client->getResponse()->getContent(),
             'HTTP response was not expected for method \'' . $method . '\''
         );
@@ -52,7 +53,7 @@ class DefaultControllerTest extends WebTestCase
      *
      * @return array
      */
-    public function testIndexProvider()
+    public function testIndexProvider(): array
     {
         return [
             ['GET',     Response::HTTP_OK, ''],
@@ -74,7 +75,7 @@ class DefaultControllerTest extends WebTestCase
      *
      * @return  string
      */
-    private function getContent($method)
+    private function getContent($method): string
     {
         return json_encode([
             'message'   => 'No route found for "' . $method . ' /": Method Not Allowed (Allow: GET, HEAD)',
