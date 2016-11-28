@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Repository/GenericRepositoryTest.php
  *
@@ -81,7 +82,7 @@ class GenericRepositoryTest extends KernelTestCase
      */
     public function testThatGetAssociationsReturnsAnArray()
     {
-        $this->assertInternalType('array', $this->repository->getAssociations());
+        static::assertInternalType('array', $this->repository->getAssociations());
     }
 
     /**
@@ -96,7 +97,7 @@ class GenericRepositoryTest extends KernelTestCase
 
         PHPUnitUtil::callMethod($this->repository, 'processCriteria', [$queryBuilder, $criteria]);
 
-        $this->assertEquals(
+        static::assertEquals(
             sprintf($expectedDQL, $this->entityName),
             $queryBuilder->getQuery()->getDQL(),
             'processCriteria method did not create expected query criteria.'
@@ -119,7 +120,7 @@ class GenericRepositoryTest extends KernelTestCase
             return (string)$orderBy;
         };
 
-        $this->assertEquals(
+        static::assertEquals(
             $expectedResult,
             implode(', ', array_map($iterator, $queryBuilder->getDQLPart('orderBy'))),
             'processOrderBy method did not create expected query ORDER BY part.'
@@ -131,30 +132,38 @@ class GenericRepositoryTest extends KernelTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatProcessCriteriaCreatesExpectedCondition()
+    public function dataProviderTestThatProcessCriteriaCreatesExpectedCondition(): array
     {
         return [
             [
                 ['e.id' => 1],
-                'SELECT e FROM %s e WHERE e.id = ?1'
+                <<<QUERY
+SELECT e FROM %s e WHERE e.id = ?1
+QUERY
             ],
             [
                 ['e.id' => [1,2,3]],
-                'SELECT e FROM %s e WHERE e.id IN(1, 2, 3)'
+                <<<QUERY
+SELECT e FROM %s e WHERE e.id IN(1, 2, 3)
+QUERY
             ],
             [
                 [
                     'e.foo' => 'foo',
                     'e.bar' => 'bar'
                 ],
-                'SELECT e FROM %s e WHERE e.foo = ?1 AND e.bar = ?2'
+                <<<QUERY
+SELECT e FROM %s e WHERE e.foo = ?1 AND e.bar = ?2
+QUERY
             ],
             [
                 [
                     'e.foo' => ['foo', 'bar'],
                     'e.bar' => ['bar', 'foo']
                 ],
-                "SELECT e FROM %s e WHERE e.foo IN('foo', 'bar') AND e.bar IN('bar', 'foo')"
+                <<<QUERY
+SELECT e FROM %s e WHERE e.foo IN('foo', 'bar') AND e.bar IN('bar', 'foo')
+QUERY
             ],
             [
                 [
@@ -162,7 +171,9 @@ class GenericRepositoryTest extends KernelTestCase
                     'e.foo' => ['foo', 'bar'],
                     'e.bar' => ['bar', 'foo']
                 ],
-                "SELECT e FROM %s e WHERE e.id = ?1 AND e.foo IN('foo', 'bar') AND e.bar IN('bar', 'foo')"
+                <<<QUERY
+SELECT e FROM %s e WHERE e.id = ?1 AND e.foo IN('foo', 'bar') AND e.bar IN('bar', 'foo')
+QUERY
             ],
             [
                 [
@@ -170,7 +181,9 @@ class GenericRepositoryTest extends KernelTestCase
                     'foo' => ['foo', 'bar'],
                     'bar' => ['bar', 'foo'],
                 ],
-                "SELECT e FROM %s e WHERE entity.id = ?1 AND entity.foo IN('foo', 'bar') AND entity.bar IN('bar', 'foo')"
+                <<<QUERY
+SELECT e FROM %s e WHERE entity.id = ?1 AND entity.foo IN('foo', 'bar') AND entity.bar IN('bar', 'foo')
+QUERY
             ],
             [
                 [
@@ -180,7 +193,9 @@ class GenericRepositoryTest extends KernelTestCase
                         ['e.bar', 'in', ['bar', 'foo']],
                     ],
                 ],
-                "SELECT e FROM %s e WHERE entity.id = ?1 AND (e.foo IN('foo', 'bar') AND e.bar IN('bar', 'foo'))"
+                <<<QUERY
+SELECT e FROM %s e WHERE entity.id = ?1 AND (e.foo IN('foo', 'bar') AND e.bar IN('bar', 'foo'))
+QUERY
             ],
             [
                 [
@@ -190,7 +205,9 @@ class GenericRepositoryTest extends KernelTestCase
                         ['e.bar', 'in', ['bar', 'foo']],
                     ],
                 ],
-                "SELECT e FROM %s e WHERE entity.id = ?1 AND (e.foo IN('foo', 'bar') OR e.bar IN('bar', 'foo'))"
+                <<<QUERY
+SELECT e FROM %s e WHERE entity.id = ?1 AND (e.foo IN('foo', 'bar') OR e.bar IN('bar', 'foo'))
+QUERY
             ],
         ];
     }
@@ -200,7 +217,7 @@ class GenericRepositoryTest extends KernelTestCase
      *
      * @return array
      */
-    function dataProviderTestThatProcessOrderByCreatesExpectedOrderByClause()
+    function dataProviderTestThatProcessOrderByCreatesExpectedOrderByClause(): array
     {
         return [
             [
