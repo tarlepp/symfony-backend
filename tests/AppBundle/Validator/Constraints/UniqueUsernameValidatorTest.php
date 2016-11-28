@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Validator/Constraints/UniqueUsernameValidatorTest.php
  *
@@ -43,20 +44,22 @@ class UniqueUsernameValidatorTest extends ContainerTestCase
         ;
 
         if ($expectedMessage) {
-            $builder->expects($this->once())
+            $builder->expects(static::once())
                 ->method('addViolation')
             ;
 
-            $context->expects($this->once())
+            $context->expects(static::once())
                 ->method('buildViolation')
-                ->with($this->equalTo($expectedMessage))
-                ->will($this->returnValue($builder))
+                ->with(static::equalTo($expectedMessage))
+                ->will(static::returnValue($builder))
             ;
         } else {
-            $context->expects($this->never())
+            $context->expects(static::never())
                 ->method('buildViolation')
             ;
         }
+
+        /** @var \Symfony\Component\Validator\Context\ExecutionContextInterface $context */
 
         // initialize the validator with the mocked context
         $validator = new UniqueUsernameValidator($this->getContainer()->get('repository.user'));
