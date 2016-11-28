@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Entity/UserTest.php
  *
@@ -34,11 +35,11 @@ class UserTest extends EntityTestCase
      * @param   string      $password
      * @param   string      $expected
      */
-    public function testThatPasswordHashingIsWorkingAsExpected($callable, $password, $expected)
+    public function testThatPasswordHashingIsWorkingAsExpected(callable $callable, string $password, string $expected)
     {
         $this->entity->setPassword($callable, $password);
 
-        $this->assertEquals($expected, $this->entity->getPassword());
+        static::assertEquals($expected, $this->entity->getPassword());
     }
 
     public function testThatSetPlainPasswordIsWorkingAsExpected()
@@ -49,8 +50,8 @@ class UserTest extends EntityTestCase
         // Set plain password
         $this->entity->setPlainPassword('plainPassword');
 
-        $this->assertEmpty($this->entity->getPassword());
-        $this->assertEquals('plainPassword', $this->entity->getPlainPassword());
+        static::assertEmpty($this->entity->getPassword());
+        static::assertEquals('plainPassword', $this->entity->getPlainPassword());
     }
 
     public function testThatSetEmptyPlainPasswordDoesNotResetPassword()
@@ -61,8 +62,8 @@ class UserTest extends EntityTestCase
         // Set plain password
         $this->entity->setPlainPassword('');
 
-        $this->assertNotEmpty($this->entity->getPassword());
-        $this->assertEmpty($this->entity->getPlainPassword());
+        static::assertNotEmpty($this->entity->getPassword());
+        static::assertEmpty($this->entity->getPlainPassword());
     }
 
     public function testThatUserEntityCanBeSerializedAndUnSerializedAsExpected()
@@ -75,24 +76,24 @@ class UserTest extends EntityTestCase
         $entity = unserialize(serialize($this->entity));
 
         // Assert that unserialized object returns expected data
-        
-        $this->assertEquals('john', $entity->getUsername());
-        $this->assertEquals('cnffjbeq', $entity->getPassword());
+
+        static::assertEquals('john', $entity->getUsername());
+        static::assertEquals('cnffjbeq', $entity->getPassword());
     }
 
     public function testThatGetUserGroupsReturnsInstanceOfArrayCollection()
     {
-        $this->assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $this->entity->getUserGroups());
+        static::assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $this->entity->getUserGroups());
     }
 
     public function testThatGetRolesReturnsAnArray()
     {
-        $this->assertInternalType('array', $this->entity->getRoles());
+        static::assertInternalType('array', $this->entity->getRoles());
     }
 
     public function testThatGetSaltMethodReturnsNull()
     {
-        $this->assertNull($this->entity->getSalt());
+        static::assertNull($this->entity->getSalt());
     }
 
     public function testThatGetLoginDataMethodReturnsExpected()
@@ -112,8 +113,8 @@ class UserTest extends EntityTestCase
         $data = $this->entity->getLoginData();
 
         foreach ($expected as $key) {
-            $this->assertArrayHasKey($key, $data);
-            $this->assertEquals($key, $data[$key]);
+            static::assertArrayHasKey($key, $data);
+            static::assertEquals($key, $data[$key]);
         }
     }
 
@@ -123,7 +124,7 @@ class UserTest extends EntityTestCase
 
         $this->entity->eraseCredentials();
 
-        $this->assertEmpty($this->entity->getPlainPassword());
+        static::assertEmpty($this->entity->getPlainPassword());
     }
 
     /**
@@ -131,7 +132,7 @@ class UserTest extends EntityTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatPasswordHashingIsWorkingAsExpected()
+    public function dataProviderTestThatPasswordHashingIsWorkingAsExpected(): array
     {
         return [
             ['str_rot13', 'password', 'cnffjbeq'],
