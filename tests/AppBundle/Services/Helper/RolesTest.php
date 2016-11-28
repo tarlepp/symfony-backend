@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Services/Helper/RolesTest.php
  *
@@ -31,7 +32,7 @@ class RolesTest extends ContainerTestCase
 
     public function testThatGetRolesReturnsExpected()
     {
-        $this->assertEquals(
+        static::assertEquals(
             [
                 'ROLE_LOGGED',
                 'ROLE_USER',
@@ -51,7 +52,7 @@ class RolesTest extends ContainerTestCase
      */
     public function testThatGetRoleLabelReturnsExpected($role, $expected)
     {
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->service->getRoleLabel($role),
             'Role label was not expected one.'
@@ -66,14 +67,17 @@ class RolesTest extends ContainerTestCase
      */
     public function testThatGetShortReturnsExpected($input, $expected)
     {
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->service->getShort($input),
             'Short role name was not expected'
         );
     }
 
-    public function dataProviderTestThatGetRoleLabelReturnsExpected()
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatGetRoleLabelReturnsExpected(): array
     {
         return [
             [Roles::ROLE_LOGGED, 'Logged in users'],
@@ -84,7 +88,10 @@ class RolesTest extends ContainerTestCase
         ];
     }
 
-    public function dataProviderTestThatGetShortReturnsExpected()
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatGetShortReturnsExpected(): array
     {
         return [
             [Roles::ROLE_LOGGED, 'logged'],

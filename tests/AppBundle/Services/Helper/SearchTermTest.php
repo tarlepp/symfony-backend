@@ -1,10 +1,11 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Services/Helper/SearchTermTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace Tests\AppBundle\Services\Helpers;
+namespace AppBundle\Services\Helper;
 
 use App\Services\Helper\SearchTerm;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -38,7 +39,7 @@ class SearchTermTest extends KernelTestCase
      */
     public function testThatWithoutColumnOrSearchTermCriteriaIsNull($column, $search)
     {
-        $this->assertNull(SearchTerm::getCriteria($column, $search), 'Criteria was not NULL with given parameters');
+        static::assertNull(SearchTerm::getCriteria($column, $search), 'Criteria was not NULL with given parameters');
     }
 
     /**
@@ -51,7 +52,7 @@ class SearchTermTest extends KernelTestCase
     {
         $class = '\App\Services\Helper\SearchTerm';
 
-        $this->assertEquals($expected, call_user_func_array([$class, 'getCriteria'], $inputArguments));
+        static::assertEquals($expected, call_user_func_array([$class, 'getCriteria'], $inputArguments));
     }
 
     /**
@@ -59,7 +60,7 @@ class SearchTermTest extends KernelTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatWithoutColumnOrSearchTermCriteriaIsNull()
+    public function dataProviderTestThatWithoutColumnOrSearchTermCriteriaIsNull(): array
     {
         return [
             [null, null],
@@ -93,7 +94,7 @@ class SearchTermTest extends KernelTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatReturnedCriteriaIsExpected()
+    public function dataProviderTestThatReturnedCriteriaIsExpected(): array
     {
         return [
             [

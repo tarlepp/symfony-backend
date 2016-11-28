@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Services/Rest/Helper/RequestTest.php
  *
@@ -22,7 +23,7 @@ class RequestTest extends KernelTestCase
     {
         $fakeRequest = Request::create('/', 'GET');
 
-        $this->assertNull(
+        static::assertNull(
             RequestHelper::getOrderBy($fakeRequest),
             'getOrderBy method did not return NULL as it should without any parameters'
         );
@@ -38,7 +39,7 @@ class RequestTest extends KernelTestCase
     {
         $fakeRequest = Request::create('/', 'GET', $parameters);
 
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             RequestHelper::getOrderBy($fakeRequest),
             'getOrderBy method did not return expected value'
@@ -49,7 +50,7 @@ class RequestTest extends KernelTestCase
     {
         $fakeRequest = Request::create('/', 'GET');
 
-        $this->assertNull(
+        static::assertNull(
             RequestHelper::getLimit($fakeRequest),
             'getLimit method did not return NULL as it should without any parameters'
         );
@@ -67,12 +68,12 @@ class RequestTest extends KernelTestCase
 
         $actual = RequestHelper::getLimit($fakeRequest);
 
-        $this->assertNotNull(
+        static::assertNotNull(
             $actual,
             'getLimit returned NULL and it should return an integer'
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $actual,
             'getLimit method did not return expected value'
@@ -83,7 +84,7 @@ class RequestTest extends KernelTestCase
     {
         $fakeRequest = Request::create('/', 'GET');
 
-        $this->assertNull(
+        static::assertNull(
             RequestHelper::getOffset($fakeRequest),
             'getOffset method did not return NULL as it should without any parameters'
         );
@@ -101,12 +102,12 @@ class RequestTest extends KernelTestCase
 
         $actual = RequestHelper::getOffset($fakeRequest);
 
-        $this->assertNotNull(
+        static::assertNotNull(
             $actual,
             'getOffset returned NULL and it should return an integer'
         );
 
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $actual,
             'getOffset method did not return expected value'
@@ -117,7 +118,7 @@ class RequestTest extends KernelTestCase
     {
         $fakeRequest = Request::create('/', 'GET');
 
-        $this->assertEquals(
+        static::assertEquals(
             [],
             RequestHelper::getSearchTerms($fakeRequest),
             'getSearchTerms method did not return empty array ([]) as it should without any parameters'
@@ -153,7 +154,7 @@ class RequestTest extends KernelTestCase
 
         $fakeRequest = Request::create('/', 'GET', $parameters);
 
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             RequestHelper::getSearchTerms($fakeRequest),
             'getSearchTerms method did not return expected value'
@@ -165,7 +166,7 @@ class RequestTest extends KernelTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatGetOrderByReturnsExpectedValue()
+    public function dataProviderTestThatGetOrderByReturnsExpectedValue(): array
     {
         return [
             [
@@ -288,7 +289,7 @@ class RequestTest extends KernelTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatGetLimitReturnsExpectedValue()
+    public function dataProviderTestThatGetLimitReturnsExpectedValue(): array
     {
         return [
             [
@@ -315,7 +316,7 @@ class RequestTest extends KernelTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatGetOffsetReturnsExpectedValue()
+    public function dataProviderTestThatGetOffsetReturnsExpectedValue(): array
     {
         return [
             [
@@ -342,7 +343,7 @@ class RequestTest extends KernelTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatGetSearchTermsReturnsExpectedValue()
+    public function dataProviderTestThatGetSearchTermsReturnsExpectedValue(): array
     {
         return [
             [
@@ -418,6 +419,16 @@ class RequestTest extends KernelTestCase
                     ],
                 ],
                 '{"or": ["bar", "foo"], "and": ["foo", "bar"]}'
+            ],
+            [
+                [
+                    'or' => [
+                        '{"or":',
+                        '["bar",',
+                        '"foo"],',
+                    ],
+                ],
+                '{"or": ["bar", "foo"], ', // With invalid JSON input it should fallback to string handling
             ],
         ];
     }
