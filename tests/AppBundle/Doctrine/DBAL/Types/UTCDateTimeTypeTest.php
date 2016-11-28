@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Doctrine/DBAL/Types/UTCDateTimeTypeTest.php
  *
@@ -58,7 +59,7 @@ class UTCDateTimeTypeTest extends ContainerTestCase
      */
     public function testThatConvertToDatabaseValueMethodWorks(\DateTime $input, $expected)
     {
-        $this->assertEquals(
+        static::assertEquals(
             $expected,
             $this->type->convertToDatabaseValue($input, $this->platform),
             'Given DateTime object was not converted to expected database value.'
@@ -77,9 +78,9 @@ class UTCDateTimeTypeTest extends ContainerTestCase
     {
         $value = $this->type->convertToPHPValue($input, $this->platform);
 
-        $this->assertInstanceOf('\DateTime', $value, 'Value was not converted to proper \DateTime object.');
-        $this->assertEquals('UTC', $value->getTimezone()->getName(), 'Converted value is not in UTC timezone.');
-        $this->assertEquals($expected, $value, 'Converted value does not match with expected one.');
+        static::assertInstanceOf('\DateTime', $value, 'Value was not converted to proper \DateTime object.');
+        static::assertEquals('UTC', $value->getTimezone()->getName(), 'Converted value is not in UTC timezone.');
+        static::assertEquals($expected, $value, 'Converted value does not match with expected one.');
     }
 
     /**
@@ -95,12 +96,18 @@ class UTCDateTimeTypeTest extends ContainerTestCase
         $this->type->convertToPHPValue($input, $this->platform);
     }
 
-    public function dataProviderTestThatConvertToDatabaseValueMethodWorks()
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatConvertToDatabaseValueMethodWorks(): array
     {
         return self::getTestValues();
     }
 
-    public function dataProviderTestThatConvertToPHPValueMethodWorks()
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatConvertToPHPValueMethodWorks(): array
     {
         $iterator = function (array $values) {
             return [
@@ -112,7 +119,10 @@ class UTCDateTimeTypeTest extends ContainerTestCase
         return array_map($iterator, self::getTestValues());
     }
 
-    public function dataProviderTestThatConvertToPHPValueMethodThrowsAnError()
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatConvertToPHPValueMethodThrowsAnError(): array
     {
         return [
             ['2016-03-05 xx 16:35:00'],
@@ -121,7 +131,10 @@ class UTCDateTimeTypeTest extends ContainerTestCase
         ];
     }
 
-    private static function getTestValues()
+    /**
+     * @return array
+     */
+    private static function getTestValues(): array
     {
         return [
             [

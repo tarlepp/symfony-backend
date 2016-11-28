@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Doctrine/Listener/UserListenerTest.php
  *
@@ -86,7 +87,7 @@ class UserListenerTest extends KernelTestCase
 
     public function testThatGetEncoderReturnsExpected()
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             'Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface',
             $this->listener->getEncoder($this->entity)
         );
@@ -106,18 +107,18 @@ class UserListenerTest extends KernelTestCase
         // Call listener method
         $this->listener->prePersist($event);
 
-        $this->assertEmpty(
+        static::assertEmpty(
             $this->entity->getPlainPassword(),
             'Listener did not reset plain password value.'
         );
 
-        $this->assertNotEquals(
+        static::assertNotEquals(
             $oldPassword,
             $this->entity->getPassword(),
             'Password was not changed by the listener.'
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             $this->encoder->isPasswordValid($this->entity->getPassword(), 'test', ''),
             'Changed password is not valid.'
         );
@@ -146,18 +147,18 @@ class UserListenerTest extends KernelTestCase
 
         $this->listener->preUpdate($event);
 
-        $this->assertEmpty(
+        static::assertEmpty(
             $this->entity->getPlainPassword(),
             'Listener did not reset plain password value.'
         );
 
-        $this->assertNotEquals(
+        static::assertNotEquals(
             $oldPassword,
             $this->entity->getPassword(),
             'Password was not changed by the listener.'
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             $this->encoder->isPasswordValid($this->entity->getPassword(), 'test', ''),
             'Changed password is not valid.'
         );
