@@ -1,10 +1,11 @@
 <?php
+declare(strict_types = 1);
 /**
  * /tests/AppBundle/Utils/JSONTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace Tests\AppBundle\Utils;
+namespace AppBundle\Utils;
 
 use App\Tests\WebTestCase;
 
@@ -19,12 +20,12 @@ class JSONTest extends WebTestCase
     /**
      * @dataProvider dataProviderTestThatEncodeWorksLikeExpected
      *
-     * @param   array $value
+     * @param   mixed $value
      * @param   mixed $expected
      */
     public function testThatEncodeWorksLikeExpected($value, $expected)
     {
-        $this->assertEquals($expected, call_user_func('\App\Utils\JSON::encode', $value));
+        static::assertEquals($expected, call_user_func('\App\Utils\JSON::encode', $value));
     }
 
     /**
@@ -35,7 +36,7 @@ class JSONTest extends WebTestCase
      */
     public function testThatDecodeWorksLikeExpected(array $parameters, $expected)
     {
-        $this->assertEquals($expected, call_user_func_array('\App\Utils\JSON::decode', $parameters));
+        static::assertEquals($expected, call_user_func_array('\App\Utils\JSON::decode', $parameters));
     }
 
     /**
@@ -72,7 +73,7 @@ class JSONTest extends WebTestCase
      *
      * @param string $json
      */
-    public function testThatDecodeThrowsAnExceptionOnMalformedJson($json)
+    public function testThatDecodeThrowsAnExceptionOnMalformedJson(string $json)
     {
         call_user_func('\App\Utils\JSON::decode', $json);
     }
@@ -85,7 +86,7 @@ class JSONTest extends WebTestCase
      *
      * @param string $input
      */
-    public function testThatEncodeThrowsAnExceptionOnInvalidUtfCharacters($input)
+    public function testThatEncodeThrowsAnExceptionOnInvalidUtfCharacters(string $input)
     {
         call_user_func('\App\Utils\JSON::encode', $input);
     }
@@ -95,7 +96,7 @@ class JSONTest extends WebTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatEncodeWorksLikeExpected()
+    public function dataProviderTestThatEncodeWorksLikeExpected(): array
     {
         // Create simple object for test
         $object = new \stdClass();
@@ -135,7 +136,7 @@ class JSONTest extends WebTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatDecodeWorksLikeExpected()
+    public function dataProviderTestThatDecodeWorksLikeExpected(): array
     {
         $iterator = function ($data) {
             return [
@@ -152,7 +153,7 @@ class JSONTest extends WebTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatEncodeThrowsAnExceptionOnMaximumDepth()
+    public function dataProviderTestThatEncodeThrowsAnExceptionOnMaximumDepth(): array
     {
         return [
             [
@@ -170,7 +171,7 @@ class JSONTest extends WebTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatDecodeThrowsAnExceptionOnMaximumDepth()
+    public function dataProviderTestThatDecodeThrowsAnExceptionOnMaximumDepth(): array
     {
         return [
             [
@@ -188,7 +189,7 @@ class JSONTest extends WebTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatDecodeThrowsAnExceptionOnMalformedJson()
+    public function dataProviderTestThatDecodeThrowsAnExceptionOnMalformedJson(): array
     {
         return [
             ['{foo:bar}'],
@@ -203,7 +204,7 @@ class JSONTest extends WebTestCase
      *
      * @return array
      */
-    public function dataProviderTestThatEncodeThrowsAnExceptionOnInvalidUtfCharacters()
+    public function dataProviderTestThatEncodeThrowsAnExceptionOnInvalidUtfCharacters(): array
     {
         return [
             ["\xB1\x31"],
