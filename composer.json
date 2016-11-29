@@ -50,19 +50,19 @@
         "nelmio/api-doc-bundle": "dev-master",
         "nelmio/cors-bundle": "1.4.1",
         "piwik/device-detector": "3.7.4",
+        "ramsey/uuid": "3.5.2",
         "sensio/distribution-bundle": "5.0.14",
         "sensio/framework-extra-bundle": "3.0.16",
         "symfony/monolog-bundle": "3.0.1",
         "symfony/swiftmailer-bundle": "2.4.0",
-        "symfony/symfony": "3.1.7",
-        "ramsey/uuid": "3.5.1"
+        "symfony/symfony": "3.1.7"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "satooshi/php-coveralls": "^1.0",
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.1",
         "squizlabs/php_codesniffer": "^2.6",
-        "satooshi/php-coveralls": "^1.0"
+        "symfony/phpunit-bridge": "^3.1"
     },
     "repositories": [
         {
