@@ -65,6 +65,7 @@ class ResponseListener
         $this->logger->setRequest($event->getRequest());
         $this->logger->setResponse($event->getResponse());
         $this->logger->setUser($this->user);
+        $this->logger->setMasterRequest($event->isMasterRequest());
         $this->logger->handle();
     }
 }
