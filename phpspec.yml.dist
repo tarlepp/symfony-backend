@@ -1,0 +1,2 @@
+formatter.name: dot
+stop_on_failure: true
