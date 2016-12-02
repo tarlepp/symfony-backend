@@ -11,7 +11,6 @@ use App\Services\Rest\RequestLog as RequestLogService;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -25,11 +24,11 @@ interface ResponseLogger
     /**
      * ResponseLogger constructor.
      *
-     * @param   KernelInterface     $kernel
      * @param   Logger              $logger
      * @param   RequestLogService   $service
+     * @param   string              $environment
      */
-    public function __construct(KernelInterface $kernel, Logger $logger, RequestLogService $service);
+    public function __construct(Logger $logger, RequestLogService $service, string $environment);
 
     /**
      * Setter for response object.
@@ -70,7 +69,7 @@ interface ResponseLogger
     /**
      * Method to handle current response and log it to database.
      *
-     * @return  void
+     * @throws  \Exception
      */
     public function handle();
 }

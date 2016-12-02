@@ -13,7 +13,6 @@ use App\Services\Rest\RequestLog as RequestLogService;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -35,11 +34,6 @@ class ResponseLogger implements ResponseLoggerInterface
     protected $request;
 
     /**
-     * @var KernelInterface
-     */
-    protected $kernel;
-
-    /**
      * @var Logger
      */
     protected $logger;
@@ -48,6 +42,11 @@ class ResponseLogger implements ResponseLoggerInterface
      * @var RequestLogService
      */
     protected $service;
+
+    /**
+     * @var string
+     */
+    protected $environment;
 
     /**
      * @var UserInterface
@@ -62,12 +61,12 @@ class ResponseLogger implements ResponseLoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(KernelInterface $kernel, Logger $logger, RequestLogService $service)
+    public function __construct(Logger $logger, RequestLogService $service, string $environment)
     {
         // Store user services
-        $this->kernel = $kernel;
         $this->logger = $logger;
         $this->service = $service;
+        $this->environment = $environment;
     }
 
     /**
@@ -111,7 +110,7 @@ class ResponseLogger implements ResponseLoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function handle()
     {
@@ -129,8 +128,9 @@ class ResponseLogger implements ResponseLoggerInterface
         try {
             $this->service->save($entity, true);
             $this->service->getRepository()->cleanHistory();
-        } catch (\Exception $error) { // Silently ignore this error to prevent client to get real error
-            if ($this->kernel->getEnvironment() === 'dev') {
+        } catch (\Exception $error) {
+            // Silently ignore this error to prevent client to get real error IF not in dev environment
+            if ($this->environment === 'dev') {
                 throw $error;
             }
 
