@@ -1,4 +1,9 @@
 <?php
+/**
+ * /spec/App/Controller/AuthControllerSpec.php
+ *
+ * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ */
 declare(strict_types = 1);
 
 namespace spec\App\Controller;
@@ -7,6 +12,7 @@ use App\Controller\AuthController;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use JMS\Serializer\SerializerInterface;
 use PhpSpec\ObjectBehavior;
+use PhpSpec\Wrapper\Collaborator;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -19,9 +25,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class AuthControllerSpec extends ObjectBehavior
 {
     /**
-     * @param   TokenStorageInterface       $tokenStorage
-     * @param   SerializerInterface         $serializer
-     * @param   RestHelperResponseInterface $restHelperResponse
+     * @param   Collaborator|TokenStorageInterface $tokenStorage
+     * @param   Collaborator|SerializerInterface $serializer
+     * @param   Collaborator|RestHelperResponseInterface $restHelperResponse
      */
     function let(
         TokenStorageInterface $tokenStorage,
