@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -27,25 +26,25 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 class ExceptionListener
 {
     /**
-     * @var \AppKernel
-     */
-    protected $kernel;
-
-    /**
      * @var Logger
      */
     protected $logger;
 
     /**
+     * @var string
+     */
+    protected $environment;
+
+    /**
      * ExceptionListener constructor.
      *
-     * @param   KernelInterface         $kernel
      * @param   DebugLoggerInterface    $logger
+     * @param   string                  $environment
      */
-    public function __construct(KernelInterface $kernel, DebugLoggerInterface $logger)
+    public function __construct(DebugLoggerInterface $logger, string $environment)
     {
-        $this->kernel = $kernel;
         $this->logger = $logger;
+        $this->environment = $environment;
     }
 
     /**
@@ -78,7 +77,7 @@ class ExceptionListener
 
         // Set base of error message
         $error = [
-            'message'   => ($this->kernel->getEnvironment() === 'dev')
+            'message'   => ($this->environment === 'dev')
                 ? $exception->getMessage()
                 : $this->getExceptionMessage($exception),
             'code'      => $exception->getCode(),
@@ -86,7 +85,7 @@ class ExceptionListener
         ];
 
         // Attach more info to error response in dev environment
-        if ($this->kernel->getEnvironment() === 'dev') {
+        if ($this->environment === 'dev') {
             $error += [
                 'debug' => [
                     'file'          => $exception->getFile(),
