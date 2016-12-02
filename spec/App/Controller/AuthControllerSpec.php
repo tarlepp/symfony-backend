@@ -13,6 +13,7 @@ use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use JMS\Serializer\SerializerInterface;
 use PhpSpec\ObjectBehavior;
 use PhpSpec\Wrapper\Collaborator;
+use PhpSpec\Wrapper\Subject;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -44,5 +45,13 @@ class AuthControllerSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(AuthController::class);
+    }
+
+    function it_should_response_null_to_getTokenAction()
+    {
+        /** @var Subject $result */
+        $result = $this->getTokenAction();
+
+        $result->shouldReturn(null);
     }
 }
