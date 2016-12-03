@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace spec\App\Controller;
 
 use App\Controller\BookController;
+use App\Controller\Interfaces\RestController;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use PhpSpec\ObjectBehavior;
@@ -43,5 +44,6 @@ class BookControllerSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(BookController::class);
+        $this->shouldImplement(RestController::class);
     }
 }
