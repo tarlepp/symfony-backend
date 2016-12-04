@@ -7,7 +7,7 @@ declare(strict_types=1);
  */
 namespace App\EventListener;
 
-use App\Services\LoginLogger;
+use App\Services\Interfaces\LoginLogger;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 
 /**
