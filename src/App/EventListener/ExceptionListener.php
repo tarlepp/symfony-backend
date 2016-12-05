@@ -9,12 +9,12 @@ namespace App\EventListener;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
@@ -38,10 +38,10 @@ class ExceptionListener
     /**
      * ExceptionListener constructor.
      *
-     * @param   DebugLoggerInterface    $logger
-     * @param   string                  $environment
+     * @param   LoggerInterface $logger
+     * @param   string          $environment
      */
-    public function __construct(DebugLoggerInterface $logger, string $environment)
+    public function __construct(LoggerInterface $logger, string $environment)
     {
         $this->logger = $logger;
         $this->environment = $environment;
