@@ -140,11 +140,20 @@ $ ./bin/console doctrine:migrations:diff
 With this you won't need to write those migration files by yourself, just let doctrine handle those - although remember to really look what those generated migration files really contains...
 
 ## Tests
-Project contains bunch of tests (unit, functional, e2e, etc.) which you can run simply by following command:
+Project contains bunch of tests (unit, functional, e2e, etc.) which you can run simply by following commands:
 
 ```bash
-phpunit
+# PHPUnit 
+$ ./vendor/bin/phpunit
+
+# PHPSpec
+$ ./vender/bin/phpspec run
 ```
+
+* [PHPUnit](https://phpunit.de/)
+* [PHPSpec](http://www.phpspec.net/)
+
+Or you could easily configure your IDE to run these for you.
 
 ## XDebug
 Add following lines to your ```xdebug.ini``` file to get XDebug work:
