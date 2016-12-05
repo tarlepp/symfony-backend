@@ -26,7 +26,7 @@ class UserLoginTest extends RestServiceTestCase
     /**
      * @var string
      */
-    protected $serviceName = 'app.services.rest.userLogin';
+    protected $serviceName = 'app.services.rest.user_login';
 
     /**
      * @var string

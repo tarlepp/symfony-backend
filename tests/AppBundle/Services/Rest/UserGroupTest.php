@@ -26,7 +26,7 @@ class UserGroupTest extends RestServiceTestCase
     /**
      * @var string
      */
-    protected $serviceName = 'app.services.rest.userGroup';
+    protected $serviceName = 'app.services.rest.user_group';
 
     /**
      * @var string

@@ -26,7 +26,7 @@ class RequestLogTest extends RestServiceTestCase
     /**
      * @var string
      */
-    protected $serviceName = 'app.services.rest.requestLog';
+    protected $serviceName = 'app.services.rest.request_log';
 
     /**
      * @var string
