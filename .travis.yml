@@ -33,6 +33,7 @@ install:
 
 before_script:
   - php bin/console --version
+  - phpunit --version
   - php bin/console doctrine:database:create
 
 script:
