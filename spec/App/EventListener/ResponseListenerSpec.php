@@ -93,7 +93,7 @@ class ResponseListenerSpec extends ObjectBehavior
         $responseLogger->setRequest(Argument::type(Request::class))->shouldBeCalled();
         $responseLogger->setResponse(Argument::type(Response::class))->shouldBeCalled();
         $responseLogger->setUser(null)->shouldBeCalled();
-        $responseLogger->setMasterRequest(Argument::type('bool'))->shouldBeCalled();
+        $responseLogger->setMasterRequest((bool)Argument::type('bool'))->shouldBeCalled();
         $responseLogger->handle()->shouldBeCalled();
 
         $this->onKernelResponse($event);
@@ -129,7 +129,7 @@ class ResponseListenerSpec extends ObjectBehavior
         $responseLogger->setRequest(Argument::type(Request::class))->shouldBeCalled();
         $responseLogger->setResponse(Argument::type(Response::class))->shouldBeCalled();
         $responseLogger->setUser($user)->shouldBeCalled();
-        $responseLogger->setMasterRequest(Argument::type('bool'))->shouldBeCalled();
+        $responseLogger->setMasterRequest((bool)Argument::type('bool'))->shouldBeCalled();
         $responseLogger->handle()->shouldBeCalled();
 
         $this->onKernelResponse($event);
