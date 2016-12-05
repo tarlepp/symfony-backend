@@ -45,7 +45,7 @@
         "incenteev/composer-parameter-handler": "2.1.2",
         "jms/serializer-bundle": "1.1.0",
         "knplabs/doctrine-behaviors": "1.4.0",
-        "lexik/jwt-authentication-bundle": "2.0.2",
+        "lexik/jwt-authentication-bundle": "2.0.3",
         "matthiasnoback/symfony-console-form": "2.0.2",
         "nelmio/api-doc-bundle": "dev-master",
         "nelmio/cors-bundle": "1.4.1",
@@ -55,7 +55,7 @@
         "sensio/framework-extra-bundle": "3.0.16",
         "symfony/monolog-bundle": "3.0.1",
         "symfony/swiftmailer-bundle": "2.4.0",
-        "symfony/symfony": "3.1.7"
+        "symfony/symfony": "3.2.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^2.3",
