@@ -33,12 +33,13 @@ install:
 
 before_script:
   - php bin/console --version
-  - phpunit --version
+  - vendor/bin/phpunit --version
+  - vendor/bin/phpspec --version
   - php bin/console doctrine:database:create
 
 script:
   - mkdir -p build/logs
-  - phpunit --coverage-clover build/logs/clover.xml
+  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
   - vendor/bin/phpspec run
 
 after_success:
