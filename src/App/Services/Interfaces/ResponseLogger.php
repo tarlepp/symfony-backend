@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace App\Services\Interfaces;
 
 use App\Services\Rest\RequestLog as RequestLogService;
-use Symfony\Bridge\Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,11 +24,11 @@ interface ResponseLogger
     /**
      * ResponseLogger constructor.
      *
-     * @param   Logger              $logger
+     * @param   LoggerInterface     $logger
      * @param   RequestLogService   $service
      * @param   string              $environment
      */
-    public function __construct(Logger $logger, RequestLogService $service, string $environment);
+    public function __construct(LoggerInterface $logger, RequestLogService $service, string $environment);
 
     /**
      * Setter for response object.

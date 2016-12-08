@@ -10,6 +10,7 @@ namespace App\Services;
 use App\Entity\RequestLog as RequestLogEntity;
 use App\Services\Interfaces\ResponseLogger as ResponseLoggerInterface;
 use App\Services\Rest\RequestLog as RequestLogService;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,7 +62,7 @@ class ResponseLogger implements ResponseLoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(Logger $logger, RequestLogService $service, string $environment)
+    public function __construct(LoggerInterface $logger, RequestLogService $service, string $environment)
     {
         // Store user services
         $this->logger = $logger;
