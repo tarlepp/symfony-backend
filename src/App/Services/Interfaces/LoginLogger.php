@@ -9,7 +9,7 @@ namespace App\Services\Interfaces;
 
 use App\Services\Rest\UserLogin as UserLoginService;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -24,13 +24,13 @@ interface LoginLogger
     /**
      * LoginLogger constructor.
      *
-     * @param   Logger              $logger
+     * @param   LoggerInterface     $logger
      * @param   UserLoginService    $userLoginService
      * @param   EntityRepository    $userRepository
      * @param   RequestStack        $requestStack
      */
     public function __construct(
-        Logger $logger,
+        LoggerInterface $logger,
         UserLoginService $userLoginService,
         EntityRepository $userRepository,
         RequestStack $requestStack

@@ -14,6 +14,7 @@ use App\Services\Interfaces\LoginLogger as LoginLoggerInterface;
 use App\Services\Rest\UserLogin as UserLoginService;
 use DeviceDetector\DeviceDetector;
 use Doctrine\ORM\EntityRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -66,7 +67,7 @@ class LoginLogger implements LoginLoggerInterface
      * {@inheritdoc}
      */
     public function __construct(
-        Logger $logger,
+        LoggerInterface $logger,
         UserLoginService $userLoginService,
         EntityRepository $userRepository,
         RequestStack $requestStack
