@@ -1013,7 +1013,7 @@ class RequestLog implements EntityInterface
             } catch (\LogicException $error) { // Oh noes content isn't JSON so just parse it
                 $output = [];
 
-                parse_str($$request->getContent(), $output);
+                parse_str($request->getContent(), $output);
             }
         } else { // Otherwise trust parameter bag
             $output = $request->request->all();
