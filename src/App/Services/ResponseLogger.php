@@ -135,7 +135,7 @@ class ResponseLogger implements ResponseLoggerInterface
                 throw $error;
             }
 
-            $this->logger->err($error->getMessage());
+            $this->logger->error($error->getMessage());
         }
     }
 }
