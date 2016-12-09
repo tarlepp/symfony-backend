@@ -131,4 +131,51 @@ class ResponseLoggerSpec extends ObjectBehavior
         $this->setMasterRequest(true);
         $this->handle();
     }
+
+    /**
+     * @param   \PhpSpec\Wrapper\Collaborator|Request           $request
+     * @param   \PhpSpec\Wrapper\Collaborator|Response          $response
+     * @param   \PhpSpec\Wrapper\Collaborator|LoggerInterface   $logger
+     * @param   \PhpSpec\Wrapper\Collaborator|RequestLogService $service
+     */
+    function it_should_log_possible_error_in_any_other_environments_expect_dev(
+        Request $request,
+        Response $response,
+        LoggerInterface $logger,
+        RequestLogService $service
+    ) {
+        // Construct with 'prod' environment
+        $this->beConstructedWith($logger, $service, 'prod');
+
+        // Make first sub-method to throw an exception
+        $request->getClientIp()->willThrow(\Exception::class);
+
+        // Set required mock data
+        $this->setRequest($request);
+        $this->setResponse($response);
+
+        // It should log this error
+        $logger->error(Argument::any())->shouldBeCalled();
+
+        $this->handle();
+    }
+
+    /**
+     * @param   \PhpSpec\Wrapper\Collaborator|Request   $request
+     * @param   \PhpSpec\Wrapper\Collaborator|Response  $response
+     */
+    function it_should_throw_an_exception_if_error_occurred_in_dev_environment(
+        Request $request,
+        Response $response
+    ) {
+        // Make first sub-method to throw an exception
+        $request->getClientIp()->willThrow(\Exception::class);
+
+        // Set required mock data
+        $this->setRequest($request);
+        $this->setResponse($response);
+
+        // And it should throw an exception
+        $this->shouldThrow(\Exception::class)->during('handle');
+    }
 }
