@@ -77,4 +77,24 @@ class RequestSpec extends ObjectBehavior
 
         self::getOrderBy($request)->shouldReturn(['foobar' => 'DESC']);
     }
+
+    /**
+     * @param \PhpSpec\Wrapper\Collaborator|HttpRequest $request
+     */
+    function it_should_return_null_when_calling_getLimit_without_limit_parameter(
+        HttpRequest $request
+    ) {
+        self::getLimit($request)->shouldReturn(null);
+    }
+
+    /**
+     * @param \PhpSpec\Wrapper\Collaborator|HttpRequest $request
+     */
+    function it_should_return_positive_value_when_calling_getLimit_with_limit_parameter(
+        HttpRequest $request
+    ) {
+        $request->get('limit', Argument::any())->shouldBeCalled()->willReturn(-10);
+
+        self::getLimit($request)->shouldReturn(10);
+    }
 }
