@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * Main application file to handle all requests in production mode.
  *
