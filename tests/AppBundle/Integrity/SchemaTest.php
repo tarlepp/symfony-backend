@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/Database/SchemaTest.php
+ * /tests/AppBundle/Integrity/SchemaTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\Database;
+namespace AppBundle\Integrity;
 
 use Doctrine\ORM\Tools\SchemaValidator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
