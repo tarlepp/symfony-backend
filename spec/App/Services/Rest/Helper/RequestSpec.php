@@ -57,4 +57,24 @@ class RequestSpec extends ObjectBehavior
         self::getCriteria($request)->shouldHaveKey('foo');
         self::getCriteria($request)->shouldHaveKey('bar');
     }
+
+    /**
+     * @param \PhpSpec\Wrapper\Collaborator|HttpRequest $request
+     */
+    function it_should_return_null_when_calling_getOrderBy_without_order_parameter(
+        HttpRequest $request
+    ) {
+        self::getOrderBy($request)->shouldReturn(null);
+    }
+
+    /**
+     * @param \PhpSpec\Wrapper\Collaborator|HttpRequest $request
+     */
+    function it_should_return_array_when_calling_getOrderBy_with_order_parameter(
+        HttpRequest $request
+    ) {
+        $request->get('order', Argument::any())->shouldBeCalled()->willReturn('-foobar');
+
+        self::getOrderBy($request)->shouldReturn(['foobar' => 'DESC']);
+    }
 }
