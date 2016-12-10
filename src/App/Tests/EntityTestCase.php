@@ -330,6 +330,10 @@ abstract class EntityTestCase extends KernelTestCase
         $input,
         $expectedOutput
     ) {
+        if ($method === '') {
+            self::markTestSkipped("Entity doesn't have associations, so cannot test those...");
+        }
+
         static::assertTrue(
             method_exists($this->entity, $method),
             sprintf(
@@ -544,6 +548,8 @@ abstract class EntityTestCase extends KernelTestCase
 
             switch ($type) {
                 case 'integer':
+                case 'bigint':
+                    $type = 'integer';
                     break;
                 case 'date':
                 case 'datetime':
@@ -782,6 +788,13 @@ abstract class EntityTestCase extends KernelTestCase
         $entityManager = null; // avoid memory leaks
 
         self::$kernel->shutdown();
+
+        // These isn't associations, so return special values that marks test skipped
+        if (empty($meta->getAssociationMappings())) {
+            return [
+                ['', '', null, null]
+            ];
+        }
 
         return call_user_func_array('array_merge', array_map($iterator, $meta->getAssociationMappings()));
     }
