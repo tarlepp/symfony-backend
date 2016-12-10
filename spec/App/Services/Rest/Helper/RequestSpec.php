@@ -117,4 +117,51 @@ class RequestSpec extends ObjectBehavior
 
         self::getOffset($request)->shouldReturn(10);
     }
+
+    /**
+     * @param \PhpSpec\Wrapper\Collaborator|HttpRequest $request
+     */
+    function it_should_return_empty_array_when_calling_getSearchTerms_without_search_parameter(
+        HttpRequest $request
+    ) {
+        self::getSearchTerms($request)->shouldReturn([]);
+    }
+
+    /**
+     * @param \PhpSpec\Wrapper\Collaborator|HttpRequest $request
+     */
+    function it_should_throw_an_exception_when_calling_getSearchTerms_with_not_supported_json_in_search_parameter(
+        HttpRequest $request
+    ) {
+        $request->get('search', Argument::any())->shouldBeCalled()->willReturn('{"foo": "bar"}');
+
+        $this->shouldThrow(HttpException::class)->during('getSearchTerms', [$request]);
+    }
+
+    /**
+     * @param \PhpSpec\Wrapper\Collaborator|HttpRequest $request
+     */
+    function it_should_return_expected_array_when_calling_getSearchTerms_with_supported_json_in_search_parameter(
+        HttpRequest $request
+    ) {
+        $request->get('search', Argument::any())->shouldBeCalled()->willReturn('{"or": ["bar", "foo"], "and": ["foo", "bar"]}');
+
+        $expected = [
+            'or'    => ['bar', 'foo'],
+            'and'   => ['foo', 'bar'],
+        ];
+
+        self::getSearchTerms($request)->shouldBeEqualTo($expected);
+    }
+
+    /**
+     * @param \PhpSpec\Wrapper\Collaborator|HttpRequest $request
+     */
+    function it_should_return_expected_array_when_calling_getSearchTerms_with_invalid_json(
+        HttpRequest $request
+    ) {
+        $request->get('search', Argument::any())->shouldBeCalled()->willReturn('{foo bar');
+
+        self::getSearchTerms($request)->shouldBeEqualTo(['or' => ['{foo', 'bar']]);
+    }
 }
