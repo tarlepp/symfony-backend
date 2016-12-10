@@ -97,4 +97,24 @@ class RequestSpec extends ObjectBehavior
 
         self::getLimit($request)->shouldReturn(10);
     }
+
+    /**
+     * @param \PhpSpec\Wrapper\Collaborator|HttpRequest $request
+     */
+    function it_should_return_null_when_calling_getOffset_without_limit_parameter(
+        HttpRequest $request
+    ) {
+        self::getOffset($request)->shouldReturn(null);
+    }
+
+    /**
+     * @param \PhpSpec\Wrapper\Collaborator|HttpRequest $request
+     */
+    function it_should_return_positive_value_when_calling_getOffset_with_limit_parameter(
+        HttpRequest $request
+    ) {
+        $request->get('offset', Argument::any())->shouldBeCalled()->willReturn(-10);
+
+        self::getOffset($request)->shouldReturn(10);
+    }
 }
