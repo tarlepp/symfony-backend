@@ -47,6 +47,44 @@ abstract class EntityTestCase extends KernelTestCase
      */
     protected $repository;
 
+    private static function getValidValueForType(string $type, array $meta)
+    {
+        if (substr_count($type, '\\') > 1) {
+            $type = 'CustomClass';
+        }
+
+        switch ($type) {
+            case 'CustomClass':
+                $value = new $meta['targetEntity']();
+                break;
+            case 'integer':
+                $value = 666;
+                break;
+            case '\DateTime':
+                $value = new \DateTime();
+                break;
+            case 'string':
+                $value = 'Some text here';
+                break;
+            case 'array':
+                $value = ['some', 'array', 'here'];
+                break;
+            case 'boolean':
+                $value = true;
+                break;
+            default:
+                $message = sprintf(
+                    "Cannot create valid value for type '%s'.",
+                    $type
+                );
+
+                throw new \LogicException($message);
+                break;
+        }
+
+        return $value;
+    }
+
     /**
      * @param   string $type
      *
@@ -69,7 +107,7 @@ abstract class EntityTestCase extends KernelTestCase
                 break;
             default:
                 $message = sprintf(
-                    "Currently type '%s' is not supported within generic EntityTestCase",
+                    "Cannot create invalid value for type '%s'.",
                     $type
                 );
 
@@ -144,8 +182,9 @@ abstract class EntityTestCase extends KernelTestCase
      *
      * @param   string  $field
      * @param   string  $type
+     * @param   array   $meta
      */
-    public function testThatGetterAndSetterExists(string $field, string $type, $value, $meta)
+    public function testThatGetterAndSetterExists(string $field, string $type, array $meta)
     {
         $getter = 'get' . ucfirst($field);
         $setter = 'set' . ucfirst($field);
@@ -182,12 +221,14 @@ abstract class EntityTestCase extends KernelTestCase
      *
      * @param   string  $field
      * @param   string  $type
+     * @param   array   $meta
      */
-    public function testThatSetterOnlyAcceptSpecifiedType(string $field, string $type, $value, $meta)
+    public function testThatSetterOnlyAcceptSpecifiedType(string $field, string $type, array $meta)
     {
+        $getter = 'get' . ucfirst($field);
         $setter = 'set' . ucfirst($field);
 
-        if (!array_key_exists('columnName', $meta)) {
+        if (!array_key_exists('columnName', $meta) && !array_key_exists('joinColumns', $meta)) {
             static::markTestSkipped("No need to test this setter...");
         }
 
@@ -196,11 +237,14 @@ abstract class EntityTestCase extends KernelTestCase
 
             call_user_func([$this->entity, $setter], $value);
 
+            try {
+                static::assertEquals(self::getValidValueForType($type, $meta), call_user_func([$this->entity, $getter]));
+            } catch (\TypeError $error) { }
+
             $message = sprintf(
-                "Setter '%s' didn't fail with invalid value type '(%s)%s'",
+                "Setter '%s' didn't fail with invalid value type '%s', maybe missing variable type?",
                 $setter,
-                gettype($value),
-                $value
+                is_object($value) ? gettype($value) : '(' . gettype($value) . ')' . $value
             );
 
             static::fail($message);
@@ -214,9 +258,9 @@ abstract class EntityTestCase extends KernelTestCase
      *
      * @param   string  $field
      * @param   string  $type
-     * @param   mixed   $value
+     * @param   array   $meta
      */
-    public function testThatSetterReturnsInstanceOfEntity(string $field, string $type, $value, $meta)
+    public function testThatSetterReturnsInstanceOfEntity(string $field, string $type, array $meta)
     {
         $setter = 'set' . ucfirst($field);
 
@@ -226,7 +270,7 @@ abstract class EntityTestCase extends KernelTestCase
 
         static::assertInstanceOf(
             get_class($this->entity),
-            call_user_func([$this->entity, $setter], $value),
+            call_user_func([$this->entity, $setter], self::getValidValueForType($type, $meta)),
             sprintf(
                 "Entity '%s' setter '%s()' method for '%s' property did not return expected value.",
                 $this->entityName,
@@ -240,10 +284,10 @@ abstract class EntityTestCase extends KernelTestCase
      * @dataProvider dataProviderTestThatSetterAndGettersWorks
      *
      * @param   string  $field
-     * @param   mixed   $value
      * @param   string  $type
+     * @param   array   $meta
      */
-    public function testThatGetterReturnsExpectedValue(string $field, string $type, $value, $meta)
+    public function testThatGetterReturnsExpectedValue(string $field, string $type, array $meta)
     {
         $getter = 'get' . ucfirst($field);
         $setter = 'set' . ucfirst($field);
@@ -253,6 +297,8 @@ abstract class EntityTestCase extends KernelTestCase
         }
 
         if (array_key_exists('columnName', $meta) || array_key_exists('joinColumns', $meta)) {
+            $value = self::getValidValueForType($type, $meta);
+
             call_user_func([$this->entity, $setter], $value);
         } else {
             $type = ArrayCollection::class;
@@ -487,7 +533,6 @@ abstract class EntityTestCase extends KernelTestCase
          * following data:
          *  1) Name
          *  2) Type
-         *  3) Value
          *  4) meta
          *
          * @param   string  $field
@@ -499,27 +544,19 @@ abstract class EntityTestCase extends KernelTestCase
 
             switch ($type) {
                 case 'integer':
-                    $value = 666;
                     break;
                 case 'date':
                 case 'datetime':
-                    $value = new \DateTime();
                     $type = '\DateTime';
                     break;
                 case 'text':
-                    $value = 'Some text here';
-                    $type = 'string';
-                    break;
                 case 'string':
-                    $value = 'Some text here';
                     $type = 'string';
                     break;
                 case 'array':
-                    $value = ['some', 'array', 'here'];
                     $type = 'array';
                     break;
                 case 'boolean':
-                    $value = true;
                     $type = 'boolean';
                     break;
                 default:
@@ -532,7 +569,7 @@ abstract class EntityTestCase extends KernelTestCase
                     break;
             }
 
-            return [$field, $type, $value, $meta->getFieldMapping($field)];
+            return [$field, $type, $meta->getFieldMapping($field)];
         };
 
         $fieldsToOmit = array_merge(
@@ -563,9 +600,8 @@ abstract class EntityTestCase extends KernelTestCase
 
             $field = $mapping['fieldName'];
             $type = $mapping['targetEntity'];
-            $value = new $mapping['targetEntity']();
 
-            $assocFields[] = [$field, $type, $value, $mapping];
+            $assocFields[] = [$field, $type, $mapping];
         }
 
         return array_merge(
