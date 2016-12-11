@@ -47,6 +47,12 @@ abstract class EntityTestCase extends KernelTestCase
      */
     protected $repository;
 
+    /**
+     * @param   string  $type
+     * @param   array   $meta
+     *
+     * @return  array|bool|\DateTime|int|string
+     */
     private static function getValidValueForType(string $type, array $meta)
     {
         if (substr_count($type, '\\') > 1) {

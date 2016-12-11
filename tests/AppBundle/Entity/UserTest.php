@@ -128,6 +128,20 @@ class UserTest extends EntityTestCase
     }
 
     /**
+     * @dataProvider dataProviderTestThatIsEqualToMethodWorksAsExpected
+     *
+     * @param bool $expected
+     */
+    public function testThatIsEqualToMethodWorksAsExpected(bool $expected)
+    {
+        $entity = $expected ? clone $this->entity : new $this->entityName();
+
+        $message = "Failed to check if User entity is equal.";
+
+        static::assertEquals($expected, $this->entity->isEqualTo($entity), $message);
+    }
+
+    /**
      * Data provider for testThatPasswordHashingIsWorkingAsExpected
      *
      * @return array
@@ -137,6 +151,14 @@ class UserTest extends EntityTestCase
         return [
             ['str_rot13', 'password', 'cnffjbeq'],
             ['base64_encode', 'password', 'cGFzc3dvcmQ='],
+        ];
+    }
+
+    public function dataProviderTestThatIsEqualToMethodWorksAsExpected(): array
+    {
+        return [
+            [true],
+            [false],
         ];
     }
 }
