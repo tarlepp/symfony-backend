@@ -31,7 +31,17 @@ class AuthControllerTest extends WebTestCase
     public function testThatValidCredentialsWork(string $username, string $password)
     {
         $client = static::createClient();
-        $client->request('POST', '/auth/getToken', ['username' => $username, 'password' => $password]);
+        $client->request(
+            'POST',
+            '/auth/getToken',
+            [],
+            [],
+            [
+                'CONTENT_TYPE'          => 'application/json',
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ],
+            json_encode(['username' => $username, 'password' => $password])
+        );
 
         // Check that HTTP status code is correct
         static::assertEquals(
@@ -67,10 +77,20 @@ class AuthControllerTest extends WebTestCase
      * @param   string  $username
      * @param   string  $password
      */
-    public function testThatInvalidCredentialsWontWork($username, $password)
+    public function _testThatInvalidCredentialsWontWork($username, $password)
     {
         $client = static::createClient();
-        $client->request('POST', '/auth/getToken', ['username' => $username, 'password' => $password]);
+        $client->request(
+            'POST',
+            '/auth/getToken',
+            [],
+            [],
+            [
+                'CONTENT_TYPE'          => 'application/json',
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ],
+            json_encode(['username' => $username, 'password' => $password])
+        );
 
         // Specify error message
         $message = [
