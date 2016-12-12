@@ -89,7 +89,7 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
         $class = get_class($user);
 
         if (!$this->supportsClass($class)) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
+            throw new UnsupportedUserException(sprintf('Instance of "%s" is not supported.', $class));
         }
 
         return $this->loadUserByUsername($user->getUsername());
