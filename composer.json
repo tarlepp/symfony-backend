@@ -49,7 +49,7 @@
         "matthiasnoback/symfony-console-form": "2.0.2",
         "nelmio/api-doc-bundle": "dev-master",
         "nelmio/cors-bundle": "1.4.1",
-        "piwik/device-detector": "3.7.4",
+        "piwik/device-detector": "3.7.5",
         "ramsey/uuid": "3.5.2",
         "sensio/distribution-bundle": "5.0.15",
         "sensio/framework-extra-bundle": "3.0.16",
