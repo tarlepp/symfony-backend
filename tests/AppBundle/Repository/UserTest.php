@@ -65,6 +65,17 @@ class UserTest extends RepositoryTestCase
     }
 
     /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
+     * @expectedExceptionMessage User "this-user-does-not-exists" not found
+     */
+    public function testThatLoadUserByUsernameThrowsUsernameNotFoundException()
+    {
+        $user = (new User())->setUsername('this-user-does-not-exists');
+
+        $this->repository->refreshUser($user);
+    }
+
+    /**
      * @return array
      */
     public function dataProviderTestThatRefreshUserMethodLoadsUser(): array
