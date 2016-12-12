@@ -91,6 +91,17 @@ abstract class RepositoryTestCase extends KernelTestCase
     }
 
     /**
+     * Method to test that 'getEntityManager' method returns expected object.
+     */
+    public function testThatGetEntityManagerReturnsExpected()
+    {
+        static::assertInstanceOf(
+            '\Doctrine\ORM\EntityManager',
+            $this->repository->getEntityManager()
+        );
+    }
+
+    /**
      * @dataProvider dataProviderTestThatProcessSearchTermsCreatesExpectedCriteria
      *
      * @param   array   $searchTerms
