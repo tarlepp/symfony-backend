@@ -84,7 +84,7 @@ abstract class RepositoryTestCase extends KernelTestCase
         /** @var EntityInterface $entity */
         $entity = new $this->entityName();
 
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             '\Doctrine\Common\Proxy\Proxy',
             $this->repository->getReference($entity->getId())
         );
@@ -108,7 +108,7 @@ abstract class RepositoryTestCase extends KernelTestCase
                 $this->entityName
             );
 
-            $this->markTestSkipped($message);
+            static::markTestSkipped($message);
         }
 
         $queryBuilder= $this->repository->createQueryBuilder('e');
@@ -138,7 +138,7 @@ abstract class RepositoryTestCase extends KernelTestCase
             $criteria = array_merge($criteria, array_map($iterator, $this->repository->getSearchColumns()));
         }
 
-        $this->assertEquals(
+        static::assertEquals(
             sprintf($expectedDQL, $this->entityName, implode(' ' . strtoupper($operand) . ' ', $criteria)),
             $queryBuilder->getQuery()->getDQL(),
             'processSearchTerms method did not create expected query criteria.'

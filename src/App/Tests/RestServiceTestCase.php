@@ -80,7 +80,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
     public function testThatGetEntityNameReturnsExpectedValue()
     {
         if (is_null($this->entityName)) {
-            $this->fail('You have not specified entityName to your test class.');
+            static::fail('You have not specified entityName to your test class.');
         }
 
         $message = sprintf(
@@ -89,7 +89,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
             $this->entityName
         );
 
-        $this->assertEquals($this->entityName, $this->service->getEntityName(), $message);
+        static::assertEquals($this->entityName, $this->service->getEntityName(), $message);
     }
 
     /**
@@ -98,7 +98,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
     public function testThatGetReferenceReturnsExpectedProxy()
     {
         if (is_null($this->entityName)) {
-            $this->fail('You have not specified entityName to your test class.');
+            static::fail('You have not specified entityName to your test class.');
         }
 
         $proxy = 'Proxies\\__CG__\\' . $this->entityName;
@@ -109,7 +109,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
             $proxy
         );
 
-        $this->assertInstanceOf($proxy, $this->service->getReference('testReference'), $message);
+        static::assertInstanceOf($proxy, $this->service->getReference('testReference'), $message);
     }
 
     /**
@@ -118,7 +118,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
     public function testThatGetRepositoryReturnsExpectedValue()
     {
         if (is_null($this->repositoryName)) {
-            $this->fail('You have not specified repositoryName to your test class.');
+            static::fail('You have not specified repositoryName to your test class.');
         }
 
         $message = sprintf(
@@ -127,7 +127,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
             $this->repositoryName
         );
 
-        $this->assertInstanceOf($this->repositoryName, $this->service->getRepository(), $message);
+        static::assertInstanceOf($this->repositoryName, $this->service->getRepository(), $message);
     }
 
     /**
@@ -135,7 +135,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
      */
     public function testThatGetAssociationsReturnsAnArray()
     {
-        $this->assertInternalType('array', $this->service->getAssociations());
+        static::assertInternalType('array', $this->service->getAssociations());
     }
 
     /**
@@ -145,7 +145,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
     {
         $data = $this->service->find();
 
-        $this->assertInternalType('array', $data);
+        static::assertInternalType('array', $data);
 
         // Skip proper checks of entity
         if ($this->entityCount === false) {
@@ -156,7 +156,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
                 $this->serviceName
             );
 
-            $this->assertEquals($this->entityCount, count($data), $message);
+            static::assertEquals($this->entityCount, count($data), $message);
 
             $message = sprintf(
                 "Rest service '%s->find()' did not return an array of '%s' entities.",
@@ -164,14 +164,14 @@ abstract class RestServiceTestCase extends ContainerTestCase
                 $this->entityName
             );
 
-            $this->assertInstanceOf($this->entityName, $data[0], $message);
+            static::assertInstanceOf($this->entityName, $data[0], $message);
         } else {
             $message = sprintf(
                 "Cannot test service '%s->find()' method properly because test class doesn't have 'entityCount' property",
                 $this->serviceName
             );
 
-            $this->markTestIncomplete($message);
+            static::markTestIncomplete($message);
         }
     }
 
