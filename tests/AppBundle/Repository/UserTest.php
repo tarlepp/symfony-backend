@@ -82,15 +82,11 @@ class UserTest extends RepositoryTestCase
     {
         return [
             [
-                (new User())
-                    ->setUsername('john-logged')
-                ,
+                (new User())->setUsername('john-logged'),
                 'john-logged',
             ],
             [
-                (new User())
-                    ->setUsername('john.doe-admin@test.com')
-                ,
+                (new User())->setUsername('john.doe-admin@test.com'),
                 'john-admin',
             ],
         ];
