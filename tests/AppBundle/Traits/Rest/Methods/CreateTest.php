@@ -26,7 +26,7 @@ class CreateTest extends KernelTestCase
     public function testThatTraitThrowsAnException()
     {
         $mock = $this->getMockForTrait(Create::class);
-        $request = Request::create('/', 'GET');
+        $request = Request::create('/', 'POST');
 
         $mock->createMethod($request);
     }

@@ -26,7 +26,7 @@ class IdsTest extends KernelTestCase
     public function testThatTraitThrowsAnException()
     {
         $mock = $this->getMockForTrait(Ids::class);
-        $request = Request::create('/', 'GET');
+        $request = Request::create('/ids', 'GET');
 
         $mock->idsMethod($request);
     }

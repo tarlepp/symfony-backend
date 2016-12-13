@@ -26,7 +26,7 @@ class CountTest extends KernelTestCase
     public function testThatTraitThrowsAnException()
     {
         $mock = $this->getMockForTrait(Count::class);
-        $request = Request::create('/', 'GET');
+        $request = Request::create('/count', 'GET');
 
         $mock->countMethod($request);
     }
