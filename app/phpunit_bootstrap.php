@@ -90,12 +90,10 @@ $loadFixturesDoctrineCommand = function () use ($application) {
 array_map(
     'call_user_func',
     [
-        /*
         $dropDatabaseDoctrineCommand,
         $createDatabaseDoctrineCommand,
         $updateSchemaDoctrineCommand,
         $loadFixturesDoctrineCommand,
-        */
     ]
 );
 
