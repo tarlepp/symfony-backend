@@ -37,9 +37,6 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * Note that controllers that uses this trait _must_ implement App\Controller\Interfaces\RestController interface.
  *
- * @method  RestHelperResponseInterface getResponseService()
- * @method  ResourceServiceInterface    getResourceService()
- *
  * @package App\Traits\Rest\Methods
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
@@ -54,7 +51,7 @@ trait Count
      *
      * @return  Response
      */
-    protected function countMethod(Request $request): Response
+    public function countMethod(Request $request): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
@@ -77,4 +74,18 @@ trait Count
             $this->getResourceService()->count($criteria, $search)
         );
     }
+
+    /**
+     * Getter method for resource service.
+     *
+     * @return ResourceServiceInterface
+     */
+    abstract public function getResourceService(): ResourceServiceInterface;
+
+    /**
+     * Getter method for REST response helper service.
+     *
+     * @return RestHelperResponseInterface
+     */
+    abstract public function getResponseService(): RestHelperResponseInterface;
 }
