@@ -7,9 +7,16 @@ declare(strict_types = 1);
  */
 namespace AppBundle\Traits\Rest\Methods;
 
+use App\Entity\Interfaces\EntityInterface;
 use App\Traits\Rest\Methods\Create;
+use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
+use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
+use AppBundle\Traits\Rest\Methods\Create as CreateTestClass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+require_once dirname(__FILE__) . '/Create.php';
 
 /**
  * Class CreateTest
@@ -29,5 +36,48 @@ class CreateTest extends KernelTestCase
         $request = Request::create('/', 'POST');
 
         $mock->createMethod($request);
+    }
+
+    public function testThatTraitCallsServiceMethods()
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var Request|\PHPUnit_Framework_MockObject_MockObject $request */
+        $request = $this->createMock(Request::class);
+        $response = $this->createMock(Response::class);
+        $entityInterface = $this->createMock(EntityInterface::class);
+
+        /** @var CreateTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
+        $testClass = $this->getMockForAbstractClass(CreateTestClass::class, [$resourceService, $restHelperResponse]);
+
+        $request
+            ->expects(static::once())
+            ->method('getContent')
+            ->willReturn('{"foo":"bar"}');
+
+        $resourceService
+            ->expects(static::once())
+            ->method('create')
+            ->withAnyParameters()
+            ->willReturn($entityInterface);
+
+        $restHelperResponse
+            ->expects(static::once())
+            ->method('createResponse')
+            ->withAnyParameters()
+            ->willReturn($response);
+
+        $testClass
+            ->expects(static::once())
+            ->method('getResourceService')
+            ->willReturn($resourceService);
+
+        $testClass
+            ->expects(static::once())
+            ->method('getResponseService')
+            ->willReturn($restHelperResponse);
+
+        $testClass->createMethod($request)->getContent();
     }
 }
