@@ -32,7 +32,7 @@ class JSON
      *
      * @return  string
      */
-    public static function encode($input, $options = 0, $depth = 512): string
+    public static function encode($input, int $options = 0, int $depth = 512): string
     {
         $output = json_encode($input, $options, $depth);
 
@@ -57,7 +57,7 @@ class JSON
      *
      * @return  \stdClass|array|mixed
      */
-    public static function decode($json, $assoc = false, $depth = 512, $options = 0)
+    public static function decode(string $json, bool $assoc = false, int $depth = 512, int $options = 0)
     {
         $output = json_decode($json, $assoc, $depth, $options);
 
@@ -83,7 +83,7 @@ class JSON
     }
 
     /**
-     * Helper method to convert JSON error constant to
+     * Helper method to convert JSON error constant to human-readable-format.
      *
      * @see http://php.net/manual/en/function.json-last-error.php
      *
@@ -91,7 +91,7 @@ class JSON
      *
      * @return  string
      */
-    private static function getErrorMessage($error): string
+    private static function getErrorMessage(int $error): string
     {
         switch ($error) {
             case JSON_ERROR_DEPTH:
