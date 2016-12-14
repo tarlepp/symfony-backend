@@ -19,6 +19,17 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class RequestTest extends KernelTestCase
 {
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedExceptionMessage Current 'where' parameter is not valid JSON.
+     */
+    public function testThatGetCriteriaMethodThrowsAnExceptionWithInvalidWhereParameter()
+    {
+        $fakeRequest = Request::create('/', 'GET', ['where' => '{foo bar']);
+
+        RequestHelper::getCriteria($fakeRequest);
+    }
+
     public function testThatGetOrderByReturnsNullWithoutParameter()
     {
         $fakeRequest = Request::create('/', 'GET');
