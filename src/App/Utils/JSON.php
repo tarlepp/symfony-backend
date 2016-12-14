@@ -97,29 +97,14 @@ class JSON
             case JSON_ERROR_DEPTH:
                 $output = 'Maximum stack depth exceeded';
                 break;
-            case JSON_ERROR_STATE_MISMATCH:
-                $output = 'Underflow or the modes mismatch';
-                break;
-            case JSON_ERROR_CTRL_CHAR:
-                $output = 'Unexpected control character found';
-                break;
             case JSON_ERROR_SYNTAX:
                 $output = 'Syntax error, malformed JSON';
                 break;
             case JSON_ERROR_UTF8:
                 $output = 'Malformed UTF-8 characters, possibly incorrectly encoded';
                 break;
-            case JSON_ERROR_RECURSION:
-                $output = 'One or more recursive references in the value to be encoded';
-                break;
-            case JSON_ERROR_INF_OR_NAN:
-                $output = 'One or more NAN or INF values in the value to be encoded';
-                break;
-            case JSON_ERROR_UNSUPPORTED_TYPE:
-                $output = 'A value of a type that cannot be encoded was given';
-                break;
             default:
-                $output = 'Unknown error';
+                $output = $error;
                 break;
         }
 
