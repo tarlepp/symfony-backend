@@ -95,6 +95,29 @@ class CountTest extends KernelTestCase
         $countTestClass->countMethod($request)->getContent();
     }
 
+    public function testThatTraitCallsProcessCriteriaIfItExists()
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var CountTestClass|\PHPUnit_Framework_MockObject_MockObject $countTestClass */
+        $countTestClass = $this->getMockForAbstractClass(
+            CountTestClass::class, [$resourceService, $restHelperResponse],
+            '', true, true, true, ['processCriteria']
+        );
+
+        // Create request
+        $request = Request::create('/count', 'GET');
+
+        $countTestClass
+            ->expects(static::once())
+            ->method('processCriteria')
+            ->withAnyParameters()
+        ;
+
+        $countTestClass->countMethod($request)->getContent();
+    }
+
     /**
      * @return array
      */
