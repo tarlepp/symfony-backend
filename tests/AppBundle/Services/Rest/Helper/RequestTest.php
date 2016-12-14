@@ -360,6 +360,14 @@ class RequestTest extends KernelTestCase
             [
                 [
                     'or' => [
+                        1,
+                    ],
+                ],
+                true,
+            ],
+            [
+                [
+                    'or' => [
                         'bar',
                     ],
                 ],
