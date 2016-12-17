@@ -18,8 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @package AppBundle\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-//class RequestLogTest extends EntityTestCase
-class RequestLogTest extends KernelTestCase
+class RequestLogTest extends EntityTestCase
 {
     /**
      * @var RequestLog
