@@ -27,4 +27,50 @@ class RequestLogTest extends EntityTestCase
      * @var string
      */
     protected $entityName = 'App\Entity\RequestLog';
+
+    /**
+     * @dataProvider dataProviderTestThatSensitiveDataIsCleanedFromHeaders
+     *
+     * @param array $headers
+     * @param array $expected
+     */
+    public function testThatSensitiveDataIsCleanedFromHeaders(array $headers, array $expected)
+    {
+        $requestLog = new RequestLog();
+
+        $requestLog->setHeaders($headers);
+
+        static::assertEquals($expected, $requestLog->getHeaders());
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatSensitiveDataIsCleanedFromHeaders(): array
+    {
+        return [
+            [
+                ['token' => 'secret token'],
+                ['token' => '*** REPLACED ***'],
+            ],
+            [
+                ['Authorization' => 'authorization bearer'],
+                ['Authorization' => '*** REPLACED ***'],
+            ],
+            [
+                ['cookie' => ['cookie']],
+                ['cookie' => '*** REPLACED ***'],
+            ],
+            [
+                ['someheader' => [
+                    'foo'       => 'bar',
+                    'password'  => 'some password',
+                ]],
+                ['someheader' => [
+                    'foo'       => 'bar',
+                    'password'  => '*** REPLACED ***',
+                ]],
+            ]
+        ];
+    }
 }
