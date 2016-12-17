@@ -13,6 +13,7 @@ use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use App\Utils\JSON;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 /**
  * Trait for generic 'Create' action for REST controllers. Trait will add following route definition to your controller
@@ -71,6 +72,10 @@ trait Create
                 'You cannot use App\Traits\Rest\Methods\Create trait within class that does not implement ' .
                 'App\Controller\Interfaces\RestController interface.'
             );
+        }
+
+        if (!in_array($request->getMethod(), ['POST'])) {
+            throw new MethodNotAllowedHttpException(['POST']);
         }
 
         // Determine entity / DTO data from request
