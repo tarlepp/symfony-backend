@@ -1022,7 +1022,7 @@ class RequestLog implements EntityInterface
             $output = $request->request->all();
         }
 
-        return $output;
+        return (array)$output;
     }
 
     /**
