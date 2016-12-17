@@ -52,10 +52,10 @@
         "piwik/device-detector": "3.7.5",
         "ramsey/uuid": "3.5.2",
         "sensio/distribution-bundle": "5.0.15",
-        "sensio/framework-extra-bundle": "3.0.16",
+        "sensio/framework-extra-bundle": "3.0.18",
         "symfony/monolog-bundle": "3.0.1",
         "symfony/swiftmailer-bundle": "2.4.0",
-        "symfony/symfony": "3.2.0"
+        "symfony/symfony": "3.2.1"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^2.3",
