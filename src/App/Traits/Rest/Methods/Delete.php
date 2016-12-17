@@ -12,6 +12,7 @@ use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 /**
  * Trait for generic 'Delete' action for REST controllers. Trait will add following route definition to your controller
@@ -69,6 +70,10 @@ trait Delete
                 'You cannot use App\Traits\Rest\Methods\Delete trait within class that does not implement ' .
                 'App\Controller\Interfaces\RestController interface.'
             );
+        }
+
+        if (!in_array($request->getMethod(), ['DELETE'])) {
+            throw new MethodNotAllowedHttpException(['DELETE']);
         }
 
         return $this->getResponseService()->createResponse($request, $this->getResourceService()->delete($id));
