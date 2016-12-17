@@ -56,6 +56,11 @@ class CreateTest extends KernelTestCase
             ->method('getContent')
             ->willReturn('{"foo":"bar"}');
 
+        $request
+            ->expects(static::once())
+            ->method('getMethod')
+            ->willReturn('POST');
+
         $resourceService
             ->expects(static::once())
             ->method('create')
@@ -79,5 +84,42 @@ class CreateTest extends KernelTestCase
             ->willReturn($restHelperResponse);
 
         $testClass->createMethod($request)->getContent();
+    }
+
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
+     *
+     * @dataProvider dataProviderTestThatTraitThrowsAnExceptionWithWrongHttpMethod
+     *
+     * @param   string  $httpMethod
+     */
+    public function testThatTraitThrowsAnExceptionWithWrongHttpMethod(string $httpMethod)
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var CreateTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
+        $testClass = $this->getMockForAbstractClass(CreateTestClass::class, [$resourceService, $restHelperResponse]);
+
+        // Create request and response
+        $request = Request::create('/', $httpMethod);
+
+        $testClass->createMethod($request)->getContent();
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatTraitThrowsAnExceptionWithWrongHttpMethod(): array
+    {
+        return [
+            ['HEAD'],
+            ['GET'],
+            ['PUT'],
+            ['DELETE'],
+            ['OPTIONS'],
+            ['CONNECT'],
+            ['foobar'],
+        ];
     }
 }
