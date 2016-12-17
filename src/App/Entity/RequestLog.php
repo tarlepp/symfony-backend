@@ -953,6 +953,9 @@ class RequestLog implements EntityInterface
             'cookie'            => '*** REPLACED ***',
         ];
 
+        // Normalize current key
+        $key = mb_strtolower($key);
+
         // Replace current value
         if (array_key_exists($key, $replacements)) {
             $value = $replacements[$key];
