@@ -29,7 +29,7 @@ class RequestLogTest extends EntityTestCase
     protected $entityName = 'App\Entity\RequestLog';
 
     /**
-     * @dataProvider dataProviderTestThatSensitiveDataIsCleanedFromHeaders
+     * @dataProvider dataProviderTestThatSensitiveDataIsCleaned
      *
      * @param array $headers
      * @param array $expected
@@ -44,11 +44,30 @@ class RequestLogTest extends EntityTestCase
     }
 
     /**
+     * @dataProvider dataProviderTestThatSensitiveDataIsCleaned
+     *
+     * @param array $parameters
+     * @param array $expected
+     */
+    public function testThatSensitiveDataIsCleanedFromParameters(array $parameters, array $expected)
+    {
+        $requestLog = new RequestLog();
+
+        $requestLog->setParameters($parameters);
+
+        static::assertEquals($expected, $requestLog->getParameters());
+    }
+
+    /**
      * @return array
      */
-    public function dataProviderTestThatSensitiveDataIsCleanedFromHeaders(): array
+    public function dataProviderTestThatSensitiveDataIsCleaned(): array
     {
         return [
+            [
+                ['passWord' => 'password'],
+                ['passWord' => '*** REPLACED ***'],
+            ],
             [
                 ['token' => 'secret token'],
                 ['token' => '*** REPLACED ***'],
