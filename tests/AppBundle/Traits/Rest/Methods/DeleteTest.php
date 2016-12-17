@@ -65,6 +65,11 @@ class DeleteTest extends KernelTestCase
             ->withAnyParameters()
             ->willReturn($response);
 
+        $request
+            ->expects(static::once())
+            ->method('getMethod')
+            ->willReturn('DELETE');
+
         $testClass
             ->expects(static::once())
             ->method('getResourceService')
@@ -76,5 +81,42 @@ class DeleteTest extends KernelTestCase
             ->willReturn($restHelperResponse);
 
         $testClass->deleteMethod($request, Uuid::uuid4()->toString());
+    }
+
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
+     *
+     * @dataProvider dataProviderTestThatTraitThrowsAnExceptionWithWrongHttpMethod
+     *
+     * @param   string  $httpMethod
+     */
+    public function testThatTraitThrowsAnExceptionWithWrongHttpMethod(string $httpMethod)
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var DeleteTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
+        $testClass = $this->getMockForAbstractClass(DeleteTestClass::class, [$resourceService, $restHelperResponse]);
+
+        // Create request and response
+        $request = Request::create('/', $httpMethod);
+
+        $testClass->deleteMethod($request, Uuid::uuid4()->toString());
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatTraitThrowsAnExceptionWithWrongHttpMethod(): array
+    {
+        return [
+            ['HEAD'],
+            ['GET'],
+            ['PUT'],
+            ['POST'],
+            ['OPTIONS'],
+            ['CONNECT'],
+            ['foobar'],
+        ];
     }
 }
