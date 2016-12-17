@@ -7,10 +7,17 @@ declare(strict_types = 1);
  */
 namespace AppBundle\Traits\Rest\Methods;
 
+use App\Entity\Interfaces\EntityInterface;
 use App\Traits\Rest\Methods\Delete;
+use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
+use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
+use AppBundle\Traits\Rest\Methods\Delete as DeleteTestClass;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+require_once dirname(__FILE__) . '/Delete.php';
 
 /**
  * Class DeleteTest
@@ -31,5 +38,43 @@ class DeleteTest extends KernelTestCase
         $request = Request::create('/' . $uuid, 'DELETE');
 
         $mock->deleteMethod($request, $uuid);
+    }
+
+    public function testThatTraitCallsServiceMethods()
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var Request|\PHPUnit_Framework_MockObject_MockObject $request */
+        $request = $this->createMock(Request::class);
+        $response = $this->createMock(Response::class);
+        $entityInterface = $this->createMock(EntityInterface::class);
+
+        /** @var DeleteTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
+        $testClass = $this->getMockForAbstractClass(DeleteTestClass::class, [$resourceService, $restHelperResponse]);
+
+        $resourceService
+            ->expects(static::once())
+            ->method('delete')
+            ->withAnyParameters()
+            ->willReturn($entityInterface);
+
+        $restHelperResponse
+            ->expects(static::once())
+            ->method('createResponse')
+            ->withAnyParameters()
+            ->willReturn($response);
+
+        $testClass
+            ->expects(static::once())
+            ->method('getResourceService')
+            ->willReturn($resourceService);
+
+        $testClass
+            ->expects(static::once())
+            ->method('getResponseService')
+            ->willReturn($restHelperResponse);
+
+        $testClass->deleteMethod($request, Uuid::uuid4()->toString());
     }
 }
