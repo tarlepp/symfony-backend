@@ -12,6 +12,7 @@ use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 /**
  * Trait for generic 'FindOne' action for REST controllers. Trait will add following route definition to your controller
@@ -70,6 +71,10 @@ trait FindOne
                 'You cannot use App\Traits\Rest\Methods\FindOne trait within class that does not implement ' .
                 'App\Controller\Interfaces\RestController interface.'
             );
+        }
+
+        if (!in_array($request->getMethod(), ['GET'])) {
+            throw new MethodNotAllowedHttpException(['GET']);
         }
 
         // Fetch data from database
