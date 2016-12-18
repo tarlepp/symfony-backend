@@ -73,4 +73,69 @@ class FindTest extends KernelTestCase
 
         $findTestClass->findMethod($request);
     }
+
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
+     *
+     * @dataProvider dataProviderTestThatTraitThrowsAnExceptionWithWrongHttpMethod
+     *
+     * @param   string  $httpMethod
+     */
+    public function testThatTraitThrowsAnExceptionWithWrongHttpMethod(string $httpMethod)
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var FindTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
+        $testClass = $this->getMockForAbstractClass(FindTestClass::class, [$resourceService, $restHelperResponse]);
+
+        // Create request and response
+        $request = Request::create('/count', $httpMethod);
+
+        $testClass->findMethod($request)->getContent();
+    }
+
+    public function testThatTraitCallsProcessCriteriaIfItExists()
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var FindTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
+        $testClass = $this->getMockForAbstractClass(
+            FindTestClass::class,
+            [$resourceService, $restHelperResponse],
+            '',
+            true,
+            true,
+            true,
+            ['processCriteria']
+        );
+
+        // Create request
+        $request = Request::create('/count', 'GET');
+
+        $testClass
+            ->expects(static::once())
+            ->method('processCriteria')
+            ->withAnyParameters()
+        ;
+
+        $testClass->findMethod($request)->getContent();
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatTraitThrowsAnExceptionWithWrongHttpMethod(): array
+    {
+        return [
+            ['HEAD'],
+            ['POST'],
+            ['PUT'],
+            ['DELETE'],
+            ['OPTIONS'],
+            ['CONNECT'],
+            ['foobar'],
+        ];
+    }
 }
