@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/Traits/Roles/Admin/RoleTest.php
+ * /tests/AppBundle/Traits/Roles/Root/RoleTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\Traits\Roles\Admin;
+namespace AppBundle\Traits\Roles\Root;
 
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class RoleTest
  *
- * @package AppBundle\Traits\Roles\Admin
+ * @package AppBundle\Traits\Roles\Root
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class RoleTest extends KernelTestCase
@@ -59,7 +59,7 @@ class RoleTest extends KernelTestCase
      */
     public function dataProviderTestThatTraitCallsExpectedMethod(): array
     {
-        $pattern = dirname(__FILE__) . '/../../../../../src/App/Traits/Rest/Roles/Admin/*.php';
+        $pattern = dirname(__FILE__) . '/../../../../../src/App/Traits/Rest/Roles/Root/*.php';
 
         $iterator = function (string $filename): array {
             $name = str_replace('.php', '', basename($filename));
@@ -77,7 +77,7 @@ class RoleTest extends KernelTestCase
             }
 
             return [
-                'App\\Traits\\Rest\\Roles\\Admin\\' . $name,
+                'App\\Traits\\Rest\\Roles\\Root\\' . $name,
                 lcfirst($name),
                 lcfirst($name) . 'Method',
                 $parameters,
