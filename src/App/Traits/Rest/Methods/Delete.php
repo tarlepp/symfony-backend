@@ -56,13 +56,15 @@ trait Delete
      * Generic 'Delete' method for REST endpoints.
      *
      * @throws  \LogicException
+     * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
      * @param   string  $id
+     * @param   array   $allowedHttpMethods
      *
      * @return  Response
      */
-    public function deleteMethod(Request $request, string $id): Response
+    public function deleteMethod(Request $request, string $id, array $allowedHttpMethods = ['DELETE']): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
@@ -72,8 +74,8 @@ trait Delete
             );
         }
 
-        if (!in_array($request->getMethod(), ['DELETE'])) {
-            throw new MethodNotAllowedHttpException(['DELETE']);
+        if (!in_array($request->getMethod(), $allowedHttpMethods)) {
+            throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
         return $this->getResponseService()->createResponse($request, $this->getResourceService()->delete($id));

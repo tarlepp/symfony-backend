@@ -60,13 +60,15 @@ trait Update
      * Generic 'Update' method for REST endpoints.
      *
      * @throws  \LogicException
+     * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
      * @param   string  $id
+     * @param   array   $allowedHttpMethods
      *
      * @return  Response
      */
-    public function updateMethod(Request $request, string $id): Response
+    public function updateMethod(Request $request, string $id, array $allowedHttpMethods = ['PUT']): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
@@ -76,8 +78,8 @@ trait Update
             );
         }
 
-        if (!in_array($request->getMethod(), ['PUT'])) {
-            throw new MethodNotAllowedHttpException(['PUT']);
+        if (!in_array($request->getMethod(), $allowedHttpMethods)) {
+            throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
         // Determine entity / DTO data from request

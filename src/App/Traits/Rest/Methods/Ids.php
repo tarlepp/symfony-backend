@@ -70,12 +70,14 @@ trait Ids
      * Generic 'IDs' method for REST endpoints.
      *
      * @throws  \LogicException
+     * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
+     * @param   array   $allowedHttpMethods
      *
      * @return  Response
      */
-    public function idsMethod(Request $request): Response
+    public function idsMethod(Request $request, array $allowedHttpMethods = ['GET']): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
@@ -85,8 +87,8 @@ trait Ids
             );
         }
 
-        if (!in_array($request->getMethod(), ['GET'])) {
-            throw new MethodNotAllowedHttpException(['GET']);
+        if (!in_array($request->getMethod(), $allowedHttpMethods)) {
+            throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
         // Determine used parameters

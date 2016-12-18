@@ -59,12 +59,14 @@ trait Create
      * Generic 'Create' method for REST endpoints.
      *
      * @throws  \LogicException
+     * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
+     * @param   array   $allowedHttpMethods
      *
      * @return  Response
      */
-    public function createMethod(Request $request): Response
+    public function createMethod(Request $request, array $allowedHttpMethods = ['POST']): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
@@ -74,8 +76,8 @@ trait Create
             );
         }
 
-        if (!in_array($request->getMethod(), ['POST'])) {
-            throw new MethodNotAllowedHttpException(['POST']);
+        if (!in_array($request->getMethod(), $allowedHttpMethods)) {
+            throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
         // Determine entity / DTO data from request

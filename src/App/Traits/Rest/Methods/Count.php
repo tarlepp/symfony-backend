@@ -47,12 +47,14 @@ trait Count
      * Generic 'Count' method for REST endpoints.
      *
      * @throws  \LogicException
+     * @throws  MethodNotAllowedHttpException
      *
-     * @param   Request     $request
+     * @param   Request $request
+     * @param   array   $allowedHttpMethods
      *
      * @return  Response
      */
-    public function countMethod(Request $request): Response
+    public function countMethod(Request $request, array $allowedHttpMethods = ['GET']): Response
     {
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
@@ -62,8 +64,8 @@ trait Count
             );
         }
 
-        if (!in_array($request->getMethod(), ['GET'])) {
-            throw new MethodNotAllowedHttpException(['GET']);
+        if (!in_array($request->getMethod(), $allowedHttpMethods)) {
+            throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
         // Determine used parameters
