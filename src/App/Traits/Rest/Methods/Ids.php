@@ -13,6 +13,7 @@ use App\Services\Rest\Helper\Request as RestHelperRequest;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 /**
  * Class Ids
@@ -82,6 +83,10 @@ trait Ids
                 'You cannot use App\Traits\Rest\Methods\Ids trait within class that does not implement ' .
                 'App\Controller\Interfaces\RestController interface.'
             );
+        }
+
+        if (!in_array($request->getMethod(), ['GET'])) {
+            throw new MethodNotAllowedHttpException(['GET']);
         }
 
         // Determine used parameters
