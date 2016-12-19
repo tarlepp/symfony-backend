@@ -77,9 +77,7 @@ class ExceptionListener
 
         // Set base of error message
         $error = [
-            'message'   => ($this->environment === 'dev')
-                ? $exception->getMessage()
-                : $this->getExceptionMessage($exception),
+            'message'   => $this->getExceptionMessage($exception),
             'code'      => $exception->getCode(),
             'status'    => $response->getStatusCode(),
         ];
@@ -115,12 +113,14 @@ class ExceptionListener
      */
     private function getExceptionMessage(\Exception $exception): string
     {
+        if ($this->environment === 'dev') {
+            return $exception->getMessage();
+        }
+
         // Within AccessDeniedHttpException we need to hide actual real message from users
         if ($exception instanceof AccessDeniedHttpException) {
             $message = 'Access denied.';
-        } elseif ($exception instanceof DBALException
-            || $exception instanceof ORMException
-        ) { // Database errors
+        } elseif ($exception instanceof DBALException || $exception instanceof ORMException) { // Database errors
             $message = 'Database error.';
         } else {
             $message = $exception->getMessage();
