@@ -120,9 +120,7 @@ class ExceptionListener
         // Within AccessDeniedHttpException we need to hide actual real message from users
         if ($exception instanceof AccessDeniedHttpException) {
             $message = 'Access denied.';
-        } elseif ($exception instanceof DBALException
-            || $exception instanceof ORMException
-        ) { // Database errors
+        } elseif ($exception instanceof DBALException || $exception instanceof ORMException) { // Database errors
             $message = 'Database error.';
         } else {
             $message = $exception->getMessage();
