@@ -12,6 +12,7 @@ use App\Tests\KernelTestCase;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent as Event;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -22,6 +23,36 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class ExceptionListenerTest extends KernelTestCase
 {
+    /**
+     * @dataProvider dataProviderTestThatOnKernelExceptionMethodCallsLogger
+     *
+     * @param string $environment
+     */
+    public function testThatOnKernelExceptionMethodCallsLogger(string $environment)
+    {
+        /**
+         * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface    $stubLogger
+         * @var \PHPUnit_Framework_MockObject_MockObject|Event              $stubEvent
+         */
+        $stubLogger = $this->createMock(LoggerInterface::class);
+        $stubEvent = $this->createMock(Event::class);
+
+        $exception = new \Exception('test exception');
+
+        $stubEvent
+            ->expects(static::once())
+            ->method('getException')
+            ->willReturn($exception);
+
+        $stubLogger
+            ->expects(static::once())
+            ->method('error')
+            ->with((string)$exception);
+
+        $listener = new ExceptionListener($stubLogger, $environment);
+        $listener->onKernelException($stubEvent);
+    }
+
     /**
      * @dataProvider dataProviderTestThatGetExceptionMessageMethodReturnsExpected
      *
@@ -42,6 +73,17 @@ class ExceptionListenerTest extends KernelTestCase
         $listener = new ExceptionListener($stubLogger, $environment);
 
         static::assertEquals($expectedMessage, $this->invokeMethod($listener, 'getExceptionMessage', [$exception]));
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatOnKernelExceptionMethodCallsLogger(): array
+    {
+        return [
+            ['dev'],
+            ['prod'],
+        ];
     }
 
     /**
