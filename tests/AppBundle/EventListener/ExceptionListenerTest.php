@@ -9,6 +9,7 @@ namespace AppBundle\EventListener;
 
 use App\EventListener\ExceptionListener;
 use App\Tests\KernelTestCase;
+use App\Utils\JSON;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
 use Psr\Log\LoggerInterface;
@@ -112,6 +113,35 @@ class ExceptionListenerTest extends KernelTestCase
         $listener->onKernelException($event);
 
         static::assertEquals($expectedStatus, $event->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatResponseHasExpectedKeys
+     *
+     * @param   array   $expectedKeys
+     * @param   string  $environment
+     */
+    public function testThatResponseHasExpectedKeys(array $expectedKeys, string $environment)
+    {
+        /**
+         * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface        $stubLogger
+         * @var \PHPUnit_Framework_MockObject_MockObject|HttpKernelInterface    $stubHttpKernel
+         * @var \PHPUnit_Framework_MockObject_MockObject|Request                $stubRequest
+         */
+        $stubLogger = $this->createMock(LoggerInterface::class);
+        $stubHttpKernel = $this->createMock(HttpKernelInterface::class);
+        $stubRequest = $this->createMock(Request::class);
+
+        // Create event
+        $event = new Event($stubHttpKernel, $stubRequest, HttpKernelInterface::MASTER_REQUEST, new \Exception('error'));
+
+        // Process event
+        $listener = new ExceptionListener($stubLogger, $environment);
+        $listener->onKernelException($event);
+
+        $result = JSON::decode($event->getResponse()->getContent(), true);
+
+        static::assertEquals($expectedKeys, array_keys($result));
     }
 
     /**
@@ -222,6 +252,23 @@ class ExceptionListenerTest extends KernelTestCase
                 Response::HTTP_I_AM_A_TEAPOT,
                 new HttpException(Response::HTTP_I_AM_A_TEAPOT, HttpException::class),
             ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatResponseHasExpectedKeys(): array
+    {
+        return [
+            [
+                ['message', 'code', 'status', 'debug'],
+                'dev',
+            ],
+            [
+                ['message', 'code', 'status'],
+                'prod',
+            ]
         ];
     }
 }
