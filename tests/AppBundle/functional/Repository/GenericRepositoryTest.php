@@ -78,14 +78,6 @@ class GenericRepositoryTest extends KernelTestCase
     }
 
     /**
-     * Method to test that 'getAssociations' method return an array.
-     */
-    public function testThatGetAssociationsReturnsAnArray()
-    {
-        static::assertInternalType('array', $this->repository->getAssociations());
-    }
-
-    /**
      * @dataProvider dataProviderTestThatProcessCriteriaCreatesExpectedCondition
      *
      * @param   array   $criteria
@@ -217,7 +209,7 @@ QUERY
      *
      * @return array
      */
-    function dataProviderTestThatProcessOrderByCreatesExpectedOrderByClause(): array
+    public function dataProviderTestThatProcessOrderByCreatesExpectedOrderByClause(): array
     {
         return [
             [

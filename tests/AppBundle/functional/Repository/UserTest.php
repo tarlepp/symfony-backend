@@ -37,6 +37,15 @@ class UserTest extends RepositoryTestCase
     protected $entityName = 'App\Entity\User';
 
     /**
+     * @var array
+     */
+    protected $associations = [
+        'userGroups',
+        'userLogins',
+        'userRequests',
+    ];
+
+    /**
      * @expectedException \Symfony\Component\Security\Core\Exception\UnsupportedUserException
      * @expectedExceptionMessage Instance of "Symfony\Component\Security\Core\User\User" is not supported.
      */

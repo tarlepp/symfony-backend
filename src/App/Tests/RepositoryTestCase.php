@@ -47,6 +47,16 @@ abstract class RepositoryTestCase extends KernelTestCase
     protected $repository;
 
     /**
+     * @var array
+     */
+    protected $associations = [];
+
+    /**
+     * @var bool
+     */
+    protected $skipUserAssociations = false;
+
+    /**
      * {@inheritdoc}
      */
     public function setUp()
@@ -76,6 +86,11 @@ abstract class RepositoryTestCase extends KernelTestCase
         self::$kernel->shutdown();
     }
 
+    public function testThatGetEntityNameReturnsExpected()
+    {
+        static::assertEquals($this->entityName, $this->repository->getEntityName());
+    }
+
     /**
      * Method to test that 'getReference' method returns expected object.
      */
@@ -90,14 +105,17 @@ abstract class RepositoryTestCase extends KernelTestCase
         );
     }
 
-    /**
-     * Method to test that 'getEntityManager' method returns expected object.
-     */
-    public function testThatGetEntityManagerReturnsExpected()
+    public function testThatGetAssociationsReturnsExpected()
     {
-        static::assertInstanceOf(
-            '\Doctrine\ORM\EntityManager',
-            $this->repository->getEntityManager()
+        $message = 'Repository did not return expected associations for entity.';
+
+        static::assertEquals(
+            array_merge(
+                $this->associations,
+                $this->skipUserAssociations ? [] : ['createdBy', 'updatedBy', 'deletedBy']
+            ),
+            array_keys($this->repository->getAssociations()),
+            $message
         );
     }
 

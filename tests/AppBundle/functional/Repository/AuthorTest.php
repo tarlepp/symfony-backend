@@ -33,4 +33,11 @@ class AuthorTest extends RepositoryTestCase
      * @var string
      */
     protected $entityName = 'App\Entity\Author';
+
+    /**
+     * @var array
+     */
+    protected $associations = [
+        'books'
+    ];
 }

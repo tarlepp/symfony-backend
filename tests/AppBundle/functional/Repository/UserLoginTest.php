@@ -33,4 +33,16 @@ class UserLoginTest extends RepositoryTestCase
      * @var string
      */
     protected $entityName = 'App\Entity\UserLogin';
+
+    /**
+     * @var array
+     */
+    protected $associations = [
+        'user',
+    ];
+
+    /**
+     * @var bool
+     */
+    protected $skipUserAssociations = true;
 }

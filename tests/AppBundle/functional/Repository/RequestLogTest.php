@@ -33,4 +33,16 @@ class RequestLogTest extends RepositoryTestCase
      * @var string
      */
     protected $entityName = 'App\Entity\RequestLog';
+
+    /**
+     * @var array
+     */
+    protected $associations = [
+        'user',
+    ];
+
+    /**
+     * @var bool
+     */
+    protected $skipUserAssociations = true;
 }

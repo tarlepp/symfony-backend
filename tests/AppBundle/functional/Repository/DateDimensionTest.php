@@ -33,4 +33,9 @@ class DateDimensionTest extends RepositoryTestCase
      * @var string
      */
     protected $entityName = 'App\Entity\DateDimension';
+
+    /**
+     * @var bool
+     */
+    protected $skipUserAssociations = true;
 }

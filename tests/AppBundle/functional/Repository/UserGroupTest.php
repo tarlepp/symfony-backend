@@ -33,4 +33,11 @@ class UserGroupTest extends RepositoryTestCase
      * @var string
      */
     protected $entityName = 'App\Entity\UserGroup';
+
+    /**
+     * @var array
+     */
+    protected $associations = [
+        'users',
+    ];
 }

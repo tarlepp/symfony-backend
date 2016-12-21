@@ -276,7 +276,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      */
     protected function processSearchTerms(QueryBuilder $queryBuilder, array $searchTerms)
     {
-        $columns = $this->searchColumns;
+        $columns = $this->getSearchColumns();
 
         if (empty($columns)) {
             return;
