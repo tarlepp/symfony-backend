@@ -49,7 +49,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      */
     public function getReference(string $id)
     {
-        return $this->_em->getReference($this->getClassName(), $id);
+        return $this->getEntityManager()->getReference($this->getClassName(), $id);
     }
 
     /**
@@ -57,7 +57,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      */
     public function getAssociations(): array
     {
-        return $this->_em->getClassMetadata($this->getClassName())->getAssociationMappings();
+        return $this->getEntityManager()->getClassMetadata($this->getClassName())->getAssociationMappings();
     }
 
     /**
@@ -82,8 +82,8 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     public function save(EntityInterface $entity)
     {
         // Persist on database
-        $this->_em->persist($entity);
-        $this->_em->flush();
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -92,8 +92,8 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     public function remove(EntityInterface $entity)
     {
         // Remove from database
-        $this->_em->remove($entity);
-        $this->_em->flush();
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
     }
 
     /**
