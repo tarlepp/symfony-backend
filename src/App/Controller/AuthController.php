@@ -91,6 +91,8 @@ class AuthController
     public function getTokenAction()
     {
         // The security layer will intercept this request
+
+        return null;
     }
 
     /**
