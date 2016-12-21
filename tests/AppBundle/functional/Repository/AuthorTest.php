@@ -1,14 +1,14 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/integration/Repository/RequestLogTest.php
+ * /tests/AppBundle/functional/Repository/AuthorTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\integration\Repository;
+namespace AppBundle\functional\Repository;
 
-use App\Entity\RequestLog as Entity;
-use App\Repository\RequestLog as Repository;
+use App\Entity\Author as Entity;
+use App\Repository\Author as Repository;
 use App\Tests\RepositoryTestCase;
 
 /**
@@ -17,7 +17,7 @@ use App\Tests\RepositoryTestCase;
  * @package AppBundle\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class RequestLogTest extends RepositoryTestCase
+class AuthorTest extends RepositoryTestCase
 {
     /**
      * @var Entity
@@ -32,5 +32,5 @@ class RequestLogTest extends RepositoryTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\RequestLog';
+    protected $entityName = 'App\Entity\Author';
 }

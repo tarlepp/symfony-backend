@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/integration/Repository/UserGroupTest.php
+ * /tests/AppBundle/functional/Repository/UserGroupTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\integration\Repository;
+namespace AppBundle\functional\Repository;
 
 use App\Entity\UserGroup as Entity;
 use App\Repository\UserGroup as Repository;

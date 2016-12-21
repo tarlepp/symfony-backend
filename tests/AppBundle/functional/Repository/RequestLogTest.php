@@ -1,14 +1,14 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/integration/Repository/UserLoginTest.php
+ * /tests/AppBundle/functional/Repository/RequestLogTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\integration\Repository;
+namespace AppBundle\functional\Repository;
 
-use App\Entity\UserLogin as Entity;
-use App\Repository\UserLogin as Repository;
+use App\Entity\RequestLog as Entity;
+use App\Repository\RequestLog as Repository;
 use App\Tests\RepositoryTestCase;
 
 /**
@@ -17,7 +17,7 @@ use App\Tests\RepositoryTestCase;
  * @package AppBundle\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class UserLoginTest extends RepositoryTestCase
+class RequestLogTest extends RepositoryTestCase
 {
     /**
      * @var Entity
@@ -32,5 +32,5 @@ class UserLoginTest extends RepositoryTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\UserLogin';
+    protected $entityName = 'App\Entity\RequestLog';
 }

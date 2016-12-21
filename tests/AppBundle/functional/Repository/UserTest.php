@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/integration/Repository/UserTest.php
+ * /tests/AppBundle/functional/Repository/UserTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\integration\Repository;
+namespace AppBundle\functional\Repository;
 
 use App\Entity\User as Entity;
 use App\Entity\User;

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/integration/Repository/BookTest.php
+ * /tests/AppBundle/functional/Repository/BookTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\integration\Repository;
+namespace AppBundle\functional\Repository;
 
 use App\Entity\Book as Entity;
 use App\Repository\Book as Repository;

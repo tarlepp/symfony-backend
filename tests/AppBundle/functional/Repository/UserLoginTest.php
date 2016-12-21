@@ -1,14 +1,14 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/integration/Repository/AuthorTest.php
+ * /tests/AppBundle/functional/Repository/UserLoginTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\integration\Repository;
+namespace AppBundle\functional\Repository;
 
-use App\Entity\Author as Entity;
-use App\Repository\Author as Repository;
+use App\Entity\UserLogin as Entity;
+use App\Repository\UserLogin as Repository;
 use App\Tests\RepositoryTestCase;
 
 /**
@@ -17,7 +17,7 @@ use App\Tests\RepositoryTestCase;
  * @package AppBundle\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class AuthorTest extends RepositoryTestCase
+class UserLoginTest extends RepositoryTestCase
 {
     /**
      * @var Entity
@@ -32,5 +32,5 @@ class AuthorTest extends RepositoryTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\Author';
+    protected $entityName = 'App\Entity\UserLogin';
 }

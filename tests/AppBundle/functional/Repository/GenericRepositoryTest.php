@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/integration/Repository/GenericRepositoryTest.php
+ * /tests/AppBundle/functional/Repository/GenericRepositoryTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\integration\Repository;
+namespace AppBundle\functional\Repository;
 
 use App\Entity\Interfaces\EntityInterface;
 use App\Tests\Helpers\PHPUnitUtil;
