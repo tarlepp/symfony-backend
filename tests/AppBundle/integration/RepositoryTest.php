@@ -26,13 +26,13 @@ class RepositoryTest extends KernelTestCase
      */
     public function testThatAllRepositoriesHaveTestClass($repository)
     {
-        $testFile = str_replace(['App\\', '\\'], ['AppBundle\\integration\\', '/'], $repository);
+        $testFile = str_replace(['App\\', '\\'], ['AppBundle\\functional\\', '/'], $repository);
         $testFile = dirname(__FILE__) . '/../../' . $testFile . 'Test.php';
 
         $message = sprintf(
             "Repository '%s' doesn't have required test class, please create it to '%s'.",
             $repository,
-            $testFile
+            'tests' . substr($testFile, strpos($testFile, '/../../') + 6)
         );
 
         static::assertTrue(file_exists($testFile), $message);
