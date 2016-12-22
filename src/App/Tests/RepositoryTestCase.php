@@ -184,6 +184,19 @@ abstract class RepositoryTestCase extends KernelTestCase
     }
 
     /**
+     * @expectedException \Doctrine\ORM\Query\QueryException
+     */
+    public function testThatCountMethodThrowsAnExceptionWithInvalidCriteria()
+    {
+        $this->repository->count(['foo' => 'bar']);
+    }
+
+    public function testThatCountMethodReturnsExpectedValue()
+    {
+        static::assertEquals(0, $this->repository->count(['id' => 'foobar']));
+    }
+
+    /**
      * @dataProvider dataProviderTestThatProcessSearchTermsCreatesExpectedCriteria
      *
      * @param   array   $searchTerms
