@@ -8,8 +8,10 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Repository\Base as Repository;
 use App\Tests\Helpers\PHPUnitUtil;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -117,6 +119,37 @@ abstract class RepositoryTestCase extends KernelTestCase
             array_keys($this->repository->getAssociations()),
             $message
         );
+    }
+
+    public function testThatSaveMethodCallsExpectedServices()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|EntityInterface $entityInterface */
+        $entityInterface = $this->createMock(EntityInterface::class);
+
+        // Create mock for entity manager
+        $entityManager = $this
+            ->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        // Check that 'persist' method is called
+        $entityManager
+            ->expects(static::once())
+            ->method('persist')
+            ->with($entityInterface);
+
+        // Check that 'flush' method is called
+        $entityManager
+            ->expects(static::once())
+            ->method('flush');
+
+        $repositoryClass = get_class($this->repository);
+
+        /** @var Repository $repository */
+        $repository = new $repositoryClass($entityManager, new ClassMetadata($this->entityName));
+
+        //
+        $repository->save($entityInterface);
     }
 
     /**
