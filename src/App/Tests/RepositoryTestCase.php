@@ -148,8 +148,39 @@ abstract class RepositoryTestCase extends KernelTestCase
         /** @var Repository $repository */
         $repository = new $repositoryClass($entityManager, new ClassMetadata($this->entityName));
 
-        //
+        // Call save method
         $repository->save($entityInterface);
+    }
+
+    public function testThatRemoveMethodCallsExpectedServices()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|EntityInterface $entityInterface */
+        $entityInterface = $this->createMock(EntityInterface::class);
+
+        // Create mock for entity manager
+        $entityManager = $this
+            ->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        // Check that 'persist' method is called
+        $entityManager
+            ->expects(static::once())
+            ->method('remove')
+            ->with($entityInterface);
+
+        // Check that 'flush' method is called
+        $entityManager
+            ->expects(static::once())
+            ->method('flush');
+
+        $repositoryClass = get_class($this->repository);
+
+        /** @var Repository $repository */
+        $repository = new $repositoryClass($entityManager, new ClassMetadata($this->entityName));
+
+        // Call remove method
+        $repository->remove($entityInterface);
     }
 
     /**
