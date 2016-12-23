@@ -93,8 +93,8 @@ interface Base
         array $search,
         array $criteria,
         array $orderBy = null,
-        $limit = null,
-        $offset = null
+        int $limit = null,
+        int $offset = null
     ): array;
 
     /**

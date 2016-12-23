@@ -120,8 +120,8 @@ abstract class Base extends EntityRepository implements Interfaces\Base
         array $search,
         array $criteria,
         array $orderBy = null,
-        $limit = null,
-        $offset = null
+        int $limit = null,
+        int $offset = null
     ): array {
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
