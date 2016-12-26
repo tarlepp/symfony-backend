@@ -10,8 +10,10 @@ namespace App\Tests;
 use App\Entity\Interfaces\EntityInterface;
 use App\Repository\Base as Repository;
 use App\Tests\Helpers\PHPUnitUtil;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -194,6 +196,63 @@ abstract class RepositoryTestCase extends KernelTestCase
     public function testThatCountMethodReturnsExpectedValue()
     {
         static::assertEquals(0, $this->repository->count(['id' => 'foobar']));
+    }
+
+    public function testThatFindByWithSearchTermsCallsExpectedServices()
+    {
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $query = $this->createMock(AbstractQuery::class);
+
+        $queryBuilder
+            ->expects(static::once())
+            ->method('select')
+            ->with('entity')
+            ->willReturn($queryBuilder);
+
+        $queryBuilder
+            ->expects(static::once())
+            ->method('from')
+            ->with($this->entityName, 'entity', null)
+            ->willReturn($queryBuilder);
+
+        $queryBuilder
+            ->expects(static::once())
+            ->method('setMaxResults')
+            ->with(10)
+            ->willReturn($queryBuilder);
+
+        $queryBuilder
+            ->expects(static::once())
+            ->method('setFirstResult')
+            ->with(10)
+            ->willReturn($queryBuilder);
+
+        $queryBuilder
+            ->expects(static::once())
+            ->method('getQuery')
+            ->willReturn($query);
+
+        $query
+            ->expects(static::once())
+            ->method('getResult')
+            ->willReturn([]);
+
+        // Create mock for entity manager
+        $entityManager = $this
+            ->getMockBuilder(EntityManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $entityManager
+            ->expects(static::once())
+            ->method('createQueryBuilder')
+            ->willReturn($queryBuilder);
+
+        $repositoryClass = get_class($this->repository);
+
+        /** @var Repository $repository */
+        $repository = new $repositoryClass($entityManager, new ClassMetadata($this->entityName));
+        $repository->findByWithSearchTerms([], [], null, 10, 10);
     }
 
     /**
