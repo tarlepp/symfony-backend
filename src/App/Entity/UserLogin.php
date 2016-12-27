@@ -67,6 +67,7 @@ class UserLogin implements EntityInterface
      * @ORM\ManyToOne(
      *      targetEntity="App\Entity\User",
      *      inversedBy="userLogins",
+     *      cascade={"persist"},
      *  )
      * @ORM\JoinColumns({
      *      @ORM\JoinColumn(

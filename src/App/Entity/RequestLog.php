@@ -66,6 +66,7 @@ class RequestLog implements EntityInterface
      * @ORM\ManyToOne(
      *      targetEntity="App\Entity\User",
      *      inversedBy="userRequests",
+     *      cascade={"persist"},
      *  )
      * @ORM\JoinColumns({
      *      @ORM\JoinColumn(

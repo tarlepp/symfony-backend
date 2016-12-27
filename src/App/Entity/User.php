@@ -221,8 +221,9 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      * @JMS\XmlList(entry = "userGroup")
      *
      * @ORM\ManyToMany(
-     *     targetEntity="UserGroup",
-     *     inversedBy="users"
+     *      targetEntity="UserGroup",
+     *      inversedBy="users",
+     *      cascade={"all"},
      *  )
      */
     private $userGroups;
@@ -241,6 +242,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      * @ORM\OneToMany(
      *      targetEntity="App\Entity\UserLogin",
      *      mappedBy="user",
+     *      cascade={"all"},
      *  )
      */
     private $userLogins;
@@ -259,6 +261,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
      * @ORM\OneToMany(
      *      targetEntity="App\Entity\RequestLog",
      *      mappedBy="user",
+     *      cascade={"all"},
      *  )
      */
     private $userRequests;
