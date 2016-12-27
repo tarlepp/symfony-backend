@@ -7,6 +7,12 @@ declare(strict_types=1);
  */
 namespace App\Tests\Helpers;
 
+use AppKernel;
+use Doctrine\Bundle\FixturesBundle\Command\LoadDataFixturesDoctrineCommand;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+
 /**
  * Class PHPUnitUtil
  *
@@ -49,5 +55,40 @@ class PHPUnitUtil
         $method->setAccessible(true);
 
         return $method;
+    }
+
+    public static function resetDatabaseStatus()
+    {
+        $kernel = new AppKernel('test', true); // create a "test" kernel
+        $kernel->boot();
+
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+
+        // Add the doctrine:fixtures:load command to the application and run it
+        $loadFixturesDoctrineCommand = function () use ($application) {
+            $command = new LoadDataFixturesDoctrineCommand();
+            $application->add($command);
+
+            $input = new ArrayInput([
+                'command' => 'doctrine:fixtures:load',
+                '--no-interaction' => true,
+            ]);
+
+            $input->setInteractive(false);
+
+            $command->run($input, new NullOutput());
+        };
+
+        try {
+            array_map(
+                'call_user_func',
+                [
+                    $loadFixturesDoctrineCommand,
+                ]
+            );
+        } catch (\Exception $error) {
+            // Silently ignore this one - really doesn't matter at all...
+        }
     }
 }
