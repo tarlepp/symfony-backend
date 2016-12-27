@@ -10,11 +10,13 @@ namespace App\Tests;
 use App\Entity\Interfaces\EntityInterface;
 use App\Repository\Base as Repository;
 use App\Tests\Helpers\PHPUnitUtil;
-use Doctrine\ORM\AbstractQuery;
+use Doctrine\Bundle\FixturesBundle\Command\LoadDataFixturesDoctrineCommand;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\QueryBuilder;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
@@ -59,6 +61,11 @@ abstract class RepositoryTestCase extends KernelTestCase
      * @var bool
      */
     protected $skipUserAssociations = false;
+
+    /**
+     * @var array
+     */
+    protected $entityProperties = [];
 
     /**
      * {@inheritdoc}
@@ -224,6 +231,19 @@ abstract class RepositoryTestCase extends KernelTestCase
         static::assertEquals(0, $this->repository->count(['id' => 'foobar']));
     }
 
+    public function testThatResetMethodCleansTable()
+    {
+        if ($this->repository->count() === 0) {
+            $this->createEntity();
+        }
+
+        $this->repository->reset();
+
+        static::assertEquals(0, $this->repository->count());
+
+        $this->resetDatabase();
+    }
+
     /**
      * @dataProvider dataProviderTestThatProcessSearchTermsCreatesExpectedCriteria
      *
@@ -324,5 +344,63 @@ abstract class RepositoryTestCase extends KernelTestCase
                 'SELECT e FROM %s e WHERE %s'
             ],
         ];
+    }
+
+    /**
+     * @param   EntityInterface $entity
+     *
+     * @return  EntityInterface
+     */
+    protected function createEntity(EntityInterface $entity = null): EntityInterface
+    {
+        if (count($this->entityProperties) === 0 && is_null($entity)) {
+            static::markTestSkipped();
+        }
+
+        if (is_null($entity)) {
+            $entity = new $this->entityName();
+
+            foreach ($this->entityProperties as $property => $value) {
+                $method = 'set' . ucfirst($property);
+
+                call_user_func([$entity, $method], $value);
+            }
+        }
+
+        $this->repository->save($entity);
+
+        return $entity;
+    }
+
+    /**
+     * Helper method to reset database state to original one.
+     */
+    private function resetDatabase()
+    {
+        $application = new Application(static::$kernel);
+        $application->setAutoExit(false);
+
+
+        // Add the doctrine:fixtures:load command to the application and run it
+        $loadFixturesDoctrineCommand = function () use ($application) {
+            $command = new LoadDataFixturesDoctrineCommand();
+            $application->add($command);
+
+            $input = new ArrayInput([
+                'command' => 'doctrine:fixtures:load',
+                '--no-interaction' => true,
+            ]);
+
+            $input->setInteractive(false);
+
+            $command->run($input, new NullOutput());
+        };
+
+        array_map(
+            'call_user_func',
+            [
+                $loadFixturesDoctrineCommand,
+            ]
+        );
     }
 }

@@ -8,6 +8,7 @@ declare(strict_types = 1);
 namespace AppBundle\functional\Repository;
 
 use App\Entity\Book as Entity;
+use App\Entity\Interfaces\EntityInterface;
 use App\Repository\Book as Repository;
 use App\Tests\RepositoryTestCase;
 
@@ -40,4 +41,23 @@ class BookTest extends RepositoryTestCase
     protected $associations = [
         'author'
     ];
+
+    /**
+     * @var array
+     */
+    protected $entityProperties = [];
+
+    /**
+     * @inheritdoc
+     */
+    protected function createEntity(EntityInterface $entity = null): EntityInterface
+    {
+        $this->entityProperties = [
+            'title'         => 'Test Book',
+            'description'   => 'Test author description',
+            'releaseDate'   => new \DateTime(),
+        ];
+
+        return parent::createEntity($entity);
+    }
 }

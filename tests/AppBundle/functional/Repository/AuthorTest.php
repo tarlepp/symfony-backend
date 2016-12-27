@@ -40,4 +40,12 @@ class AuthorTest extends RepositoryTestCase
     protected $associations = [
         'books'
     ];
+
+    /**
+     * @var array
+     */
+    protected $entityProperties = [
+        'name'          => 'Test author',
+        'description'   => 'Test author description',
+    ];
 }
