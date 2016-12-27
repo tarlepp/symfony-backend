@@ -198,61 +198,30 @@ abstract class RepositoryTestCase extends KernelTestCase
         static::assertEquals(0, $this->repository->count(['id' => 'foobar']));
     }
 
-    public function testThatFindByWithSearchTermsCallsExpectedServices()
+    /**
+     * @expectedException \Doctrine\ORM\Query\QueryException
+     */
+    public function testThatFindByWithSearchTermsMethodThrowsAnExceptionWithInvalidCriteria()
     {
-        $queryBuilder = $this->createMock(QueryBuilder::class);
-        $query = $this->createMock(AbstractQuery::class);
+        $this->repository->findByWithSearchTerms([], ['foo' => 'bar']);
+    }
 
-        $queryBuilder
-            ->expects(static::once())
-            ->method('select')
-            ->with('entity')
-            ->willReturn($queryBuilder);
+    public function testThatFindByWithSearchTermsMethodReturnsExpectedValue()
+    {
+        static::assertEquals([], $this->repository->findByWithSearchTerms([], ['id' => 'foobar']));
+    }
 
-        $queryBuilder
-            ->expects(static::once())
-            ->method('from')
-            ->with($this->entityName, 'entity', null)
-            ->willReturn($queryBuilder);
+    /**
+     * @expectedException \Doctrine\ORM\Query\QueryException
+     */
+    public function testThatFindIdsMethodThrowsAnExceptionWithInvalidCriteria()
+    {
+        $this->repository->findIds(['foo' => 'bar'], []);
+    }
 
-        $queryBuilder
-            ->expects(static::once())
-            ->method('setMaxResults')
-            ->with(10)
-            ->willReturn($queryBuilder);
-
-        $queryBuilder
-            ->expects(static::once())
-            ->method('setFirstResult')
-            ->with(10)
-            ->willReturn($queryBuilder);
-
-        $queryBuilder
-            ->expects(static::once())
-            ->method('getQuery')
-            ->willReturn($query);
-
-        $query
-            ->expects(static::once())
-            ->method('getResult')
-            ->willReturn([]);
-
-        // Create mock for entity manager
-        $entityManager = $this
-            ->getMockBuilder(EntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $entityManager
-            ->expects(static::once())
-            ->method('createQueryBuilder')
-            ->willReturn($queryBuilder);
-
-        $repositoryClass = get_class($this->repository);
-
-        /** @var Repository $repository */
-        $repository = new $repositoryClass($entityManager, new ClassMetadata($this->entityName));
-        $repository->findByWithSearchTerms([], [], null, 10, 10);
+    public function testThatFindIdsMethodReturnsExpectedValue()
+    {
+        static::assertEquals(0, $this->repository->count(['id' => 'foobar']));
     }
 
     /**
