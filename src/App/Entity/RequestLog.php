@@ -490,10 +490,13 @@ class RequestLog implements EntityInterface
             $this->setContentTypeShort($request->getContentType());
             $this->setContent($request->getContent());
             $this->setParameters($this->determineParameters($request));
-            $this->setStatusCode($response->getStatusCode());
-            $this->setResponseContentLength(mb_strlen($response->getContent()));
             $this->setXmlHttpRequest($request->isXmlHttpRequest());
             $this->setTime(new \DateTime('now', new \DateTimeZone('UTC')));
+        }
+
+        if (!is_null($response)) {
+            $this->setStatusCode($response->getStatusCode());
+            $this->setResponseContentLength(mb_strlen($response->getContent()));
         }
     }
 
