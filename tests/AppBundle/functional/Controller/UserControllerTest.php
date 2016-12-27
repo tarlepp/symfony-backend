@@ -8,6 +8,7 @@ declare(strict_types = 1);
 namespace AppBundle\functional\Controller;
 
 use App\Entity\User;
+use App\Tests\Helpers\PHPUnitUtil;
 use App\Tests\WebTestCase;
 use App\Utils\JSON;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UserControllerTest extends WebTestCase
 {
+    /**
+     * @inheritdoc
+     */
+    public static function tearDownAfterClass()
+    {
+        PHPUnitUtil::resetDatabaseStatus();
+
+        parent::tearDownAfterClass();
+    }
+
     /**
      * @dataProvider dataProviderTestThatOnlyAdminUsersCanListUsers
      *
@@ -148,6 +159,104 @@ class UserControllerTest extends WebTestCase
         }
     }
 
+
+
+    /**
+     * @dataProvider dataProviderTestThatUserCannotDeleteHimSelf
+     *
+     * @param string $username
+     * @param string $password
+     * @param string $id
+     */
+    public function testThatRootUserCannotDeleteHimSelf(string $username, string $password, string $id)
+    {
+        // Create request
+        $client = $this->getClient($username, $password);
+        $client->request('DELETE', '/user/' . $id);
+
+        // Check that HTTP status code is correct
+        static::assertEquals(
+            400,
+            $client->getResponse()->getStatusCode(),
+            'HTTP status code was not expected for DELETE /user/{guid} request\n' . $client->getResponse()
+        );
+
+        // Get response data
+        $responseData = JSON::decode($client->getResponse()->getContent());
+
+        $attributes = ['message', 'status', 'code'];
+
+        foreach ($attributes as $attribute) {
+            static::assertObjectHasAttribute(
+                $attribute,
+                $responseData,
+                'Response did not contain expected attribute'
+            );
+        }
+
+        // Get response object keys
+        $keys = array_keys(get_object_vars($responseData));
+
+        static::assertEquals(
+            sort($attributes),
+            sort($keys),
+            'Response contains keys that are not expected'
+        );
+
+        static::assertEquals('You can\'t remove yourself...', $responseData->message);
+        static::assertEquals('400', $responseData->status);
+        static::assertEquals('0', $responseData->code);
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatNonRootUsersCanAccessDeleteAction
+     *
+     * @param   string  $username
+     * @param   string  $password
+     * @param   string  $id
+     */
+    public function testThatNonRootUsersCanAccessDeleteAction(string $username, string $password, string $id)
+    {
+        // Create request
+        $client = $this->getClient($username, $password);
+        $client->request('DELETE', '/user/' . $id);
+
+        $this->getContainer()->get('doctrine')->resetManager();
+
+        // Check that HTTP status code is correct
+        static::assertEquals(
+            403,
+            $client->getResponse()->getStatusCode(),
+            'HTTP status code was not expected for DELETE /user/{guid} request\n' . $client->getResponse()
+        );
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatRootUserCanDeleteAnotherUser
+     *
+     * @param   string  $username
+     * @param   string  $password
+     * @param   User    $user
+     * @param   int     $expectedStatusCode
+     */
+    public function testThatRootUserCanDeleteAnotherUser(
+        string $username,
+        string $password,
+        User $user,
+        int $expectedStatusCode
+    ) {
+        // Create request
+        $client = $this->getClient($username, $password);
+        $client->request('DELETE', '/user/' . $user->getId());
+
+        // Check that HTTP status code is correct
+        static::assertEquals(
+            $expectedStatusCode,
+            $client->getResponse()->getStatusCode(),
+            'HTTP status code was not expected for DELETE /user/{guid} request\n' . $client->getResponse()
+        );
+    }
+
     /**
      * Data provider method for 'testThatOnlyAdminUsersCanListUsers' test
      *
@@ -178,5 +287,65 @@ class UserControllerTest extends WebTestCase
             ['john-root', 'doe-root', Response::HTTP_OK, $user->getId()],
             ['john.doe-root@test.com', 'doe-root', Response::HTTP_OK, $user->getId()],
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatNonRootUsersCanAccessDeleteAction(): array
+    {
+        // Fetch users and pick random of those
+        $users = $this->getContainer()->get('app.services.rest.user')->find();
+        $key = array_rand($users, 1);
+
+        /** @var User $user */
+        $user = $users[$key];
+
+        return [
+            ['john', 'doe', $user->getId()],
+            ['john.doe@test.com', 'doe', $user->getId()],
+
+            ['john-logged', 'doe-logged', $user->getId()],
+            ['john.doe-logged@test.com', 'doe-logged', $user->getId()],
+
+            ['john-user', 'doe-user', $user->getId()],
+            ['john.doe-user@test.com', 'doe-user', $user->getId()],
+
+            ['john-admin', 'doe-admin', $user->getId()],
+            ['john.doe-admin@test.com', 'doe-admin', $user->getId()],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatUserCannotDeleteHimSelf(): array
+    {
+        $user = $this->getContainer()->get('app.services.rest.user')->findOneBy(['username' => 'john-root']);
+
+        return [
+            ['john-root', 'doe-root', $user->getId()],
+            ['john.doe-root@test.com', 'doe-root', $user->getId()],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatRootUserCanDeleteAnotherUser(): array
+    {
+        $users = $this->getContainer()
+            ->get('app.services.rest.user')
+            ->find(['and' => [['entity.username', 'neq', 'john-root']]]);
+
+        return call_user_func_array(
+            'array_merge',
+            array_map(function (User $user) {
+                return [
+                    ['john-root', 'doe-root', $user, Response::HTTP_OK],
+                    ['john.doe-root@test.com', 'doe-root', $user, Response::HTTP_NOT_FOUND],
+                ];
+            }, $users)
+        );
     }
 }
