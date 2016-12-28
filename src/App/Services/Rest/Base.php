@@ -158,12 +158,12 @@ abstract class Base implements Interfaces\Base
     public function count(array $criteria = [], array $search = null): int
     {
         // Before callback method call
-        $this->beforeFind($criteria);
+        $this->beforeCount($criteria, $search);
 
         $count = $this->repository->count($criteria, $search);
 
         // After callback method call
-        $this->afterFind($criteria);
+        $this->afterCount($criteria, $search, $count);
 
         return $count;
     }
@@ -333,6 +333,20 @@ abstract class Base implements Interfaces\Base
      * {@inheritdoc}
      */
     public function afterFindOneBy(array &$criteria, array &$orderBy = null, Entity $entity = null)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeCount(array &$criteria, array &$search = null)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterCount(array &$criteria, array &$search = null, int &$count = 0)
     {
     }
 

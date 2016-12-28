@@ -236,6 +236,23 @@ interface Base
     public function afterFindOneBy(array &$criteria, array &$orderBy = null, Entity $entity = null);
 
     /**
+     * Before lifecycle method for count method.
+     *
+     * @param   array       $criteria
+     * @param   null|array  $search
+     */
+    public function beforeCount(array &$criteria, array &$search = null);
+
+    /**
+     * Before lifecycle method for count method.
+     *
+     * @param   array       $criteria
+     * @param   null|array  $search
+     * @param   integer     $count
+     */
+    public function afterCount(array &$criteria, array &$search = null, int &$count = 0);
+
+    /**
      * Before lifecycle method for create method.
      *
      * @param   \stdClass   $data
