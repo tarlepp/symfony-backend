@@ -362,6 +362,45 @@ class GenericServiceTest extends KernelTestCase
     }
 
     /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedExceptionMessage Not found
+     */
+    public function testThatDeleteThrowsAnExceptionIfEntityIsNotFound()
+    {
+        $repository = $this->getRepositoryMock('find');
+
+        $repository
+            ->expects(static::once())
+            ->method('find')
+            ->with('id-that-does-not-exists')
+            ->willReturn(null);
+
+        $service = new UserService($repository, $this->validator);
+        $service->delete('id-that-does-not-exists');
+    }
+
+    public function testThatDeleteCallsServiceMethods()
+    {
+        $entity = new UserEntity();
+
+        $repository = $this->getRepositoryMock('find', 'remove');
+
+        $repository
+            ->expects(static::once())
+            ->method('find')
+            ->with('entity-id')
+            ->willReturn($entity);
+
+        $repository
+            ->expects(static::once())
+            ->method('remove')
+            ->with($entity);
+
+        $service = new UserService($repository, $this->validator);
+        $service->delete('entity-id');
+    }
+
+    /**
      * @param   array   $methods
      *
      * @return  Repository|\PHPUnit_Framework_MockObject_MockObject
