@@ -400,6 +400,21 @@ class GenericServiceTest extends KernelTestCase
         $service->delete('entity-id');
     }
 
+    public function testThatGetIdsCallsServiceMethods()
+    {
+        $repository = $this->getRepositoryMock('findIds');
+
+        $repository
+            ->expects(static::once())
+            ->method('findIds')
+            ->with(['foo' => 'bar'], ['search', 'terms'])
+            ->willReturn(['', '', '']);
+
+        $service = new UserService($repository, $this->validator);
+
+        static::assertEquals(['', '', ''], $service->getIds(['foo' => 'bar'], ['search', 'terms']));
+    }
+
     /**
      * @param   array   $methods
      *
