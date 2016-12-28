@@ -42,11 +42,11 @@ interface Base
      *
      * @throws  \Doctrine\ORM\ORMException
      *
-     * @param   mixed   $id The entity identifier.
+     * @param   string  $id The entity identifier.
      *
      * @return  bool|\Doctrine\Common\Proxy\Proxy|null|object
      */
-    public function getReference($id);
+    public function getReference(string $id);
 
     /**
      * Getter method for entity repository.

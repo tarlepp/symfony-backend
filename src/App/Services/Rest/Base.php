@@ -66,13 +66,15 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function getReference($id)
+    public function getReference(string $id)
     {
         return $this->repository->getReference($id);
     }
 
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function getRepository(): Repository
     {
         return $this->repository;
