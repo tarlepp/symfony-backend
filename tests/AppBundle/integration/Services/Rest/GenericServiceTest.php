@@ -8,10 +8,9 @@ declare(strict_types=1);
 namespace AppBundle\integration\Services\Rest;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Services\Rest\User as UserService;
 use App\Repository\Base as Repository;
+use App\Services\Rest\User as UserService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Validator\Validation;
 
 /**
