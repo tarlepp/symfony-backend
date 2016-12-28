@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/integration/Services/Rest/AuthorTest.php
+ * /tests/AppBundle/functional/Services/Rest/AuthorTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\integration\Services\Rest;
+namespace AppBundle\functional\Services\Rest;
 
 use App\Services\Rest\Author;
 use App\Tests\RestServiceTestCase;
@@ -13,7 +13,7 @@ use App\Tests\RestServiceTestCase;
 /**
  * Class AuthorTest
  *
- * @package AppBundle\integration\Services\Rest
+ * @package AppBundle\functional\Services\Rest
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class AuthorTest extends RestServiceTestCase

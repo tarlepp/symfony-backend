@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/integration/Services/Rest/BookTest.php
+ * /tests/AppBundle/functional/Services/Rest/BookTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\integration\Services\Rest;
+namespace AppBundle\functional\Services\Rest;
 
 use App\Services\Rest\Book;
 use App\Tests\RestServiceTestCase;
@@ -13,7 +13,7 @@ use App\Tests\RestServiceTestCase;
 /**
  * Class BookTest
  *
- * @package AppBundle\integration\Services\Rest
+ * @package AppBundle\functional\Services\Rest
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class BookTest extends RestServiceTestCase

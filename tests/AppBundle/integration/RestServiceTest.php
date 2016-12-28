@@ -24,9 +24,9 @@ class RestServiceTest extends \PHPUnit_Framework_TestCase
     public function testThatAllRestServicesHaveTestClass(string $expectedTestFile, string $serviceClass)
     {
         $message = sprintf(
-            "Rest service '%s' doesn't have required test class, please create it to '%s'.",
+            "Rest service '%s' doesn't have required functional test class, please create it to '%s'.",
             $serviceClass,
-            $expectedTestFile
+            'tests/' . substr($expectedTestFile, mb_strpos($expectedTestFile, '/../') + 4)
         );
 
         static::assertTrue(file_exists($expectedTestFile), $message);
@@ -52,7 +52,7 @@ class RestServiceTest extends \PHPUnit_Framework_TestCase
             return !$reflection->isAbstract();
         };
 
-        $basePath = dirname(__FILE__) . '/Services/Rest/';
+        $basePath = dirname(__FILE__) . '/../functional/Services/Rest/';
 
         /**
          * @param   string  $filename
