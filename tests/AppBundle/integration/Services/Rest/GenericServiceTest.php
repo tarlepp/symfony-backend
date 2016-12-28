@@ -10,8 +10,10 @@ namespace AppBundle\integration\Services\Rest;
 use App\Entity\Interfaces\EntityInterface;
 use App\Repository\Base as Repository;
 use App\Services\Rest\User as UserService;
+use App\Entity\User as UserEntity;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Validator\Validation;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class GenericServiceTest
@@ -21,10 +23,34 @@ use Symfony\Component\Validator\Validation;
  */
 class GenericServiceTest extends KernelTestCase
 {
+    /**
+     * @var Container
+     */
+    protected $container;
+
+    /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        self::bootKernel();
+
+        // Store container and entity manager
+        $this->container = static::$kernel->getContainer();
+
+        $this->validator = $this->container->get('validator');
+    }
+
     public function testThatGetEntityNameCallsServiceMethods()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Repository $repository */
-        $repository = $this->createMock(Repository::class);
+        $repository = $this->getRepositoryMock('getEntityName');
 
         $repository
             ->expects(static::once())
@@ -32,21 +58,20 @@ class GenericServiceTest extends KernelTestCase
             ->with()
             ->willReturn('fake entity name');
 
-        $service = new UserService($repository, Validation::createValidator());
+        $service = new UserService($repository, $this->validator);
         $service->getEntityName();
     }
 
     public function testThatGetReferenceCallsServiceMethods()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Repository $repository */
-        $repository = $this->createMock(Repository::class);
+        $repository = $this->getRepositoryMock('getReference');
 
         $repository
             ->expects(static::once())
             ->method('getReference')
             ->with('entity_id');
 
-        $service = new UserService($repository, Validation::createValidator());
+        $service = new UserService($repository, $this->validator);
         $service->getReference('entity_id');
     }
 
@@ -54,15 +79,14 @@ class GenericServiceTest extends KernelTestCase
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|Repository $repository */
         $repository = $this->createMock(Repository::class);
-        $service = new UserService($repository, Validation::createValidator());
+        $service = new UserService($repository, $this->validator);
 
         static::assertEquals($repository, $service->getRepository());
     }
 
     public function testThatGetAssociationsCallsServiceMethods()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Repository $repository */
-        $repository = $this->createMock(Repository::class);
+        $repository = $this->getRepositoryMock('getAssociations');
 
         $repository
             ->expects(static::once())
@@ -70,14 +94,13 @@ class GenericServiceTest extends KernelTestCase
             ->with()
             ->willReturn([]);
 
-        $service = new UserService($repository, Validation::createValidator());
+        $service = new UserService($repository, $this->validator);
         $service->getAssociations();
     }
 
     public function testThatFindCallsServiceMethods()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Repository $repository */
-        $repository = $this->createMock(Repository::class);
+        $repository = $this->getRepositoryMock('findByWithSearchTerms');
 
         $repository
             ->expects(static::once())
@@ -85,14 +108,14 @@ class GenericServiceTest extends KernelTestCase
             ->with(['search', 'words'], ['some' => 'criteria'], ['-order'], 10, 20)
             ->willReturn([]);
 
-        $service = new UserService($repository, Validation::createValidator());
+        $service = new UserService($repository, $this->validator);
         $service->find(['some' => 'criteria'], ['-order'], 10, 20, ['search', 'words']);
     }
 
     public function testThatFindOneCallsServiceMethods()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Repository $repository */
-        $repository = $this->createMock(Repository::class);
+        $repository = $this->getRepositoryMock('find');
+
         $entity = $this->createMock(EntityInterface::class);
 
         $repository
@@ -101,7 +124,7 @@ class GenericServiceTest extends KernelTestCase
             ->with('entityId')
             ->willReturn($entity);
 
-        $service = new UserService($repository, Validation::createValidator());
+        $service = new UserService($repository, $this->validator);
         $service->findOne('entityId');
     }
 
@@ -110,8 +133,7 @@ class GenericServiceTest extends KernelTestCase
      */
     public function testThatFindOneThrowsAnExceptionIfEntityWasNotFoundAndThrowParameterIsSet()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Repository $repository */
-        $repository = $this->createMock(Repository::class);
+        $repository = $this->getRepositoryMock('find');
 
         $repository
             ->expects(static::once())
@@ -119,14 +141,13 @@ class GenericServiceTest extends KernelTestCase
             ->with('entityId')
             ->willReturn(null);
 
-        $service = new UserService($repository, Validation::createValidator());
+        $service = new UserService($repository, $this->validator);
         $service->findOne('entityId', true);
     }
 
     public function testThatFindOneDoesNotThrowAnExceptionIfEntityWasNotFoundAndThrowParameterIsNotSet()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Repository $repository */
-        $repository = $this->createMock(Repository::class);
+        $repository = $this->getRepositoryMock('find');
 
         $repository
             ->expects(static::once())
@@ -134,7 +155,7 @@ class GenericServiceTest extends KernelTestCase
             ->with('entityId')
             ->willReturn(null);
 
-        $service = new UserService($repository, Validation::createValidator());
+        $service = new UserService($repository, $this->validator);
 
         static::assertNull($service->findOne('entityId', false));
     }
@@ -144,8 +165,7 @@ class GenericServiceTest extends KernelTestCase
      */
     public function testThatFindOneByThrowsAnExceptionIfEntityWasNotFoundAndThrowParameterIsSet()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Repository $repository */
-        $repository = $this->createMock(Repository::class);
+        $repository = $this->getRepositoryMock('findOneBy');
 
         $repository
             ->expects(static::once())
@@ -153,14 +173,13 @@ class GenericServiceTest extends KernelTestCase
             ->with(['foo' => 'bar'], ['-bar'])
             ->willReturn(null);
 
-        $service = new UserService($repository, Validation::createValidator());
+        $service = new UserService($repository, $this->validator);
         $service->findOneBy(['foo' => 'bar'], ['-bar'], true);
     }
 
     public function testThatFindOneByDoesNotThrowAnExceptionIfEntityWasNotFoundAndThrowParameterIsNotSet()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Repository $repository */
-        $repository = $this->createMock(Repository::class);
+        $repository = $this->getRepositoryMock('findOneBy');
 
         $repository
             ->expects(static::once())
@@ -168,8 +187,129 @@ class GenericServiceTest extends KernelTestCase
             ->with(['foo' => 'bar'], ['-bar'])
             ->willReturn(null);
 
-        $service = new UserService($repository, Validation::createValidator());
+        $service = new UserService($repository, $this->validator);
 
         static::assertNull($service->findOneBy(['foo' => 'bar'], ['-bar'], false));
+    }
+
+    public function testThatCountCallsServiceMethods()
+    {
+        $repository = $this->getRepositoryMock('count');
+
+        $repository
+            ->expects(static::once())
+            ->method('count')
+            ->with(['foo' => 'bar'], ['search', 'terms'])
+            ->willReturn(10);
+
+        $service = new UserService($repository, $this->validator);
+
+        static::assertEquals(10, $service->count(['foo' => 'bar'], ['search', 'terms']));
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Validator\Exception\ValidatorException
+     */
+    public function testThatCreateThrowsAnException()
+    {
+        $repository = $this->getRepositoryMock('getClassName', 'save');
+
+        $repository
+            ->expects(static::once())
+            ->method('getClassName')
+            ->willReturn(UserEntity::class);
+
+        $repository
+            ->expects(static::never())
+            ->method('save');
+
+        $service = new UserService($repository, $this->validator);
+        $service->create(new \stdClass());
+    }
+
+    public function testThatCreateCallsServiceMethods()
+    {
+        $repository = $this->getRepositoryMock('getClassName', 'save');
+
+        $repository
+            ->expects(static::once())
+            ->method('getClassName')
+            ->willReturn(UserEntity::class);
+
+        $object = new \stdClass();
+        $object->username = 'foo.bar';
+        $object->firstname = 'foo';
+        $object->surname = 'bar';
+        $object->email = 'foobar@foobar.com';
+
+        $service = new UserService($repository, $this->validator);
+        $service->create($object);
+    }
+
+    public function testThatSaveCallsServiceMethods()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|EntityInterface $entity */
+        $entity = $this->createMock(EntityInterface::class);
+
+        $repository = $this->getRepositoryMock('save');
+
+        $repository
+            ->expects(static::once())
+            ->method('save')
+            ->with($entity);
+
+        $service = new UserService($repository, $this->validator);
+        $service->save($entity);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Validator\Exception\ValidatorException
+     */
+    public function testThatSaveThrowsAnExceptionIfEntityIsNotValid()
+    {
+        $entity = new UserEntity();
+
+        $repository = $this->getRepositoryMock('save');
+
+        $repository
+            ->expects(static::never())
+            ->method('save');
+
+        $service = new UserService($repository, $this->validator);
+        $service->save($entity);
+    }
+
+    public function testThatSaveDoesNotThrowExceptionIfSkipValidationIsSet()
+    {
+        $entity = new UserEntity();
+
+        $repository = $this->getRepositoryMock('save');
+
+        $repository
+            ->expects(static::once())
+            ->method('save')
+            ->with($entity);
+
+        $service = new UserService($repository, $this->validator);
+        $service->save($entity, true);
+    }
+
+    /**
+     * @param   array   $methods
+     *
+     * @return  Repository|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getRepositoryMock(...$methods)
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|Repository $repository */
+        $repository = $this->getMockBuilder(Repository::class)
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->setMethods($methods)
+            ->getMock();
+
+        return $repository;
     }
 }
