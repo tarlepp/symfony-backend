@@ -209,7 +209,7 @@ abstract class Base implements Interfaces\Base
 
             // Oh noes, we have some errors
             if (count($errors) > 0) {
-                throw new ValidatorException($errors);
+                throw new ValidatorException((string)$errors);
             }
         }
 
