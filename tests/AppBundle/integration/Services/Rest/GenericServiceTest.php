@@ -162,6 +162,7 @@ class GenericServiceTest extends KernelTestCase
 
     /**
      * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedExceptionMessage Not found
      */
     public function testThatFindOneByThrowsAnExceptionIfEntityWasNotFoundAndThrowParameterIsSet()
     {
@@ -292,6 +293,72 @@ class GenericServiceTest extends KernelTestCase
 
         $service = new UserService($repository, $this->validator);
         $service->save($entity, true);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedExceptionMessage Not found
+     */
+    public function testThatUpdateThrowsAnExceptionIfEntityIsNotFound()
+    {
+        $repository = $this->getRepositoryMock('find');
+
+        $repository
+            ->expects(static::once())
+            ->method('find')
+            ->with('id-that-does-not-exists')
+            ->willReturn(null);
+
+        $service = new UserService($repository, $this->validator);
+        $service->update('id-that-does-not-exists', new \stdClass());
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Validator\Exception\ValidatorException
+     */
+    public function testThatUpdateThrowsAnExceptionWithInvalidEntity()
+    {
+        $entity = new UserEntity();
+
+        $repository = $this->getRepositoryMock('find');
+
+        $repository
+            ->expects(static::once())
+            ->method('find')
+            ->with('invalid-entity')
+            ->willReturn($entity);
+
+        $service = new UserService($repository, $this->validator);
+        $service->update('invalid-entity', new \stdClass());
+    }
+
+    public function testThatUpdateReturnsExpectedData()
+    {
+        $entity = new UserEntity();
+        $entity->setUsername('foo.bar');
+        $entity->setFirstname('foo');
+        $entity->setSurname('bar');
+        $entity->setEmail('foo.bar@foobar.com');
+
+        $expectedEntity = clone $entity;
+        $expectedEntity->setUsername('bar.foo');
+
+        $repository = $this->getRepositoryMock('find', 'save');
+
+        $repository
+            ->expects(static::once())
+            ->method('find')
+            ->with('entity-id')
+            ->willReturn($entity);
+
+        $repository
+            ->expects(static::once())
+            ->method('save')
+            ->willReturn(static::returnArgument(0));
+
+        $service = new UserService($repository, $this->validator);
+
+        static::assertEquals($expectedEntity, $service->update('entity-id', (object)['username' => 'bar.foo']));
     }
 
     /**
