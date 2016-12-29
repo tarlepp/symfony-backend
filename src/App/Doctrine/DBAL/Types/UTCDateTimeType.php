@@ -42,6 +42,8 @@ class UTCDateTimeType extends DateTimeType
 
     /**
      * {@inheritdoc}
+     *
+     * @throws ConversionException
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
@@ -52,7 +54,7 @@ class UTCDateTimeType extends DateTimeType
         $converted = \DateTime::createFromFormat(
             $platform->getDateTimeFormatString(),
             $value,
-            self::$utc ? self::$utc : self::$utc = new \DateTimeZone('UTC')
+            self::$utc ?: self::$utc = new \DateTimeZone('UTC')
         );
 
         if (!$converted) {
