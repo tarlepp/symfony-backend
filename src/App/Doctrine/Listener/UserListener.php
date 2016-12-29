@@ -41,7 +41,9 @@ class UserListener
     /**
      * Getter for user password encoder factory.
      *
-     * @param   User    $user
+     * @throws  \RuntimeException
+     *
+     * @param   User $user
      *
      * @return  PasswordEncoderInterface
      */
@@ -53,7 +55,9 @@ class UserListener
     /**
      * Doctrine lifecycle event for 'prePersist' event.
      *
-     * @param   LifecycleEventArgs  $event
+     * @throws  \RuntimeException
+     *
+     * @param   LifecycleEventArgs $event
      *
      * @return  void
      */
@@ -71,7 +75,9 @@ class UserListener
     /**
      * Doctrine lifecycle event for 'preUpdate' event.
      *
-     * @param   PreUpdateEventArgs  $event
+     * @throws  \RuntimeException
+     *
+     * @param   PreUpdateEventArgs $event
      *
      * @return  void
      */
@@ -88,6 +94,8 @@ class UserListener
 
     /**
      * Method to change user password whenever it's needed.
+     *
+     * @throws  \RuntimeException
      *
      * @param   User $user
      *
