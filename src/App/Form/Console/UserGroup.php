@@ -7,10 +7,12 @@ declare(strict_types = 1);
  */
 namespace App\Form\Console;
 
+use App\DTO\Console\UserGroup as UserGroupDto;
 use App\Services\Helper\Roles;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -76,11 +78,13 @@ class UserGroup extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @throws AccessException
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'App\DTO\Console\UserGroup'
+            'data_class' => UserGroupDto::class,
         ]);
     }
 }
