@@ -27,6 +27,8 @@ class DefaultController extends Controller
      *
      * @Method("GET");
      *
+     * @throws \InvalidArgumentException
+     *
      * @return Response
      */
     public function indexAction(): Response

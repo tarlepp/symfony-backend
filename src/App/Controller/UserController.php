@@ -17,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -81,8 +82,12 @@ class UserController extends RestController
      *
      * @Security("has_role('ROLE_ROOT')")
      *
-     * @param   Request     $request
-     * @param   UserEntity  $user
+     * @throws  \LogicException
+     * @throws  MethodNotAllowedHttpException
+     * @throws  HttpException
+     *
+     * @param   Request $request
+     * @param   UserEntity $user
      *
      * @return  Response
      */

@@ -34,7 +34,9 @@ class PlaygroundController extends Controller
      *
      * @Method("GET")
      *
-     * @param   Request     $request
+     * @param   Request $request
+     *
+     * @throws \InvalidArgumentException
      *
      * @return  Response
      */
