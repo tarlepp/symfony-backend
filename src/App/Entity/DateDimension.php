@@ -188,7 +188,8 @@ class DateDimension implements EntityInterface
      *      type="integer",
      *      nullable=false,
      *      options={
-     *          "comment": "ISO-8601 numeric representation of the day of the week; 1 (for Monday) through 7 (for Sunday)",
+     *          "comment": "ISO-8601 numeric representation of the day of the week; 1 (for Monday) through 7
+ (for Sunday)",
      *      },
      *  )
      */
@@ -251,7 +252,8 @@ class DateDimension implements EntityInterface
      *      type="integer",
      *      nullable=false,
      *      options={
-     *          "comment": "ISO-8601 week-numbering year. This has the same value as year, except that if the ISO week number (W) belongs to the previous or next year, that year is used instead.",
+     *          "comment": "ISO-8601 week-numbering year. This has the same value as year, except that if the ISO week
+ number (W) belongs to the previous or next year, that year is used instead.",
      *      },
      *  )
      */
@@ -287,7 +289,7 @@ class DateDimension implements EntityInterface
     {
         $this->id = Uuid::uuid4()->toString();
 
-        if (!is_null($dateTime)) {
+        if (null !== $dateTime) {
             $this->setDate($dateTime);
             $this->setYear((int)$dateTime->format('Y'));
             $this->setMonth((int)$dateTime->format('n'));

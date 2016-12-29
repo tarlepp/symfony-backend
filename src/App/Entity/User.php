@@ -9,6 +9,7 @@ namespace App\Entity;
 
 use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
+use App\Utils\JSON;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -492,35 +493,35 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
     /**
      * String representation of object
      *
-     * @link    http://php.net/manual/en/serializable.serialize.php
+     * @throws  \LogicException
      *
      * @return  string  the string representation of the object or null
      */
     public function serialize(): string
     {
-        return serialize([
-            $this->id,
-            $this->username,
-            $this->password,
+        return JSON::encode([
+            'id'        => $this->id,
+            'username'  => $this->username,
+            'password'  => $this->password,
         ]);
     }
 
     /**
      * Constructs the object
      *
-     * @link    http://php.net/manual/en/serializable.unserialize.php
+     * @throws  \LogicException
      *
-     * @param   string  $serialized The string representation of the object.
+     * @param   string $serialized The string representation of the object.
      *
      * @return  void
      */
     public function unserialize($serialized)
     {
-        list (
-            $this->id,
-            $this->username,
-            $this->password,
-        ) = unserialize($serialized);
+        $data = JSON::decode($serialized);
+
+        $this->id = $data->id;
+        $this->username = $data->username;
+        $this->password = $data->password;
     }
 
     /**

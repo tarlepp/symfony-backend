@@ -467,14 +467,16 @@ class RequestLog implements EntityInterface
     /**
      * RequestLog constructor.
      *
-     * @param   Request|null    $request
-     * @param   Response|null   $response
+     * @throws  \LogicException
+     *
+     * @param   Request|null $request
+     * @param   Response|null $response
      */
     public function __construct(Request $request = null, Response $response = null)
     {
         $this->id = Uuid::uuid4()->toString();
 
-        if (!is_null($request)) {
+        if (null !== $request) {
             $this->setClientIp($request->getClientIp());
             $this->setMethod($request->getRealMethod());
             $this->setScheme($request->getScheme());
@@ -495,7 +497,7 @@ class RequestLog implements EntityInterface
             $this->setTime(new \DateTime('now', new \DateTimeZone('UTC')));
         }
 
-        if (!is_null($response)) {
+        if (null !== $response) {
             $this->setStatusCode($response->getStatusCode());
             $this->setResponseContentLength(mb_strlen($response->getContent()));
         }
@@ -983,7 +985,7 @@ class RequestLog implements EntityInterface
             $controller = explode('::', $controller);
             $controller = explode('\\', $controller[0]);
 
-            return isset($controller[4]) ? $controller[4] : '';
+            return $controller[4] ?? '';
         } else {
             $controller = explode(':', $controller);
 
@@ -1000,11 +1002,13 @@ class RequestLog implements EntityInterface
         $action = $request->get('_controller', '');
         $action = strpos($action, '::') ? explode('::', $action) : explode(':', $action);
 
-        return isset($action[1]) ? $action[1] : '';
+        return $action[1] ?? '';
     }
 
     /**
      * Getter method to convert current request parameters to array.
+     *
+     * @throws  \LogicException
      *
      * @param   Request $request
      *
@@ -1038,7 +1042,7 @@ class RequestLog implements EntityInterface
      */
     private function cleanContent(string $content): string
     {
-        $iterator = function($search) use (&$content) {
+        $iterator = function ($search) use (&$content) {
             $content = preg_replace('/(' . $search . '":)"(.*)"/', '$1"*** REPLACED ***"', $content);
         };
 
