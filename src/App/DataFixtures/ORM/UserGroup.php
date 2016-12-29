@@ -8,13 +8,15 @@ declare(strict_types = 1);
 namespace App\DataFixtures\ORM;
 
 use App\Entity\UserGroup as UserGroupEntity;
-use App\Services\Helper\Roles;
+use App\Services\Helper\Interfaces\Roles;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
  * Class UserGroup
@@ -50,24 +52,26 @@ class UserGroup extends AbstractFixture implements FixtureInterface, OrderedFixt
     /**
      * Load data fixtures with the passed EntityManager
      *
+     * @throws ServiceCircularReferenceException
+     * @throws ServiceNotFoundException
+     *
      * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
-        $roles = $this->container->get('app.services.helper.roles');
+        $roleService = $this->container->get('app.services.helper.roles');
 
-        foreach ($roles->getRoles() as $role) {
-            // Create new user group
-            $group = new UserGroupEntity();
-            $group->setName($roles->getRoleLabel($role));
-            $group->setRole($role);
+        $roles = $roleService->getRoles();
 
-            $manager->persist($group);
+        // Create groups
+        array_map(
+            [$this, 'createGroup'],
+            array_fill(0, count($roles), $manager),
+            array_fill(0, count($roles), $roleService),
+            $roles
+        );
 
-            // Create reference to current user group
-            $this->addReference('user-group-' . $roles->getShort($role), $group);
-        }
-
+        // Flush all changes to database
         $manager->flush();
     }
 
@@ -79,5 +83,25 @@ class UserGroup extends AbstractFixture implements FixtureInterface, OrderedFixt
     public function getOrder(): int
     {
         return 0;
+    }
+
+    /**
+     * Helper method to create actual group entities.
+     *
+     * @param   ObjectManager   $manager
+     * @param   Roles           $roleService
+     * @param   string          $role
+     */
+    private function createGroup(ObjectManager $manager, Roles $roleService, string $role)
+    {
+        // Create new user group
+        $group = new UserGroupEntity();
+        $group->setName($roleService->getRoleLabel($role));
+        $group->setRole($role);
+
+        $manager->persist($group);
+
+        // Create reference to current user group
+        $this->addReference('user-group-' . $roleService->getShort($role), $group);
     }
 }

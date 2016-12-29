@@ -9,12 +9,15 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\User as UserEntity;
 use App\Entity\UserGroup as UserGroupEntity;
+use App\Services\Helper\Interfaces\Roles;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
  * Class User
@@ -72,46 +75,29 @@ class User extends AbstractFixture implements FixtureInterface, OrderedFixtureIn
     /**
      * Load data fixtures with the passed EntityManager
      *
+     * @throws ServiceCircularReferenceException
+     * @throws ServiceNotFoundException
+     *
      * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
-        $roles = $this->container->get('app.services.helper.roles');
+        $roleService = $this->container->get('app.services.helper.roles');
 
-        // Iterate each roles and create user to each of those
-        foreach ($roles->getRoles() as $role) {
-            $short = $roles->getShort($role);
+        $roles = $roleService->getRoles();
 
-            // Create new user
-            $user = new UserEntity();
-            $user->setUsername('john-' . $short);
-            $user->setFirstname('John');
-            $user->setSurname('Doe');
-            $user->setEmail('john.doe-' . $short . '@test.com');
-            $user->setPlainPassword('doe-' . $short);
+        // Create users for every user group / role
+        array_map(
+            [$this, 'createUser'],
+            array_fill(0, count($roles), $manager),
+            array_fill(0, count($roles), $roleService),
+            $roles
+        );
 
-            /** @var UserGroupEntity $userGroup */
-            $userGroup = $this->getReference('user-group-' . $short);
-            $user->addUserGroup($userGroup);
+        // And finally create user without group / role
+        $this->createUser($manager, $roleService);
 
-            $manager->persist($user);
-
-            // Create reference to current user
-            $this->addReference('user-' . $user->getUsername(), $user);
-        }
-
-        // And finally create user that has no roles at all
-        $user = new UserEntity();
-        $user->setUsername('john');
-        $user->setFirstname('John');
-        $user->setSurname('Doe');
-        $user->setEmail('john.doe@test.com');
-        $user->setPlainPassword('doe');
-
-        // Create reference to current user
-        $this->addReference('user-' . $user->getUsername(), $user);
-
-        $manager->persist($user);
+        // Flush all changes to database
         $manager->flush();
     }
 
@@ -123,5 +109,36 @@ class User extends AbstractFixture implements FixtureInterface, OrderedFixtureIn
     public function getOrder(): int
     {
         return 1;
+    }
+
+    /**
+     * Helper method to create actual user entities.
+     *
+     * @param   ObjectManager   $manager
+     * @param   Roles           $roles
+     * @param   string|null     $role
+     */
+    private function createUser(ObjectManager $manager, Roles $roles, string $role = null)
+    {
+        $suffix = null === $role ? '' : '-' . $roles->getShort($role);
+
+        // Create new user
+        $user = new UserEntity();
+        $user->setUsername('john' . $suffix);
+        $user->setFirstname('John');
+        $user->setSurname('Doe');
+        $user->setEmail('john.doe' . $suffix . '@test.com');
+        $user->setPlainPassword('doe' . $suffix);
+
+        if (null !== $role) {
+            /** @var UserGroupEntity $userGroup */
+            $userGroup = $this->getReference('user-group-' . $roles->getShort($role));
+            $user->addUserGroup($userGroup);
+        }
+
+        $manager->persist($user);
+
+        // Create reference to current user
+        $this->addReference('user-' . $user->getUsername(), $user);
     }
 }
