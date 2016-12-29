@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 namespace App\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -27,7 +28,7 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      *
      * @var string[]
      */
-    protected $searchColumns = ['username', 'firstname', 'surname', 'email'];
+    protected static $searchColumns = ['username', 'firstname', 'surname', 'email'];
 
     /**
      * Loads the user for the given username.
@@ -39,11 +40,12 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      * @link http://symfony2-document.readthedocs.org/en/latest/cookbook/security/entity_provider.html
      *       #managing-roles-in-the-database
      *
-     * @param   string  $username   The username
+     * @throws  NonUniqueResultException
+     * @throws  UsernameNotFoundException if the user is not found
+     *
+     * @param   string $username The username
      *
      * @return  UserInterface
-     *
-     * @throws  UsernameNotFoundException if the user is not found
      */
     public function loadUserByUsername($username): UserInterface
     {
@@ -78,11 +80,13 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      * It is up to the implementation to decide if the user data should be totally reloaded (e.g. from the database),
      * or if the UserInterface object can just be merged into some internal array of users / identity map.
      *
-     * @param   UserInterface   $user
+     * @throws  UsernameNotFoundException
+     * @throws  NonUniqueResultException
+     * @throws  UnsupportedUserException    if the account is not supported
+     *
+     * @param   UserInterface $user
      *
      * @return  UserInterface
-     *
-     * @throws  UnsupportedUserException    if the account is not supported
      */
     public function refreshUser(UserInterface $user): UserInterface
     {
@@ -110,8 +114,10 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
     /**
      * Method to check if specified username is available or not.
      *
-     * @param   string      $username   Username to check
-     * @param   string|null $id         User id to ignore
+     * @throws  NonUniqueResultException
+     *
+     * @param   string $username Username to check
+     * @param   string|null $id User id to ignore
      *
      * @return  bool
      */
@@ -125,21 +131,23 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
             ->setParameter('username', $username)
         ;
 
-        if (!is_null($id)) {
+        if (null !== $id) {
             $query
                 ->andWhere('u.id <> :id')
                 ->setParameter('id', $id)
             ;
         }
 
-        return is_null($query->getQuery()->getOneOrNullResult());
+        return null === $query->getQuery()->getOneOrNullResult();
     }
 
     /**
      * Method to check if specified email is available or not.
      *
-     * @param   string      $email  Username to check
-     * @param   string|null $id     User id to ignore
+     * @throws  NonUniqueResultException
+     *
+     * @param   string $email Username to check
+     * @param   string|null $id User id to ignore
      *
      * @return  bool
      */
@@ -153,13 +161,13 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
             ->setParameter('email', $email)
         ;
 
-        if (!is_null($id)) {
+        if (null !== $id) {
             $query
                 ->andWhere('u.id <> :id')
                 ->setParameter('id', $id)
             ;
         }
 
-        return is_null($query->getQuery()->getOneOrNullResult());
+        return null === $query->getQuery()->getOneOrNullResult();
     }
 }

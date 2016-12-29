@@ -20,7 +20,7 @@ class Author extends Base
      *
      * @var string[]
      */
-    protected $searchColumns = ['name', 'description'];
+    protected static $searchColumns = ['name', 'description'];
 
     // Implement custom entity query methods here
 }

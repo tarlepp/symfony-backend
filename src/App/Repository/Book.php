@@ -20,7 +20,7 @@ class Book extends Base
      *
      * @var string[]
      */
-    protected $searchColumns = ['title', 'description'];
+    protected static $searchColumns = ['title', 'description'];
 
     // Implement custom entity query methods here
 }

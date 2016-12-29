@@ -27,7 +27,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      *
      * @var string[]
      */
-    protected $searchColumns = [];
+    protected static $searchColumns = [];
 
     /**
      * Parameter count in current query, this is used to track parameters which are bind to current query.
@@ -65,7 +65,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      */
     public function getSearchColumns(): array
     {
-        return $this->searchColumns;
+        return static::$searchColumns;
     }
 
     /**
@@ -106,7 +106,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
 
         // Process normal and search term criteria
         $this->processCriteria($queryBuilder, $criteria);
-        is_null($search) ?: $this->processSearchTerms($queryBuilder, $search);
+        null === $search ?: $this->processSearchTerms($queryBuilder, $search);
 
         $queryBuilder->select('COUNT(entity.id)');
 
@@ -131,9 +131,9 @@ abstract class Base extends EntityRepository implements Interfaces\Base
         $this->processSearchTerms($queryBuilder, $search);
 
         // Process order, limit and offset
-        is_null($orderBy) ?: $this->processOrderBy($queryBuilder, $orderBy);
-        is_null($limit) ?: $queryBuilder->setMaxResults($limit);
-        is_null($offset) ?: $queryBuilder->setFirstResult($offset);
+        null === $orderBy ?: $this->processOrderBy($queryBuilder, $orderBy);
+        null === $limit ?: $queryBuilder->setMaxResults($limit);
+        null === $offset ?: $queryBuilder->setFirstResult($offset);
 
         return $queryBuilder->getQuery()->getResult();
     }
@@ -204,8 +204,10 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      * @see \App\Repository\Base::getExpression
      * @see \App\Controller\Rest::processCriteria
      *
-     * @param   QueryBuilder    $queryBuilder
-     * @param   array           $criteria
+     * @throws  \InvalidArgumentException
+     *
+     * @param   QueryBuilder $queryBuilder
+     * @param   array $criteria
      *
      * @return  void
      */
@@ -233,7 +235,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
             }
 
             // Determine used operator
-            if (is_null($operator)) {
+            if (null === $operator) {
                 $operator = is_array($value) ? 'in' : 'eq';
             }
 
@@ -269,8 +271,10 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      *
      * @see \App\Controller\Rest::getSearchTerms
      *
+     * @throws  \InvalidArgumentException
+     *
      * @param   QueryBuilder $queryBuilder
-     * @param   array        $searchTerms
+     * @param   array $searchTerms
      *
      * @return  void
      */
@@ -286,7 +290,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
         foreach ($searchTerms as $operand => $terms) {
             $criteria = SearchTerm::getCriteria($columns, $terms, $operand);
 
-            if (!is_null($criteria)) {
+            if (null !== $criteria) {
                 $queryBuilder->andWhere($this->getExpression($queryBuilder, $queryBuilder->expr()->andX(), $criteria));
             }
         }
@@ -383,11 +387,12 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      *
      * @see https://gist.github.com/jgornick/8671644
      *
-     * @param   QueryBuilder        $queryBuilder
+     * @param   QueryBuilder $queryBuilder
      * @param   CompositeExpression $expression
-     * @param   array               $criteria
+     * @param   array $criteria
      *
      * @return  CompositeExpression
+     * @throws \InvalidArgumentException
      */
     protected function getExpression(
         QueryBuilder $queryBuilder,
@@ -404,41 +409,40 @@ abstract class Base extends EntityRepository implements Interfaces\Base
             } elseif ($key === 'and' || array_key_exists('and', $comparison)) {
                 $expression->add($this->getExpression($queryBuilder, $queryBuilder->expr()->andX(), $comparison));
             } else {
-                // list used field, operator and value
-                list($field, $operator, $value) = $comparison;
+                $comparison = (object)array_combine(['field', 'operator', 'value'], $comparison);
 
                 // Increase parameter count
                 $this->parameterCount++;
 
                 // Initialize used callback parameters
-                $parameters = [$field];
+                $parameters = [$comparison->field];
+
+                $lowercaseOperator = strtolower($comparison->operator);
 
                 // Array values needs some extra work
-                if (is_array($value)) {
+                if (is_array($comparison->value)) {
                     // Operator is between, so we need to add third parameter for Expr method
-                    if (strtolower($operator) === 'between') {
+                    if ($lowercaseOperator === 'between') {
                         $parameters[] = '?' . $this->parameterCount;
-                        $queryBuilder->setParameter($this->parameterCount, $value[0]);
+                        $queryBuilder->setParameter($this->parameterCount, $comparison->value[0]);
 
                         $this->parameterCount++;
 
                         $parameters[] = '?' . $this->parameterCount;
-                        $queryBuilder->setParameter($this->parameterCount, $value[1]);
+                        $queryBuilder->setParameter($this->parameterCount, $comparison->value[1]);
                     } else { // Otherwise this must be IN or NOT IN expression
                         $parameters[] = array_map(function ($value) use ($queryBuilder) {
                             return  $queryBuilder->expr()->literal($value);
-                        }, $value);
+                        }, $comparison->value);
                     }
-                } elseif (strtolower($operator) === 'isnull' || strtolower($operator) === 'isnotnull') {
-                    // In these cases we don't want to bind any parameters to query - because it's not needed
-                } else { // And with "normal" case just add parameter and set it to query builder
+                } elseif (!($lowercaseOperator === 'isnull' || $lowercaseOperator === 'isnotnull')) {
                     $parameters[] = '?' . $this->parameterCount;
 
-                    $queryBuilder->setParameter($this->parameterCount, $value);
+                    $queryBuilder->setParameter($this->parameterCount, $comparison->value);
                 }
 
                 // And finally add new expression to main one with specified parameters
-                $expression->add(call_user_func_array([$queryBuilder->expr(), $operator], $parameters));
+                $expression->add(call_user_func_array([$queryBuilder->expr(), $comparison->operator], $parameters));
             }
         }
 

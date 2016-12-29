@@ -20,7 +20,7 @@ class UserGroup extends Base
      *
      * @var string[]
      */
-    protected $searchColumns = ['name', 'role'];
+    protected static $searchColumns = ['name', 'role'];
 
     // Implement custom entity query methods here
 }

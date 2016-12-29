@@ -8,6 +8,10 @@ declare(strict_types=1);
 namespace App\Repository\Interfaces;
 
 use App\Entity\Interfaces\EntityInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 
 /**
  * Generic interface for all application repository classes that extends Base repository.
@@ -32,7 +36,7 @@ interface Base
      *
      * @param   string $id
      *
-     * @return  bool|\Doctrine\Common\Proxy\Proxy|null|object
+     * @return  \Doctrine\Common\Proxy\Proxy
      */
     public function getReference(string $id);
 
@@ -53,6 +57,9 @@ interface Base
     /**
      * Helper method to persist specified entity to database.
      *
+     * @throws  ORMInvalidArgumentException
+     * @throws  OptimisticLockException
+     *
      * @param   EntityInterface $entity
      *
      * @return  void
@@ -61,6 +68,9 @@ interface Base
 
     /**
      * Helper method to remove specified entity from database.
+     *
+     * @throws  ORMInvalidArgumentException
+     * @throws  OptimisticLockException
      *
      * @param   EntityInterface $entity
      *
@@ -71,6 +81,10 @@ interface Base
     /**
      * Generic count method to determine count of entities for specified criteria and search term(s).
      *
+     * @throws  \InvalidArgumentException
+     * @throws  NoResultException
+     * @throws  NonUniqueResultException
+     *
      * @param   array       $criteria
      * @param   array|null  $search
      *
@@ -80,6 +94,8 @@ interface Base
 
     /**
      * Generic replacement for basic 'findBy' method if/when you want to use generic LIKE search.
+     *
+     * @throws  \InvalidArgumentException
      *
      * @param   array           $search
      * @param   array           $criteria
@@ -99,6 +115,8 @@ interface Base
 
     /**
      * Repository method to fetch current entity id values from database and return those as an array.
+     *
+     * @throws  \InvalidArgumentException
      *
      * @param   array   $criteria
      * @param   array   $search
