@@ -8,11 +8,16 @@ declare(strict_types=1);
 namespace App\Command\Utils;
 
 use App\Entity\DateDimension;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
  * Class PopulateDateDimensionCommand
@@ -32,6 +37,8 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
 
     /**
      * {@inheritdoc}
+     *
+     * @throws InvalidArgumentException
      */
     protected function configure()
     {
@@ -44,6 +51,13 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \RuntimeException
+     * @throws \LogicException
+     * @throws ServiceCircularReferenceException
+     * @throws ServiceNotFoundException
+     * @throws ORMInvalidArgumentException
+     * @throws OptimisticLockException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -65,6 +79,8 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
 
     /**
      * Method to get start year value from user.
+     *
+     * @throws \RuntimeException
      *
      * @return int
      */
@@ -92,6 +108,8 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
 
     /**
      * Method to get end year value from user.
+     *
+     * @throws \RuntimeException
      *
      * @param int $yearStart
      *
@@ -125,6 +143,12 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
 
     /**
      * Method to create DateDimension entities to database.
+     *
+     * @throws \LogicException
+     * @throws ServiceCircularReferenceException
+     * @throws ServiceNotFoundException
+     * @throws OptimisticLockException
+     * @throws ORMInvalidArgumentException
      *
      * @param int $yearStart
      * @param int $yearEnd
