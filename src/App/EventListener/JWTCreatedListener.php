@@ -12,6 +12,7 @@ use App\Services\Rest\User as UserService;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 
@@ -58,6 +59,8 @@ class JWTCreatedListener
      * Event listener method to attach some custom data to JWT payload.
      *
      * This method is called when 'lexik_jwt_authentication.on_jwt_created' event is broadcast.
+     *
+     * @throws  UsernameNotFoundException
      *
      * @param   JWTCreatedEvent $event
      *
@@ -147,8 +150,10 @@ class JWTCreatedListener
     /**
      * Method to get user entity from current event.
      *
+     * @throws  UsernameNotFoundException
+     *
      * @param   JWTCreatedEvent $event
-     * @param   string          $username
+     * @param   string $username
      *
      * @return  User
      */

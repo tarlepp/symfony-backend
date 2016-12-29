@@ -25,7 +25,9 @@ class BodyListener
      * Implementation of BodyListener event. Purpose of this is to convert JSON request data to proper request
      * parameters.
      *
-     * @param   GetResponseEvent    $event
+     * @throws  \LogicException
+     *
+     * @param   GetResponseEvent $event
      *
      * @return  void
      */
@@ -54,11 +56,13 @@ class BodyListener
      */
     private function isJsonRequest(Request $request): bool
     {
-        return in_array($request->getContentType(), ['', 'json', 'txt']);
+        return in_array($request->getContentType(), ['', 'json', 'txt'], true);
     }
 
     /**
      * Method to transform JSON type request to proper request parameters.
+     *
+     * @throws  \LogicException
      *
      * @param   Request $request
      *

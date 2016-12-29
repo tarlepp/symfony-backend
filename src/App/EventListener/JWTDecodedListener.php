@@ -11,6 +11,7 @@ use App\Entity\User as UserEntity;
 use App\Services\Rest\User as UserService;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTDecodedEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
  * Class JWTDecodedListener
@@ -48,6 +49,8 @@ class JWTDecodedListener
      * Event listener method to attach some custom JWT payload checks.
      *
      * This method is called when 'lexik_jwt_authentication.on_jwt_decoded' event is broadcast.
+     *
+     * @throws  UsernameNotFoundException
      *
      * @param   JWTDecodedEvent $event
      *

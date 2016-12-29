@@ -7,6 +7,7 @@ declare(strict_types = 1);
  */
 namespace App\EventListener;
 
+use App\Utils\JSON;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
 use Psr\Log\LoggerInterface;
@@ -50,6 +51,10 @@ class ExceptionListener
     /**
      * Listener method for all exceptions.
      *
+     * @throws  \InvalidArgumentException
+     * @throws  \LogicException
+     * @throws  \UnexpectedValueException
+     *
      * @param   GetResponseForExceptionEvent $event
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
@@ -67,7 +72,7 @@ class ExceptionListener
         if ($exception instanceof HttpExceptionInterface) {
             $response->setStatusCode($exception->getStatusCode());
             $response->headers->replace($exception->getHeaders());
-        } else if ($exception instanceof AuthenticationException) {
+        } elseif ($exception instanceof AuthenticationException) {
             $response->setStatusCode(Response::HTTP_UNAUTHORIZED);
         } else {
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -95,7 +100,7 @@ class ExceptionListener
             ];
         }
 
-        $response->setContent(json_encode($error));
+        $response->setContent(JSON::encode($error));
 
         // Send the modified response object to the event
         $event->setResponse($response);

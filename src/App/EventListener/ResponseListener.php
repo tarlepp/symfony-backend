@@ -42,8 +42,10 @@ class ResponseListener
         // Store logger service
         $this->logger = $responseLogger;
 
+        $token = $tokenStorage->getToken();
+
         // We don't have valid user atm, so set user to null
-        if (is_null($tokenStorage->getToken()) || $tokenStorage->getToken() instanceof AnonymousToken) {
+        if (null === $token || $token instanceof AnonymousToken) {
             $this->user = null;
         } else { // Otherwise get user object
             $this->user = $tokenStorage->getToken()->getUser();
@@ -52,6 +54,8 @@ class ResponseListener
 
     /**
      * Event listener method to log every request / response.
+     *
+     * @throws  \Exception
      *
      * @param   FilterResponseEvent $event
      */
