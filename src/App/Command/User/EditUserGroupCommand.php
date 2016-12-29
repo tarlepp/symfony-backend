@@ -9,6 +9,7 @@ namespace App\Command\User;
 
 use App\Entity\UserGroup as UserGroupEntity;
 use App\DTO\Console\UserGroup as UserGroupDto;
+use App\Form\Console\UserGroup as UserGroupForm;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -25,21 +26,21 @@ class EditUserGroupCommand extends Base
      *
      * @var string
      */
-    protected $commandName = 'user:editGroup';
+    protected static $commandName = 'user:editGroup';
 
     /**
      * Description of the console command.
      *
      * @var string
      */
-    protected $commandDescription = 'Edit specified user group data.';
+    protected static $commandDescription = 'Edit specified user group data.';
 
     /**
      * Supported command line parameters.
      *
      * @var array
      */
-    protected $commandParameters = [
+    protected static $commandParameters = [
         [
             'name'          => 'id',
             'description'   => 'User group ID',
@@ -73,7 +74,7 @@ class EditUserGroupCommand extends Base
 
         /** @var UserGroupDto $dto */
         $dto = $this->getHelper('form')->interactUsingForm(
-            'App\Form\Console\UserGroup',
+            UserGroupForm::class,
             $this->input,
             $this->output,
             ['data' => $dto]

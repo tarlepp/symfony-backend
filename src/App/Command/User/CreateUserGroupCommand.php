@@ -8,6 +8,7 @@ declare(strict_types = 1);
 namespace App\Command\User;
 
 use App\DTO\Console\UserGroup as UserGroupDto;
+use App\Form\Console\UserGroup as UserGroupForm;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -24,21 +25,21 @@ class CreateUserGroupCommand extends Base
      *
      * @var string
      */
-    protected $commandName = 'user:createGroup';
+    protected static $commandName = 'user:createGroup';
 
     /**
      * Description of the console command.
      *
      * @var string
      */
-    protected $commandDescription = 'Create new user group to the database.';
+    protected static $commandDescription = 'Create new user group to the database.';
 
     /**
      * Supported command line parameters.
      *
      * @var array
      */
-    protected $commandParameters = [
+    protected static $commandParameters = [
         [
             'name'          => 'name',
             'description'   => 'Name of the user group',
@@ -55,7 +56,7 @@ class CreateUserGroupCommand extends Base
 
         /** @var UserGroupDto $dto */
         $dto = $this->getHelper('form')->interactUsingForm(
-            'App\Form\Console\UserGroup',
+            UserGroupForm::class,
             $this->input,
             $this->output
         );

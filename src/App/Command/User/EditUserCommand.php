@@ -10,6 +10,7 @@ namespace App\Command\User;
 use App\Entity\User as UserEntity;
 use App\Entity\UserGroup as UserGroupEntity;
 use App\DTO\Console\User as UserDto;
+use App\Form\Console\User as UserForm;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -26,21 +27,21 @@ class EditUserCommand extends Base
      *
      * @var string
      */
-    protected $commandName = 'user:edit';
+    protected static $commandName = 'user:edit';
 
     /**
      * Description of the console command.
      *
      * @var string
      */
-    protected $commandDescription = 'Edit user\'s information.';
+    protected static $commandDescription = 'Edit user\'s information.';
 
     /**
      * Supported command line parameters.
      *
      * @var array
      */
-    protected $commandParameters = [
+    protected static $commandParameters = [
         [
             'name'          => 'username',
             'description'   => 'Username',
@@ -86,7 +87,7 @@ class EditUserCommand extends Base
 
         /** @var UserDto $dto */
         $dto = $this->getHelper('form')->interactUsingForm(
-            'App\Form\Console\User',
+            UserForm::class,
             $this->input,
             $this->output,
             ['data' => $dto]

@@ -8,6 +8,7 @@ declare(strict_types = 1);
 namespace App\Command\User;
 
 use App\DTO\Console\User as UserDto;
+use App\Form\Console\User as UserForm;
 use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,21 +26,21 @@ class CreateUserCommand extends Base
      *
      * @var string
      */
-    protected $commandName = 'user:create';
+    protected static $commandName = 'user:create';
 
     /**
      * Description of the console command.
      *
      * @var string
      */
-    protected $commandDescription = 'Create new user to the database.';
+    protected static $commandDescription = 'Create new user to the database.';
 
     /**
      * Supported command line parameters.
      *
      * @var array
      */
-    protected $commandParameters = [
+    protected static $commandParameters = [
         [
             'name'          => 'username',
             'description'   => 'Username',
@@ -78,7 +79,7 @@ class CreateUserCommand extends Base
         }
 
         /** @var UserDto $dto */
-        $dto = $this->getHelper('form')->interactUsingForm('App\Form\Console\User', $this->input, $this->output);
+        $dto = $this->getHelper('form')->interactUsingForm(UserForm::class, $this->input, $this->output);
 
         // Store user
         $this->storeUser($dto);

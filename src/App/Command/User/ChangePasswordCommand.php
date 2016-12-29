@@ -9,6 +9,7 @@ namespace App\Command\User;
 
 use App\Entity\User;
 use App\DTO\Console\User as UserDto;
+use App\Form\Console\UserPassword as UserPasswordForm;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -25,21 +26,21 @@ class ChangePasswordCommand extends Base
      *
      * @var string
      */
-    protected $commandName = 'user:changePassword';
+    protected static $commandName = 'user:changePassword';
 
     /**
      * Description of the console command.
      *
      * @var string
      */
-    protected $commandDescription = 'Change user\'s password.';
+    protected static $commandDescription = 'Change user\'s password.';
 
     /**
      * Supported command line parameters.
      *
      * @var array
      */
-    protected $commandParameters = [
+    protected static $commandParameters = [
         [
             'name'          => 'username',
             'description'   => 'Username',
@@ -74,7 +75,7 @@ class ChangePasswordCommand extends Base
 
         /** @var UserDto $dto */
         $dto = $this->getHelper('form')->interactUsingForm(
-            'App\Form\Console\UserPassword',
+            UserPasswordForm::class,
             $this->input,
             $this->output,
             ['data' => $dto]

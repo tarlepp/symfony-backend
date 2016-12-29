@@ -16,12 +16,15 @@ use App\Services\Rest\User as UserService;
 use App\Services\Rest\UserGroup as UserGroupService;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
@@ -39,14 +42,14 @@ abstract class Base extends ContainerAwareCommand
      *
      * @var string
      */
-    protected $commandName;
+    protected static $commandName;
 
     /**
      * Description of the console command.
      *
      * @var string
      */
-    protected $commandDescription;
+    protected static $commandDescription;
 
     /**
      * Supported command line parameters. This is an array that contains array configuration of each parameter,
@@ -63,7 +66,7 @@ abstract class Base extends ContainerAwareCommand
      *
      * @var array
      */
-    protected $commandParameters = [];
+    protected static $commandParameters = [];
 
     /**
      * @var InputInterface
@@ -92,6 +95,8 @@ abstract class Base extends ContainerAwareCommand
 
     /**
      * {@inheritdoc}
+     *
+     * @throws  InvalidArgumentException
      */
     protected function configure()
     {
@@ -105,25 +110,30 @@ abstract class Base extends ContainerAwareCommand
         $iterator = function (array $input) {
             return new InputOption(
                 $input['name'],
-                array_key_exists('shortcut', $input)    ? $input['shortcut']    : null,
-                array_key_exists('mode', $input)        ? $input['mode']        : InputOption::VALUE_OPTIONAL,
-                array_key_exists('description', $input) ? $input['description'] : '',
-                array_key_exists('default', $input)     ? $input['default']     : null
+                $input['shortcut']    ?? null,
+                $input['mode']        ?? InputOption::VALUE_OPTIONAL,
+                $input['description'] ?? '',
+                $input['default']     ?? null
             );
         };
 
         // Configure command
         $this
-            ->setName($this->commandName)
-            ->setDescription($this->commandDescription)
+            ->setName(static::$commandName)
+            ->setDescription(static::$commandDescription)
             ->setDefinition(
-                new InputDefinition(array_map($iterator, $this->commandParameters))
+                new InputDefinition(array_map($iterator, static::$commandParameters))
             )
         ;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws  \LogicException
+     * @throws  ServiceCircularReferenceException
+     * @throws  ServiceNotFoundException
+     * @throws  InvalidArgumentException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -145,7 +155,9 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to get user object by username or email.
      *
-     * @param   bool    $showUserInformation
+     * @throws  InvalidArgumentException
+     *
+     * @param   bool $showUserInformation
      *
      * @return  UserEntity
      */
@@ -176,7 +188,9 @@ abstract class Base extends ContainerAwareCommand
      * Helper method to get user group object. This method will print a table which contains all user groups and
      * information about each of those. Then user must "select" one of these user groups by group ID.
      *
-     * @param   bool    $showInformation
+     * @throws  InvalidArgumentException
+     *
+     * @param   bool $showInformation
      *
      * @return  UserGroupEntity
      */
