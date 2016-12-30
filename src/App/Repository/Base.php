@@ -79,34 +79,38 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function save(EntityInterface $entity)
+    public function save(EntityInterface $entity): Interfaces\Base
     {
         // Persist on database
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function remove(EntityInterface $entity)
+    public function remove(EntityInterface $entity): Interfaces\Base
     {
         // Remove from database
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function count(array $criteria = [], array $search = null): int
+    public function count(array $criteria = [], array $search = []): int
     {
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
 
         // Process normal and search term criteria
         $this->processCriteria($queryBuilder, $criteria);
-        null === $search ?: $this->processSearchTerms($queryBuilder, $search);
+        $this->processSearchTerms($queryBuilder, $search);
 
         $queryBuilder->select('COUNT(entity.id)');
 
@@ -119,19 +123,19 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     public function findByWithSearchTerms(
         array $search,
         array $criteria,
-        array $orderBy = null,
+        array $orderBy = [],
         int $limit = null,
         int $offset = null
     ): array {
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
 
-        // Process normal and search term criteria
+        // Process normal and search term criteria and order
         $this->processCriteria($queryBuilder, $criteria);
         $this->processSearchTerms($queryBuilder, $search);
+        $this->processOrderBy($queryBuilder, $orderBy);
 
-        // Process order, limit and offset
-        null === $orderBy ?: $this->processOrderBy($queryBuilder, $orderBy);
+        // Process limit and offset
         null === $limit ?: $queryBuilder->setMaxResults($limit);
         null === $offset ?: $queryBuilder->setFirstResult($offset);
 
@@ -141,7 +145,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function findIds(array $criteria, array $search): array
+    public function findIds(array $criteria = [], array $search = []): array
     {
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');

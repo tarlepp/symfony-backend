@@ -11,6 +11,7 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Repository\Base as Repository;
 use App\Services\Rest\User as UserService;
 use App\Entity\User as UserEntity;
+use Doctrine\Common\Proxy\Proxy;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -65,11 +66,13 @@ class GenericServiceTest extends KernelTestCase
     public function testThatGetReferenceCallsServiceMethods()
     {
         $repository = $this->getRepositoryMock('getReference');
+        $proxy = $this->createMock(Proxy::class);
 
         $repository
             ->expects(static::once())
             ->method('getReference')
-            ->with('entity_id');
+            ->with('entity_id')
+            ->willReturn($proxy);
 
         $service = new UserService($repository, $this->validator);
         $service->getReference('entity_id');
@@ -354,7 +357,7 @@ class GenericServiceTest extends KernelTestCase
         $repository
             ->expects(static::once())
             ->method('save')
-            ->willReturn(static::returnArgument(0));
+            ->willReturn($repository);
 
         $service = new UserService($repository, $this->validator);
 
@@ -394,7 +397,8 @@ class GenericServiceTest extends KernelTestCase
         $repository
             ->expects(static::once())
             ->method('remove')
-            ->with($entity);
+            ->with($entity)
+            ->willReturn($repository);
 
         $service = new UserService($repository, $this->validator);
         $service->delete('entity-id');

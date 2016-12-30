@@ -8,7 +8,11 @@ declare(strict_types=1);
 namespace App\Services\Rest;
 
 use App\Entity\Interfaces\EntityInterface as Entity;
+use App\Entity\Interfaces\EntityInterface;
 use App\Repository\Base as Repository;
+use Doctrine\Common\Proxy\Proxy;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
@@ -66,7 +70,7 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function getReference(string $id)
+    public function getReference(string $id): Proxy
     {
         return $this->repository->getReference($id);
     }
@@ -93,19 +97,19 @@ abstract class Base implements Interfaces\Base
      */
     public function find(
         array $criteria = [],
-        array $orderBy = null,
+        array $orderBy = [],
         int $limit = null,
         int $offset = null,
         array $search = []
-    ) {
+    ): array {
         // Before callback method call
-        $this->beforeFind($criteria, $orderBy, $limit, $offset);
+        $this->beforeFind($criteria, $orderBy, $limit, $offset, $search);
 
         // Fetch data
         $entities = $this->repository->findByWithSearchTerms($search, $criteria, $orderBy, $limit, $offset);
 
         // After callback method call
-        $this->afterFind($criteria, $orderBy, $limit, $offset, $entities);
+        $this->afterFind($criteria, $orderBy, $limit, $offset, $search, $entities);
 
         return $entities;
     }
@@ -113,15 +117,16 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function findOne($id, $throwExceptionIfNotFound = false)
+    public function findOne(string $id, bool $throwExceptionIfNotFound = false)
     {
         // Before callback method call
         $this->beforeFindOne($id);
 
+        /** @var null|EntityInterface $entity */
         $entity = $this->repository->find($id);
 
         // Entity not found
-        if ($throwExceptionIfNotFound && is_null($entity)) {
+        if ($throwExceptionIfNotFound && null === $entity) {
             throw new HttpException(404, 'Not found');
         }
 
@@ -134,15 +139,16 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = null, $throwExceptionIfNotFound = false)
+    public function findOneBy(array $criteria, array $orderBy = [], bool $throwExceptionIfNotFound = false)
     {
         // Before callback method call
         $this->beforeFindOneBy($criteria, $orderBy);
 
+        /** @var null|EntityInterface $entity */
         $entity = $this->repository->findOneBy($criteria, $orderBy);
 
         // Entity not found
-        if ($throwExceptionIfNotFound && is_null($entity)) {
+        if ($throwExceptionIfNotFound && null === $entity) {
             throw new HttpException(404, 'Not found');
         }
 
@@ -155,7 +161,7 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function count(array $criteria = [], array $search = null): int
+    public function count(array $criteria = [], array $search = []): int
     {
         // Before callback method call
         $this->beforeCount($criteria, $search);
@@ -225,13 +231,13 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function update($id, \stdClass $data): Entity
+    public function update(string $id, \stdClass $data): Entity
     {
         /** @var Entity $entity */
         $entity = $this->repository->find($id);
 
         // Entity not found
-        if (is_null($entity)) {
+        if (null === $entity) {
             throw new HttpException(404, 'Not found');
         }
 
@@ -250,13 +256,13 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function delete($id): Entity
+    public function delete(string $id): Entity
     {
         /** @var Entity $entity */
         $entity = $this->repository->find($id);
 
         // Entity not found
-        if (is_null($entity)) {
+        if (null === $entity) {
             throw new HttpException(404, 'Not found');
         }
 
@@ -275,7 +281,7 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function getIds(array $criteria = [], array $search = null): array
+    public function getIds(array $criteria = [], array $search = []): array
     {
         // Before callback method call
         $this->beforeIds($criteria, $search);
@@ -292,61 +298,56 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function beforeFind(array &$criteria = [], array &$orderBy = null, int &$limit = null, int &$offset = null)
+    public function beforeFind(array &$criteria, array &$orderBy, &$limit, &$offset, array &$search)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function afterFind(
-        array &$criteria = [],
-        array &$orderBy = null,
-        int &$limit = null,
-        int &$offset = null,
-        array &$entities = []
-    ) {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function beforeFindOne(&$id)
+    public function afterFind(array &$criteria, array &$orderBy, &$limit, &$offset, array &$search, array &$entities)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function afterFindOne(&$id, Entity $entity = null)
+    public function beforeFindOne(string &$id)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function beforeFindOneBy(array &$criteria, array &$orderBy = null)
+    public function afterFindOne(string &$id, $entity)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function afterFindOneBy(array &$criteria, array &$orderBy = null, Entity $entity = null)
+    public function beforeFindOneBy(array &$criteria, array &$orderBy)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function beforeCount(array &$criteria, array &$search = null)
+    public function afterFindOneBy(array &$criteria, array &$orderBy, $entity)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function afterCount(array &$criteria, array &$search = null, int &$count = 0)
+    public function beforeCount(array &$criteria, array &$search)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterCount(array &$criteria, array &$search, int &$count)
     {
     }
 
@@ -381,42 +382,42 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function beforeUpdate(&$id, \stdClass $data, Entity $entity)
+    public function beforeUpdate(string &$id, \stdClass $data, Entity $entity)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function afterUpdate(&$id, \stdClass $data, Entity $entity)
+    public function afterUpdate(string &$id, \stdClass $data, Entity $entity)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function beforeDelete(&$id, Entity $entity)
+    public function beforeDelete(string &$id, Entity $entity)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function afterDelete(&$id, Entity $entity)
+    public function afterDelete(string &$id, Entity $entity)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function beforeIds(array &$criteria = [], array &$search = null)
+    public function beforeIds(array &$criteria, array &$search)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function afterIds(array &$ids, array &$criteria = [], array &$search = null)
+    public function afterIds(array &$criteria, array &$search, array &$ids)
     {
     }
 
@@ -426,10 +427,12 @@ abstract class Base implements Interfaces\Base
      * @todo    should this throw an error, if given data contains something else than entity itself?
      * @todo    should this throw an error, if setter method doesn't exists?
      *
-     * @param   Entity      $entity
-     * @param   \stdClass   $data
+     * @throws  ValidatorException
+     * @throws  OptimisticLockException
+     * @throws  ORMInvalidArgumentException
      *
-     * @return  void
+     * @param   Entity $entity
+     * @param   \stdClass $data
      */
     protected function persistEntity(Entity $entity, \stdClass $data)
     {

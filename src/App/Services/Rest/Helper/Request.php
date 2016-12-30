@@ -79,7 +79,7 @@ class Request
      *
      * @param   HttpFoundationRequest   $request
      *
-     * @return  null|array
+     * @return  array
      */
     public static function getOrderBy(HttpFoundationRequest $request)
     {
@@ -117,7 +117,7 @@ class Request
         // Process user input
         array_walk($input, $iterator);
 
-        return count($output) > 0 ? $output : null;
+        return $output;
     }
 
     /**

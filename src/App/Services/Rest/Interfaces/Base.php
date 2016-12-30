@@ -9,6 +9,12 @@ namespace App\Services\Rest\Interfaces;
 
 use App\Entity\Interfaces\EntityInterface as Entity;
 use App\Repository\Base as Repository;
+use Doctrine\Common\Proxy\Proxy;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -40,13 +46,13 @@ interface Base
      * Gets a reference to the entity identified by the given type and identifier without actually loading it,
      * if the entity is not yet loaded.
      *
-     * @throws  \Doctrine\ORM\ORMException
+     * @throws  ORMException
      *
      * @param   string  $id The entity identifier.
      *
-     * @return  bool|\Doctrine\Common\Proxy\Proxy|null|object
+     * @return  Proxy
      */
-    public function getReference(string $id);
+    public function getReference(string $id): Proxy;
 
     /**
      * Getter method for entity repository.
@@ -66,6 +72,8 @@ interface Base
      * Generic find method to return an array of items from database. Return value is an array of specified repository
      * entities.
      *
+     * @throws  \InvalidArgumentException
+     *
      * @param   array           $criteria
      * @param   null|array      $orderBy
      * @param   null|integer    $limit
@@ -76,36 +84,44 @@ interface Base
      */
     public function find(
         array $criteria = [],
-        array $orderBy = null,
+        array $orderBy = [],
         int $limit = null,
         int $offset = null,
         array $search = []
-    );
+    ): array;
 
     /**
      * Generic findOne method to return single item from database. Return value is single entity from specified
      * repository.
      *
-     * @param   mixed   $id
+     * @throws  HttpException
+     *
+     * @param   string  $id
      * @param   boolean $throwExceptionIfNotFound
      *
      * @return  null|Entity
      */
-    public function findOne($id, $throwExceptionIfNotFound = false);
+    public function findOne(string $id, bool $throwExceptionIfNotFound = false);
 
     /**
      * Generic findOneBy method to return single item from database by given criteria. Return value is single entity
      * from specified repository or null if entity was not found.
      *
-     * @param   array       $criteria
-     * @param   null|array  $orderBy
+     * @throws  HttpException
+     *
+     * @param   array   $criteria
+     * @param   array   $orderBy
      *
      * @return  null|Entity
      */
-    public function findOneBy(array $criteria, array $orderBy = null);
+    public function findOneBy(array $criteria, array $orderBy = []);
 
     /**
      * Generic count method to return entity count for specified criteria and search terms.
+     *
+     * @throws  \InvalidArgumentException
+     * @throws  NoResultException
+     * @throws  NonUniqueResultException
      *
      * @param   array   $criteria
      * @param   array   $search
@@ -119,6 +135,8 @@ interface Base
      * specified repository.
      *
      * @throws  ValidatorException
+     * @throws  ORMInvalidArgumentException
+     * @throws  OptimisticLockException
      *
      * @param   \stdClass   $data
      *
@@ -130,6 +148,8 @@ interface Base
      * Generic method to save given entity to specified repository. Return value is created entity.
      *
      * @throws  ValidatorException
+     * @throws  ORMInvalidArgumentException
+     * @throws  OptimisticLockException
      *
      * @param   Entity  $entity
      * @param   boolean $skipValidation
@@ -143,31 +163,39 @@ interface Base
      *
      * @throws  HttpException
      * @throws  ValidatorException
+     * @throws  ORMInvalidArgumentException
+     * @throws  OptimisticLockException
      *
-     * @param   mixed       $id
+     * @param   string      $id
      * @param   \stdClass   $data
      *
      * @return  Entity
      */
-    public function update($id, \stdClass $data): Entity;
+    public function update(string $id, \stdClass $data): Entity;
 
     /**
      * Generic method to delete specified entity from database.
      *
-     * @param   mixed   $id
+     * @throws  ORMInvalidArgumentException
+     * @throws  OptimisticLockException
+     * @throws  HttpException
+     *
+     * @param   string  $id
      *
      * @return  Entity
      */
-    public function delete($id): Entity;
+    public function delete(string $id): Entity;
 
     /**
      * Generic ids method to return an array of id values from database. Return value is an array of specified
      * repository entity id values.
      *
-     * @param   array           $criteria
-     * @param   null|array      $search
+     * @throws  \InvalidArgumentException
      *
-     * @return array
+     * @param   array   $criteria
+     * @param   array   $search
+     *
+     * @return  array
      */
     public function getIds(array $criteria = [], array $search = []): array;
 
@@ -175,65 +203,56 @@ interface Base
      * Before lifecycle method for find method.
      *
      * @param   array           $criteria
-     * @param   null|array      $orderBy
+     * @param   array           $orderBy
      * @param   null|integer    $limit
      * @param   null|integer    $offset
+     * @param   array           $search
      */
-    public function beforeFind(
-        array &$criteria = [],
-        array &$orderBy = null,
-        int &$limit = null,
-        int &$offset = null
-    );
+    public function beforeFind(array &$criteria, array &$orderBy, &$limit, &$offset, array &$search);
 
     /**
      * After lifecycle method for find method.
      *
-     * @param   array        $criteria
-     * @param   null|array   $orderBy
-     * @param   null|integer $limit
-     * @param   null|integer $offset
-     * @param   Entity[]     $entities
+     * @param   array           $criteria
+     * @param   array           $orderBy
+     * @param   null|integer    $limit
+     * @param   null|integer    $offset
+     * @param   array           $search
+     * @param   Entity[]        $entities
      */
-    public function afterFind(
-        array &$criteria = [],
-        array &$orderBy = null,
-        int &$limit = null,
-        int &$offset = null,
-        array &$entities = []
-    );
+    public function afterFind(array &$criteria, array &$orderBy, &$limit, &$offset, array &$search, array &$entities);
 
     /**
      * Before lifecycle method for findOne method.
      *
-     * @param   mixed   $id
+     * @param   string  $id
      */
-    public function beforeFindOne(&$id);
+    public function beforeFindOne(string &$id);
 
     /**
      * After lifecycle method for findOne method.
      *
-     * @param   mixed       $id
+     * @param   string      $id
      * @param   null|Entity $entity
      */
-    public function afterFindOne(&$id, Entity $entity = null);
+    public function afterFindOne(string &$id, $entity);
 
     /**
      * Before lifecycle method for findOneBy method.
      *
-     * @param   array       $criteria
-     * @param   null|array  $orderBy
+     * @param   array   $criteria
+     * @param   array   $orderBy
      */
-    public function beforeFindOneBy(array &$criteria, array &$orderBy = null);
+    public function beforeFindOneBy(array &$criteria, array &$orderBy);
 
     /**
      * After lifecycle method for findOneBy method.
      *
      * @param   array       $criteria
-     * @param   null|array  $orderBy
+     * @param   array       $orderBy
      * @param   null|Entity $entity
      */
-    public function afterFindOneBy(array &$criteria, array &$orderBy = null, Entity $entity = null);
+    public function afterFindOneBy(array &$criteria, array &$orderBy, $entity);
 
     /**
      * Before lifecycle method for count method.
@@ -241,7 +260,7 @@ interface Base
      * @param   array       $criteria
      * @param   null|array  $search
      */
-    public function beforeCount(array &$criteria, array &$search = null);
+    public function beforeCount(array &$criteria, array &$search);
 
     /**
      * Before lifecycle method for count method.
@@ -250,7 +269,7 @@ interface Base
      * @param   null|array  $search
      * @param   integer     $count
      */
-    public function afterCount(array &$criteria, array &$search = null, int &$count = 0);
+    public function afterCount(array &$criteria, array &$search, int &$count);
 
     /**
      * Before lifecycle method for create method.
@@ -285,36 +304,36 @@ interface Base
     /**
      * Before lifecycle method for update method.
      *
-     * @param   mixed       $id
+     * @param   string      $id
      * @param   \stdClass   $data
      * @param   Entity      $entity
      */
-    public function beforeUpdate(&$id, \stdClass $data, Entity $entity);
+    public function beforeUpdate(string &$id, \stdClass $data, Entity $entity);
 
     /**
      * After lifecycle method for update method.
      *
-     * @param   mixed       $id
+     * @param   string      $id
      * @param   \stdClass   $data
      * @param   Entity      $entity
      */
-    public function afterUpdate(&$id, \stdClass $data, Entity $entity);
+    public function afterUpdate(string &$id, \stdClass $data, Entity $entity);
 
     /**
      * Before lifecycle method for delete method.
      *
-     * @param   mixed   $id
+     * @param   string  $id
      * @param   Entity  $entity
      */
-    public function beforeDelete(&$id, Entity $entity);
+    public function beforeDelete(string &$id, Entity $entity);
 
     /**
      * After lifecycle method for delete method.
      *
-     * @param   mixed   $id
+     * @param   string  $id
      * @param   Entity  $entity
      */
-    public function afterDelete(&$id, Entity $entity);
+    public function afterDelete(string &$id, Entity $entity);
 
     /**
      * Before lifecycle method for ids method.
@@ -327,9 +346,9 @@ interface Base
     /**
      * Before lifecycle method for ids method.
      *
-     * @param   array   $ids
      * @param   array   $criteria
      * @param   array   $search
+     * @param   array   $ids
      */
-    public function afterIds(array &$ids, array &$criteria, array &$search);
+    public function afterIds(array &$criteria, array &$search, array &$ids);
 }

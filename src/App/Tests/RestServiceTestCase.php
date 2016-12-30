@@ -194,6 +194,6 @@ abstract class RestServiceTestCase extends ContainerTestCase
      */
     public function testThatFindOneByThrowsAnException()
     {
-        $this->service->findOneBy(['id' => 'this id does not exists'], null, true);
+        $this->service->findOneBy(['id' => 'this id does not exists'], [], true);
     }
 }

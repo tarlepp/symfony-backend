@@ -62,9 +62,9 @@ interface Base
      *
      * @param   EntityInterface $entity
      *
-     * @return  void
+     * @return  Base
      */
-    public function save(EntityInterface $entity);
+    public function save(EntityInterface $entity): Base;
 
     /**
      * Helper method to remove specified entity from database.
@@ -74,9 +74,9 @@ interface Base
      *
      * @param   EntityInterface $entity
      *
-     * @return  void
+     * @return  Base
      */
-    public function remove(EntityInterface $entity);
+    public function remove(EntityInterface $entity): Base;
 
     /**
      * Generic count method to determine count of entities for specified criteria and search term(s).
@@ -85,12 +85,12 @@ interface Base
      * @throws  NoResultException
      * @throws  NonUniqueResultException
      *
-     * @param   array       $criteria
-     * @param   array|null  $search
+     * @param   array   $criteria
+     * @param   array   $search
      *
      * @return  integer
      */
-    public function count(array $criteria = [], array $search = null): int;
+    public function count(array $criteria = [], array $search = []): int;
 
     /**
      * Generic replacement for basic 'findBy' method if/when you want to use generic LIKE search.
@@ -108,7 +108,7 @@ interface Base
     public function findByWithSearchTerms(
         array $search,
         array $criteria,
-        array $orderBy = null,
+        array $orderBy = [],
         int $limit = null,
         int $offset = null
     ): array;
@@ -123,7 +123,7 @@ interface Base
      *
      * @return  array
      */
-    public function findIds(array $criteria, array $search): array;
+    public function findIds(array $criteria = [], array $search = []): array;
 
     /**
      * Helper method to 'reset' repository entity table - in other words delete all records - so be carefully with

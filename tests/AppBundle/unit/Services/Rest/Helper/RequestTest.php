@@ -30,16 +30,6 @@ class RequestTest extends KernelTestCase
         RequestHelper::getCriteria($fakeRequest);
     }
 
-    public function testThatGetOrderByReturnsNullWithoutParameter()
-    {
-        $fakeRequest = Request::create('/', 'GET');
-
-        static::assertNull(
-            RequestHelper::getOrderBy($fakeRequest),
-            'getOrderBy method did not return NULL as it should without any parameters'
-        );
-    }
-
     /**
      * @dataProvider dataProviderTestThatGetOrderByReturnsExpectedValue
      *
