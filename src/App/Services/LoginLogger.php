@@ -113,7 +113,9 @@ class LoginLogger implements LoginLoggerInterface
     /**
      * Method to create new login entry and store it to database.
      *
-     * @return UserLoginEntity
+     * @throws  \UnexpectedValueException
+     *
+     * @return  UserLoginEntity
      */
     private function createEntry(): UserLoginEntity
     {
