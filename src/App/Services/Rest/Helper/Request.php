@@ -36,7 +36,7 @@ class Request
      *  Note that with advanced usage you can easily use everything that App\Repository\Base::getExpression method
      *  supports - and that is basically 99% that you need on advanced search criteria.
      *
-     *  TODO create an example of advanced usage.
+     * TODO create an example of advanced usage.
      *
      * @throws  HttpException
      *
@@ -101,7 +101,7 @@ class Request
 
             if (is_string($key)) {
                 $column = $key;
-                $order = in_array(strtoupper($value), ['ASC', 'DESC']) ? strtoupper($value) : $order;
+                $order = in_array(strtoupper($value), ['ASC', 'DESC'], true) ? strtoupper($value) : $order;
             } else {
                 $column = $value;
             }
@@ -134,7 +134,7 @@ class Request
     {
         $limit = $request->get('limit', null);
 
-        return is_null($limit) ? null : abs($limit);
+        return null === $limit ? null : abs($limit);
     }
 
     /**
@@ -151,7 +151,7 @@ class Request
     {
         $offset = $request->get('offset', null);
 
-        return is_null($offset) ? null : abs($offset);
+        return null === $offset ? null : abs($offset);
     }
 
     /**
@@ -170,7 +170,7 @@ class Request
     {
         $search = $request->get('search', null);
 
-        if (is_null($search)) {
+        if (null === $search) {
             return [];
         }
 
@@ -198,7 +198,7 @@ class Request
                     $terms = explode(' ', (string)$terms);
                 }
 
-                $terms = array_values(array_unique(array_filter($terms)));
+                $terms = array_unique(array_values(array_filter($terms)));
             };
 
             // Normalize user input, note that this support array and string formats on value
@@ -208,7 +208,7 @@ class Request
         } catch (\LogicException $error) { // Parameter was not JSON so just use parameter values as search strings
             // By default we want to use 'OR' operand with given search words.
             $search = [
-                'or' => array_values(array_unique(array_filter(explode(' ', $search))))
+                'or' => array_unique(array_values(array_filter(explode(' ', $search)))),
             ];
         }
 

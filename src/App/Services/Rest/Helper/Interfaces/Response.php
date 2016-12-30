@@ -55,6 +55,9 @@ interface Response
     /**
      * Helper method to create response for request.
      *
+     * @throws  \InvalidArgumentException
+     * @throws  \UnexpectedValueException
+     *
      * @param   HttpFoundationRequest   $request
      * @param   mixed                   $data
      * @param   integer                 $httpStatus
@@ -66,8 +69,8 @@ interface Response
     public function createResponse(
         HttpFoundationRequest $request,
         $data,
-        $httpStatus = 200,
-        $format = null,
+        int $httpStatus = 200,
+        string $format = null,
         Context $context = null
     ): HttpFoundationResponse;
 

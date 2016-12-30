@@ -77,15 +77,15 @@ class Response implements ResponseInterface
     public function createResponse(
         HttpFoundationRequest $request,
         $data,
-        $httpStatus = 200,
-        $format = null,
+        int $httpStatus = 200,
+        string $format = null,
         Context $context = null
     ): HttpFoundationResponse {
-        if (is_null($format)) {
+        if (null === $format) {
             $format = $request->getContentType() === self::FORMAT_XML ? self::FORMAT_XML : self::FORMAT_JSON;
         }
 
-        if (is_null($context)) {
+        if (null === $context) {
             $context = $this->getSerializeContext($request);
         }
 
@@ -118,7 +118,7 @@ class Response implements ResponseInterface
         $defaultGroup = $populateAll ? 'Default' : $entityName;
 
         // Set all associations to be populated
-        if (count($populate) === 0 && $populateAll) {
+        if ($populateAll && count($populate) === 0) {
             $associations = $this->getResourceService()->getAssociations();
 
             $iterator = function (string $assocName) use ($entityName): string {
