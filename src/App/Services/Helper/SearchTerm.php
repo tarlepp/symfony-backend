@@ -45,7 +45,7 @@ class SearchTerm implements SearchTermInterface
         };
 
         // Normalize column and search parameters
-        $columns = array_filter(array_map('trim', (is_array($column) ? $column : [$column])), $iterator);
+        $columns = array_filter(array_map('trim', (is_array($column) ? $column : (array)$column)), $iterator);
         $searchTerms = array_unique(
             array_filter(array_map('trim', (is_array($search) ? $search : explode(' ', (string)$search))), $iterator)
         );
@@ -89,7 +89,7 @@ class SearchTerm implements SearchTermInterface
 
                 switch ($mode) {
                     case self::MODE_STARTS_WITH:
-                        $term = $term . '%';
+                        $term .= '%';
                         break;
                     case self::MODE_ENDS_WITH:
                         $term = '%' . $term;

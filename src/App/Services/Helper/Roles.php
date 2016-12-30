@@ -80,6 +80,6 @@ class Roles implements RolesInterface
      */
     public function getShort(string $role): string
     {
-        return mb_strtolower(mb_substr($role, (mb_strpos($role, '_') + 1)));
+        return mb_strtolower(mb_substr($role, mb_strpos($role, '_') + 1));
     }
 }
