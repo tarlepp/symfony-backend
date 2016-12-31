@@ -10,6 +10,7 @@ namespace App\Validator\Constraints;
 use App\DTO\Console\Interfaces\User as UserInterface;
 use App\Repository\User as UserRepository;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -38,6 +39,8 @@ class UniqueEmailValidator extends ConstraintValidator
 
     /**
      * Checks if the passed value is valid.
+     *
+     * @throws  NonUniqueResultException
      *
      * @param   UserInterface               $value      The value that should be validated
      * @param   Constraint|UniqueUsername   $constraint The constraint for the validation

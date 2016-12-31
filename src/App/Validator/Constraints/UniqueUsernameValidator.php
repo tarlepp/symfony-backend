@@ -10,6 +10,7 @@ namespace App\Validator\Constraints;
 use App\DTO\Console\Interfaces\User as UserInterface;
 use App\Repository\User as UserRepository;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -41,8 +42,10 @@ class UniqueUsernameValidator extends ConstraintValidator
      *
      * In this case check if 'username' is available or not within User repository.
      *
-     * @param   UserInterface               $value      The value that should be validated
-     * @param   Constraint|UniqueUsername   $constraint The constraint for the validation
+     * @throws  NonUniqueResultException
+     *
+     * @param   UserInterface $value The value that should be validated
+     * @param   Constraint|UniqueUsername $constraint The constraint for the validation
      */
     public function validate($value, Constraint $constraint)
     {
