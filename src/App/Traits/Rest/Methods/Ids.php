@@ -13,6 +13,7 @@ use App\Services\Rest\Helper\Request as RestHelperRequest;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 /**
@@ -70,10 +71,13 @@ trait Ids
      * Generic 'IDs' method for REST endpoints.
      *
      * @throws  \LogicException
+     * @throws  \UnexpectedValueException
+     * @throws  \InvalidArgumentException
+     * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
-     * @param   array   $allowedHttpMethods
+     * @param   array $allowedHttpMethods
      *
      * @return  Response
      */
@@ -87,7 +91,7 @@ trait Ids
             );
         }
 
-        if (!in_array($request->getMethod(), $allowedHttpMethods)) {
+        if (!in_array($request->getMethod(), $allowedHttpMethods, true)) {
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 

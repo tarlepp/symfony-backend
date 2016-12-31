@@ -10,8 +10,11 @@ namespace App\Traits\Rest\Methods;
 use App\Controller\Interfaces\RestController;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 /**
@@ -56,11 +59,16 @@ trait Delete
      * Generic 'Delete' method for REST endpoints.
      *
      * @throws  \LogicException
+     * @throws  \UnexpectedValueException
+     * @throws  \InvalidArgumentException
+     * @throws  OptimisticLockException
+     * @throws  ORMInvalidArgumentException
+     * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
-     * @param   string  $id
-     * @param   array   $allowedHttpMethods
+     * @param   string $id
+     * @param   array $allowedHttpMethods
      *
      * @return  Response
      */
@@ -74,7 +82,7 @@ trait Delete
             );
         }
 
-        if (!in_array($request->getMethod(), $allowedHttpMethods)) {
+        if (!in_array($request->getMethod(), $allowedHttpMethods, true)) {
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 

@@ -11,8 +11,11 @@ use App\Controller\Interfaces\RestController;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Helper\Request as RestHelperRequest;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 /**
@@ -47,10 +50,15 @@ trait Count
      * Generic 'Count' method for REST endpoints.
      *
      * @throws  \LogicException
+     * @throws  \UnexpectedValueException
+     * @throws  \InvalidArgumentException
+     * @throws  NonUniqueResultException
+     * @throws  NoResultException
+     * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
-     * @param   array   $allowedHttpMethods
+     * @param   array $allowedHttpMethods
      *
      * @return  Response
      */
@@ -64,7 +72,7 @@ trait Count
             );
         }
 
-        if (!in_array($request->getMethod(), $allowedHttpMethods)) {
+        if (!in_array($request->getMethod(), $allowedHttpMethods, true)) {
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 

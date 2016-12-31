@@ -11,9 +11,12 @@ use App\Controller\Interfaces\RestController;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use App\Utils\JSON;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Trait for generic 'Create' action for REST controllers. Trait will add following route definition to your controller
@@ -61,8 +64,14 @@ trait Create
      * @throws  \LogicException
      * @throws  MethodNotAllowedHttpException
      *
+     * @throws  \UnexpectedValueException
+     * @throws  \InvalidArgumentException
+     * @throws  OptimisticLockException
+     * @throws  ORMInvalidArgumentException
+     * @throws  ValidatorException
+     *
      * @param   Request $request
-     * @param   array   $allowedHttpMethods
+     * @param   array $allowedHttpMethods
      *
      * @return  Response
      */
@@ -76,7 +85,7 @@ trait Create
             );
         }
 
-        if (!in_array($request->getMethod(), $allowedHttpMethods)) {
+        if (!in_array($request->getMethod(), $allowedHttpMethods, true)) {
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
