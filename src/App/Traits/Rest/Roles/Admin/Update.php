@@ -8,11 +8,16 @@ declare(strict_types=1);
 namespace App\Traits\Rest\Roles\Admin;
 
 use App\Traits\Rest\Methods\Update as UpdateMethod;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Trait to add 'Update' action for REST resources for 'ROLE_ADMIN' users.
@@ -40,8 +45,17 @@ trait Update
      *
      * @Security("has_role('ROLE_ADMIN')")
      *
+     * @throws  \InvalidArgumentException
+     * @throws  \LogicException
+     * @throws  \UnexpectedValueException
+     * @throws  OptimisticLockException
+     * @throws  ORMInvalidArgumentException
+     * @throws  HttpException
+     * @throws  MethodNotAllowedHttpException
+     * @throws  ValidatorException
+     *
      * @param   Request $request
-     * @param   string  $id
+     * @param   string $id
      *
      * @return  Response
      */
