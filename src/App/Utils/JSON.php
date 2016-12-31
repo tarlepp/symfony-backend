@@ -91,6 +91,8 @@ class JSON
     /**
      * Helper method to handle possible errors within json_encode and json_decode functions.
      *
+     * @throws  \LogicException
+     *
      * @return  void
      */
     private static function handleError()
