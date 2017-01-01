@@ -72,7 +72,7 @@ class ExceptionListener
         if ($exception instanceof HttpExceptionInterface) {
             $response->setStatusCode($exception->getStatusCode());
             $response->headers->replace($exception->getHeaders());
-        } elseif ($exception instanceof AuthenticationException) {
+        } else if ($exception instanceof AuthenticationException) {
             $response->setStatusCode(Response::HTTP_UNAUTHORIZED);
         } else {
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
