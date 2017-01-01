@@ -342,7 +342,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      *  isNotNull   ['u.id',  'isNotNull', null]    u.id IS NOT NULL            third value must be set, but not used
      *  like        ['u.id',  'like',      'abc']   u.id LIKE ?1                -
      *  notLike     ['u.id',  'notLike',   'abc']   u.id NOT LIKE ?1            -
-     *  between     ['u.id',  'between'   [1,6]]    u.id BETWEEN ?1 AND ?2      third value must contain two values
+     *  between     ['u.id',  'between',  [1,6]]    u.id BETWEEN ?1 AND ?2      third value must contain two values
      *
      * Also note that you can easily combine 'and' and 'or' queries like following examples:
      *
@@ -372,7 +372,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
      *          ['entity.field3', 'eq', 3],
      *          ['entity.field4', 'eq', 'four'],
      *      ],
-     *      ['entity.field5', 'neq', 5].
+     *      ['entity.field5', 'neq', 5],
      *  ];
      *
      * $qb = $this->createQueryBuilder('entity');
