@@ -66,7 +66,7 @@ abstract class EntityTestCase extends KernelTestCase
             case 'integer':
                 $value = 666;
                 break;
-            case '\DateTime':
+            case \DateTime::class:
                 $value = new \DateTime();
                 break;
             case 'string':
@@ -105,7 +105,7 @@ abstract class EntityTestCase extends KernelTestCase
         switch ($type) {
             case 'CustomClass':
             case 'integer':
-            case '\DateTime':
+            case \DateTime::class:
             case 'string':
             case 'array':
             case 'boolean':
@@ -235,17 +235,21 @@ abstract class EntityTestCase extends KernelTestCase
         $setter = 'set' . ucfirst($field);
 
         if (!array_key_exists('columnName', $meta) && !array_key_exists('joinColumns', $meta)) {
-            static::markTestSkipped("No need to test this setter...");
+            static::markTestSkipped('No need to test this setter...');
         }
 
         try {
             $value = self::getNotValidValueForType($type);
 
-            call_user_func([$this->entity, $setter], $value);
+            $this->entity->{$setter}($value);
 
             try {
-                static::assertEquals(self::getValidValueForType($type, $meta), call_user_func([$this->entity, $getter]));
-            } catch (\TypeError $error) { }
+                static::assertEquals(
+                    self::getValidValueForType($type, $meta),
+                    call_user_func([$this->entity, $getter])
+                );
+            } catch (\TypeError $error) {
+            }
 
             $message = sprintf(
                 "Setter '%s' didn't fail with invalid value type '%s', maybe missing variable type?",
@@ -271,7 +275,7 @@ abstract class EntityTestCase extends KernelTestCase
         $setter = 'set' . ucfirst($field);
 
         if (!array_key_exists('columnName', $meta)) {
-            static::markTestSkipped("No need to test this setter...");
+            static::markTestSkipped('No need to test this setter...');
         }
 
         static::assertInstanceOf(
@@ -305,7 +309,7 @@ abstract class EntityTestCase extends KernelTestCase
         if (array_key_exists('columnName', $meta) || array_key_exists('joinColumns', $meta)) {
             $value = self::getValidValueForType($type, $meta);
 
-            call_user_func([$this->entity, $setter], $value);
+            $this->entity->{$setter}($value);
         } else {
             $type = ArrayCollection::class;
             $value = new ArrayCollection();
@@ -363,7 +367,7 @@ abstract class EntityTestCase extends KernelTestCase
      * @param   string          $methodRemoval
      * @param   string          $methodClear
      * @param   string          $field
-     * @param   object          $targetEntity
+     * @param   mixed           $targetEntity
      * @param   array           $mappings
      */
     public function testThatManyToManyAssociationMethodsWorksAsExpected(
@@ -439,7 +443,7 @@ abstract class EntityTestCase extends KernelTestCase
 
         // Test for 'clear' method
 
-        call_user_func([$this->entity, $methodAdder], $targetEntity);
+        $this->entity->{$methodAdder}($targetEntity);
 
         static::assertInstanceOf(
             get_class($this->entity),
@@ -462,7 +466,7 @@ abstract class EntityTestCase extends KernelTestCase
      *
      * @param   string|boolean  $methodSetter
      * @param   string          $methodGetter
-     * @param   object          $targetEntity
+     * @param   mixed           $targetEntity
      * @param   string          $field
      */
     public function testThatManyToOneAssociationMethodsWorksAsExpected(
@@ -510,7 +514,7 @@ abstract class EntityTestCase extends KernelTestCase
         }
 
         static::assertInstanceOf(
-            'Doctrine\Common\Collections\ArrayCollection',
+            ArrayCollection::class,
             call_user_func([$this->entity, $methodGetter]),
             sprintf(
                 "Getter method '%s()' for property '%s' did not return expected 'ArrayCollection' object.",
@@ -559,7 +563,7 @@ abstract class EntityTestCase extends KernelTestCase
                     break;
                 case 'date':
                 case 'datetime':
-                    $type = '\DateTime';
+                    $type = \DateTime::class;
                     break;
                 case 'text':
                 case 'string':
@@ -597,7 +601,7 @@ abstract class EntityTestCase extends KernelTestCase
          * @return  bool
          */
         $filter = function ($field) use ($fieldsToOmit) {
-            return !in_array($field, $fieldsToOmit);
+            return !in_array($field, $fieldsToOmit, true);
         };
 
         $entityManager->close();
@@ -606,7 +610,7 @@ abstract class EntityTestCase extends KernelTestCase
         $assocFields = [];
 
         foreach ($meta->getAssociationMappings() as $mapping) {
-            if (in_array($mapping['fieldName'], ['createdBy', 'updatedBy', 'deletedBy'])) {
+            if (in_array($mapping['fieldName'], ['createdBy', 'updatedBy', 'deletedBy'], true)) {
                 continue;
             }
 
@@ -763,7 +767,7 @@ abstract class EntityTestCase extends KernelTestCase
                             'get' . ucfirst($mapping['fieldName']),
                             $mapping['fieldName'],
                             $input,
-                            'Doctrine\Common\Collections\ArrayCollection'
+                            ArrayCollection::class
                         ],
                         [
                             'add' . ucfirst($singular),

@@ -24,7 +24,7 @@ class PHPUnitUtil
     /**
      * Method to call specified 'protected' or 'private' method on given class.
      *
-     * @param   object  $object The instantiated instance of your class
+     * @param   mixed   $object The instantiated instance of your class
      * @param   string  $name   The name of your private/protected method
      * @param   array   $args   Method arguments
      *
@@ -42,7 +42,7 @@ class PHPUnitUtil
      *      $foo = PHPUnitUtil::getPrivateMethod($cls, 'foo');
      *      $foo->invoke($cls, $...);
      *
-     * @param   object  $object The instantiated instance of your class
+     * @param   mixed   $object The instantiated instance of your class
      * @param   string  $name   The name of your private/protected method
      *
      * @return  \ReflectionMethod The method you asked for

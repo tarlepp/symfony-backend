@@ -11,6 +11,7 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Repository\Base as Repository;
 use App\Tests\Helpers\PHPUnitUtil;
 use Doctrine\Bundle\FixturesBundle\Command\LoadDataFixturesDoctrineCommand;
+use Doctrine\Common\Proxy\Proxy;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -111,7 +112,7 @@ abstract class RepositoryTestCase extends KernelTestCase
         $entity = new $this->entityName();
 
         static::assertInstanceOf(
-            '\Doctrine\Common\Proxy\Proxy',
+            Proxy::class,
             $this->repository->getReference($entity->getId())
         );
     }
@@ -288,7 +289,9 @@ abstract class RepositoryTestCase extends KernelTestCase
             return $output;
         };
 
-        for ($i = 0; $i < count($searchTerms); $i++) {
+        $iMax = count($searchTerms);
+
+        for ($i = 0; $i < $iMax; $i++) {
             $criteria = array_merge($criteria, array_map($iterator, $this->repository->getSearchColumns()));
         }
 
@@ -353,17 +356,17 @@ abstract class RepositoryTestCase extends KernelTestCase
      */
     protected function createEntity(EntityInterface $entity = null): EntityInterface
     {
-        if (count($this->entityProperties) === 0 && is_null($entity)) {
+        if (null === $entity && count($this->entityProperties) === 0) {
             static::markTestSkipped();
         }
 
-        if (is_null($entity)) {
+        if (null === $entity) {
             $entity = new $this->entityName();
 
             foreach ($this->entityProperties as $property => $value) {
                 $method = 'set' . ucfirst($property);
 
-                call_user_func([$entity, $method], $value);
+                $entity->{$method}($value);
             }
         }
 

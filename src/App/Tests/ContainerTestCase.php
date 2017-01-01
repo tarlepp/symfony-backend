@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @package App\Tests
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class ContainerTestCase extends KernelTestCase
+abstract class ContainerTestCase extends KernelTestCase
 {
     /**
      * @var ContainerInterface

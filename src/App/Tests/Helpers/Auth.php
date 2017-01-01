@@ -8,7 +8,6 @@ declare(strict_types=1);
 namespace App\Tests\Helpers;
 
 use App\Utils\JSON;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -35,8 +34,6 @@ class Auth
      * Auth constructor.
      *
      * @param   ContainerInterface  $container
-     *
-     * @return  Auth
      */
     public function __construct(ContainerInterface $container)
     {
@@ -83,7 +80,7 @@ class Auth
     /**
      * Method to make actual login to application with specified username and password.
      *
-     * @throws \Exception
+     * @throws  \DomainException
      *
      * @param   string  $username
      * @param   string  $password
@@ -100,7 +97,7 @@ class Auth
 
         // Verify that login was ok
         if ($client->getResponse()->getStatusCode() !== 200) {
-            throw new \Exception('User login failed...');
+            throw new \DomainException('User login failed...');
         }
 
         return JSON::decode($client->getResponse()->getContent())->token;
