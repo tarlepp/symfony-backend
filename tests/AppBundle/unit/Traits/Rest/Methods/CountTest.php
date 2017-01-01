@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-require_once dirname(__FILE__) . '/Count.php';
+require_once __DIR__ . '/Count.php';
 
 /**
  * Class CountTest
@@ -43,7 +43,10 @@ class CountTest extends KernelTestCase
         $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
 
         /** @var CountTestClass|\PHPUnit_Framework_MockObject_MockObject $countTestClass */
-        $countTestClass = $this->getMockForAbstractClass(CountTestClass::class, [$resourceService, $restHelperResponse]);
+        $countTestClass = $this->getMockForAbstractClass(
+            CountTestClass::class,
+            [$resourceService, $restHelperResponse]
+        );
 
         // Create request and response
         $request = Request::create('/count', 'GET');
@@ -87,7 +90,10 @@ class CountTest extends KernelTestCase
         $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
 
         /** @var CountTestClass|\PHPUnit_Framework_MockObject_MockObject $countTestClass */
-        $countTestClass = $this->getMockForAbstractClass(CountTestClass::class, [$resourceService, $restHelperResponse]);
+        $countTestClass = $this->getMockForAbstractClass(
+            CountTestClass::class,
+            [$resourceService, $restHelperResponse]
+        );
 
         // Create request and response
         $request = Request::create('/count', $httpMethod);
@@ -102,8 +108,13 @@ class CountTest extends KernelTestCase
 
         /** @var CountTestClass|\PHPUnit_Framework_MockObject_MockObject $countTestClass */
         $countTestClass = $this->getMockForAbstractClass(
-            CountTestClass::class, [$resourceService, $restHelperResponse],
-            '', true, true, true, ['processCriteria']
+            CountTestClass::class,
+            [$resourceService, $restHelperResponse],
+            '',
+            true,
+            true,
+            true,
+            ['processCriteria']
         );
 
         // Create request

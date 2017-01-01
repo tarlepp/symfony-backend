@@ -32,7 +32,7 @@ class UserGroupTest extends RepositoryTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\UserGroup';
+    protected $entityName = Entity::class;
 
     /**
      * @var array

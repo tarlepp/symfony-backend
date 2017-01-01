@@ -26,5 +26,5 @@ class UserLoginTest extends EntityTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\UserLogin';
+    protected $entityName = UserLogin::class;
 }

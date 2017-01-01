@@ -21,7 +21,7 @@ class TimestampableTest extends EntityTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\Author';
+    protected $entityName = Author::class;
 
     public function testThatGetCreatedAtJsonReturnsExpected()
     {

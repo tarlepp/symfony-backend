@@ -81,7 +81,7 @@ class UserControllerTest extends WebTestCase
             static::assertEquals('0', $responseData->code);
         } else { // Otherwise check that response has correct output
             static::assertTrue(is_array($responseData), 'Response did not return array of users.');
-            static::assertEquals(5, count($responseData), 'Response did not contain expected number of users.');
+            static::assertCount(5, $responseData, 'Response did not contain expected number of users.');
         }
     }
 

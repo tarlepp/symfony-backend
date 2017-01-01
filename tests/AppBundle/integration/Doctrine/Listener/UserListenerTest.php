@@ -88,7 +88,7 @@ class UserListenerTest extends KernelTestCase
     public function testThatGetEncoderReturnsExpected()
     {
         static::assertInstanceOf(
-            'Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface',
+            PasswordEncoderInterface::class,
             $this->listener->getEncoder($this->entity)
         );
     }

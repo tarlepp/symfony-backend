@@ -28,7 +28,7 @@ class RequestLogTest extends EntityTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\RequestLog';
+    protected $entityName = RequestLog::class;
 
     /**
      * @dataProvider dataProviderTestThatSensitiveDataIsCleaned
@@ -97,11 +97,11 @@ class RequestLogTest extends EntityTestCase
                 ['cookie' => '*** REPLACED ***'],
             ],
             [
-                ['someheader' => [
+                ['someHeader' => [
                     'foo'       => 'bar',
                     'password'  => 'some password',
                 ]],
-                ['someheader' => [
+                ['someHeader' => [
                     'foo'       => 'bar',
                     'password'  => '*** REPLACED ***',
                 ]],

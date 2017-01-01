@@ -32,7 +32,7 @@ class AuthorTest extends RepositoryTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\Author';
+    protected $entityName = Entity::class;
 
     /**
      * @var array

@@ -59,7 +59,7 @@ class RoleTest extends KernelTestCase
      */
     public function dataProviderTestThatTraitCallsExpectedMethod(): array
     {
-        $pattern = dirname(__FILE__) . '/../../../../../../src/App/Traits/Rest/Roles/Admin/*.php';
+        $pattern = __DIR__ . '/../../../../../../src/App/Traits/Rest/Roles/Admin/*.php';
 
         $iterator = function (string $filename): array {
             $name = str_replace('.php', '', basename($filename));

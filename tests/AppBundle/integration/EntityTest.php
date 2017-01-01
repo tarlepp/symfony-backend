@@ -27,7 +27,7 @@ class EntityTest extends KernelTestCase
     public function testThatAllEntitiesHaveTestClass($entity)
     {
         $testFile = str_replace(['App\\', '\\'], ['AppBundle\\integration\\', '/'], $entity);
-        $testFile = dirname(__FILE__) . '/../../' . $testFile . 'Test.php';
+        $testFile = __DIR__ . '/../../' . $testFile . 'Test.php';
 
         $message = sprintf(
             "Entity '%s' doesn't have required test class, please create it to '%s'.",
@@ -35,7 +35,7 @@ class EntityTest extends KernelTestCase
             $testFile
         );
 
-        static::assertTrue(file_exists($testFile), $message);
+        static::assertFileExists($testFile, $message);
     }
 
     /**
@@ -54,7 +54,7 @@ class EntityTest extends KernelTestCase
 
         // Filter out entity classes that aren't directly attached to Application itself
         $filter = function (ClassMetadata $classMetaData) {
-            if (mb_substr($classMetaData->getName(), 0, 4) !== 'App\\') {
+            if (0 !== mb_strpos($classMetaData->getName(), 'App\\')) {
                 return null;
             }
 

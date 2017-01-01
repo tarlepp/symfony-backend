@@ -29,7 +29,7 @@ class RestServiceTest extends \PHPUnit_Framework_TestCase
             'tests/' . substr($expectedTestFile, mb_strpos($expectedTestFile, '/../') + 4)
         );
 
-        static::assertTrue(file_exists($expectedTestFile), $message);
+        static::assertFileExists($expectedTestFile, $message);
     }
 
     /**
@@ -37,7 +37,7 @@ class RestServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function dataProviderTestThatAllRestServicesHaveTestClass(): array
     {
-        $pattern = dirname(__FILE__) . '/../../../src/App/Services/Rest/*.php';
+        $pattern = __DIR__ . '/../../../src/App/Services/Rest/*.php';
 
         /**
          * @param   string  $filename
@@ -52,7 +52,7 @@ class RestServiceTest extends \PHPUnit_Framework_TestCase
             return !$reflection->isAbstract();
         };
 
-        $basePath = dirname(__FILE__) . '/../functional/Services/Rest/';
+        $basePath = __DIR__ . '/../functional/Services/Rest/';
 
         /**
          * @param   string  $filename

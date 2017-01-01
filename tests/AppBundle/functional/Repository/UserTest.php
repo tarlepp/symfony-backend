@@ -34,7 +34,7 @@ class UserTest extends RepositoryTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\User';
+    protected $entityName = User::class;
 
     /**
      * @var array

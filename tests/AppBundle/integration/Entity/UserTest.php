@@ -9,6 +9,7 @@ namespace AppBundle\integration\Entity;
 
 use App\Entity\User;
 use App\Tests\EntityTestCase;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class UserTest
@@ -26,7 +27,7 @@ class UserTest extends EntityTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\User';
+    protected $entityName = User::class;
 
     /**
      * @dataProvider dataProviderTestThatPasswordHashingIsWorkingAsExpected
@@ -73,7 +74,7 @@ class UserTest extends EntityTestCase
         $this->entity->setPassword('str_rot13', 'password');
 
         /** @var User $entity */
-        $entity = unserialize(serialize($this->entity));
+        $entity = unserialize(serialize($this->entity), [\stdClass::class]);
 
         // Assert that unserialized object returns expected data
 
@@ -83,7 +84,7 @@ class UserTest extends EntityTestCase
 
     public function testThatGetUserGroupsReturnsInstanceOfArrayCollection()
     {
-        static::assertInstanceOf('\Doctrine\Common\Collections\ArrayCollection', $this->entity->getUserGroups());
+        static::assertInstanceOf(ArrayCollection::class, $this->entity->getUserGroups());
     }
 
     public function testThatGetRolesReturnsAnArray()
@@ -107,7 +108,7 @@ class UserTest extends EntityTestCase
         foreach ($expected as $key) {
             $method = 'set' . ucfirst($key);
 
-            call_user_func([$this->entity, $method], $key);
+            $this->entity->{$method}($key);
         }
 
         $data = $this->entity->getLoginData();
@@ -136,7 +137,7 @@ class UserTest extends EntityTestCase
     {
         $entity = $expected ? clone $this->entity : new $this->entityName();
 
-        $message = "Failed to check if User entity is equal.";
+        $message = 'Failed to check if User entity is equal.';
 
         static::assertEquals($expected, $this->entity->isEqualTo($entity), $message);
     }
@@ -154,6 +155,9 @@ class UserTest extends EntityTestCase
         ];
     }
 
+    /**
+     * @return array
+     */
     public function dataProviderTestThatIsEqualToMethodWorksAsExpected(): array
     {
         return [

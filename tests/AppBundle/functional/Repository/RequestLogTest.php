@@ -35,7 +35,7 @@ class RequestLogTest extends RepositoryTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\RequestLog';
+    protected $entityName = Entity::class;
 
     /**
      * @var array

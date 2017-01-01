@@ -47,7 +47,7 @@ class JWTCreatedListenerTest extends KernelTestCase
         $userRepository
             ->expects(static::once())
             ->method('loadUserByUsername')
-            ->with('fakeuser')
+            ->with('fakeUser')
             ->willReturn($userEntity);
 
         $userService
@@ -59,7 +59,7 @@ class JWTCreatedListenerTest extends KernelTestCase
 
         static::assertInstanceOf(
             UserEntity::class,
-            PHPUnitUtil::callMethod($listener, 'getUser', [$jwtCreatedEvent, 'fakeuser'])
+            PHPUnitUtil::callMethod($listener, 'getUser', [$jwtCreatedEvent, 'fakeUser'])
         );
     }
 }

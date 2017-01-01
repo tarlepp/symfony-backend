@@ -7,6 +7,7 @@ declare(strict_types = 1);
  */
 namespace AppBundle\unit\Utils;
 
+use App\Utils\JSON;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -75,7 +76,7 @@ class JSONTest extends KernelTestCase
      */
     public function testThatDecodeThrowsAnExceptionOnMalformedJson(string $json)
     {
-        call_user_func('\App\Utils\JSON::decode', $json);
+        JSON::decode($json);
     }
 
     /**
@@ -88,7 +89,7 @@ class JSONTest extends KernelTestCase
      */
     public function testThatEncodeThrowsAnExceptionOnInvalidUtfCharacters(string $input)
     {
-        call_user_func('\App\Utils\JSON::encode', $input);
+        JSON::encode($input);
     }
 
     /**
@@ -104,7 +105,7 @@ class JSONTest extends KernelTestCase
         $object->foo = new \stdClass();
         $object->foo->a = 'foobar';
         $object->foo->b = 12;
-        $object->foo->c = "12";
+        $object->foo->c = '12';
         $object->foo->d = true;
 
         return [

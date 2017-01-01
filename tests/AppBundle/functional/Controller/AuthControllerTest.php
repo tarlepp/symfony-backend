@@ -77,7 +77,7 @@ class AuthControllerTest extends WebTestCase
      * @param   string  $username
      * @param   string  $password
      */
-    public function _testThatInvalidCredentialsWontWork($username, $password)
+    public function testThatInvalidCredentialsWontWork($username, $password)
     {
         $client = static::createClient();
         $client->request(
@@ -173,7 +173,7 @@ class AuthControllerTest extends WebTestCase
      */
     public function testThatGetAuthProfileReturns401WithInvalidToken()
     {
-        $client = static::createClient([], $this->getAuthService()->getAuthorizationHeaders('invalidtoken'));
+        $client = static::createClient([], $this->getAuthService()->getAuthorizationHeaders('invalidToken'));
         $client->request('GET', '/auth/profile');
 
         // Check that HTTP status code is correct

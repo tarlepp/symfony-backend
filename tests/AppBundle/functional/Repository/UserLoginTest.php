@@ -32,7 +32,7 @@ class UserLoginTest extends RepositoryTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\UserLogin';
+    protected $entityName = Entity::class;
 
     /**
      * @var array

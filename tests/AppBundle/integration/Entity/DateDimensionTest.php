@@ -26,7 +26,7 @@ class DateDimensionTest extends EntityTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\DateDimension';
+    protected $entityName = DateDimension::class;
 
     public function testThatConstructWithDateTimeObjectSetsDate()
     {
@@ -167,4 +167,3 @@ class DateDimensionTest extends EntityTestCase
         );
     }
 }
-

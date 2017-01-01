@@ -33,7 +33,7 @@ class DateDimensionTest extends RepositoryTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\DateDimension';
+    protected $entityName = Entity::class;
 
     /**
      * @var bool

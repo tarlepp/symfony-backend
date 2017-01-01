@@ -43,7 +43,7 @@ class SchemaTest extends KernelTestCase
 
         $messages = [];
 
-        $formatter = function($errors, $className) use (&$messages) {
+        $formatter = function ($errors, $className) use (&$messages) {
             $messages[] = $className . ': ' . implode(', ', $errors);
         };
 

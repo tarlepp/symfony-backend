@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
+use App\Entity\User;
 
 /**
  * Class GenericRepositoryTest
@@ -40,7 +41,7 @@ class GenericRepositoryTest extends KernelTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\User';
+    protected $entityName = User::class;
 
     /**
      * @var \App\Repository\Base

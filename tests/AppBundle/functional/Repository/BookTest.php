@@ -33,7 +33,7 @@ class BookTest extends RepositoryTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\Book';
+    protected $entityName = Entity::class;
 
     /**
      * @var array

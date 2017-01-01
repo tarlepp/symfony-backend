@@ -11,6 +11,8 @@ use App\DTO\Console\User;
 use App\Tests\ContainerTestCase;
 use App\Validator\Constraints\UniqueEmail;
 use App\Validator\Constraints\UniqueEmailValidator;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilder;
+use Symfony\Component\Validator\Context\ExecutionContext;
 
 /**
  * Class UniqueEmailValidatorTest
@@ -30,14 +32,14 @@ class UniqueEmailValidatorTest extends ContainerTestCase
     public function configureValidator($expectedMessage = null)
     {
         // mock the violation builder
-        $builder = $this->getMockBuilder('Symfony\Component\Validator\Violation\ConstraintViolationBuilder')
+        $builder = $this->getMockBuilder(ConstraintViolationBuilder::class)
             ->disableOriginalConstructor()
             ->setMethods(['addViolation'])
             ->getMock()
         ;
 
         // mock the validator context
-        $context = $this->getMockBuilder('Symfony\Component\Validator\Context\ExecutionContext')
+        $context = $this->getMockBuilder(ExecutionContext::class)
             ->disableOriginalConstructor()
             ->setMethods(['buildViolation'])
             ->getMock()

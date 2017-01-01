@@ -50,9 +50,7 @@ class SearchTermTest extends KernelTestCase
      */
     public function testThatReturnedCriteriaIsExpected(array $inputArguments, array $expected)
     {
-        $class = '\App\Services\Helper\SearchTerm';
-
-        static::assertEquals($expected, call_user_func_array([$class, 'getCriteria'], $inputArguments));
+        static::assertEquals($expected, call_user_func_array([ SearchTerm::class, 'getCriteria'], $inputArguments));
     }
 
     /**

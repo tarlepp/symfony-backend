@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-require_once dirname(__FILE__) . '/Delete.php';
+require_once __DIR__ . '/Delete.php';
 
 /**
  * Class DeleteTest

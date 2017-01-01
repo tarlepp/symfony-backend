@@ -27,7 +27,7 @@ class RepositoryTest extends KernelTestCase
     public function testThatAllRepositoriesHaveTestClass($repository)
     {
         $testFile = str_replace(['App\\', '\\'], ['AppBundle\\functional\\', '/'], $repository);
-        $testFile = dirname(__FILE__) . '/../../' . $testFile . 'Test.php';
+        $testFile = __DIR__ . '/../../' . $testFile . 'Test.php';
 
         $message = sprintf(
             "Repository '%s' doesn't have required test class, please create it to '%s'.",
@@ -35,7 +35,7 @@ class RepositoryTest extends KernelTestCase
             'tests' . substr($testFile, strpos($testFile, '/../../') + 6)
         );
 
-        static::assertTrue(file_exists($testFile), $message);
+        static::assertFileExists($testFile, $message);
     }
 
     /**
@@ -54,7 +54,7 @@ class RepositoryTest extends KernelTestCase
 
         // Filter out entity classes that aren't directly attached to Application itself
         $filter = function (ClassMetadata $classMetaData) use ($em) {
-            if (mb_substr($classMetaData->getName(), 0, 4) !== 'App\\') {
+            if (0 !== mb_strpos($classMetaData->getName(), 'App\\')) {
                 return null;
             }
 

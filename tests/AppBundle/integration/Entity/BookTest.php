@@ -26,5 +26,5 @@ class BookTest extends EntityTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\Book';
+    protected $entityName = Book::class;
 }
