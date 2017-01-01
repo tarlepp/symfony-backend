@@ -7,7 +7,9 @@ declare(strict_types = 1);
  */
 namespace AppBundle\functional\Services\Rest;
 
-use App\Services\Rest\User;
+use App\Entity\User as UserEntity;
+use App\Repository\User as UserRepository;
+use App\Services\Rest\User as UserService;
 use App\Tests\RestServiceTestCase;
 
 /**
@@ -19,7 +21,7 @@ use App\Tests\RestServiceTestCase;
 class UserTest extends RestServiceTestCase
 {
     /**
-     * @var User
+     * @var UserService
      */
     protected $service;
 
@@ -31,12 +33,12 @@ class UserTest extends RestServiceTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\User';
+    protected $entityName = UserEntity::class;
 
     /**
      * @var string
      */
-    protected $repositoryName = 'App\Repository\User';
+    protected $repositoryName = UserRepository::class;
 
     /**
      * {@inheritdoc}

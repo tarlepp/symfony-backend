@@ -7,7 +7,9 @@ declare(strict_types = 1);
  */
 namespace AppBundle\functional\Services\Rest;
 
-use App\Services\Rest\Author;
+use App\Entity\Author as AuthorEntity;
+use App\Repository\Author as AuthorRepository;
+use App\Services\Rest\Author as AuthorService;
 use App\Tests\RestServiceTestCase;
 
 /**
@@ -19,7 +21,7 @@ use App\Tests\RestServiceTestCase;
 class AuthorTest extends RestServiceTestCase
 {
     /**
-     * @var Author
+     * @var AuthorService
      */
     protected $service;
 
@@ -31,10 +33,10 @@ class AuthorTest extends RestServiceTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\Author';
+    protected $entityName = AuthorEntity::class;
 
     /**
      * @var string
      */
-    protected $repositoryName = 'App\Repository\Author';
+    protected $repositoryName = AuthorRepository::class;
 }

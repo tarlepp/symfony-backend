@@ -7,7 +7,9 @@ declare(strict_types = 1);
  */
 namespace AppBundle\functional\Services\Rest;
 
-use App\Services\Rest\UserLogin;
+use App\Entity\UserLogin as UserLoginEntity;
+use App\Repository\UserLogin as UserLoginRepository;
+use App\Services\Rest\UserLogin as UserLoginService;
 use App\Tests\RestServiceTestCase;
 
 /**
@@ -19,7 +21,7 @@ use App\Tests\RestServiceTestCase;
 class UserLoginTest extends RestServiceTestCase
 {
     /**
-     * @var UserLogin
+     * @var UserLoginService
      */
     protected $service;
 
@@ -31,12 +33,12 @@ class UserLoginTest extends RestServiceTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\UserLogin';
+    protected $entityName = UserLoginEntity::class;
 
     /**
      * @var string
      */
-    protected $repositoryName = 'App\Repository\UserLogin';
+    protected $repositoryName = UserLoginRepository::class;
 
     /**
      * {@inheritdoc}

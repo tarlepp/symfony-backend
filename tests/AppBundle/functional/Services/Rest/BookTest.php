@@ -7,7 +7,9 @@ declare(strict_types = 1);
  */
 namespace AppBundle\functional\Services\Rest;
 
-use App\Services\Rest\Book;
+use App\Entity\Book as BookEntity;
+use App\Repository\Book as BookRepository;
+use App\Services\Rest\Book as BookService;
 use App\Tests\RestServiceTestCase;
 
 /**
@@ -19,7 +21,7 @@ use App\Tests\RestServiceTestCase;
 class BookTest extends RestServiceTestCase
 {
     /**
-     * @var Book
+     * @var BookService
      */
     protected $service;
 
@@ -31,10 +33,10 @@ class BookTest extends RestServiceTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\Book';
+    protected $entityName = BookEntity::class;
 
     /**
      * @var string
      */
-    protected $repositoryName = 'App\Repository\Book';
+    protected $repositoryName = BookRepository::class;
 }

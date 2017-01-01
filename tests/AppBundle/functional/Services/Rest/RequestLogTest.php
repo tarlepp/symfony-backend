@@ -7,7 +7,9 @@ declare(strict_types = 1);
  */
 namespace AppBundle\functional\Services\Rest;
 
-use App\Services\Rest\RequestLog;
+use App\Entity\RequestLog as RequestLogEntity;
+use App\Repository\RequestLog as RequestLogRepository;
+use App\Services\Rest\RequestLog as RequestLogService;
 use App\Tests\RestServiceTestCase;
 
 /**
@@ -19,7 +21,7 @@ use App\Tests\RestServiceTestCase;
 class RequestLogTest extends RestServiceTestCase
 {
     /**
-     * @var RequestLog
+     * @var RequestLogService
      */
     protected $service;
 
@@ -31,12 +33,12 @@ class RequestLogTest extends RestServiceTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\RequestLog';
+    protected $entityName = RequestLogEntity::class;
 
     /**
      * @var string
      */
-    protected $repositoryName = 'App\Repository\RequestLog';
+    protected $repositoryName = RequestLogRepository::class;
 
     /**
      * {@inheritdoc}

@@ -7,7 +7,9 @@ declare(strict_types = 1);
  */
 namespace AppBundle\functional\Services\Rest;
 
-use App\Services\Rest\UserGroup;
+use App\Entity\UserGroup as UserGroupEntity;
+use App\Repository\UserGroup as UserGroupRepository;
+use App\Services\Rest\UserGroup as UserGroupService;
 use App\Tests\RestServiceTestCase;
 
 /**
@@ -19,7 +21,7 @@ use App\Tests\RestServiceTestCase;
 class UserGroupTest extends RestServiceTestCase
 {
     /**
-     * @var UserGroup
+     * @var UserGroupService
      */
     protected $service;
 
@@ -31,12 +33,12 @@ class UserGroupTest extends RestServiceTestCase
     /**
      * @var string
      */
-    protected $entityName = 'App\Entity\UserGroup';
+    protected $entityName = UserGroupEntity::class;
 
     /**
      * @var string
      */
-    protected $repositoryName = 'App\Repository\UserGroup';
+    protected $repositoryName = UserGroupRepository::class;
 
     /**
      * {@inheritdoc}
