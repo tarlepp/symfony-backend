@@ -29,6 +29,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class Base implements Interfaces\Base
 {
     /**
+     * Ignored properties on persist entity call. Define these on your service class.
+     *
+     * @var array
+     */
+    protected static $ignoredPropertiesOnPersistEntity = [];
+
+    /**
      * REST service entity repository.
      *
      * @var Repository
@@ -41,13 +48,6 @@ abstract class Base implements Interfaces\Base
      * @var RecursiveValidator
      */
     protected $validator;
-
-    /**
-     * Ignored properties on persist entity call. Define these on your service class.
-     *
-     * @var array
-     */
-    protected $ignoredPropertiesOnPersistEntity = [];
 
     /**
      * {@inheritdoc}
@@ -442,12 +442,12 @@ abstract class Base implements Interfaces\Base
                 'createdAt', 'createdBy',
                 'updatedAt', 'updatedBy',
             ],
-            $this->ignoredPropertiesOnPersistEntity
+            static::$ignoredPropertiesOnPersistEntity
         );
 
         // Iterate given data
         foreach ($data as $property => $value) {
-            if (in_array($property, $ignoreProperties)) {
+            if (in_array($property, $ignoreProperties, true)) {
                 continue;
             }
 

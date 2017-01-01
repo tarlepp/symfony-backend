@@ -252,7 +252,7 @@ class GenericServiceTest extends KernelTestCase
 
     public function testThatSaveCallsServiceMethods()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|EntityInterface $entity */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|EntityInterface|UserEntity $entity */
         $entity = $this->createMock(EntityInterface::class);
 
         $repository = $this->getRepositoryMock('save');
@@ -362,6 +362,34 @@ class GenericServiceTest extends KernelTestCase
         $service = new UserService($repository, $this->validator);
 
         static::assertEquals($expectedEntity, $service->update('entity-id', (object)['username' => 'bar.foo']));
+    }
+
+    public function testThatUpdateIgnoresCertainProperties()
+    {
+        $entity = new UserEntity();
+        $entity->setUsername('foo.bar');
+        $entity->setFirstname('foo');
+        $entity->setSurname('bar');
+        $entity->setEmail('foo.bar@foobar.com');
+
+        $repository = $this->getRepositoryMock('find', 'save');
+
+        $repository
+            ->expects(static::once())
+            ->method('find')
+            ->with('entity-id')
+            ->willReturn($entity);
+
+        $repository
+            ->expects(static::once())
+            ->method('save')
+            ->willReturn($repository);
+
+        $service = new UserService($repository, $this->validator);
+
+        $entity = $service->update('entity-id', (object)['password' => 'foobar']);
+
+        static::assertNull($entity->getPassword());
     }
 
     /**

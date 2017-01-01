@@ -31,5 +31,14 @@ use App\Repository\User as Repository;
  */
 class User extends Base
 {
+    /**
+     * Ignored properties on persist entity call.
+     *
+     * @var array
+     */
+    protected static $ignoredPropertiesOnPersistEntity = [
+        'password'
+    ];
+
     // Implement custom service methods here
 }
