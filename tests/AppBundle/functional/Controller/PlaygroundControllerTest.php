@@ -8,6 +8,7 @@ declare(strict_types = 1);
 namespace AppBundle\functional\Controller;
 
 use App\Tests\WebTestCase;
+use App\Utils\JSON;
 
 /**
  * Class PlaygroundControllerTest
@@ -17,4 +18,21 @@ use App\Tests\WebTestCase;
  */
 class PlaygroundControllerTest extends WebTestCase
 {
+    public function testThatTestActionReturnsExpected()
+    {
+        $client = $this->getClient('john', 'doe');
+        $client->request(
+            'GET',
+            '/playground'
+        );
+
+        // Check that HTTP status code is correct
+        static::assertSame(
+            200,
+            $client->getResponse()->getStatusCode(),
+            "HTTP status code was not expected for GET /playground\n" . $client->getResponse()
+        );
+
+        static::assertSame('Hello world', $client->getResponse()->getContent());
+    }
 }
