@@ -7,13 +7,13 @@ declare(strict_types=1);
  */
 namespace App\Services\Rest;
 
-use App\Entity\Interfaces\EntityInterface as Entity;
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Interfaces\EntityInterface as Entity;
 use App\Repository\Base as Repository;
 use Doctrine\Common\Proxy\Proxy;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMInvalidArgumentException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -127,7 +127,7 @@ abstract class Base implements Interfaces\Base
 
         // Entity not found
         if ($throwExceptionIfNotFound && null === $entity) {
-            throw new HttpException(404, 'Not found');
+            throw new NotFoundHttpException('Not found');
         }
 
         // After callback method call
@@ -149,7 +149,7 @@ abstract class Base implements Interfaces\Base
 
         // Entity not found
         if ($throwExceptionIfNotFound && null === $entity) {
-            throw new HttpException(404, 'Not found');
+            throw new NotFoundHttpException('Not found');
         }
 
         // After callback method call
@@ -238,7 +238,7 @@ abstract class Base implements Interfaces\Base
 
         // Entity not found
         if (null === $entity) {
-            throw new HttpException(404, 'Not found');
+            throw new NotFoundHttpException('Not found');
         }
 
         // Before callback method call
@@ -263,7 +263,7 @@ abstract class Base implements Interfaces\Base
 
         // Entity not found
         if (null === $entity) {
-            throw new HttpException(404, 'Not found');
+            throw new NotFoundHttpException('Not found');
         }
 
         // Before callback method call

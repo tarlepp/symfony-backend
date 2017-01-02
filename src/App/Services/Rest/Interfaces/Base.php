@@ -15,7 +15,7 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -94,7 +94,7 @@ interface Base
      * Generic findOne method to return single item from database. Return value is single entity from specified
      * repository.
      *
-     * @throws  HttpException
+     * @throws  NotFoundHttpException
      *
      * @param   string  $id
      * @param   boolean $throwExceptionIfNotFound
@@ -107,7 +107,7 @@ interface Base
      * Generic findOneBy method to return single item from database by given criteria. Return value is single entity
      * from specified repository or null if entity was not found.
      *
-     * @throws  HttpException
+     * @throws  NotFoundHttpException
      *
      * @param   array   $criteria
      * @param   array   $orderBy
@@ -161,7 +161,7 @@ interface Base
     /**
      * Generic method to update specified entity with new data.
      *
-     * @throws  HttpException
+     * @throws  NotFoundHttpException
      * @throws  ValidatorException
      * @throws  ORMInvalidArgumentException
      * @throws  OptimisticLockException
@@ -176,9 +176,9 @@ interface Base
     /**
      * Generic method to delete specified entity from database.
      *
-     * @throws  ORMInvalidArgumentException
-     * @throws  OptimisticLockException
-     * @throws  HttpException
+     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @param   string  $id
      *
