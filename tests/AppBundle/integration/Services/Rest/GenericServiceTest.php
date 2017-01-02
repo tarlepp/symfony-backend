@@ -132,7 +132,8 @@ class GenericServiceTest extends KernelTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @expectedExceptionMessage Not found
      */
     public function testThatFindOneThrowsAnExceptionIfEntityWasNotFoundAndThrowParameterIsSet()
     {
@@ -164,7 +165,7 @@ class GenericServiceTest extends KernelTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @expectedExceptionMessage Not found
      */
     public function testThatFindOneByThrowsAnExceptionIfEntityWasNotFoundAndThrowParameterIsSet()
@@ -299,7 +300,7 @@ class GenericServiceTest extends KernelTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @expectedExceptionMessage Not found
      */
     public function testThatUpdateThrowsAnExceptionIfEntityIsNotFound()
@@ -393,7 +394,7 @@ class GenericServiceTest extends KernelTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedException \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @expectedExceptionMessage Not found
      */
     public function testThatDeleteThrowsAnExceptionIfEntityIsNotFound()
