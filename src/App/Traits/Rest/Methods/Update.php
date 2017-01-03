@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Trait for generic 'Update' action for REST controllers. Trait will add following route definition to your controller
@@ -64,17 +63,12 @@ trait Update
      * Generic 'Update' method for REST endpoints.
      *
      * @throws  \LogicException
-     * @throws  \UnexpectedValueException
-     * @throws  \InvalidArgumentException
-     * @throws  OptimisticLockException
-     * @throws  ORMInvalidArgumentException
      * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
-     * @throws  ValidatorException
      *
      * @param   Request $request
-     * @param   string $id
-     * @param   array $allowedHttpMethods
+     * @param   string  $id
+     * @param   array   $allowedHttpMethods
      *
      * @return  Response
      */
@@ -92,10 +86,35 @@ trait Update
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
-        // Determine entity / DTO data from request
-        $data = JSON::decode($request->getContent());
+        try {
+            // Determine entity / DTO data from request
+            $data = JSON::decode($request->getContent());
 
-        return $this->getResponseService()->createResponse($request, $this->getResourceService()->update($id, $data));
+            return $this->getResponseService()->createResponse(
+                $request,
+                $this->getResourceService()->update($id, $data)
+            );
+        } catch (\Exception $error) {
+            if ($error instanceof HttpException) {
+                throw $error;
+            } else if ($error instanceof OptimisticLockException || $error instanceof ORMInvalidArgumentException) {
+                throw new HttpException(
+                    Response::HTTP_INTERNAL_SERVER_ERROR,
+                    $error->getMessage(),
+                    $error,
+                    [],
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            } else {
+                throw new HttpException(
+                    Response::HTTP_BAD_REQUEST,
+                    $error->getMessage(),
+                    $error,
+                    [],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+        }
     }
 
     /**

@@ -59,10 +59,6 @@ trait Delete
      * Generic 'Delete' method for REST endpoints.
      *
      * @throws  \LogicException
-     * @throws  \UnexpectedValueException
-     * @throws  \InvalidArgumentException
-     * @throws  OptimisticLockException
-     * @throws  ORMInvalidArgumentException
      * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
      *
@@ -86,7 +82,29 @@ trait Delete
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
-        return $this->getResponseService()->createResponse($request, $this->getResourceService()->delete($id));
+        try {
+            return $this->getResponseService()->createResponse($request, $this->getResourceService()->delete($id));
+        } catch (\Exception $error) {
+            if ($error instanceof HttpException) {
+                throw $error;
+            } else if ($error instanceof OptimisticLockException || $error instanceof ORMInvalidArgumentException) {
+                throw new HttpException(
+                    Response::HTTP_INTERNAL_SERVER_ERROR,
+                    $error->getMessage(),
+                    $error,
+                    [],
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            } else {
+                throw new HttpException(
+                    Response::HTTP_BAD_REQUEST,
+                    $error->getMessage(),
+                    $error,
+                    [],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+        }
     }
 
     /**

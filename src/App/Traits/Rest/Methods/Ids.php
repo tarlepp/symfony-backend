@@ -95,18 +95,32 @@ trait Ids
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
-        // Determine used parameters
-        $criteria = RestHelperRequest::getCriteria($request);
-        $search = RestHelperRequest::getSearchTerms($request);
+        try {
+            // Determine used parameters
+            $criteria = RestHelperRequest::getCriteria($request);
+            $search = RestHelperRequest::getSearchTerms($request);
 
-        if (method_exists($this, 'processCriteria')) {
-            $this->processCriteria($criteria);
+            if (method_exists($this, 'processCriteria')) {
+                $this->processCriteria($criteria);
+            }
+
+            return $this->getResponseService()->createResponse(
+                $request,
+                $this->getResourceService()->getIds($criteria, $search)
+            );
+        } catch (\Exception $error) {
+            if ($error instanceof HttpException) {
+                throw $error;
+            } else {
+                throw new HttpException(
+                    Response::HTTP_BAD_REQUEST,
+                    $error->getMessage(),
+                    $error,
+                    [],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
         }
-
-        return $this->getResponseService()->createResponse(
-            $request,
-            $this->getResourceService()->getIds($criteria, $search)
-        );
     }
 
     /**

@@ -50,10 +50,6 @@ trait Count
      * Generic 'Count' method for REST endpoints.
      *
      * @throws  \LogicException
-     * @throws  \UnexpectedValueException
-     * @throws  \InvalidArgumentException
-     * @throws  NonUniqueResultException
-     * @throws  NoResultException
      * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
      *
@@ -76,18 +72,42 @@ trait Count
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
-        // Determine used parameters
-        $criteria   = RestHelperRequest::getCriteria($request);
-        $search     = RestHelperRequest::getSearchTerms($request);
+        try {
+            // Determine used parameters
+            $criteria   = RestHelperRequest::getCriteria($request);
+            $search     = RestHelperRequest::getSearchTerms($request);
 
-        if (method_exists($this, 'processCriteria')) {
-            $this->processCriteria($criteria);
+            if (method_exists($this, 'processCriteria')) {
+                $this->processCriteria($criteria);
+            }
+
+            return $this->getResponseService()->createResponse(
+                $request,
+                $this->getResourceService()->count($criteria, $search)
+            );
+        } catch (\Exception $error) {
+            if ($error instanceof HttpException) {
+                throw $error;
+            } else if ($error instanceof NoResultException) {
+                throw new HttpException(Response::HTTP_NOT_FOUND, 'Not found', $error, [], Response::HTTP_NOT_FOUND);
+            } else if ($error instanceof NonUniqueResultException) {
+                throw new HttpException(
+                    Response::HTTP_INTERNAL_SERVER_ERROR,
+                    $error->getMessage(),
+                    $error,
+                    [],
+                    Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            } else {
+                throw new HttpException(
+                    Response::HTTP_BAD_REQUEST,
+                    $error->getMessage(),
+                    $error,
+                    [],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
         }
-
-        return $this->getResponseService()->createResponse(
-            $request,
-            $this->getResourceService()->count($criteria, $search)
-        );
     }
 
     /**

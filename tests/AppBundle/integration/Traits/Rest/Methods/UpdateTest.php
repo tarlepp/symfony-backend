@@ -1,28 +1,32 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/unit/Traits/Rest/Methods/UpdateTest.php
+ * /tests/AppBundle/integration/Traits/Rest/Methods/UpdateTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\unit\Traits\Rest\Methods;
+namespace AppBundle\integration\Traits\Rest\Methods;
 
 use App\Entity\Interfaces\EntityInterface;
 use App\Traits\Rest\Methods\Update;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
-use AppBundle\unit\Traits\Rest\Methods\Update as UpdateTestClass;
+use AppBundle\integration\Traits\Rest\Methods\Update as UpdateTestClass;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 require_once __DIR__ . '/Update.php';
 
 /**
  * Class UpdateTest
  *
- * @package AppBundle\unit\Traits\Rest\Methods
+ * @package AppBundle\integration\Traits\Rest\Methods
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UpdateTest extends KernelTestCase
@@ -38,6 +42,75 @@ class UpdateTest extends KernelTestCase
         $request = Request::create('/' . $uuid, 'PUT');
 
         $mock->updateMethod($request, $uuid);
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatTraitHandlesException
+     *
+     * @param   \Exception  $exception
+     * @param   int         $expectedCode
+     */
+    public function testThatTraitHandlesException(\Exception $exception, int $expectedCode)
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var UpdateTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
+        $testClass = $this->getMockForAbstractClass(
+            UpdateTestClass::class,
+            [$resourceService, $restHelperResponse]
+        );
+
+        $uuid = Uuid::uuid4()->toString();
+
+        $request = Request::create(
+            '/' . $uuid,
+            'PUT',
+            [],
+            [],
+            [],
+            [],
+            '{"foo":"bar"}'
+        );
+
+        $resourceService
+            ->expects(static::once())
+            ->method('update')
+            ->willThrowException($exception);
+
+        $testClass
+            ->expects(static::once())
+            ->method('getResourceService')
+            ->willReturn($resourceService);
+
+        $this->expectException(HttpException::class);
+        $this->expectExceptionCode($expectedCode);
+
+        $testClass->updateMethod($request, $uuid);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
+     * @expectedExceptionMessage Syntax error, malformed JSON - Syntax error
+     * @expectedExceptionCode 400
+     */
+    public function testThatTraitThrowsExceptionWithInvalidPayload()
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var UpdateTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
+        $testClass = $this->getMockForAbstractClass(
+            UpdateTestClass::class,
+            [$resourceService, $restHelperResponse]
+        );
+
+        $uuid = Uuid::uuid4()->toString();
+
+        // Create request and response
+        $request = Request::create('/' . $uuid, 'PUT');
+
+        $testClass->updateMethod($request, $uuid);
     }
 
     public function testThatTraitCallsServiceMethods()
@@ -126,6 +199,20 @@ class UpdateTest extends KernelTestCase
             ['OPTIONS'],
             ['CONNECT'],
             ['foobar'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatTraitHandlesException(): array
+    {
+        return [
+            [new HttpException(400), 0],
+            [new NotFoundHttpException(), 0],
+            [new OptimisticLockException('msg', new  \stdClass()), 500],
+            [new ORMInvalidArgumentException(), 500],
+            [new \Exception(), 400],
         ];
     }
 }

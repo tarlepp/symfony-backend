@@ -90,13 +90,11 @@ trait Find
      * Generic 'Find' method for REST endpoints.
      *
      * @throws  \LogicException
-     * @throws  \UnexpectedValueException
-     * @throws  \InvalidArgumentException
      * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
-     * @param   array   $allowedHttpMethods
+     * @param   array $allowedHttpMethods
      *
      * @return  Response
      */
@@ -114,21 +112,35 @@ trait Find
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
-        // Determine used parameters
-        $criteria   = RestHelperRequest::getCriteria($request);
-        $orderBy    = RestHelperRequest::getOrderBy($request);
-        $limit      = RestHelperRequest::getLimit($request);
-        $offset     = RestHelperRequest::getOffset($request);
-        $search     = RestHelperRequest::getSearchTerms($request);
+        try {
+            // Determine used parameters
+            $criteria   = RestHelperRequest::getCriteria($request);
+            $orderBy    = RestHelperRequest::getOrderBy($request);
+            $limit      = RestHelperRequest::getLimit($request);
+            $offset     = RestHelperRequest::getOffset($request);
+            $search     = RestHelperRequest::getSearchTerms($request);
 
-        if (method_exists($this, 'processCriteria')) {
-            $this->processCriteria($criteria);
+            if (method_exists($this, 'processCriteria')) {
+                $this->processCriteria($criteria);
+            }
+
+            return $this->getResponseService()->createResponse(
+                $request,
+                $this->getResourceService()->find($criteria, $orderBy, $limit, $offset, $search)
+            );
+        } catch (\Exception $error) {
+            if ($error instanceof HttpException) {
+                throw $error;
+            } else {
+                throw new HttpException(
+                    Response::HTTP_BAD_REQUEST,
+                    $error->getMessage(),
+                    $error,
+                    [],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
         }
-
-        return $this->getResponseService()->createResponse(
-            $request,
-            $this->getResourceService()->find($criteria, $orderBy, $limit, $offset, $search)
-        );
     }
 
     /**

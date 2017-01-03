@@ -1,28 +1,32 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/unit/Traits/Rest/Methods/DeleteTest.php
+ * /tests/AppBundle/integration/Traits/Rest/Methods/DeleteTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\unit\Traits\Rest\Methods;
+namespace AppBundle\integration\Traits\Rest\Methods;
 
 use App\Entity\Interfaces\EntityInterface;
 use App\Traits\Rest\Methods\Delete;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
-use AppBundle\unit\Traits\Rest\Methods\Delete as DeleteTestClass;
+use AppBundle\integration\Traits\Rest\Methods\Delete as DeleteTestClass;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 require_once __DIR__ . '/Delete.php';
 
 /**
  * Class DeleteTest
  *
- * @package AppBundle\unit\Traits\Rest\Methods
+ * @package AppBundle\integration\Traits\Rest\Methods
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class DeleteTest extends KernelTestCase
@@ -38,6 +42,42 @@ class DeleteTest extends KernelTestCase
         $request = Request::create('/' . $uuid, 'DELETE');
 
         $mock->deleteMethod($request, $uuid);
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatTraitHandlesException
+     *
+     * @param   \Exception  $exception
+     * @param   integer     $expectedCode
+     */
+    public function testThatTraitHandlesException(\Exception $exception, int $expectedCode)
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var DeleteTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
+        $testClass = $this->getMockForAbstractClass(
+            DeleteTestClass::class,
+            [$resourceService, $restHelperResponse]
+        );
+
+        $uuid = Uuid::uuid4()->toString();
+        $request = Request::create('/' . $uuid, 'DELETE');
+
+        $resourceService
+            ->expects(static::once())
+            ->method('delete')
+            ->willThrowException($exception);
+
+        $testClass
+            ->expects(static::once())
+            ->method('getResourceService')
+            ->willReturn($resourceService);
+
+        $this->expectException(HttpException::class);
+        $this->expectExceptionCode($expectedCode);
+
+        $testClass->deleteMethod($request, $uuid);
     }
 
     public function testThatTraitCallsServiceMethods()
@@ -117,6 +157,20 @@ class DeleteTest extends KernelTestCase
             ['OPTIONS'],
             ['CONNECT'],
             ['foobar'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatTraitHandlesException(): array
+    {
+        return [
+            [new HttpException(400), 0],
+            [new NotFoundHttpException(), 0],
+            [new OptimisticLockException('msg', new  \stdClass()), 500],
+            [new ORMInvalidArgumentException(), 500],
+            [new \Exception(), 400],
         ];
     }
 }

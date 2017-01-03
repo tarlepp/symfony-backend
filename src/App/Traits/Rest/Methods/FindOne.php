@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Trait for generic 'FindOne' action for REST controllers. Trait will add following route definition to your controller
@@ -58,8 +59,6 @@ trait FindOne
      * Generic 'FindOne' method for REST endpoints.
      *
      * @throws  \LogicException
-     * @throws  \UnexpectedValueException
-     * @throws  \InvalidArgumentException
      * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
      *
@@ -83,8 +82,23 @@ trait FindOne
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
-        // Fetch data from database
-        return $this->getResponseService()->createResponse($request, $this->getResourceService()->findOne($id, true));
+        try {
+            // Fetch data from database
+            return $this->getResponseService()
+                ->createResponse($request, $this->getResourceService()->findOne($id, true));
+        } catch (\Exception $error) {
+            if ($error instanceof HttpException) {
+                throw $error;
+            } else {
+                throw new HttpException(
+                    Response::HTTP_BAD_REQUEST,
+                    $error->getMessage(),
+                    $error,
+                    [],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+        }
     }
 
     /**

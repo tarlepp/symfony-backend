@@ -1,26 +1,27 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/unit/Traits/Rest/Methods/FindTest.php
+ * /tests/AppBundle/integration/Traits/Rest/Methods/FindTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\unit\Traits\Rest\Methods;
+namespace AppBundle\integration\Traits\Rest\Methods;
 
 use App\Traits\Rest\Methods\Find;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
-use AppBundle\unit\Traits\Rest\Methods\Find as FindTestClass;
+use AppBundle\integration\Traits\Rest\Methods\Find as FindTestClass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 require_once __DIR__ . '/Find.php';
 
 /**
  * Class FindTest
  *
- * @package AppBundle\unit\Traits\Rest\Methods
+ * @package AppBundle\integration\Traits\Rest\Methods
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class FindTest extends KernelTestCase
@@ -35,6 +36,41 @@ class FindTest extends KernelTestCase
         $request = Request::create('/', 'GET');
 
         $mock->findMethod($request);
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatTraitHandlesException
+     *
+     * @param   \Exception  $exception
+     * @param   int         $expectedCode
+     */
+    public function testThatTraitHandlesException(\Exception $exception, int $expectedCode)
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var FindTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
+        $testClass = $this->getMockForAbstractClass(
+            FindTestClass::class,
+            [$resourceService, $restHelperResponse]
+        );
+
+        $request = Request::create('/', 'GET');
+
+        $resourceService
+            ->expects(static::once())
+            ->method('find')
+            ->willThrowException($exception);
+
+        $testClass
+            ->expects(static::once())
+            ->method('getResourceService')
+            ->willReturn($resourceService);
+
+        $this->expectException(HttpException::class);
+        $this->expectExceptionCode($expectedCode);
+
+        $testClass->findMethod($request);
     }
 
     public function testThatTraitCallsServiceMethods()
@@ -136,6 +172,19 @@ class FindTest extends KernelTestCase
             ['OPTIONS'],
             ['CONNECT'],
             ['foobar'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatTraitHandlesException(): array
+    {
+        return [
+            [new HttpException(400), 0],
+            [new \LogicException(), 400],
+            [new \InvalidArgumentException(), 400],
+            [new \Exception(), 400],
         ];
     }
 }

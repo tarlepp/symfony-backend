@@ -1,26 +1,29 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/unit/Traits/Rest/Methods/CountTest.php
+ * /tests/AppBundle/integration/Traits/Rest/Methods/CountTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\unit\Traits\Rest\Methods;
+namespace AppBundle\integration\Traits\Rest\Methods;
 
 use App\Traits\Rest\Methods\Count;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
-use AppBundle\unit\Traits\Rest\Methods\Count as CountTestClass;
+use AppBundle\integration\Traits\Rest\Methods\Count as CountTestClass;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 require_once __DIR__ . '/Count.php';
 
 /**
  * Class CountTest
  *
- * @package AppBundle\unit\Traits\Rest\Methods
+ * @package AppBundle\integration\Traits\Rest\Methods
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class CountTest extends KernelTestCase
@@ -35,6 +38,42 @@ class CountTest extends KernelTestCase
         $request = Request::create('/count', 'GET');
 
         $mock->countMethod($request);
+    }
+
+    /**
+     * @dataProvider dataProviderTestThatTraitHandlesException
+     *
+     * @param   \Exception  $exception
+     * @param   integer     $expectedCode
+     */
+    public function testThatTraitHandlesException(\Exception $exception, int $expectedCode)
+    {
+        $resourceService = $this->createMock(ResourceServiceInterface::class);
+        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+
+        /** @var CountTestClass|\PHPUnit_Framework_MockObject_MockObject $countTestClass */
+        $countTestClass = $this->getMockForAbstractClass(
+            CountTestClass::class,
+            [$resourceService, $restHelperResponse]
+        );
+
+        // Create request and response
+        $request = Request::create('/count', 'GET');
+
+        $resourceService
+            ->expects(static::once())
+            ->method('count')
+            ->willThrowException($exception);
+
+        $countTestClass
+            ->expects(static::once())
+            ->method('getResourceService')
+            ->willReturn($resourceService);
+
+        $this->expectException(HttpException::class);
+        $this->expectExceptionCode($expectedCode);
+
+        $countTestClass->countMethod($request);
     }
 
     public function testThatTraitCallsServiceMethods()
@@ -142,6 +181,19 @@ class CountTest extends KernelTestCase
             ['OPTIONS'],
             ['CONNECT'],
             ['foobar'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatTraitHandlesException(): array
+    {
+        return [
+            [new HttpException(400), 0],
+            [new NoResultException(), 404],
+            [new NonUniqueResultException(), 500],
+            [new \Exception(), 400],
         ];
     }
 }

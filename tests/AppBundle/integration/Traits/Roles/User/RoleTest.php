@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/unit/Traits/Roles/User/RoleTest.php
+ * /tests/AppBundle/integration/Traits/Roles/User/RoleTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\unit\Traits\Roles\User;
+namespace AppBundle\integration\Traits\Roles\User;
 
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class RoleTest
  *
- * @package AppBundle\unit\Traits\Roles\User
+ * @package AppBundle\integration\Traits\Roles\User
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class RoleTest extends KernelTestCase
