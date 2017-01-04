@@ -14,10 +14,10 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 // Register symfony default autoload
-require_once 'autoload.php';
+require_once __DIR__ . '/autoload.php';
 
 // Create and boot 'test' kernel
-$kernel = new AppKernel('test', true); // create a "test" kernel
+$kernel = new AppKernel('test', true);
 $kernel->boot();
 
 // Create new application
