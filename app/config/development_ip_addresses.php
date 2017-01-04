@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 /**
  * This file contains all base IP addresses that are allowed to access to application via development environment.
  *
