@@ -31,6 +31,7 @@ Table of Contents
 # Main points
 * This is just an API, nothing else
 * Only JSON responses from API
+* Easy REST API configuration and customization, see examples [here](src/App/Controller/BookController.php) and [here](src/App/Controller/UserController.php#L94)
 * JWT authentication
 * API documentation
 
@@ -44,7 +45,7 @@ Table of Contents
 - [x] Docker support
 - [x] Logger (monolog) 
 - [x] TravisCI tests
-- [ ] Make tests, every endpoint
+- [x] Make tests, every endpoint
 - [ ] Docs - Generic 
 - [ ] Docs - New api endpoint 
 - [ ] Docs - New REST service
@@ -123,7 +124,6 @@ $ ./vendor/bin/phpcs -i
 ```
 
 If you're using [PhpStorm](https://www.jetbrains.com/phpstorm/) following links will help you to get things rolling.
-
 * [Using PHP Code Sniffer Tool](https://www.jetbrains.com/help/phpstorm/10.0/using-php-code-sniffer-tool.html)
 * [PHP Code Sniffer in PhpStorm](https://confluence.jetbrains.com/display/PhpStorm/PHP+Code+Sniffer+in+PhpStorm)
 
@@ -140,14 +140,14 @@ $ ./bin/console doctrine:migrations:diff
 With this you won't need to write those migration files by yourself, just let doctrine handle those - although remember to really look what those generated migration files really contains...
 
 ## Tests
-Project contains bunch of tests (unit, functional, e2e, etc.) which you can run simply by following commands:
+Project contains bunch of tests (unit, functional, integration, etc.) which you can run simply by following commands:
 
 ```bash
 # PHPUnit 
 $ ./vendor/bin/phpunit
 
 # PHPSpec
-$ ./vender/bin/phpspec run
+$ ./vendor/bin/phpspec run
 ```
 
 * [PHPUnit](https://phpunit.de/)
@@ -166,6 +166,7 @@ xdebug.remote_autostart=off
 # Useful resources + tips
 * [Symfony Development using PhpStorm](http://blog.jetbrains.com/phpstorm/2014/08/symfony-development-using-phpstorm/) - Guide to configure your PhpStorm for Symfony development
 * [PHP Annotations plugin for PhpStorm](https://plugins.jetbrains.com/plugin/7320) - PhpStorm plugin to make annotations really work
+* [Php Inspections (EA Extended) for IntelliJ IDEA](https://plugins.jetbrains.com/idea/plugin/7622-php-inspections-ea-extended-) - Static Code Analysis tool for PHP
 * Use 1.1-dev version of composer, so that you can use ```php composer.phar outdated``` command to check package versions
 
 # Contributing & issues & questions
@@ -177,4 +178,4 @@ Please see the [CONTRIBUTING.md](.github/CONTRIBUTING.md) file for guidelines.
 # LICENSE
 [The MIT License (MIT)](LICENSE)
 
-Copyright (c) 2016 Tarmo Leppänen
+Copyright (c) 2017 Tarmo Leppänen
