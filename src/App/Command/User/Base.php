@@ -14,6 +14,7 @@ use App\Entity\User as UserEntity;
 use App\Entity\UserGroup as UserGroupEntity;
 use App\Services\Rest\User as UserService;
 use App\Services\Rest\UserGroup as UserGroupService;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -128,12 +129,16 @@ abstract class Base extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritdoc}
+     * Executes the current command.
      *
      * @throws  \LogicException
      * @throws  ServiceCircularReferenceException
      * @throws  ServiceNotFoundException
-     * @throws  InvalidArgumentException
+     *
+     * @param   InputInterface  $input  An InputInterface instance
+     * @param   OutputInterface $output An OutputInterface instance
+     *
+     * @return  null
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -150,11 +155,14 @@ abstract class Base extends ContainerAwareCommand
 
         // Set title
         $this->io->title($this->getDescription());
+
+        return null;
     }
 
     /**
      * Helper method to get user object by username or email.
      *
+     * @throws  NonUniqueResultException
      * @throws  InvalidArgumentException
      *
      * @param   bool $showUserInformation
@@ -315,9 +323,9 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to store user entity.
      *
-     * @param   UserDto     $userData
-     * @param   UserEntity  $user
-     * @param   Boolean     $skipValidation
+     * @param   UserDto $userData
+     * @param   UserEntity $user
+     * @param   Boolean $skipValidation
      *
      * @return  UserEntity
      */
@@ -385,7 +393,7 @@ abstract class Base extends ContainerAwareCommand
             );
 
             // Get attribute value
-            $value = call_user_func([$entity, $method]);
+            $value = $entity->$method();
 
             // And we have many-to-many records so map those to get string presentation of each records
             if ($value instanceof PersistentCollection) {
