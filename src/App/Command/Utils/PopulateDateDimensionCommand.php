@@ -50,14 +50,19 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritdoc}
+     * Executes the current command.
      *
-     * @throws \RuntimeException
-     * @throws \LogicException
-     * @throws ServiceCircularReferenceException
-     * @throws ServiceNotFoundException
-     * @throws ORMInvalidArgumentException
-     * @throws OptimisticLockException
+     * @throws  \LogicException
+     * @throws  \RuntimeException
+     * @throws  OptimisticLockException
+     * @throws  ORMInvalidArgumentException
+     * @throws  ServiceCircularReferenceException
+     * @throws  ServiceNotFoundException
+     *
+     * @param   InputInterface $input An InputInterface instance
+     * @param   OutputInterface $output An OutputInterface instance
+     *
+     * @return  void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
