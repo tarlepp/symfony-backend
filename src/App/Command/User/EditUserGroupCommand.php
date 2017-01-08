@@ -10,6 +10,8 @@ namespace App\Command\User;
 use App\Entity\UserGroup as UserGroupEntity;
 use App\DTO\Console\UserGroup as UserGroupDto;
 use App\Form\Console\UserGroup as UserGroupForm;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -49,6 +51,9 @@ class EditUserGroupCommand extends Base
 
     /**
      * {@inheritdoc}
+     *
+     * @throws  InvalidArgumentException
+     * @throws  LogicException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

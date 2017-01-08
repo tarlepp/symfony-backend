@@ -14,7 +14,6 @@ use App\Entity\User as UserEntity;
 use App\Entity\UserGroup as UserGroupEntity;
 use App\Services\Rest\User as UserService;
 use App\Services\Rest\UserGroup as UserGroupService;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -26,8 +25,6 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
  * Class Base which all 'user' specified commands extends. This class contains commonly used methods that all user
@@ -162,9 +159,6 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to get user object by username or email.
      *
-     * @throws  NonUniqueResultException
-     * @throws  InvalidArgumentException
-     *
      * @param   bool $showUserInformation
      *
      * @return  UserEntity
@@ -174,12 +168,12 @@ abstract class Base extends ContainerAwareCommand
         $user = null;
 
         while (null === $user) {
-            $question = new Question('Username or email: ', $this->input->getOption('username'));
-            $username = $this->io->askQuestion($question);
-
             try {
+                $question = new Question('Username or email: ', $this->input->getOption('username'));
+                $username = $this->io->askQuestion($question);
+
                 $user = $this->userService->getRepository()->loadUserByUsername($username);
-            } catch (UsernameNotFoundException $error) {
+            } catch (\Exception $error) {
                 $this->io->warning($error->getMessage());
             }
         }
@@ -195,8 +189,6 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to get user group object. This method will print a table which contains all user groups and
      * information about each of those. Then user must "select" one of these user groups by group ID.
-     *
-     * @throws  InvalidArgumentException
      *
      * @param   bool $showInformation
      *
@@ -226,15 +218,15 @@ abstract class Base extends ContainerAwareCommand
 
         // And do while user has "selected" one valid user group
         while (null === $userGroup) {
-            // Print console table
-            $this->io->table($headers, array_map($iterator, $this->userGroupService->find()));
-
-            $question = new Question('User group ID: ', $this->input->getOption('id'));
-            $userGroupId = $this->io->askQuestion($question);
-
             try {
+                // Print console table
+                $this->io->table($headers, array_map($iterator, $this->userGroupService->find()));
+
+                $question = new Question('User group ID: ', $this->input->getOption('id'));
+                $userGroupId = $this->io->askQuestion($question);
+
                 $userGroup = $this->userGroupService->findOne($userGroupId, true);
-            } catch (HttpException $error) {
+            } catch (\Exception $error) {
                 $this->io->warning($error->getMessage());
             }
         }

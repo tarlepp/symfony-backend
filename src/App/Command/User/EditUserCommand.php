@@ -11,6 +11,8 @@ use App\Entity\User as UserEntity;
 use App\Entity\UserGroup as UserGroupEntity;
 use App\DTO\Console\User as UserDto;
 use App\Form\Console\User as UserForm;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -50,6 +52,9 @@ class EditUserCommand extends Base
 
     /**
      * {@inheritdoc}
+     *
+     * @throws  InvalidArgumentException
+     * @throws  LogicException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

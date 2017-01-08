@@ -9,6 +9,9 @@ namespace App\Command\User;
 
 use App\DTO\Console\User as UserDto;
 use App\Form\Console\User as UserForm;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -65,6 +68,12 @@ class CreateUserCommand extends Base
 
     /**
      * {@inheritdoc}
+     *
+     * @throws  \InvalidArgumentException
+     * @throws  NoResultException
+     * @throws  NonUniqueResultException
+     * @throws  LogicException
+     * @throws  InvalidArgumentException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

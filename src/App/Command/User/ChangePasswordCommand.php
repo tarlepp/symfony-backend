@@ -10,6 +10,8 @@ namespace App\Command\User;
 use App\Entity\User;
 use App\DTO\Console\User as UserDto;
 use App\Form\Console\UserPassword as UserPasswordForm;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -49,6 +51,9 @@ class ChangePasswordCommand extends Base
 
     /**
      * {@inheritdoc}
+     *
+     * @throws  InvalidArgumentException
+     * @throws  LogicException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
