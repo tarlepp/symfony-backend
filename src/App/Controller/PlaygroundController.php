@@ -36,13 +36,14 @@ class PlaygroundController extends Controller
      *
      * @param   Request $request
      *
-     * @throws \InvalidArgumentException
+     * @throws  \LogicException
+     * @throws  \InvalidArgumentException
      *
      * @return  Response
      */
     public function testAction(Request $request): Response
     {
-        $output = 'Hello world';
+        $output = 'Hello world' . $request->getContent();
 
         return new Response($output, 200);
     }

@@ -14,6 +14,7 @@ use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class Response
@@ -89,11 +90,15 @@ class Response implements ResponseInterface
             $context = $this->getSerializeContext($request);
         }
 
-        // Create new response
-        $response = new HttpFoundationResponse();
-        $response->setContent($this->serializer->serialize($data, $format, $context));
-        $response->setStatusCode($httpStatus);
-        $response->headers->set('Content-Type', $this->contentTypes[$format]);
+        try {
+            // Create new response
+            $response = new HttpFoundationResponse();
+            $response->setContent($this->serializer->serialize($data, $format, $context));
+            $response->setStatusCode($httpStatus);
+            $response->headers->set('Content-Type', $this->contentTypes[$format]);
+        } catch (\Exception $error) {
+            throw new HttpException(400, $error->getMessage(), $error);
+        }
 
         return $response;
     }

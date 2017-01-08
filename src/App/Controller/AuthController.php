@@ -17,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -124,6 +125,8 @@ class AuthController
      * @Route("/profile");
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     *
+     * @throws  HttpException
      *
      * @param   Request $request
      *
