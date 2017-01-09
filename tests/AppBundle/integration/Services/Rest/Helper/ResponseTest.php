@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/unit/Services/Rest/Helper/ResponseTest.php
+ * /tests/AppBundle/integration/Services/Rest/Helper/ResponseTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\unit\Services\Rest\Helper;
+namespace AppBundle\integration\Services\Rest\Helper;
 
 use App\Services\Rest\Helper\Response;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class ResponseTest
  *
- * @package AppBundle\unit\Services\Rest\Helper
+ * @package AppBundle\integration\Services\Rest\Helper
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class ResponseTest extends KernelTestCase
