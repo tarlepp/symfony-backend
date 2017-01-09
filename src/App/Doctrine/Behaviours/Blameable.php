@@ -46,6 +46,7 @@ trait Blameable
      *          name="created_by_id",
      *          referencedColumnName="id",
      *          nullable=true,
+     *          onDelete="SET NULL",
      *      ),
      *  })
      */
@@ -70,6 +71,7 @@ trait Blameable
      *          name="updated_by_id",
      *          referencedColumnName="id",
      *          nullable=true,
+     *          onDelete="SET NULL",
      *      ),
      *  })
      */
@@ -97,6 +99,7 @@ trait Blameable
      *          name="deleted_by_id",
      *          referencedColumnName="id",
      *          nullable=true,
+     *          onDelete="SET NULL",
      *      ),
      *  })
      */

@@ -19,7 +19,7 @@ use Ramsey\Uuid\Uuid;
  * @ORM\Table(
  *      name="book",
  *      indexes={
- *          @ORM\Index(name="author", columns={"author"}),
+ *          @ORM\Index(name="author", columns={"author_id"}),
  *          @ORM\Index(name="created_by_id", columns={"created_by_id"}),
  *          @ORM\Index(name="updated_by_id", columns={"updated_by_id"}),
  *          @ORM\Index(name="deleted_by_id", columns={"deleted_by_id"})
@@ -73,11 +73,13 @@ class Book implements EntityInterface
      * @ORM\ManyToOne(
      *      targetEntity="App\Entity\Author",
      *      inversedBy="books",
+     *      cascade={"all"},
      *  )
      * @ORM\JoinColumns({
      *      @ORM\JoinColumn(
-     *          name="author",
+     *          name="author_id",
      *          referencedColumnName="id",
+     *          onDelete="CASCADE"
      *      ),
      *  })
      */

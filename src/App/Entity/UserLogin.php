@@ -73,6 +73,7 @@ class UserLogin implements EntityInterface
      *      @ORM\JoinColumn(
      *          name="user_id",
      *          referencedColumnName="id",
+     *          onDelete="SET NULL",
      *      ),
      *  })
      */

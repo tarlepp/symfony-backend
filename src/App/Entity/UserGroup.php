@@ -135,7 +135,8 @@ class UserGroup implements EntityInterface, RoleInterface
      *
      * @ORM\ManyToMany(
      *      targetEntity="User",
-     *      mappedBy="userGroups"
+     *      mappedBy="userGroups",
+     *      cascade={"all"},
      *  )
      */
     private $users;

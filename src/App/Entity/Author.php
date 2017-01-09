@@ -118,6 +118,7 @@ class Author implements EntityInterface
      * @ORM\OneToMany(
      *      targetEntity="App\Entity\Book",
      *      mappedBy="author",
+     *      cascade={"all"},
      *  )
      */
     private $books;
