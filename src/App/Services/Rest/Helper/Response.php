@@ -97,7 +97,13 @@ class Response implements ResponseInterface
             $response->setStatusCode($httpStatus);
             $response->headers->set('Content-Type', $this->contentTypes[$format]);
         } catch (\Exception $error) {
-            throw new HttpException(400, $error->getMessage(), $error);
+            throw new HttpException(
+                HttpFoundationResponse::HTTP_BAD_REQUEST,
+                $error->getMessage(),
+                $error,
+                [],
+                HttpFoundationResponse::HTTP_BAD_REQUEST
+            );
         }
 
         return $response;
