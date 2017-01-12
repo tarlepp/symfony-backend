@@ -50,9 +50,9 @@ interface Base
      *
      * @param   string  $id The entity identifier.
      *
-     * @return  Proxy
+     * @return  Proxy|Entity
      */
-    public function getReference(string $id): Proxy;
+    public function getReference(string $id);
 
     /**
      * Getter method for entity repository.
