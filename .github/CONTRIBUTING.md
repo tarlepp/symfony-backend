@@ -1,5 +1,4 @@
 ## Submitting Pull Requests
-
 **Please follow these basic steps to simplify pull request reviews - if you don't you'll probably just be asked to anyway.**
 
 * Please rebase your branch against the current master
@@ -11,5 +10,5 @@
 * Please be sure to state which version of php you're using
 
 ## Security Disclosure
-Security is very important to me. If you have any issue regarding security, please disclose the information responsibly 
-by contacting me via IRC (da_wunder@IRCnet) or email (you'll find my address) and not by creating a github issue.
+If you have any issue regarding security, please disclose the information responsibly by contacting me via IRC 
+(da_wunder@IRCnet) or email (you'll find my address) and not by creating a github issue.
