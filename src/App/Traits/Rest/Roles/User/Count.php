@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace App\Traits\Rest\Roles\User;
 
 use App\Traits\Rest\Methods\Count as CountMethod;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,13 +38,9 @@ trait Count
      *
      * @Security("has_role('ROLE_USER')")
      *
-     * @throws  \UnexpectedValueException
      * @throws  \LogicException
-     * @throws  \InvalidArgumentException
-     * @throws  NonUniqueResultException
-     * @throws  NoResultException
-     * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
+     * @throws  HttpException
      *
      * @param   Request     $request
      *

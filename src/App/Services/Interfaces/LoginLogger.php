@@ -41,7 +41,6 @@ interface LoginLogger
     /**
      * Setter for User object
      *
-     * @throws  \UnexpectedValueException
      * @throws  NonUniqueResultException
      * @throws  UsernameNotFoundException
      *
@@ -53,6 +52,8 @@ interface LoginLogger
 
     /**
      * Method to handle login event.
+     *
+     * @throws  \UnexpectedValueException
      *
      * @return  void
      */

@@ -66,7 +66,7 @@ trait Create
      * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
-     * @param   array $allowedHttpMethods
+     * @param   array   $allowedHttpMethods
      *
      * @return  Response
      */

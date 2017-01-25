@@ -63,8 +63,8 @@ trait Delete
      * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
-     * @param   string $id
-     * @param   array $allowedHttpMethods
+     * @param   string  $id
+     * @param   array   $allowedHttpMethods
      *
      * @return  Response
      */

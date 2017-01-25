@@ -94,7 +94,7 @@ trait Find
      * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
-     * @param   array $allowedHttpMethods
+     * @param   array   $allowedHttpMethods
      *
      * @return  Response
      */
@@ -112,13 +112,14 @@ trait Find
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
+        // Determine used parameters
+        $orderBy    = RestHelperRequest::getOrderBy($request);
+        $limit      = RestHelperRequest::getLimit($request);
+        $offset     = RestHelperRequest::getOffset($request);
+        $search     = RestHelperRequest::getSearchTerms($request);
+
         try {
-            // Determine used parameters
-            $criteria   = RestHelperRequest::getCriteria($request);
-            $orderBy    = RestHelperRequest::getOrderBy($request);
-            $limit      = RestHelperRequest::getLimit($request);
-            $offset     = RestHelperRequest::getOffset($request);
-            $search     = RestHelperRequest::getSearchTerms($request);
+            $criteria = RestHelperRequest::getCriteria($request);
 
             if (method_exists($this, 'processCriteria')) {
                 $this->processCriteria($criteria);

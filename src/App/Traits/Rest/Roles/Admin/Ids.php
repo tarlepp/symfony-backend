@@ -37,11 +37,9 @@ trait Ids
      *
      * @Security("has_role('ROLE_ADMIN')")
      *
-     * @throws  \UnexpectedValueException
      * @throws  \LogicException
-     * @throws  \InvalidArgumentException
-     * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
+     * @throws  HttpException
      *
      * @param   Request $request
      *

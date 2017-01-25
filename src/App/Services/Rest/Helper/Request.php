@@ -187,31 +187,29 @@ class Request
                     'Given search parameter is not valid, within JSON provide \'and\' and/or \'or\' property.'
                 );
             }
-
-            /**
-             * Lambda function to normalize JSON search terms.
-             *
-             * @param   string|array $terms
-             */
-            $iterator = function (&$terms) {
-                if (!is_array($terms)) {
-                    $terms = explode(' ', (string)$terms);
-                }
-
-                $terms = array_unique(array_values(array_filter($terms)));
-            };
-
-            // Normalize user input, note that this support array and string formats on value
-            array_walk($input, $iterator);
-
-            $search = $input;
         } catch (\LogicException $error) { // Parameter was not JSON so just use parameter values as search strings
             // By default we want to use 'OR' operand with given search words.
-            $search = [
+            return [
                 'or' => array_unique(array_values(array_filter(explode(' ', $search)))),
             ];
         }
 
-        return $search;
+        /**
+         * Lambda function to normalize JSON search terms.
+         *
+         * @param   string|array $terms
+         */
+        $iterator = function (&$terms) {
+            if (!is_array($terms)) {
+                $terms = explode(' ', (string)$terms);
+            }
+
+            $terms = array_unique(array_values(array_filter($terms)));
+        };
+
+        // Normalize user input, note that this support array and string formats on value
+        array_walk($input, $iterator);
+
+        return $input;
     }
 }

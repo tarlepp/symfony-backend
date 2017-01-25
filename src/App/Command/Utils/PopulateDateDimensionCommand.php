@@ -214,16 +214,14 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
      */
     private function getProgressBar(int $steps, string $message): ProgressBar
     {
-        $format = <<<FORMAT
-%message%
+        $format = '
+ %message%
  %current%/%max% [%bar%] %percent:3s%%
  Time elapsed:   %elapsed:-6s%
  Time remaining: %remaining:-6s%
  Time estimated: %estimated:-6s%
  Memory usage:   %memory:-6s%
-
-
-FORMAT;
+';
 
         $progress = $this->io->createProgressBar($steps);
         $progress->setFormat($format);

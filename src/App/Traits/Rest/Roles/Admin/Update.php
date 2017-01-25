@@ -45,14 +45,9 @@ trait Update
      *
      * @Security("has_role('ROLE_ADMIN')")
      *
-     * @throws  \InvalidArgumentException
      * @throws  \LogicException
-     * @throws  \UnexpectedValueException
-     * @throws  OptimisticLockException
-     * @throws  ORMInvalidArgumentException
-     * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
-     * @throws  ValidatorException
+     * @throws  HttpException
      *
      * @param   Request $request
      * @param   string $id

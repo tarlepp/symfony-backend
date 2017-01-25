@@ -71,13 +71,11 @@ trait Ids
      * Generic 'IDs' method for REST endpoints.
      *
      * @throws  \LogicException
-     * @throws  \UnexpectedValueException
-     * @throws  \InvalidArgumentException
      * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
-     * @param   array $allowedHttpMethods
+     * @param   array   $allowedHttpMethods
      *
      * @return  Response
      */
@@ -95,10 +93,11 @@ trait Ids
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
+        // Determine used parameters
+        $search = RestHelperRequest::getSearchTerms($request);
+
         try {
-            // Determine used parameters
             $criteria = RestHelperRequest::getCriteria($request);
-            $search = RestHelperRequest::getSearchTerms($request);
 
             if (method_exists($this, 'processCriteria')) {
                 $this->processCriteria($criteria);

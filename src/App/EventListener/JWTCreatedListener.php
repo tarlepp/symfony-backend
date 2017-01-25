@@ -12,7 +12,6 @@ use App\Services\Rest\User as UserService;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 
@@ -60,11 +59,12 @@ class JWTCreatedListener
      *
      * This method is called when 'lexik_jwt_authentication.on_jwt_created' event is broadcast.
      *
-     * @throws  UsernameNotFoundException
-     *
      * @param   JWTCreatedEvent $event
      *
      * @return  void
+     *
+     * @throws  \Doctrine\ORM\NonUniqueResultException
+     * @throws  \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
      */
     public function onJWTCreated(JWTCreatedEvent $event)
     {
@@ -150,12 +150,13 @@ class JWTCreatedListener
     /**
      * Method to get user entity from current event.
      *
-     * @throws  UsernameNotFoundException
-     *
      * @param   JWTCreatedEvent $event
      * @param   string $username
      *
      * @return  User
+     *
+     * @throws  \Doctrine\ORM\NonUniqueResultException
+     * @throws  \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
      */
     private function getUser(JWTCreatedEvent $event, string $username): User
     {

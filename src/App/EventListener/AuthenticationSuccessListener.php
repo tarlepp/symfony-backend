@@ -40,9 +40,13 @@ class AuthenticationSuccessListener
      *
      * This method is called when 'lexik_jwt_authentication.on_authentication_success' event is broadcast.
      *
-     * @param   AuthenticationSuccessEvent  $event
+     * @param   AuthenticationSuccessEvent $event
      *
      * @return  void
+     *
+     * @throws  \UnexpectedValueException
+     * @throws  \Doctrine\ORM\NonUniqueResultException
+     * @throws  \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
      */
     public function onAuthenticationSuccess(AuthenticationSuccessEvent $event)
     {

@@ -54,7 +54,7 @@ trait Count
      * @throws  MethodNotAllowedHttpException
      *
      * @param   Request $request
-     * @param   array $allowedHttpMethods
+     * @param   array   $allowedHttpMethods
      *
      * @return  Response
      */
@@ -72,10 +72,11 @@ trait Count
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
+        // Determine used parameters
+        $search = RestHelperRequest::getSearchTerms($request);
+
         try {
-            // Determine used parameters
             $criteria   = RestHelperRequest::getCriteria($request);
-            $search     = RestHelperRequest::getSearchTerms($request);
 
             if (method_exists($this, 'processCriteria')) {
                 $this->processCriteria($criteria);

@@ -95,7 +95,6 @@ class Response implements ResponseInterface
             $response = new HttpFoundationResponse();
             $response->setContent($this->serializer->serialize($data, $format, $context));
             $response->setStatusCode($httpStatus);
-            $response->headers->set('Content-Type', $this->contentTypes[$format]);
         } catch (\Exception $error) {
             throw new HttpException(
                 HttpFoundationResponse::HTTP_BAD_REQUEST,
@@ -105,6 +104,9 @@ class Response implements ResponseInterface
                 HttpFoundationResponse::HTTP_BAD_REQUEST
             );
         }
+
+        // Set content type
+        $response->headers->set('Content-Type', $this->contentTypes[$format]);
 
         return $response;
     }

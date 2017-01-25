@@ -38,11 +38,9 @@ trait Find
      *
      * @Security("has_role('ROLE_USER')")
      *
-     * @throws  \UnexpectedValueException
      * @throws  \LogicException
-     * @throws  \InvalidArgumentException
-     * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
+     * @throws  HttpException
      *
      * @param   Request $request
      *

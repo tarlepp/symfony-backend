@@ -15,5 +15,12 @@ namespace App\Repository;
  */
 class DateDimension extends Base
 {
+    /**
+     * Names of search columns.
+     *
+     * @var string[]
+     */
+    protected static $searchColumns = [];
+
     // Implement custom entity query methods here
 }

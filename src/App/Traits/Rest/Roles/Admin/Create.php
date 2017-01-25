@@ -8,15 +8,13 @@ declare(strict_types=1);
 namespace App\Traits\Rest\Roles\Admin;
 
 use App\Traits\Rest\Methods\Create as CreateMethod;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMInvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Trait to add 'Create' action for REST resources for 'ROLE_ADMIN' users.
@@ -40,13 +38,9 @@ trait Create
      *
      * @Security("has_role('ROLE_ADMIN')")
      *
-     * @throws  \UnexpectedValueException
      * @throws  \LogicException
-     * @throws  \InvalidArgumentException
-     * @throws  OptimisticLockException
-     * @throws  ORMInvalidArgumentException
-     * @throws  ValidatorException
      * @throws  MethodNotAllowedHttpException
+     * @throws  HttpException
      *
      * @param   Request $request
      *

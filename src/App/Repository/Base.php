@@ -258,7 +258,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
                 $condition[$column] = $value;
             } else {
                 // Add condition
-                $condition[] = call_user_func_array($createCriteria, [$column, $value]);
+                $condition[] = $createCriteria($column, $value);
             }
         };
 

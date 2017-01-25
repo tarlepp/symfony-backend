@@ -8,8 +8,6 @@ declare(strict_types=1);
 namespace App\Traits\Rest\Roles\Admin;
 
 use App\Traits\Rest\Methods\Delete as DeleteMethod;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMInvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,15 +43,11 @@ trait Delete
      * @Security("has_role('ROLE_ADMIN')")
      *
      * @throws  \LogicException
-     * @throws  \InvalidArgumentException
-     * @throws  \UnexpectedValueException
-     * @throws  OptimisticLockException
-     * @throws  ORMInvalidArgumentException
-     * @throws  HttpException
      * @throws  MethodNotAllowedHttpException
+     * @throws  HttpException
      *
      * @param   Request $request
-     * @param   string $id
+     * @param   string  $id
      *
      * @return  Response
      */
