@@ -116,7 +116,7 @@ class AuthController
      *      },
      *      output={
      *          "class"="App\Entity\User",
-     *          "groups"={"User", "UserGroups"}
+     *          "groups"={"User", "User.userGroups", "UserGroup", "User.createdAt", "User.updatedAt"}
      *      }
      *  )
      *

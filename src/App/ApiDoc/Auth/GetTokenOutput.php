@@ -29,7 +29,7 @@ class GetTokenOutput extends AbstractType
                 'token',
                 Type\TextType::class,
                 [
-                    'label'     => 'Username',
+                    'label'     => 'JSON Web Token',
                     'required'  => true,
                 ]
             )
@@ -37,6 +37,7 @@ class GetTokenOutput extends AbstractType
                 'refresh_token',
                 Type\TextType::class,
                 [
+                    'label'     => 'Refresh token',
                     'required'  => true,
                 ]
             )

@@ -29,7 +29,8 @@ class GetTokenInput extends AbstractType
                 'username',
                 Type\TextType::class,
                 [
-                    'label' => 'Username',
+                    'label_format' => 'dd',
+                    'label' => 'Username or email address',
                     'required' => true,
                 ]
             )
@@ -37,6 +38,7 @@ class GetTokenInput extends AbstractType
                 'password',
                 Type\TextType::class,
                 [
+                    'label' => 'Password',
                     'required' => true,
                 ]
             )
