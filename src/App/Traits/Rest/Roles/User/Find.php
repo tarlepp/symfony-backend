@@ -32,7 +32,6 @@ trait Find
      * Find action for current resource.
      *
      * @Route("")
-     * @Route("/")
      *
      * @Method({"GET"})
      *
