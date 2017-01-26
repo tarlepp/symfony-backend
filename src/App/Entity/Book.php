@@ -64,8 +64,6 @@ class Book implements EntityInterface
      * @var \App\Entity\Author
      *
      * @JMS\Groups({
-     *      "Default",
-     *      "Book",
      *      "Book.author",
      *  })
      * @JMS\Type("App\Entity\Author")
