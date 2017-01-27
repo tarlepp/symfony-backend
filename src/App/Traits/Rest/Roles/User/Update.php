@@ -7,7 +7,9 @@ declare(strict_types=1);
  */
 namespace App\Traits\Rest\Roles\User;
 
+use App\Annotation\RestApiDoc;
 use App\Traits\Rest\Methods\Update as UpdateMethod;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,12 +44,15 @@ trait Update
      *
      * @Security("has_role('ROLE_ADMIN')")
      *
+     * @ApiDoc
+     * @RestApiDoc
+     *
      * @throws  \LogicException
      * @throws  MethodNotAllowedHttpException
      * @throws  HttpException
      *
      * @param   Request $request
-     * @param   string  $id
+     * @param   string  $id         Entity id as V4 uuid
      *
      * @return  Response
      */

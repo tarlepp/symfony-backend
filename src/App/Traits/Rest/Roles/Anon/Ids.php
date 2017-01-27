@@ -7,7 +7,9 @@ declare(strict_types=1);
  */
 namespace App\Traits\Rest\Roles\Anon;
 
+use App\Annotation\RestApiDoc;
 use App\Traits\Rest\Methods\Ids as IdsMethod;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +36,9 @@ trait Ids
      * @Route("/ids")
      *
      * @Method({"GET"})
+     *
+     * @ApiDoc
+     * @RestApiDoc
      *
      * @throws  \LogicException
      * @throws  MethodNotAllowedHttpException

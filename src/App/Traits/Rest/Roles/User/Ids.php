@@ -7,7 +7,9 @@ declare(strict_types=1);
  */
 namespace App\Traits\Rest\Roles\User;
 
+use App\Annotation\RestApiDoc;
 use App\Traits\Rest\Methods\Ids as IdsMethod;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +38,9 @@ trait Ids
      * @Method({"GET"})
      *
      * @Security("has_role('ROLE_USER')")
+     *
+     * @ApiDoc
+     * @RestApiDoc
      *
      * @throws  \LogicException
      * @throws  MethodNotAllowedHttpException

@@ -7,7 +7,9 @@ declare(strict_types=1);
  */
 namespace App\Traits\Rest\Roles\Root;
 
+use App\Annotation\RestApiDoc;
 use App\Traits\Rest\Methods\Count as CountMethod;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,11 +34,13 @@ trait Count
      * Count action for current resource.
      *
      * @Route("/count")
-     * @Route("/count/")
      *
      * @Method({"GET"})
      *
      * @Security("has_role('ROLE_ROOT')")
+     *
+     * @ApiDoc
+     * @RestApiDoc
      *
      * @throws  \LogicException
      * @throws  MethodNotAllowedHttpException

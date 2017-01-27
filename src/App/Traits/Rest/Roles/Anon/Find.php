@@ -7,7 +7,9 @@ declare(strict_types=1);
  */
 namespace App\Traits\Rest\Roles\Anon;
 
+use App\Annotation\RestApiDoc;
 use App\Traits\Rest\Methods\Find as FindMethod;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,9 +34,11 @@ trait Find
      * Find action for current resource.
      *
      * @Route("")
-     * @Route("/")
      *
      * @Method({"GET"})
+     *
+     * @ApiDoc(resource=true)
+     * @RestApiDoc
      *
      * @throws  \LogicException
      * @throws  MethodNotAllowedHttpException
