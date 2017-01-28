@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4d158f57bde386027e76825b3a7973ef",
-    "content-hash": "30da80a5dd2f0d650faae2ff9ed2a247",
+    "hash": "8ad568572bb95161523a4787029af2a4",
+    "content-hash": "79266c764166285e23fce62715064558",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3751,16 +3751,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.5.5",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "399c1f9781e222f6eb6cc238796f5200d1b7f108"
+                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/399c1f9781e222f6eb6cc238796f5200d1b7f108",
-                "reference": "399c1f9781e222f6eb6cc238796f5200d1b7f108",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/5a5a9fc8025a08d8919be87d6884d5a92520cefe",
+                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe",
                 "shasum": ""
             },
             "require": {
@@ -3789,7 +3789,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2016-10-31 17:19:45"
+            "time": "2017-01-26 22:05:40"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -4366,16 +4366,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.8",
+            "version": "5.7.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "bee7755d964f8e56d6ecb79046480fd0320b686d"
+                "reference": "69f832b87c731d5cacad7f91948778fe98335fdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/bee7755d964f8e56d6ecb79046480fd0320b686d",
-                "reference": "bee7755d964f8e56d6ecb79046480fd0320b686d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/69f832b87c731d5cacad7f91948778fe98335fdd",
+                "reference": "69f832b87c731d5cacad7f91948778fe98335fdd",
                 "shasum": ""
             },
             "require": {
@@ -4444,7 +4444,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-01-26 15:28:51"
+            "time": "2017-01-28 06:14:33"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
