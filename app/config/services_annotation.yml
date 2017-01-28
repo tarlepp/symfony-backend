@@ -1,0 +1,7 @@
+services:
+    app.api_doc.extractor.rest_api_doc:
+        class: App\AnnotationHandler\RestApiDoc
+        calls:
+             - [ setContainer, [ '@service_container' ] ]
+        tags:
+            - { name: nelmio_api_doc.extractor.handler }
