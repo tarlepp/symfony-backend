@@ -179,23 +179,24 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
                 break;
             case 'find':
                 $output = [
-                    'class' => 'array<' . $entity . '>',
-                    'groups' => array_slice($bits, -1, 1)
+                    'class'     => 'array<' . $entity . '>',
+                    'groups'    => array_slice($bits, -1, 1)
                 ];
                 break;
             case 'create':
+            case 'delete':
             case 'findOne':
             case 'update':
                 $output = [
-                    'class' => $entity,
-                    'groups' => array_slice($bits, -1, 1)
+                    'class'     => $entity,
+                    'groups'    => array_slice($bits, -1, 1)
                 ];
                 break;
             case 'ids':
                 $annotation->setResponseForStatusCode(
                     [
                         '[]' => [
-                            'dataType'      => 'string',
+                            'dataType'      => 'array of resource id values',
                             'required'      => true,
                             'description'   => 'Resource id values as an array',
                         ]
@@ -203,8 +204,6 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
                     [],
                     200
                 );
-                break;
-            case 'delete':
                 break;
         }
 
