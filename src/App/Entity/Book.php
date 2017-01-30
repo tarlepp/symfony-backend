@@ -12,6 +12,7 @@ use App\Entity\Interfaces\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Book
@@ -22,7 +23,7 @@ use Ramsey\Uuid\Uuid;
  *          @ORM\Index(name="author", columns={"author_id"}),
  *          @ORM\Index(name="created_by_id", columns={"created_by_id"}),
  *          @ORM\Index(name="updated_by_id", columns={"updated_by_id"}),
- *          @ORM\Index(name="deleted_by_id", columns={"deleted_by_id"})
+ *          @ORM\Index(name="deleted_by_id", columns={"deleted_by_id"}),
  *      }
  *  )
  * @ORM\Entity(
@@ -68,6 +69,9 @@ class Book implements EntityInterface
      *  })
      * @JMS\Type("App\Entity\Author")
      *
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     *
      * @ORM\ManyToOne(
      *      targetEntity="App\Entity\Author",
      *      inversedBy="books",
@@ -90,8 +94,13 @@ class Book implements EntityInterface
      *      "Default",
      *      "Book",
      *      "Book.title",
+     *      "set.DTO",
      *  })
      * @JMS\Type("string")
+     *
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Length(min = 2, max = 255)
      *
      * @ORM\Column(
      *      name="title",
@@ -109,6 +118,7 @@ class Book implements EntityInterface
      *      "Default",
      *      "Book",
      *      "Book.description",
+     *      "set.DTO",
      *  })
      * @JMS\Type("string")
      *
@@ -127,8 +137,12 @@ class Book implements EntityInterface
      *      "Default",
      *      "Book",
      *      "Book.releaseDate",
+     *      "set.DTO",
      *  })
      * @JMS\Type("DateTime<'Y-m-d'>")
+     *
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
      *
      * @ORM\Column(
      *      name="releaseDate",

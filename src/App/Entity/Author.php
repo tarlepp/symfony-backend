@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Author
@@ -22,11 +23,11 @@ use Ramsey\Uuid\Uuid;
  *      indexes={
  *          @ORM\Index(name="created_by_id", columns={"created_by_id"}),
  *          @ORM\Index(name="updated_by_id", columns={"updated_by_id"}),
- *          @ORM\Index(name="deleted_by_id", columns={"deleted_by_id"})
+ *          @ORM\Index(name="deleted_by_id", columns={"deleted_by_id"}),
  *      }
  *  )
  * @ORM\Entity(
- *      repositoryClass="App\Repository\Author"
+ *      repositoryClass="App\Repository\Author",
  *  )
  *
  * @JMS\XmlRoot("author")
@@ -72,8 +73,13 @@ class Author implements EntityInterface
      *      "Default",
      *      "Author",
      *      "Author.name",
+     *      "set.DTO",
      *  })
      * @JMS\Type("string")
+     *
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Length(min = 2, max = 255)
      *
      * @ORM\Column(
      *      name="name",
@@ -93,6 +99,7 @@ class Author implements EntityInterface
      *      "Default",
      *      "Author",
      *      "Author.description",
+     *      "set.DTO",
      *  })
      * @JMS\Type("string")
      *
