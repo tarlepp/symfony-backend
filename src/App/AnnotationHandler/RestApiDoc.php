@@ -114,6 +114,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
         $this->attachJwtHeader($annotation, $annotations);
         $this->attachOutput($annotation, $method, $controllerService);
         $this->attachUserRoleDocumentation($annotation, $annotations);
+        $this->attachStatusCodes($annotation, $annotations, $method);
     }
 
     /**
@@ -252,11 +253,78 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
             $message = <<<MESSAGE
 %s
 
-User who make this request needs to have at least '%s' role.,
+User has to have at least '%s' role via his/hers user groups.
 MESSAGE;
 
             // Attach new documentation block
             $annotation->setDocumentation(sprintf($message, $annotation->getDocumentation(), $matches[1]));
+        }
+    }
+
+    /**
+     * @param   ApiDoc              $annotation
+     * @param   array               $annotations
+     * @param   \ReflectionMethod   $method
+     */
+    private function attachStatusCodes(ApiDoc $annotation, array $annotations, \ReflectionMethod $method)
+    {
+        // Initialize codes array
+        $codes = [];
+
+        /** @var Security|bool $security */
+        $security = false;
+
+        /**
+         * Lambda function to check if @Security annotation is present or not.
+         *
+         * @param $object
+         */
+        $iterator = function ($object) use (&$security) {
+            if ($object instanceof Security) {
+                $security = $object;
+            }
+        };
+
+        array_map($iterator, $annotations);
+
+        // Attach auth related status codes
+        if ($security) {
+            $codes[401] = 'Unauthorized';
+            $codes[403] = 'Forbidden';
+        }
+
+        // Attach generic status codes
+        $codes[400] = 'Bad request';
+        $codes[405] = 'Method not allowed';
+        $codes[500] = 'Internal server error';
+
+        // Method specified code(s)
+        switch ($method->getName()) {
+            case 'count':
+                $codes[200] = 'OK';
+                break;
+            case 'create':
+                $codes[201] = 'Created';
+                break;
+            case 'delete':
+            case 'update':
+            case 'findOne':
+                $codes[200] = 'OK';
+                $codes[404] = 'Not found';
+                break;
+            case 'find':
+                $codes[200] = 'OK';
+                break;
+            case 'ids':
+                $codes[200] = 'OK';
+                break;
+        }
+
+        ksort($codes);
+
+        // Finally add status codes.
+        foreach ($codes as $code => $description) {
+            $annotation->addStatusCode($code, $description);
         }
     }
 }
