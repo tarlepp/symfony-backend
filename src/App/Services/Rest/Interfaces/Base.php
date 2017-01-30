@@ -137,6 +137,7 @@ interface Base
      * @throws  ValidatorException
      * @throws  ORMInvalidArgumentException
      * @throws  OptimisticLockException
+     * @throws  NotFoundHttpException
      *
      * @param   \stdClass   $data
      *
@@ -178,7 +179,7 @@ interface Base
      *
      * @throws \Doctrine\ORM\ORMInvalidArgumentException
      * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      *
      * @param   string  $id
      *

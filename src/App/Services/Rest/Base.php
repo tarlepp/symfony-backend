@@ -10,7 +10,6 @@ namespace App\Services\Rest;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Interfaces\EntityInterface as Entity;
 use App\Repository\Base as Repository;
-use Doctrine\Common\Proxy\Proxy;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -428,6 +427,7 @@ abstract class Base implements Interfaces\Base
      *
      * @throws  ValidatorException
      * @throws  OptimisticLockException
+     * @throws  NotFoundHttpException
      * @throws  ORMInvalidArgumentException
      *
      * @param   Entity $entity
@@ -444,10 +444,22 @@ abstract class Base implements Interfaces\Base
             static::$ignoredPropertiesOnPersistEntity
         );
 
+        // Determine associations for current entity
+        $associations = $this->getRepository()->getAssociations();
+
+        // And fetch meta data for entity
+        $meta = $this->getRepository()->getEntityManager()->getClassMetadata($this->getEntityName());
+
         // Iterate given data
         foreach ($data as $property => $value) {
+            $type = $meta->getTypeOfField($property);
+
             if (in_array($property, $ignoreProperties, true)) {
                 continue;
+            } elseif (array_key_exists($property, $associations)) {
+                $value = $this->determineAssociationValue($associations[$property], $value);
+            } elseif ($type === 'date') {
+                $value = new \DateTime($value, new \DateTimeZone('UTC'));
             }
 
             // Specify setter method for current property
@@ -464,5 +476,37 @@ abstract class Base implements Interfaces\Base
 
         // And save current entity
         $this->save($entity);
+    }
+
+    /**
+     * Helper method to determine association entity value.
+     *
+     * @throws  NotFoundHttpException
+     *
+     * @param   array   $association
+     * @param   mixed   $value
+     *
+     * @return  EntityInterface
+     */
+    private function determineAssociationValue(array $association, $value)
+    {
+        // Get repository class for current association entity
+        $repository = $this->getRepository()->getEntityManager()->getRepository($association['targetEntity']);
+
+        /** @var EntityInterface $entity */
+        $entity = $repository->findOneBy(['id' => $value instanceof \stdClass ? $value->id : $value]);
+
+        // Oh noes association entity not found - darn...
+        if ($entity === null) {
+            $message = sprintf(
+                "Cannot find record for '%s' with id '%s'",
+                $association['fieldName'],
+                $value instanceof \stdClass ? $value->id : $value
+            );
+
+            throw new NotFoundHttpException($message);
+        }
+
+        return $entity;
     }
 }
