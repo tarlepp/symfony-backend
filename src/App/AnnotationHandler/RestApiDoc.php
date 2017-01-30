@@ -305,6 +305,7 @@ MESSAGE;
                 break;
             case 'create':
                 $codes[201] = 'Created';
+                $codes[404] = 'Not found';
                 break;
             case 'delete':
             case 'update':
@@ -324,6 +325,16 @@ MESSAGE;
 
         // Finally add status codes.
         foreach ($codes as $code => $description) {
+            if ($code >= 400) {
+                $data = [
+                    'message'   => 'string',
+                    'code'      => 'integer',
+                    'status'    => 'integer',
+                ];
+
+                $description .= ' -  Output is an JSON object as in: ' . json_encode($data);
+            }
+
             $annotation->addStatusCode($code, $description);
         }
     }
