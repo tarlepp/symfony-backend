@@ -12,6 +12,7 @@ use App\Repository\Base as Repository;
 use App\Services\Rest\User as UserService;
 use App\Entity\User as UserEntity;
 use Doctrine\Common\Proxy\Proxy;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -30,6 +31,11 @@ class GenericServiceTest extends KernelTestCase
     protected $container;
 
     /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
      * @var ValidatorInterface
      */
     protected $validator;
@@ -43,9 +49,9 @@ class GenericServiceTest extends KernelTestCase
 
         self::bootKernel();
 
-        // Store container and entity manager
+        // Store container, entity manager and validator
         $this->container = static::$kernel->getContainer();
-
+        $this->entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $this->validator = $this->container->get('validator');
     }
 
@@ -84,7 +90,7 @@ class GenericServiceTest extends KernelTestCase
         $repository = $this->createMock(Repository::class);
         $service = new UserService($repository, $this->validator);
 
-        static::assertEquals($repository, $service->getRepository());
+        static::assertSame($repository, $service->getRepository());
     }
 
     public function testThatGetAssociationsCallsServiceMethods()
@@ -209,7 +215,8 @@ class GenericServiceTest extends KernelTestCase
 
         $service = new UserService($repository, $this->validator);
 
-        static::assertEquals(10, $service->count(['foo' => 'bar'], ['search', 'terms']));
+        /** @noinspection PhpUnitTestsInspection */
+        static::assertSame(10, $service->count(['foo' => 'bar'], ['search', 'terms']));
     }
 
     /**
@@ -217,11 +224,21 @@ class GenericServiceTest extends KernelTestCase
      */
     public function testThatCreateThrowsAnException()
     {
-        $repository = $this->getRepositoryMock('getClassName', 'save');
+        $repository = $this->getRepositoryMock('getClassName', 'getEntityManager', 'getEntityName', 'save');
+
+        $repository
+            ->expects(static::exactly(2))
+            ->method('getEntityManager')
+            ->willReturn($this->entityManager);
+
+        $repository
+            ->expects(static::exactly(2))
+            ->method('getClassName')
+            ->willReturn(UserEntity::class);
 
         $repository
             ->expects(static::once())
-            ->method('getClassName')
+            ->method('getEntityName')
             ->willReturn(UserEntity::class);
 
         $repository
@@ -234,11 +251,21 @@ class GenericServiceTest extends KernelTestCase
 
     public function testThatCreateCallsServiceMethods()
     {
-        $repository = $this->getRepositoryMock('getClassName', 'save');
+        $repository = $this->getRepositoryMock('getClassName', 'getEntityManager', 'getEntityName', 'save');
+
+        $repository
+            ->expects(static::atLeast(1))
+            ->method('getClassName')
+            ->willReturn(UserEntity::class);
+
+        $repository
+            ->expects(static::atLeast(1))
+            ->method('getEntityManager')
+            ->willReturn($this->entityManager);
 
         $repository
             ->expects(static::once())
-            ->method('getClassName')
+            ->method('getEntityName')
             ->willReturn(UserEntity::class);
 
         $object = new \stdClass();
@@ -324,7 +351,17 @@ class GenericServiceTest extends KernelTestCase
     {
         $entity = new UserEntity();
 
-        $repository = $this->getRepositoryMock('find');
+        $repository = $this->getRepositoryMock('getEntityManager', 'getEntityName', 'find');
+
+        $repository
+            ->expects(static::exactly(2))
+            ->method('getEntityManager')
+            ->willReturn($this->entityManager);
+
+        $repository
+            ->expects(static::exactly(2))
+            ->method('getEntityName')
+            ->willReturn(UserEntity::class);
 
         $repository
             ->expects(static::once())
@@ -347,7 +384,17 @@ class GenericServiceTest extends KernelTestCase
         $expectedEntity = clone $entity;
         $expectedEntity->setUsername('bar.foo');
 
-        $repository = $this->getRepositoryMock('find', 'save');
+        $repository = $this->getRepositoryMock('getEntityManager', 'getEntityName', 'find', 'save');
+
+        $repository
+            ->expects(static::exactly(2))
+            ->method('getEntityManager')
+            ->willReturn($this->entityManager);
+
+        $repository
+            ->expects(static::exactly(2))
+            ->method('getEntityName')
+            ->willReturn(UserEntity::class);
 
         $repository
             ->expects(static::once())
@@ -362,6 +409,7 @@ class GenericServiceTest extends KernelTestCase
 
         $service = new UserService($repository, $this->validator);
 
+        /** @noinspection PhpUnitTestsInspection */
         static::assertEquals($expectedEntity, $service->update('entity-id', (object)['username' => 'bar.foo']));
     }
 
@@ -373,7 +421,17 @@ class GenericServiceTest extends KernelTestCase
         $entity->setSurname('bar');
         $entity->setEmail('foo.bar@foobar.com');
 
-        $repository = $this->getRepositoryMock('find', 'save');
+        $repository = $this->getRepositoryMock('getEntityManager', 'getEntityName', 'find', 'save');
+
+        $repository
+            ->expects(static::exactly(2))
+            ->method('getEntityManager')
+            ->willReturn($this->entityManager);
+
+        $repository
+            ->expects(static::exactly(2))
+            ->method('getEntityName')
+            ->willReturn(UserEntity::class);
 
         $repository
             ->expects(static::once())
@@ -445,7 +503,7 @@ class GenericServiceTest extends KernelTestCase
 
         $service = new UserService($repository, $this->validator);
 
-        static::assertEquals(['', '', ''], $service->getIds(['foo' => 'bar'], ['search', 'terms']));
+        static::assertSame(['', '', ''], $service->getIds(['foo' => 'bar'], ['search', 'terms']));
     }
 
     /**
