@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "43d0232144db5b7779ce893c3942a119",
-    "content-hash": "866263bf16e50e96a7d4a773391fe3d8",
+    "hash": "9bd40b5bfeeec165ba5321529ee2377a",
+    "content-hash": "b8c6d167cd5063cdcba687d1dc6ae0e3",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1553,16 +1553,16 @@
         },
         {
             "name": "matthiasnoback/symfony-console-form",
-            "version": "v2.1.0",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/symfony-console-form.git",
-                "reference": "3800dd2aa42d0ee6373e136881d446ee623ac9ec"
+                "reference": "61c6865d6c24205222be4a13cf2bbab9bcad1843"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/3800dd2aa42d0ee6373e136881d446ee623ac9ec",
-                "reference": "3800dd2aa42d0ee6373e136881d446ee623ac9ec",
+                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/61c6865d6c24205222be4a13cf2bbab9bcad1843",
+                "reference": "61c6865d6c24205222be4a13cf2bbab9bcad1843",
                 "shasum": ""
             },
             "require": {
@@ -1577,6 +1577,7 @@
                 "phpunit/phpunit": "^4.8",
                 "symfony/finder": "~2.8|~3.0",
                 "symfony/framework-bundle": "~2.8|~3.0",
+                "symfony/security": "~2.8|~3.0",
                 "symfony/validator": "~2.8|~3.0",
                 "symfony/yaml": "~2.8|~3.0"
             },
@@ -1604,7 +1605,7 @@
                 "form",
                 "symfony"
             ],
-            "time": "2017-01-19 09:32:19"
+            "time": "2017-02-01 18:57:36"
         },
         {
             "name": "michelf/php-markdown",
@@ -2660,16 +2661,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.19",
+            "version": "v3.0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "d57c2f297d17ee82baf8cae0b16dae34a9378784"
+                "reference": "ed86f6fb1753e76b39ff8b87f527045ca6b97169"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/d57c2f297d17ee82baf8cae0b16dae34a9378784",
-                "reference": "d57c2f297d17ee82baf8cae0b16dae34a9378784",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/ed86f6fb1753e76b39ff8b87f527045ca6b97169",
+                "reference": "ed86f6fb1753e76b39ff8b87f527045ca6b97169",
                 "shasum": ""
             },
             "require": {
@@ -2724,7 +2725,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-01-10 19:42:56"
+            "time": "2017-02-02 15:31:23"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -5130,16 +5131,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.7.1",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "9b324f3a1132459a7274a0ace2e1b766ba80930f"
+                "reference": "86dd55a522238211f9f3631e3361703578941d9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/9b324f3a1132459a7274a0ace2e1b766ba80930f",
-                "reference": "9b324f3a1132459a7274a0ace2e1b766ba80930f",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/86dd55a522238211f9f3631e3361703578941d9a",
+                "reference": "86dd55a522238211f9f3631e3361703578941d9a",
                 "shasum": ""
             },
             "require": {
@@ -5204,7 +5205,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-11-30 04:02:31"
+            "time": "2017-02-02 03:30:00"
         },
         {
             "name": "symfony/phpunit-bridge",
