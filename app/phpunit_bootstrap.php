@@ -9,12 +9,18 @@ declare(strict_types = 1);
 use Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand;
 use Doctrine\Bundle\DoctrineBundle\Command\DropDatabaseDoctrineCommand;
 use Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand;
+use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 // Register symfony default autoload
 require_once __DIR__ . '/autoload.php';
+
+// Temporary fix, see https://github.com/symfony/symfony/issues/21534
+if (!class_exists(PHPUnit_Framework_TestCase::class) && class_exists(TestCase::class)) {
+    class_alias(TestCase::class, PHPUnit_Framework_TestCase::class);
+}
 
 // Create and boot 'test' kernel
 $kernel = new AppKernel('test', true);
