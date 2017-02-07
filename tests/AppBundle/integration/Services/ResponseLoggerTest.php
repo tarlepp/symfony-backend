@@ -11,8 +11,8 @@ use App\Entity\User as UserEntity;
 use App\Repository\RequestLog as RequestLogRepository;
 use App\Services\ResponseLogger;
 use App\Services\Rest\RequestLog as RequestLogService;
+use App\Tests\KernelTestCase;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +33,10 @@ class ResponseLoggerTest extends KernelTestCase
          */
         $stubLogger = $this->createMock(LoggerInterface::class);
         $stubRequestLogService = $this->createMock(RequestLogService::class);
+
+        $stubRequestLogService
+            ->expects(static::never())
+            ->method('save');
 
         // Create ResponseLogger and call handle method
         $responseLogger = new ResponseLogger($stubLogger, $stubRequestLogService, '');
