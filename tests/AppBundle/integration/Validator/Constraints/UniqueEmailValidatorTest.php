@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/unit/Validator/Constraints/UniqueEmailValidatorTest.php
+ * /tests/AppBundle/integration/Validator/Constraints/UniqueEmailValidatorTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\unit\Validator\Constraints;
+namespace AppBundle\integration\Validator\Constraints;
 
 use App\DTO\Console\User;
 use App\Tests\ContainerTestCase;
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 /**
  * Class UniqueEmailValidatorTest
  *
- * @package AppBundle\unit\Validator\Constraints
+ * @package AppBundle\integration\Validator\Constraints
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class UniqueEmailValidatorTest extends ContainerTestCase
