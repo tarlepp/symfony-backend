@@ -40,7 +40,7 @@ class UserTest extends EntityTestCase
     {
         $this->entity->setPassword($callable, $password);
 
-        static::assertEquals($expected, $this->entity->getPassword());
+        static::assertSame($expected, $this->entity->getPassword());
     }
 
     public function testThatSetPlainPasswordIsWorkingAsExpected()
@@ -52,7 +52,7 @@ class UserTest extends EntityTestCase
         $this->entity->setPlainPassword('plainPassword');
 
         static::assertEmpty($this->entity->getPassword());
-        static::assertEquals('plainPassword', $this->entity->getPlainPassword());
+        static::assertSame('plainPassword', $this->entity->getPlainPassword());
     }
 
     public function testThatSetEmptyPlainPasswordDoesNotResetPassword()
@@ -78,8 +78,8 @@ class UserTest extends EntityTestCase
 
         // Assert that unserialized object returns expected data
 
-        static::assertEquals('john', $entity->getUsername());
-        static::assertEquals('cnffjbeq', $entity->getPassword());
+        static::assertSame('john', $entity->getUsername());
+        static::assertSame('cnffjbeq', $entity->getPassword());
     }
 
     public function testThatGetUserGroupsReturnsInstanceOfArrayCollection()
@@ -115,7 +115,7 @@ class UserTest extends EntityTestCase
 
         foreach ($expected as $key) {
             static::assertArrayHasKey($key, $data);
-            static::assertEquals($key, $data[$key]);
+            static::assertSame($key, $data[$key]);
         }
     }
 
@@ -139,7 +139,7 @@ class UserTest extends EntityTestCase
 
         $message = 'Failed to check if User entity is equal.';
 
-        static::assertEquals($expected, $this->entity->isEqualTo($entity), $message);
+        static::assertSame($expected, $this->entity->isEqualTo($entity), $message);
     }
 
     /**

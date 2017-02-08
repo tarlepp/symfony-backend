@@ -42,7 +42,7 @@ class RequestLogTest extends EntityTestCase
 
         $requestLog->setHeaders($headers);
 
-        static::assertEquals($expected, $requestLog->getHeaders());
+        static::assertSame($expected, $requestLog->getHeaders());
     }
 
     /**
@@ -57,7 +57,7 @@ class RequestLogTest extends EntityTestCase
 
         $requestLog->setParameters($parameters);
 
-        static::assertEquals($expected, $requestLog->getParameters());
+        static::assertSame($expected, $requestLog->getParameters());
     }
 
     /**
@@ -71,7 +71,7 @@ class RequestLogTest extends EntityTestCase
         $requestLog = new RequestLog();
         $request = Request::create('', 'GET', [], [], [], [], $content);
 
-        static::assertEquals($expected, PHPUnitUtil::callMethod($requestLog, 'determineParameters', [$request]));
+        static::assertSame($expected, PHPUnitUtil::callMethod($requestLog, 'determineParameters', [$request]));
     }
 
     /**

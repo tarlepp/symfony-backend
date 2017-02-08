@@ -34,7 +34,11 @@ class DateDimensionTest extends EntityTestCase
 
         $entity = new DateDimension($dateTime);
 
-        static::assertEquals($dateTime, $entity->getDate(), 'getDate() method did not return expected value.');
+        static::assertSame(
+            $dateTime->getTimestamp(),
+            $entity->getDate()->getTimestamp(),
+            'getDate() method did not return expected value.'
+        );
     }
 
     public function testThatConstructWithDateTimeObjectSetsYear()
@@ -43,7 +47,7 @@ class DateDimensionTest extends EntityTestCase
 
         $entity = new DateDimension($dateTime);
 
-        static::assertEquals(
+        static::assertSame(
             (int)$dateTime->format('Y'),
             $entity->getYear(),
             'getYear() method did not return expected value.'
@@ -56,7 +60,7 @@ class DateDimensionTest extends EntityTestCase
 
         $entity = new DateDimension($dateTime);
 
-        static::assertEquals(
+        static::assertSame(
             (int)$dateTime->format('n'),
             $entity->getMonth(),
             'getMonth() method did not return expected value.'
@@ -69,7 +73,7 @@ class DateDimensionTest extends EntityTestCase
 
         $entity = new DateDimension($dateTime);
 
-        static::assertEquals(
+        static::assertSame(
             (int)$dateTime->format('j'),
             $entity->getDay(),
             'getDay() method did not return expected value.'
@@ -82,7 +86,7 @@ class DateDimensionTest extends EntityTestCase
 
         $entity = new DateDimension($dateTime);
 
-        static::assertEquals(
+        static::assertSame(
             (int)floor(((int)$dateTime->format('n') - 1) / 3) + 1,
             $entity->getQuarter(),
             'getQuarter() method did not return expected value.'
@@ -95,7 +99,7 @@ class DateDimensionTest extends EntityTestCase
 
         $entity = new DateDimension($dateTime);
 
-        static::assertEquals(
+        static::assertSame(
             (int)$dateTime->format('W'),
             $entity->getWeekNumber(),
             'getWeekNumber() method did not return expected value.'
@@ -108,7 +112,7 @@ class DateDimensionTest extends EntityTestCase
 
         $entity = new DateDimension($dateTime);
 
-        static::assertEquals(
+        static::assertSame(
             (int)$dateTime->format('N'),
             $entity->getDayNumberOfWeek(),
             'getDayNumberOfWeek() method did not return expected value.'
@@ -121,7 +125,7 @@ class DateDimensionTest extends EntityTestCase
 
         $entity = new DateDimension($dateTime);
 
-        static::assertEquals(
+        static::assertSame(
             (int)$dateTime->format('z'),
             $entity->getDayNumberOfYear(),
             'getDayNumberOfYear() method did not return expected value.'
@@ -134,8 +138,8 @@ class DateDimensionTest extends EntityTestCase
 
         $entity = new DateDimension($dateTime);
 
-        static::assertEquals(
-            (int)$dateTime->format('L'),
+        static::assertSame(
+            (bool)$dateTime->format('L'),
             $entity->isLeapYear(),
             'getLeapYear() method did not return expected value.'
         );
@@ -147,7 +151,7 @@ class DateDimensionTest extends EntityTestCase
 
         $entity = new DateDimension($dateTime);
 
-        static::assertEquals(
+        static::assertSame(
             (int)$dateTime->format('o'),
             $entity->getWeekNumberingYear(),
             'getWeekNumberingYear() method did not return expected value.'
@@ -160,7 +164,7 @@ class DateDimensionTest extends EntityTestCase
 
         $entity = new DateDimension($dateTime);
 
-        static::assertEquals(
+        static::assertSame(
             (int)$dateTime->format('U'),
             $entity->getUnixTime(),
             'getUnixTime() method did not return expected value.'
