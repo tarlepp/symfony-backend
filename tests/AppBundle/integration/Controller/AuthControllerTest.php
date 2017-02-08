@@ -1,22 +1,22 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/unit/Controller/AuthControllerTest.php
+ * /tests/AppBundle/integration/Controller/AuthControllerTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\unit\Controller;
+namespace AppBundle\integration\Controller;
 
 use App\Controller\AuthController;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
+use App\Tests\KernelTestCase;
 use JMS\Serializer\SerializerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class AuthControllerTest
  *
- * @package AppBundle\unit\Controller
+ * @package AppBundle\integration\Controller
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class AuthControllerTest extends KernelTestCase
