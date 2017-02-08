@@ -15,7 +15,6 @@ use Doctrine\Common\Proxy\Proxy;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\Container;
@@ -100,7 +99,7 @@ abstract class RepositoryTestCase extends KernelTestCase
 
     public function testThatGetEntityNameReturnsExpected()
     {
-        static::assertEquals($this->entityName, $this->repository->getEntityName());
+        static::assertSame($this->entityName, $this->repository->getEntityName());
     }
 
     /**
@@ -121,7 +120,7 @@ abstract class RepositoryTestCase extends KernelTestCase
     {
         $message = 'Repository did not return expected associations for entity.';
 
-        static::assertEquals(
+        static::assertSame(
             array_merge(
                 $this->associations,
                 $this->skipUserAssociations ? [] : ['createdBy', 'updatedBy', 'deletedBy']
@@ -203,7 +202,9 @@ abstract class RepositoryTestCase extends KernelTestCase
 
     public function testThatCountMethodReturnsExpectedValue()
     {
-        static::assertEquals(0, $this->repository->count(['id' => 'foobar']));
+        $actual = $this->repository->count(['id' => 'foobar']);
+
+        static::assertSame(0, $actual);
     }
 
     /**
@@ -216,7 +217,7 @@ abstract class RepositoryTestCase extends KernelTestCase
 
     public function testThatFindByWithSearchTermsMethodReturnsExpectedValue()
     {
-        static::assertEquals([], $this->repository->findByWithSearchTerms([], ['id' => 'foobar']));
+        static::assertSame([], $this->repository->findByWithSearchTerms([], ['id' => 'foobar']));
     }
 
     /**
@@ -229,7 +230,9 @@ abstract class RepositoryTestCase extends KernelTestCase
 
     public function testThatFindIdsMethodReturnsExpectedValue()
     {
-        static::assertEquals(0, $this->repository->count(['id' => 'foobar']));
+        $actual = $this->repository->count(['id' => 'foobar']);
+
+        static::assertSame(0, $actual);
     }
 
     public function testThatResetMethodCleansTable()
@@ -240,7 +243,7 @@ abstract class RepositoryTestCase extends KernelTestCase
 
         $this->repository->reset();
 
-        static::assertEquals(0, $this->repository->count());
+        static::assertSame(0, $this->repository->count());
 
         $this->resetDatabase();
     }
@@ -295,7 +298,7 @@ abstract class RepositoryTestCase extends KernelTestCase
             $criteria = array_merge($criteria, array_map($iterator, $this->repository->getSearchColumns()));
         }
 
-        static::assertEquals(
+        static::assertSame(
             sprintf($expectedDQL, $this->entityName, implode(' ' . strtoupper($operand) . ' ', $criteria)),
             $queryBuilder->getQuery()->getDQL(),
             'processSearchTerms method did not create expected query criteria.'

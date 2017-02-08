@@ -90,7 +90,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
             $this->entityName
         );
 
-        static::assertEquals($this->entityName, $this->service->getEntityName(), $message);
+        static::assertSame($this->entityName, $this->service->getEntityName(), $message);
     }
 
     /**

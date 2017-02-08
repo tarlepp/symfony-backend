@@ -3,7 +3,7 @@ declare(strict_types=1);
 /**
  * /src/App/Tests/EntityTestCase.php
  *
- * @User  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @author TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 namespace App\Tests;
 
@@ -11,7 +11,6 @@ use App\Entity\Interfaces\EntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
@@ -231,36 +230,25 @@ abstract class EntityTestCase extends KernelTestCase
      */
     public function testThatSetterOnlyAcceptSpecifiedType(string $field, string $type, array $meta)
     {
-        $getter = 'get' . ucfirst($field);
         $setter = 'set' . ucfirst($field);
 
         if (!array_key_exists('columnName', $meta) && !array_key_exists('joinColumns', $meta)) {
             static::markTestSkipped('No need to test this setter...');
         }
 
-        try {
-            $value = self::getNotValidValueForType($type);
+        $this->expectException(\TypeError::class);
 
-            $this->entity->{$setter}($value);
+        $value = self::getNotValidValueForType($type);
 
-            try {
-                static::assertEquals(
-                    self::getValidValueForType($type, $meta),
-                    call_user_func([$this->entity, $getter])
-                );
-            } catch (\TypeError $error) {
-            }
+        $this->entity->{$setter}($value);
 
-            $message = sprintf(
-                "Setter '%s' didn't fail with invalid value type '%s', maybe missing variable type?",
-                $setter,
-                is_object($value) ? gettype($value) : '(' . gettype($value) . ')' . $value
-            );
+        $message = sprintf(
+            "Setter '%s' didn't fail with invalid value type '%s', maybe missing variable type?",
+            $setter,
+            is_object($value) ? gettype($value) : '(' . gettype($value) . ')' . $value
+        );
 
-            static::fail($message);
-        } catch (\TypeError $error) {
-            // All ok!
-        }
+        static::fail($message);
     }
 
     /**
@@ -310,12 +298,26 @@ abstract class EntityTestCase extends KernelTestCase
             $value = self::getValidValueForType($type, $meta);
 
             $this->entity->{$setter}($value);
+
+            static::assertSame(
+                $value,
+                call_user_func([$this->entity, $getter]),
+                sprintf(
+                    'Getter method of %s:%s did not return expected value type (%s) and it returned (%s)',
+                    $this->entityName,
+                    $getter,
+                    gettype($value),
+                    gettype(call_user_func([$this->entity, $getter]))
+                )
+            );
         } else {
             $type = ArrayCollection::class;
-            $value = new ArrayCollection();
-        }
 
-        static::assertEquals($value, call_user_func([$this->entity, $getter]));
+            static::assertInstanceOf(
+                $type,
+                call_user_func([$this->entity, $getter])
+            );
+        }
 
         try {
             if (static::isType($type)) {
@@ -404,12 +406,12 @@ abstract class EntityTestCase extends KernelTestCase
 
         if (isset($mappings['mappedBy'])) {
             /** @var ArrayCollection $collection */
-            $collection = call_user_func([$targetEntity, 'get' . ucfirst($mappings['mappedBy'])]);
+            $collection = $targetEntity->{'get' . ucfirst($mappings['mappedBy'])}();
 
             static::assertTrue($collection->contains($this->entity));
         } elseif (isset($mappings['inversedBy'])) {
             /** @var ArrayCollection $collection */
-            $collection = call_user_func([$targetEntity, 'get' . ucfirst($mappings['inversedBy'])]);
+            $collection = $targetEntity->{'get' . ucfirst($mappings['inversedBy'])}();
 
             static::assertTrue($collection->contains($this->entity));
         }
@@ -431,12 +433,12 @@ abstract class EntityTestCase extends KernelTestCase
 
         if (isset($mappings['mappedBy'])) {
             /** @var ArrayCollection $collection */
-            $collection = call_user_func([$targetEntity, 'get' . ucfirst($mappings['mappedBy'])]);
+            $collection = $targetEntity->{'get' . ucfirst($mappings['mappedBy'])}();
 
             static::assertTrue($collection->isEmpty());
         } elseif (isset($mappings['inversedBy'])) {
             /** @var ArrayCollection $collection */
-            $collection = call_user_func([$targetEntity, 'get' . ucfirst($mappings['inversedBy'])]);
+            $collection = $targetEntity->{'get' . ucfirst($mappings['inversedBy'])}();
 
             static::assertTrue($collection->isEmpty());
         }
@@ -642,7 +644,7 @@ abstract class EntityTestCase extends KernelTestCase
         $iterator = function ($mapping) {
             $targetEntity = new $mapping['targetEntity']();
 
-            $singular = mb_substr($mapping['fieldName'], -1, 1) === 's' ?
+            $singular = $mapping['fieldName'][mb_strlen($mapping['fieldName']) - 1] === 's' ?
                 mb_substr($mapping['fieldName'], 0, -1) : $mapping['fieldName'];
 
             return [
@@ -759,7 +761,7 @@ abstract class EntityTestCase extends KernelTestCase
                 case ClassMetadataInfo::ONE_TO_MANY:
                     break;
                 case ClassMetadataInfo::MANY_TO_MANY:
-                    $singular = mb_substr($mapping['fieldName'], -1, 1) === 's' ?
+                    $singular = $mapping['fieldName'][mb_strlen($mapping['fieldName']) - 1] === 's' ?
                         mb_substr($mapping['fieldName'], 0, -1) : $mapping['fieldName'];
 
                     $methods = [

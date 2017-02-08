@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\Tests\Helpers\Auth;
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as Base;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @package App\Tests
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-abstract class WebTestCase extends Base
+abstract class WebTestCase extends KernelTestCase
 {
     /**
      * @var Auth
@@ -28,6 +29,24 @@ abstract class WebTestCase extends Base
      * @var ContainerInterface
      */
     private $container;
+
+    /**
+     * Creates a Client.
+     *
+     * @param array $options An array of options to pass to the createKernel class
+     * @param array $server  An array of server parameters
+     *
+     * @return Client A Client instance
+     */
+    protected static function createClient(array $options = [], array $server = [])
+    {
+        static::bootKernel($options);
+
+        $client = static::$kernel->getContainer()->get('test.client');
+        $client->setServerParameters($server);
+
+        return $client;
+    }
 
     /**
      * Getter method for container

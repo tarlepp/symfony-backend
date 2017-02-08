@@ -9,7 +9,6 @@ namespace App\Tests;
 
 use App\Controller\Interfaces\RestController;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class RestControllerTestCase

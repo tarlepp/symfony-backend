@@ -7,7 +7,6 @@ declare(strict_types=1);
  */
 namespace App\Tests;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -28,7 +27,7 @@ abstract class ContainerTestCase extends KernelTestCase
      *
      * @return ContainerInterface
      */
-    public function getContainer() : ContainerInterface
+    public function getContainer(): ContainerInterface
     {
         if (!($this->container instanceof ContainerInterface)) {
             self::bootKernel();
