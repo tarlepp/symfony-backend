@@ -7,8 +7,8 @@ declare(strict_types = 1);
  */
 namespace AppBundle\functional\Controller;
 
+use App\Tests\Traits\TestThatBaseRouteWithAnonUserReturns401;
 use App\Tests\WebTestCase;
-use App\Utils\JSON;
 
 /**
  * Class PlaygroundControllerTest
@@ -18,21 +18,7 @@ use App\Utils\JSON;
  */
 class PlaygroundControllerTest extends WebTestCase
 {
-    public function testThatTestActionReturnsExpected()
-    {
-        $client = $this->getClient('john', 'doe');
-        $client->request(
-            'GET',
-            '/playground'
-        );
+    static protected $baseRoute = '/playground';
 
-        // Check that HTTP status code is correct
-        static::assertSame(
-            200,
-            $client->getResponse()->getStatusCode(),
-            "HTTP status code was not expected for GET /playground\n" . $client->getResponse()
-        );
-
-        static::assertSame('Hello world', $client->getResponse()->getContent());
-    }
+    use TestThatBaseRouteWithAnonUserReturns401;
 }

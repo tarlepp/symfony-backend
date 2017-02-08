@@ -7,6 +7,7 @@ declare(strict_types = 1);
  */
 namespace AppBundle\functional\Controller;
 
+use App\Tests\Traits\TestThatBaseRouteWithAnonUserReturns401;
 use App\Tests\WebTestCase;
 
 /**
@@ -18,4 +19,7 @@ use App\Tests\WebTestCase;
  */
 class UserGroupControllerTest extends WebTestCase
 {
+    static protected $baseRoute = '/user_group';
+
+    use TestThatBaseRouteWithAnonUserReturns401;
 }

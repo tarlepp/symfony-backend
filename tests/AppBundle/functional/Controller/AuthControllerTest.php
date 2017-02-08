@@ -44,7 +44,7 @@ class AuthControllerTest extends WebTestCase
         );
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             200,
             $client->getResponse()->getStatusCode(),
             "User login was not successfully.\n" . $client->getResponse()
@@ -99,11 +99,7 @@ class AuthControllerTest extends WebTestCase
         ];
 
         // Check that HTTP status code is correct
-        static::assertEquals(
-            401,
-            $client->getResponse()->getStatusCode(),
-            implode("\n", $message)
-        );
+        static::assertSame(401, $client->getResponse()->getStatusCode(), implode("\n", $message));
     }
 
     /**
@@ -124,14 +120,14 @@ class AuthControllerTest extends WebTestCase
         $client->request($method, '/auth/getToken');
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             $expectedStatusCode,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for method '" . $method . "'\n" . $client->getResponse()
         );
 
         // Check that actual response content is correct
-        static::assertEquals(
+        static::assertSame(
             $expectedContent,
             $client->getResponse()->getContent(),
             "HTTP response was not expected for method '" . $method . "'\n" . $client->getResponse()
@@ -151,13 +147,13 @@ class AuthControllerTest extends WebTestCase
         $client->request('GET', '/auth/profile');
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             401,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
         );
 
-        static::assertEquals(
+        static::assertSame(
             '{"code":401,"message":"JWT Token not found"}',
             $client->getResponse()->getContent(),
             "Response content was not expected for /auth/profile request\n" . $client->getResponse()
@@ -177,13 +173,13 @@ class AuthControllerTest extends WebTestCase
         $client->request('GET', '/auth/profile');
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             401,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
         );
 
-        static::assertEquals(
+        static::assertSame(
             '{"code":401,"message":"Invalid JWT Token"}',
             $client->getResponse()->getContent(),
             "Response content was not expected for /auth/profile request\n" . $client->getResponse()
@@ -209,13 +205,13 @@ class AuthControllerTest extends WebTestCase
         );
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             401,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
         );
 
-        static::assertEquals(
+        static::assertSame(
             '{"code":401,"message":"Invalid JWT Token"}',
             $client->getResponse()->getContent(),
             "Response content was not expected for /auth/profile request\n" . $client->getResponse()
@@ -241,13 +237,13 @@ class AuthControllerTest extends WebTestCase
         );
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             401,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()
         );
 
-        static::assertEquals(
+        static::assertSame(
             '{"code":401,"message":"Invalid JWT Token"}',
             $client->getResponse()->getContent(),
             "Response content was not expected for /auth/profile request\n" . $client->getResponse()
@@ -273,7 +269,7 @@ class AuthControllerTest extends WebTestCase
         );
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             200,
             $client->getResponse()->getStatusCode(),
             "HTTP status code was not expected for /auth/profile request\n" . $client->getResponse()

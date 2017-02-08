@@ -7,6 +7,7 @@ declare(strict_types = 1);
  */
 namespace AppBundle\functional\Controller;
 
+use App\Tests\Traits\TestThatBaseRouteWithAnonUserReturns401;
 use App\Tests\WebTestCase;
 
 /**
@@ -17,4 +18,7 @@ use App\Tests\WebTestCase;
  */
 class BookControllerTest extends WebTestCase
 {
+    static protected $baseRoute = '/author';
+
+    use TestThatBaseRouteWithAnonUserReturns401;
 }

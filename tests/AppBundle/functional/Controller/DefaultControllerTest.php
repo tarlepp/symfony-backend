@@ -7,7 +7,7 @@ declare(strict_types = 1);
  */
 namespace AppBundle\functional\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -22,7 +22,7 @@ class DefaultControllerTest extends WebTestCase
     /**
      * Method to test '/' route with all supported HTTP methods.
      *
-     * @dataProvider testIndexProvider
+     * @dataProvider dataProviderTestIndex
      *
      * @param   string  $method             HTTP method (GET, POST, etc.)
      * @param   integer $expectedStatusCode Expected HTTP status code
@@ -34,14 +34,14 @@ class DefaultControllerTest extends WebTestCase
         $client->request($method, '/');
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             $expectedStatusCode,
             $client->getResponse()->getStatusCode(),
             'HTTP status code was not expected for method \'' . $method . '\''
         );
 
         // Check that actual response content is correct
-        static::assertEquals(
+        static::assertSame(
             $expectedContent,
             $client->getResponse()->getContent(),
             'HTTP response was not expected for method \'' . $method . '\''
@@ -53,7 +53,7 @@ class DefaultControllerTest extends WebTestCase
      *
      * @return array
      */
-    public function testIndexProvider(): array
+    public function dataProviderTestIndex(): array
     {
         return [
             ['GET',     Response::HTTP_OK, ''],

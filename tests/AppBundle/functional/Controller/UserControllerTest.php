@@ -9,6 +9,7 @@ namespace AppBundle\functional\Controller;
 
 use App\Entity\User;
 use App\Tests\Helpers\PHPUnitUtil;
+use App\Tests\Traits\TestThatBaseRouteWithAnonUserReturns401;
 use App\Tests\WebTestCase;
 use App\Utils\JSON;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +23,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UserControllerTest extends WebTestCase
 {
+    static protected $baseRoute = '/user';
+
+    use TestThatBaseRouteWithAnonUserReturns401;
+
     /**
      * @inheritdoc
      */
@@ -43,10 +48,10 @@ class UserControllerTest extends WebTestCase
     {
         // Create request
         $client = $this->getClient($username, $password);
-        $client->request('GET', '/user');
+        $client->request('GET', static::$baseRoute);
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             $expectedStatus,
             $client->getResponse()->getStatusCode(),
             'HTTP status code was not expected for /user request\n' . $client->getResponse()
@@ -70,15 +75,10 @@ class UserControllerTest extends WebTestCase
             // Get response object keys
             $keys = array_keys(get_object_vars($responseData));
 
-            static::assertEquals(
-                sort($attributes),
-                sort($keys),
-                'Response contains keys that are not expected'
-            );
-
-            static::assertEquals('Access denied.', $responseData->message);
-            static::assertEquals('403', $responseData->status);
-            static::assertEquals('0', $responseData->code);
+            static::assertSame(sort($attributes), sort($keys), 'Response contains keys that are not expected');
+            static::assertSame('Access denied.', $responseData->message, 'Response message was not expected');
+            static::assertSame(403, $responseData->status, 'Response status was not expected');
+            static::assertSame(0, $responseData->code, 'Response code was not expected');
         } else { // Otherwise check that response has correct output
             static::assertTrue(is_array($responseData), 'Response did not return array of users.');
             static::assertCount(5, $responseData, 'Response did not contain expected number of users.');
@@ -104,7 +104,7 @@ class UserControllerTest extends WebTestCase
         $client->request('GET', '/user/' . $id);
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             $expectedStatus,
             $client->getResponse()->getStatusCode(),
             'HTTP status code was not expected for /user request\n' . $client->getResponse()
@@ -128,15 +128,10 @@ class UserControllerTest extends WebTestCase
             // Get response object keys
             $keys = array_keys(get_object_vars($responseData));
 
-            static::assertEquals(
-                sort($attributes),
-                sort($keys),
-                'Response contains keys that are not expected'
-            );
-
-            static::assertEquals('Access denied.', $responseData->message);
-            static::assertEquals('403', $responseData->status);
-            static::assertEquals('0', $responseData->code);
+            static::assertSame(sort($attributes), sort($keys), 'Response contains keys that are not expected');
+            static::assertSame('Access denied.', $responseData->message);
+            static::assertSame(403, $responseData->status, 'Response status was not expected');
+            static::assertSame(0, $responseData->code, 'Response code was not expected');
         } else { // Otherwise check that response has correct output
             $attributes = ['id', 'username', 'firstname', 'surname', 'email'];
 
@@ -151,15 +146,9 @@ class UserControllerTest extends WebTestCase
             // Get response object keys
             $keys = array_keys(get_object_vars($responseData));
 
-            static::assertEquals(
-                sort($attributes),
-                sort($keys),
-                'Response contains keys that are not expected'
-            );
+            static::assertSame(sort($attributes), sort($keys), 'Response contains keys that are not expected');
         }
     }
-
-
 
     /**
      * @dataProvider dataProviderTestThatUserCannotDeleteHimSelf
@@ -175,7 +164,7 @@ class UserControllerTest extends WebTestCase
         $client->request('DELETE', '/user/' . $id);
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             400,
             $client->getResponse()->getStatusCode(),
             'HTTP status code was not expected for DELETE /user/{guid} request\n' . $client->getResponse()
@@ -197,15 +186,10 @@ class UserControllerTest extends WebTestCase
         // Get response object keys
         $keys = array_keys(get_object_vars($responseData));
 
-        static::assertEquals(
-            sort($attributes),
-            sort($keys),
-            'Response contains keys that are not expected'
-        );
-
-        static::assertEquals('You can\'t remove yourself...', $responseData->message);
-        static::assertEquals('400', $responseData->status);
-        static::assertEquals('0', $responseData->code);
+        static::assertSame(sort($attributes), sort($keys), 'Response contains keys that are not expected');
+        static::assertSame('You can\'t remove yourself...', $responseData->message);
+        static::assertSame(400, $responseData->status, 'Response status was not expected');
+        static::assertSame(0, $responseData->code, 'Response code was not expected');
     }
 
     /**
@@ -224,7 +208,7 @@ class UserControllerTest extends WebTestCase
         $this->getContainer()->get('doctrine')->resetManager();
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             403,
             $client->getResponse()->getStatusCode(),
             'HTTP status code was not expected for DELETE /user/{guid} request\n' . $client->getResponse()
@@ -250,7 +234,7 @@ class UserControllerTest extends WebTestCase
         $client->request('DELETE', '/user/' . $user->getId());
 
         // Check that HTTP status code is correct
-        static::assertEquals(
+        static::assertSame(
             $expectedStatusCode,
             $client->getResponse()->getStatusCode(),
             'HTTP status code was not expected for DELETE /user/{guid} request\n' . $client->getResponse()
