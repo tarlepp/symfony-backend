@@ -101,7 +101,7 @@ class ResponseTest extends ContainerTestCase
         $testClass->setResourceService($stubResourceService);
         $context = $testClass->getSerializeContext($stubRequest);
 
-        static::assertEquals(['FakeEntity'], $context->attributes->get('groups')->get());
+        static::assertSame(['FakeEntity'], $context->attributes->get('groups')->get());
     }
 
     public function testThatGetSerializeContextSetExpectedGroupsWithPopulateAllParameterWhenEntityDoesNotHaveAnyAssociations()
@@ -133,7 +133,7 @@ class ResponseTest extends ContainerTestCase
         $testClass->setResourceService($stubResourceService);
         $context = $testClass->getSerializeContext($stubRequest);
 
-        static::assertEquals(['Default'], $context->attributes->get('groups')->get());
+        static::assertSame(['Default'], $context->attributes->get('groups')->get());
     }
 
     public function testThatGetSerializeContextSetExpectedGroupsWithPopulateAllParameterWhenEntityDoesHaveAssociations()
@@ -170,7 +170,7 @@ class ResponseTest extends ContainerTestCase
         $testClass->setResourceService($stubResourceService);
         $context = $testClass->getSerializeContext($stubRequest);
 
-        static::assertEquals(['Default', 'FakeEntity.AnotherFakeEntity'], $context->attributes->get('groups')->get());
+        static::assertSame(['Default', 'FakeEntity.AnotherFakeEntity'], $context->attributes->get('groups')->get());
     }
 
     public function testThatGetSerializeContextSetExpectedGroupsWithPopulateOnlyParameterWhenEntityDoesNotHaveAnyAssociations()
@@ -202,7 +202,7 @@ class ResponseTest extends ContainerTestCase
         $testClass->setResourceService($stubResourceService);
         $context = $testClass->getSerializeContext($stubRequest);
 
-        static::assertEquals(['FakeEntity'], $context->attributes->get('groups')->get());
+        static::assertSame(['FakeEntity'], $context->attributes->get('groups')->get());
     }
 
     public function testThatGetSerializeContextSetExpectedGroupsWithPopulateOnlyParameterWhenEntityDoesHaveAssociations()
@@ -240,7 +240,7 @@ class ResponseTest extends ContainerTestCase
         $testClass->setResourceService($stubResourceService);
         $context = $testClass->getSerializeContext($stubRequest);
 
-        static::assertEquals(['AnotherFakeEntity'], $context->attributes->get('groups')->get());
+        static::assertSame(['AnotherFakeEntity'], $context->attributes->get('groups')->get());
     }
 
     /**

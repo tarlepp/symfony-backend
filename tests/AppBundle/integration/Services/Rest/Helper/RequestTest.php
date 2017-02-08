@@ -8,7 +8,7 @@ declare(strict_types = 1);
 namespace AppBundle\integration\Services\Rest\Helper;
 
 use App\Services\Rest\Helper\Request as RequestHelper;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -40,7 +40,7 @@ class RequestTest extends KernelTestCase
     {
         $fakeRequest = Request::create('/', 'GET', $parameters);
 
-        static::assertEquals(
+        static::assertSame(
             $expected,
             RequestHelper::getOrderBy($fakeRequest),
             'getOrderBy method did not return expected value'
@@ -74,7 +74,7 @@ class RequestTest extends KernelTestCase
             'getLimit returned NULL and it should return an integer'
         );
 
-        static::assertEquals(
+        static::assertSame(
             $expected,
             $actual,
             'getLimit method did not return expected value'
@@ -108,7 +108,7 @@ class RequestTest extends KernelTestCase
             'getOffset returned NULL and it should return an integer'
         );
 
-        static::assertEquals(
+        static::assertSame(
             $expected,
             $actual,
             'getOffset method did not return expected value'
@@ -119,7 +119,7 @@ class RequestTest extends KernelTestCase
     {
         $fakeRequest = Request::create('/', 'GET');
 
-        static::assertEquals(
+        static::assertSame(
             [],
             RequestHelper::getSearchTerms($fakeRequest),
             'getSearchTerms method did not return empty array ([]) as it should without any parameters'
@@ -155,7 +155,7 @@ class RequestTest extends KernelTestCase
 
         $fakeRequest = Request::create('/', 'GET', $parameters);
 
-        static::assertEquals(
+        static::assertSame(
             $expected,
             RequestHelper::getSearchTerms($fakeRequest),
             'getSearchTerms method did not return expected value'
@@ -350,7 +350,7 @@ class RequestTest extends KernelTestCase
             [
                 [
                     'or' => [
-                        1,
+                        '1',
                     ],
                 ],
                 true,

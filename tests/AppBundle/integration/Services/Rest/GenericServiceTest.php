@@ -11,9 +11,9 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Repository\Base as Repository;
 use App\Services\Rest\User as UserService;
 use App\Entity\User as UserEntity;
+use App\Tests\KernelTestCase;
 use Doctrine\Common\Proxy\Proxy;
 use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
