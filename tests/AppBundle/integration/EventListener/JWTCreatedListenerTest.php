@@ -1,26 +1,26 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/unit/EventListener/JWTCreatedListenerTest.php
+ * /tests/AppBundle/integration/EventListener/JWTCreatedListenerTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\unit\EventListener;
+namespace AppBundle\integration\EventListener;
 
 use App\Entity\User as UserEntity;
 use App\EventListener\JWTCreatedListener;
 use App\Repository\User as UserRepository;
 use App\Services\Rest\User as UserService;
 use App\Tests\Helpers\PHPUnitUtil;
+use App\Tests\KernelTestCase;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 
 /**
  * Class JWTCreatedListenerTest
  *
- * @package AppBundle\unit\EventListener
+ * @package AppBundle\integration\EventListener
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class JWTCreatedListenerTest extends KernelTestCase

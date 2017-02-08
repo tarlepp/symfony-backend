@@ -1,19 +1,19 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/unit/EventListener/ExceptionListenerTest.php
+ * /tests/AppBundle/integration/EventListener/ExceptionListenerTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-namespace AppBundle\unit\EventListener;
+namespace AppBundle\integration\EventListener;
 
 use App\EventListener\ExceptionListener;
 use App\Tests\Helpers\PHPUnitUtil;
+use App\Tests\KernelTestCase;
 use App\Utils\JSON;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent as Event;
@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 /**
  * Class ExceptionListenerTest
  *
- * @package AppBundle\unit\EventListener
+ * @package AppBundle\integration\EventListener
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 class ExceptionListenerTest extends KernelTestCase
@@ -113,7 +113,7 @@ class ExceptionListenerTest extends KernelTestCase
         $listener = new ExceptionListener($stubLogger, 'dev');
         $listener->onKernelException($event);
 
-        static::assertEquals($expectedStatus, $event->getResponse()->getStatusCode());
+        static::assertSame($expectedStatus, $event->getResponse()->getStatusCode());
     }
 
     /**
@@ -142,7 +142,7 @@ class ExceptionListenerTest extends KernelTestCase
 
         $result = JSON::decode($event->getResponse()->getContent(), true);
 
-        static::assertEquals($expectedKeys, array_keys($result));
+        static::assertSame($expectedKeys, array_keys($result));
     }
 
     /**
@@ -164,7 +164,7 @@ class ExceptionListenerTest extends KernelTestCase
 
         $listener = new ExceptionListener($stubLogger, $environment);
 
-        static::assertEquals($expectedMessage, PHPUnitUtil::callMethod($listener, 'getExceptionMessage', [$exception]));
+        static::assertSame($expectedMessage, PHPUnitUtil::callMethod($listener, 'getExceptionMessage', [$exception]));
     }
 
     /**
