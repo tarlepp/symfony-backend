@@ -9,9 +9,9 @@ namespace AppBundle\functional\Repository;
 
 use App\Entity\Interfaces\EntityInterface;
 use App\Tests\Helpers\PHPUnitUtil;
+use App\Tests\KernelTestCase;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\OrderBy;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 use App\Entity\User;
 
@@ -90,7 +90,7 @@ class GenericRepositoryTest extends KernelTestCase
 
         PHPUnitUtil::callMethod($this->repository, 'processCriteria', [$queryBuilder, $criteria]);
 
-        static::assertEquals(
+        static::assertSame(
             sprintf($expectedDQL, $this->entityName),
             $queryBuilder->getQuery()->getDQL(),
             'processCriteria method did not create expected query criteria.'
@@ -113,7 +113,7 @@ class GenericRepositoryTest extends KernelTestCase
             return (string)$orderBy;
         };
 
-        static::assertEquals(
+        static::assertSame(
             $expectedResult,
             implode(', ', array_map($iterator, $queryBuilder->getDQLPart('orderBy'))),
             'processOrderBy method did not create expected query ORDER BY part.'
