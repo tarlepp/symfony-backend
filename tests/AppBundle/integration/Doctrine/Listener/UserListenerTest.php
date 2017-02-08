@@ -9,10 +9,10 @@ namespace AppBundle\integration\Doctrine\Listener;
 
 use App\Doctrine\Listener\UserListener;
 use App\Entity\User;
+use App\Tests\KernelTestCase;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
@@ -80,6 +80,9 @@ class UserListenerTest extends KernelTestCase
             $this->entityManager->flush();
         }
 
+        $this->entityManager->close();
+        $this->entityManager = null; // avoid memory leaks
+
         static::$kernel->shutdown();
 
         parent::tearDown();
@@ -112,11 +115,7 @@ class UserListenerTest extends KernelTestCase
             'Listener did not reset plain password value.'
         );
 
-        static::assertNotEquals(
-            $oldPassword,
-            $this->entity->getPassword(),
-            'Password was not changed by the listener.'
-        );
+        static::assertNotSame($oldPassword, $this->entity->getPassword(), 'Password was not changed by the listener.');
 
         static::assertTrue(
             $this->encoder->isPasswordValid($this->entity->getPassword(), 'test', ''),
@@ -152,11 +151,7 @@ class UserListenerTest extends KernelTestCase
             'Listener did not reset plain password value.'
         );
 
-        static::assertNotEquals(
-            $oldPassword,
-            $this->entity->getPassword(),
-            'Password was not changed by the listener.'
-        );
+        static::assertNotSame($oldPassword, $this->entity->getPassword(), 'Password was not changed by the listener.');
 
         static::assertTrue(
             $this->encoder->isPasswordValid($this->entity->getPassword(), 'test', ''),

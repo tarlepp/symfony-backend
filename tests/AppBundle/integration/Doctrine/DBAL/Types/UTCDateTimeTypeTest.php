@@ -59,7 +59,7 @@ class UTCDateTimeTypeTest extends ContainerTestCase
      */
     public function testThatConvertToDatabaseValueMethodWorks(\DateTime $input, $expected)
     {
-        static::assertEquals(
+        static::assertSame(
             $expected,
             $this->type->convertToDatabaseValue($input, $this->platform),
             'Given DateTime object was not converted to expected database value.'
@@ -79,8 +79,12 @@ class UTCDateTimeTypeTest extends ContainerTestCase
         $value = $this->type->convertToPHPValue($input, $this->platform);
 
         static::assertInstanceOf(\DateTime::class, $value, 'Value was not converted to proper \DateTime object.');
-        static::assertEquals('UTC', $value->getTimezone()->getName(), 'Converted value is not in UTC timezone.');
-        static::assertEquals($expected, $value, 'Converted value does not match with expected one.');
+        static::assertSame('UTC', $value->getTimezone()->getName(), 'Converted value is not in UTC timezone.');
+        static::assertSame(
+            $expected->format('U'),
+            $value->format('U'),
+            'Converted value does not match with expected one.'
+        );
     }
 
     /**
