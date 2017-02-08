@@ -7,9 +7,9 @@ declare(strict_types = 1);
  */
 namespace AppBundle\integration;
 
+use App\Tests\KernelTestCase;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class EntityTest

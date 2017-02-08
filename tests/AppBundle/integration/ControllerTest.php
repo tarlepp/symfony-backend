@@ -8,7 +8,7 @@ declare(strict_types = 1);
 namespace AppBundle\integration;
 
 use App\Controller\Interfaces\RestController;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\KernelTestCase;
 
 /**
  * Class ControllerTest

@@ -7,13 +7,15 @@ declare(strict_types = 1);
  */
 namespace AppBundle\integration;
 
+use App\Tests\KernelTestCase;
+
 /**
  * Class RestServiceTest
  *
  * @package AppBundle\integration
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class RestServiceTest extends \PHPUnit_Framework_TestCase
+class RestServiceTest extends KernelTestCase
 {
     /**
      * @dataProvider dataProviderTestThatAllRestServicesHaveTestClass

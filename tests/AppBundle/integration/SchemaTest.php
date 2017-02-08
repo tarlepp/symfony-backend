@@ -7,8 +7,8 @@ declare(strict_types = 1);
  */
 namespace AppBundle\integration;
 
+use App\Tests\KernelTestCase;
 use Doctrine\ORM\Tools\SchemaValidator;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class SchemaTest
