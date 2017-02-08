@@ -7,8 +7,8 @@ declare(strict_types = 1);
  */
 namespace AppBundle\integration\Traits\Roles\Anon;
 
+use App\Tests\KernelTestCase;
 use Ramsey\Uuid\Uuid;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

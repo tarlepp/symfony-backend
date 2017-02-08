@@ -7,13 +7,13 @@ declare(strict_types = 1);
  */
 namespace AppBundle\integration\Traits\Rest\Methods;
 
+use App\Tests\KernelTestCase;
 use App\Traits\Rest\Methods\Count;
 use App\Services\Rest\Helper\Interfaces\Response as RestHelperResponseInterface;
 use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use AppBundle\integration\Traits\Rest\Methods\Count as CountTestClass;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
