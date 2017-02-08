@@ -32,7 +32,7 @@ class RolesTest extends ContainerTestCase
 
     public function testThatGetRolesReturnsExpected()
     {
-        static::assertEquals(
+        static::assertSame(
             [
                 'ROLE_LOGGED',
                 'ROLE_USER',
@@ -52,7 +52,7 @@ class RolesTest extends ContainerTestCase
      */
     public function testThatGetRoleLabelReturnsExpected($role, $expected)
     {
-        static::assertEquals(
+        static::assertSame(
             $expected,
             $this->service->getRoleLabel($role),
             'Role label was not expected one.'
@@ -67,7 +67,7 @@ class RolesTest extends ContainerTestCase
      */
     public function testThatGetShortReturnsExpected($input, $expected)
     {
-        static::assertEquals(
+        static::assertSame(
             $expected,
             $this->service->getShort($input),
             'Short role name was not expected'

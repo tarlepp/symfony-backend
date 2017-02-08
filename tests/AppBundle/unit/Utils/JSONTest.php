@@ -7,8 +7,8 @@ declare(strict_types = 1);
  */
 namespace AppBundle\unit\Utils;
 
+use App\Tests\KernelTestCase;
 use App\Utils\JSON;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class JSONTest
@@ -26,7 +26,7 @@ class JSONTest extends KernelTestCase
      */
     public function testThatEncodeWorksLikeExpected($value, $expected)
     {
-        static::assertEquals($expected, call_user_func('\App\Utils\JSON::encode', $value));
+        static::assertSame($expected, JSON::encode($value));
     }
 
     /**
@@ -37,7 +37,10 @@ class JSONTest extends KernelTestCase
      */
     public function testThatDecodeWorksLikeExpected(array $parameters, $expected)
     {
-        static::assertEquals($expected, call_user_func_array('\App\Utils\JSON::decode', $parameters));
+        static::assertSame(
+            serialize($expected),
+            serialize(call_user_func_array('\App\Utils\JSON::decode', $parameters))
+        );
     }
 
     /**

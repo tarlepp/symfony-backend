@@ -8,7 +8,7 @@ declare(strict_types = 1);
 namespace AppBundle\unit\Services\Helper;
 
 use App\Services\Helper\SearchTerm;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\KernelTestCase;
 
 /**
  * Class SearchTermTest
@@ -22,14 +22,6 @@ class SearchTermTest extends KernelTestCase
      * @var SearchTerm
      */
     protected static $service;
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function setUpBeforeClass()
-    {
-        self::bootKernel();
-    }
 
     /**
      * @dataProvider dataProviderTestThatWithoutColumnOrSearchTermCriteriaIsNull
@@ -50,7 +42,7 @@ class SearchTermTest extends KernelTestCase
      */
     public function testThatReturnedCriteriaIsExpected(array $inputArguments, array $expected)
     {
-        static::assertEquals($expected, call_user_func_array([ SearchTerm::class, 'getCriteria'], $inputArguments));
+        static::assertSame($expected, call_user_func_array([ SearchTerm::class, 'getCriteria'], $inputArguments));
     }
 
     /**
