@@ -18,21 +18,21 @@ interface User
     /**
      * Getter method for user ID value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getId();
+    public function getId(): string;
 
     /**
      * Getter method for username value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getUsername();
+    public function getUsername(): string;
 
     /**
      * Getter method for email value.
      *
-     * @return string|null
+     * @return string
      */
-    public function getEmail();
+    public function getEmail(): string;
 }

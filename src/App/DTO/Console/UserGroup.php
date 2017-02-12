@@ -24,7 +24,7 @@ class UserGroup
      * @Assert\NotNull()
      * @Assert\Length(min = 4, max = 255)
      */
-    public $name;
+    public $name = '';
 
     /**
      * @var string
@@ -33,5 +33,5 @@ class UserGroup
      * @Assert\NotNull()
      * @Assert\Length(min = 4, max = 255)
      */
-    public $role;
+    public $role = '';
 }

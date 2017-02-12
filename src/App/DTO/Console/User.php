@@ -80,7 +80,7 @@ class User implements Interfaces\User
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     /**
@@ -90,7 +90,7 @@ class User implements Interfaces\User
      */
     public function getUsername(): string
     {
-        return $this->username;
+        return (string)$this->username;
     }
 
     /**
@@ -100,7 +100,7 @@ class User implements Interfaces\User
      */
     public function getEmail(): string
     {
-        return $this->email;
+        return (string)$this->email;
     }
 
     /**
