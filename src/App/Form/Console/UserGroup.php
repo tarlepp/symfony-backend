@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class UserGroup
@@ -62,6 +63,7 @@ class UserGroup extends AbstractType
                 [
                     'label'     => 'Group name',
                     'required'  => true,
+                    'data'      => '',
                 ]
             )
             ->add(
@@ -71,6 +73,7 @@ class UserGroup extends AbstractType
                     'choices'       => $this->roles->getRoles(),
                     'choice_label'  => $getRoleLabel,
                     'required'      => true,
+                    'data'          => [],
                 ]
             )
         ;

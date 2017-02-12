@@ -34,6 +34,7 @@ class UserPassword extends AbstractType
                 [
                     'label'     => 'Password',
                     'required'  => true,
+                    'data'      => '',
                 ]
             )
         ;

@@ -81,6 +81,7 @@ class User extends AbstractType
                 [
                     'label'     => 'Username',
                     'required'  => true,
+                    'data'      => '',
                 ]
             )
             ->add(
@@ -89,6 +90,7 @@ class User extends AbstractType
                 [
                     'label'     => 'Firstname',
                     'required'  => true,
+                    'data'      => '',
                 ]
             )
             ->add(
@@ -97,6 +99,7 @@ class User extends AbstractType
                 [
                     'label'     => 'Surname',
                     'required'  => true,
+                    'data'      => '',
                 ]
             )
             ->add(
@@ -105,6 +108,7 @@ class User extends AbstractType
                 [
                     'label'     => 'Email address',
                     'required'  => true,
+                    'data'      => '',
                 ]
             )
             ->add(
@@ -112,15 +116,17 @@ class User extends AbstractType
                 Type\PasswordType::class,
                 [
                     'label'     => 'Password',
+                    'data'      => '',
                 ]
             )
             ->add(
                 'userGroups',
                 Type\ChoiceType::class,
                 [
-                    'choices'           => $this->getUserGroupChoices(),
-                    'multiple'          => true,
-                    'required'          => true,
+                    'choices'   => $this->getUserGroupChoices(),
+                    'multiple'  => true,
+                    'required'  => true,
+                    'data'      => [],
                 ]
             )
         ;
