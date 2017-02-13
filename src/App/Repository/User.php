@@ -63,6 +63,8 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
         try {
             $user = $query->getSingleResult();
         } catch (NoResultException $exception) {
+            sleep(5);
+
             $message = sprintf(
                 'User "%s" not found',
                 $username
