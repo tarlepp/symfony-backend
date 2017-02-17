@@ -22,6 +22,10 @@ if (!class_exists(PHPUnit_Framework_TestCase::class) && class_exists(TestCase::c
     class_alias(TestCase::class, PHPUnit_Framework_TestCase::class);
 }
 
+if (!class_exists(PHPUnit_Util_ErrorHandler::class)) {
+    class_alias(PHPUnit\Util\ErrorHandler::class, PHPUnit_Util_ErrorHandler::class);
+}
+
 // Create and boot 'test' kernel
 $kernel = new AppKernel('test', true);
 $kernel->boot();
