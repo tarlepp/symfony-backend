@@ -256,6 +256,9 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
 User has to have at least '%s' role via his/hers user groups.
 MESSAGE;
 
+            // Attach authentication roles
+            $annotation->setAuthenticationRoles([$matches[1]]);
+
             // Attach new documentation block
             $annotation->setDocumentation(sprintf($message, $annotation->getDocumentation(), $matches[1]));
         }
