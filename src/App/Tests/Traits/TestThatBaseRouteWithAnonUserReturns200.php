@@ -18,7 +18,7 @@ trait TestThatBaseRouteWithAnonUserReturns200
     /**
      * Simple test trait to check that controller base route returns 200 for anon users.
      */
-    public function testThatBaseRouteReturns401()
+    public function testThatBaseRouteReturns200()
     {
         $client = static::createClient();
         $client->request('GET', self::$baseRoute);
