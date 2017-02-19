@@ -21,4 +21,49 @@ class PlaygroundControllerTest extends WebTestCase
     static protected $baseRoute = '/playground';
 
     use TestThatBaseRouteWithAnonUserReturns401;
+
+    /**
+     * @dataProvider dataProviderTestThatResponseIsExpectedWithLoggedInUser
+     *
+     * @param string $username
+     * @param string $password
+     */
+    public function testThatResponseIsExpectedWithLoggedInUser(string $username, string $password)
+    {
+        $client = $this->getClient($username, $password);
+        $client->request('GET', self::$baseRoute);
+
+        // Check that HTTP status code is correct
+        static::assertSame(
+            200,
+            $client->getResponse()->getStatusCode(),
+            'HTTP status code was not expected for GET ' . self::$baseRoute . "\n" . $client->getResponse()
+        );
+
+        static::assertSame(
+            'Hello world',
+            $client->getResponse()->getContent(),
+            'HTTP response was not expected.'
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatResponseIsExpectedWithLoggedInUser(): array
+    {
+        return [
+            ['john', 'doe'],
+            ['john.doe@test.com', 'doe'],
+
+            ['john-logged', 'doe-logged'],
+            ['john.doe-logged@test.com', 'doe-logged'],
+
+            ['john-user', 'doe-user'],
+            ['john.doe-user@test.com', 'doe-user'],
+
+            ['john-admin', 'doe-admin'],
+            ['john.doe-admin@test.com', 'doe-admin'],
+        ];
+    }
 }
