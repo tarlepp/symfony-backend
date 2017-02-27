@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1e786bd1d5ed297edc4b050b89c80e64",
-    "content-hash": "7d96ffba5e3331652d37290df4b2d0db",
+    "hash": "d0a73f7df707ba3327edc152bc2976fa",
+    "content-hash": "433e8ad99a03d095498f2b694da562e1",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -49,16 +49,16 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.3.1",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "bd4461328621bde0ae6b1b2675fbc6aca4ceb558"
+                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/bd4461328621bde0ae6b1b2675fbc6aca4ceb558",
-                "reference": "bd4461328621bde0ae6b1b2675fbc6aca4ceb558",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/54cacc9b81758b14e3ce750f205a393d52339e97",
+                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97",
                 "shasum": ""
             },
             "require": {
@@ -67,7 +67,7 @@
             },
             "require-dev": {
                 "doctrine/cache": "1.*",
-                "phpunit/phpunit": "^5.6.1"
+                "phpunit/phpunit": "^5.7"
             },
             "type": "library",
             "extra": {
@@ -113,7 +113,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2016-12-30 15:59:45"
+            "time": "2017-02-24 16:22:25"
         },
         {
             "name": "doctrine/cache",
@@ -1322,21 +1322,21 @@
         },
         {
             "name": "jms/serializer-bundle",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "target-dir": "JMS/SerializerBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
-                "reference": "3e396c980545350c2efb65a50041d2a9f9d6562e"
+                "reference": "95c0258b74a71ed40981998a8aa8b3bc13f9760d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/3e396c980545350c2efb65a50041d2a9f9d6562e",
-                "reference": "3e396c980545350c2efb65a50041d2a9f9d6562e",
+                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/95c0258b74a71ed40981998a8aa8b3bc13f9760d",
+                "reference": "95c0258b74a71ed40981998a8aa8b3bc13f9760d",
                 "shasum": ""
             },
             "require": {
-                "jms/serializer": "^1.0.0",
+                "jms/serializer": "^1.5",
                 "php": ">=5.4.0",
                 "phpoption/phpoption": "^1.1.0",
                 "symfony/framework-bundle": "~2.3|~3.0"
@@ -1344,9 +1344,11 @@
             "require-dev": {
                 "doctrine/doctrine-bundle": "*",
                 "doctrine/orm": "*",
+                "phpunit/phpunit": "^4.2|^5.0",
                 "symfony/browser-kit": "*",
                 "symfony/class-loader": "*",
                 "symfony/css-selector": "*",
+                "symfony/expression-language": "~2.6|~3.0",
                 "symfony/finder": "*",
                 "symfony/form": "*",
                 "symfony/process": "*",
@@ -1361,7 +1363,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -1388,7 +1390,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2015-11-10 12:26:42"
+            "time": "2017-02-22 16:15:59"
         },
         {
             "name": "knplabs/doctrine-behaviors",
@@ -1740,16 +1742,16 @@
         },
         {
             "name": "mustangostang/spyc",
-            "version": "0.6.1",
+            "version": "0.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mustangostang/spyc.git",
-                "reference": "022532641d61d383fd3ae666982bd46e61e5915e"
+                "reference": "23c35ae854d835f2d7bcc3e3ad743d7e57a8c14d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mustangostang/spyc/zipball/022532641d61d383fd3ae666982bd46e61e5915e",
-                "reference": "022532641d61d383fd3ae666982bd46e61e5915e",
+                "url": "https://api.github.com/repos/mustangostang/spyc/zipball/23c35ae854d835f2d7bcc3e3ad743d7e57a8c14d",
+                "reference": "23c35ae854d835f2d7bcc3e3ad743d7e57a8c14d",
                 "shasum": ""
             },
             "require": {
@@ -1786,7 +1788,7 @@
                 "yaml",
                 "yml"
             ],
-            "time": "2016-10-21 00:03:34"
+            "time": "2017-02-24 16:06:33"
         },
         {
             "name": "namshi/jose",
@@ -1858,17 +1860,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "b01128dc139eac7005abba2c341323cb0de2dd39"
+                "reference": "eab2d5d8fcbd759c4ae109b6060b7d90d4269952"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/b01128dc139eac7005abba2c341323cb0de2dd39",
-                "reference": "b01128dc139eac7005abba2c341323cb0de2dd39",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/eab2d5d8fcbd759c4ae109b6060b7d90d4269952",
+                "reference": "eab2d5d8fcbd759c4ae109b6060b7d90d4269952",
                 "shasum": ""
             },
             "require": {
                 "michelf/php-markdown": "~1.4",
-                "php": ">=5.3",
+                "php": ">=5.4",
                 "symfony/console": "~2.3|~3.0",
                 "symfony/framework-bundle": "~2.3|~3.0",
                 "symfony/twig-bundle": "~2.3|~3.0"
@@ -1934,7 +1936,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2016-12-29 11:21:15"
+            "time": "2017-02-19 05:14:31"
         },
         {
             "name": "nelmio/cors-bundle",
@@ -2736,16 +2738,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.0.0",
+            "version": "v4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "116027b57b568ed61b7b1c80eeb4f6ee9e8c599c"
+                "reference": "f2ce0035fc512287978510ca1740cd111d60f89f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/116027b57b568ed61b7b1c80eeb4f6ee9e8c599c",
-                "reference": "116027b57b568ed61b7b1c80eeb4f6ee9e8c599c",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/f2ce0035fc512287978510ca1740cd111d60f89f",
+                "reference": "f2ce0035fc512287978510ca1740cd111d60f89f",
                 "shasum": ""
             },
             "require": {
@@ -2776,7 +2778,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2016-09-23 18:09:57"
+            "time": "2017-02-18 17:53:25"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -4131,23 +4133,23 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "5.0.0",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "e7d7a4acca58e45bdfd00221563d131cfb04ba96"
+                "reference": "3f10a2c8eed68b29cbbb54e29cc58cb31b077553"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/e7d7a4acca58e45bdfd00221563d131cfb04ba96",
-                "reference": "e7d7a4acca58e45bdfd00221563d131cfb04ba96",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/3f10a2c8eed68b29cbbb54e29cc58cb31b077553",
+                "reference": "3f10a2c8eed68b29cbbb54e29cc58cb31b077553",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.0",
                 "phpunit/php-file-iterator": "^1.3",
                 "phpunit/php-text-template": "^1.2",
-                "phpunit/php-token-stream": "^1.4.2",
+                "phpunit/php-token-stream": "^1.4.2 || ^2.0",
                 "sebastian/code-unit-reverse-lookup": "^1.0",
                 "sebastian/environment": "^2.0",
                 "sebastian/version": "^2.0"
@@ -4189,7 +4191,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-02-02 10:35:41"
+            "time": "2017-02-23 07:27:58"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -4325,16 +4327,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.4.9",
+            "version": "1.4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "3b402f65a4cc90abf6e1104e388b896ce209631b"
+                "reference": "284fb0679dd25fb5ffb56dad92c72860c0a22f1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/3b402f65a4cc90abf6e1104e388b896ce209631b",
-                "reference": "3b402f65a4cc90abf6e1104e388b896ce209631b",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/284fb0679dd25fb5ffb56dad92c72860c0a22f1b",
+                "reference": "284fb0679dd25fb5ffb56dad92c72860c0a22f1b",
                 "shasum": ""
             },
             "require": {
@@ -4370,20 +4372,20 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2016-11-15 14:06:22"
+            "time": "2017-02-23 06:14:45"
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.0.6",
+            "version": "6.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "e702506af102d0dc5312dd24b8e97fd6e58ce3ba"
+                "reference": "4601a46c162eccadffc7d5a6b1f5334df5d99713"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e702506af102d0dc5312dd24b8e97fd6e58ce3ba",
-                "reference": "e702506af102d0dc5312dd24b8e97fd6e58ce3ba",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4601a46c162eccadffc7d5a6b1f5334df5d99713",
+                "reference": "4601a46c162eccadffc7d5a6b1f5334df5d99713",
                 "shasum": ""
             },
             "require": {
@@ -4452,7 +4454,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-02-08 05:57:26"
+            "time": "2017-02-19 07:25:12"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -4902,16 +4904,16 @@
         },
         {
             "name": "sebastian/object-enumerator",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/object-enumerator.git",
-                "reference": "96f8a3f257b69e8128ad74d3a7fd464bcbaa3b35"
+                "reference": "1311872ac850040a79c3c058bea3e22d0f09cbb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/object-enumerator/zipball/96f8a3f257b69e8128ad74d3a7fd464bcbaa3b35",
-                "reference": "96f8a3f257b69e8128ad74d3a7fd464bcbaa3b35",
+                "url": "https://api.github.com/repos/sebastianbergmann/object-enumerator/zipball/1311872ac850040a79c3c058bea3e22d0f09cbb7",
+                "reference": "1311872ac850040a79c3c058bea3e22d0f09cbb7",
                 "shasum": ""
             },
             "require": {
@@ -4944,7 +4946,7 @@
             ],
             "description": "Traverses array structures and object graphs to enumerate all referenced objects",
             "homepage": "https://github.com/sebastianbergmann/object-enumerator/",
-            "time": "2016-11-19 07:35:10"
+            "time": "2017-02-18 15:18:39"
         },
         {
             "name": "sebastian/recursion-context",

@@ -43,7 +43,7 @@
         "gesdinet/jwt-refresh-token-bundle": "0.2.0",
         "gfreeau/get-jwt-bundle": "2.0.x-dev",
         "incenteev/composer-parameter-handler": "2.1.2",
-        "jms/serializer-bundle": "1.1.0",
+        "jms/serializer-bundle": "1.2.0",
         "knplabs/doctrine-behaviors": "1.4.0",
         "lexik/jwt-authentication-bundle": "2.1.1",
         "matthiasnoback/symfony-console-form": "2.3.0",
@@ -61,7 +61,7 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "2.3.0",
         "phpspec/phpspec": "3.2.3",
-        "phpunit/phpunit": "6.0.6",
+        "phpunit/phpunit": "6.0.7",
         "satooshi/php-coveralls": "1.0.1",
         "sensio/generator-bundle": "3.1.2",
         "squizlabs/php_codesniffer": "2.8.0",
