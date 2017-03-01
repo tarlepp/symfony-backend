@@ -54,7 +54,7 @@
         "sensio/distribution-bundle": "5.0.18",
         "sensio/framework-extra-bundle": "3.0.22",
         "symfony/monolog-bundle": "3.0.3",
-        "symfony/swiftmailer-bundle": "2.4.2",
+        "symfony/swiftmailer-bundle": "2.5.0",
         "symfony/symfony": "3.2.4",
         "roave/security-advisories": "dev-master"
     },
