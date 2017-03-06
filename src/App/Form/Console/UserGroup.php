@@ -63,7 +63,6 @@ class UserGroup extends AbstractType
                 [
                     'label'     => 'Group name',
                     'required'  => true,
-                    'data'      => '',
                 ]
             )
             ->add(
@@ -73,7 +72,6 @@ class UserGroup extends AbstractType
                     'choices'       => $this->roles->getRoles(),
                     'choice_label'  => $getRoleLabel,
                     'required'      => true,
-                    'data'          => [],
                 ]
             )
         ;
