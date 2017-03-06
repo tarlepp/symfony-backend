@@ -88,7 +88,7 @@ class EditUserCommand extends Base
         };
 
         // Set user groups
-        $dto->userGroups = array_map($iterator, $user->getUserGroups()->toArray());
+        $dto->userGroups = \array_map($iterator, $user->getUserGroups()->toArray());
 
         /** @var UserDto $dto */
         $dto = $this->getHelper('form')->interactUsingForm(

@@ -120,7 +120,7 @@ abstract class Base extends ContainerAwareCommand
             ->setName(static::$commandName)
             ->setDescription(static::$commandDescription)
             ->setDefinition(
-                new InputDefinition(array_map($iterator, static::$commandParameters))
+                new InputDefinition(\array_map($iterator, static::$commandParameters))
             )
         ;
     }
@@ -159,12 +159,14 @@ abstract class Base extends ContainerAwareCommand
     /**
      * Helper method to get user object by username or email.
      *
-     * @param   bool $showUserInformation
+     * @param   null|bool   $showUserInformation
      *
      * @return  UserEntity
      */
-    protected function getUser($showUserInformation = false): UserEntity
+    protected function getUser(bool $showUserInformation = null): UserEntity
     {
+        $showUserInformation = $showUserInformation ?? false;
+
         $user = null;
 
         while (null === $user) {
@@ -190,42 +192,20 @@ abstract class Base extends ContainerAwareCommand
      * Helper method to get user group object. This method will print a table which contains all user groups and
      * information about each of those. Then user must "select" one of these user groups by group ID.
      *
-     * @param   bool $showInformation
+     * @param   null|bool   $showInformation
      *
      * @return  UserGroupEntity
      */
-    protected function getUserGroup($showInformation = false): UserGroupEntity
+    protected function getUserGroup(bool $showInformation = null): UserGroupEntity
     {
+        $showInformation = $showInformation ?? false;
+
         $userGroup = null;
-
-        /**
-         * Lambda function to format UserGroup data for io table.
-         *
-         * @param   UserGroupEntity $userGroup
-         *
-         * @return  array
-         */
-        $iterator = function (UserGroupEntity $userGroup) {
-            return [
-                $userGroup->getId(),
-                $userGroup->getName(),
-                $userGroup->getRole(),
-            ];
-        };
-
-        // Specify used table header values
-        $headers = ['ID', 'Name', 'Role'];
 
         // And do while user has "selected" one valid user group
         while (null === $userGroup) {
             try {
-                // Print console table
-                $this->io->table($headers, array_map($iterator, $this->userGroupService->find()));
-
-                $question = new Question('User group ID: ', $this->input->getOption('id'));
-                $userGroupId = $this->io->askQuestion($question);
-
-                $userGroup = $this->userGroupService->findOne($userGroupId, true);
+                $userGroup = $this->getUserGroupAnswer();
             } catch (\Exception $error) {
                 $this->io->warning($error->getMessage());
             }
@@ -266,7 +246,7 @@ abstract class Base extends ContainerAwareCommand
         $dto->firstname = $user->getFirstname();
         $dto->surname = $user->getSurname();
         $dto->email = $user->getEmail();
-        $dto->userGroups = array_map($iterator, $user->getUserGroups()->toArray());
+        $dto->userGroups = \array_map($iterator, $user->getUserGroups()->toArray());
 
         return $dto;
     }
@@ -281,7 +261,7 @@ abstract class Base extends ContainerAwareCommand
     protected function printUserInformation(UserEntity $user)
     {
         // Attributes to print out
-        $attributes = [
+        static $attributes = [
             'id',
             'username',
             'firstname',
@@ -303,7 +283,7 @@ abstract class Base extends ContainerAwareCommand
     protected function printUserGroupInformation(UserGroupEntity $userGroup)
     {
         // Attributes to print out
-        $attributes = [
+        static $attributes = [
             'id',
             'name',
             'role',
@@ -321,10 +301,10 @@ abstract class Base extends ContainerAwareCommand
      *
      * @return  UserEntity
      */
-    protected function storeUser(UserDto $userData, UserEntity $user = null, $skipValidation = false): UserEntity
+    protected function storeUser(UserDto $userData, UserEntity $user = null, bool $skipValidation = null): UserEntity
     {
         // Create new UserGroup entity OR use provided one
-        $user = $user ?: new UserEntity();
+        $user = $user ?? new UserEntity();
         $user->setUsername($userData->username);
         $user->setFirstname($userData->firstname);
         $user->setSurname($userData->surname);
@@ -341,7 +321,7 @@ abstract class Base extends ContainerAwareCommand
         }
 
         // Store user to database
-        return $this->userService->save($user, $skipValidation);
+        return $this->userService->save($user, $skipValidation ?? false);
     }
 
     /**
@@ -355,12 +335,46 @@ abstract class Base extends ContainerAwareCommand
     protected function storeUserGroup(UserGroupDto $userGroupData, UserGroupEntity $userGroup = null): UserGroupEntity
     {
         // Create new UserGroup entity OR use provided one
-        $userGroup = $userGroup ?: new UserGroupEntity();
+        $userGroup = $userGroup ?? new UserGroupEntity();
         $userGroup->setName($userGroupData->name);
         $userGroup->setRole($userGroupData->role);
 
         // Store user group to database
         return $this->userGroupService->save($userGroup);
+    }
+
+    /**
+     * @return UserGroupEntity|EntityInterface|null
+     *
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     */
+    private function getUserGroupAnswer()
+    {
+        // Specify used table header values
+        static $headers = ['ID', 'Name', 'Role'];
+
+        /**
+         * Lambda function to format UserGroup data for io table.
+         *
+         * @param   UserGroupEntity $userGroup
+         *
+         * @return  array
+         */
+        $iterator = function (UserGroupEntity $userGroup) {
+            return [
+                $userGroup->getId(),
+                $userGroup->getName(),
+                $userGroup->getRole(),
+            ];
+        };
+
+        // Print console table
+        $this->io->table($headers, \array_map($iterator, $this->userGroupService->find()));
+
+        $question = new Question('User group ID: ', $this->input->getOption('id'));
+        $userGroupId = $this->io->askQuestion($question);
+
+        return $this->userGroupService->findOne($userGroupId, true);
     }
 
     /**
@@ -379,7 +393,7 @@ abstract class Base extends ContainerAwareCommand
          * @return  array
          */
         $iterator = function ($attribute) use ($entity) {
-            $method = sprintf(
+            $method = \sprintf(
                 'get%s',
                 $attribute
             );
@@ -396,22 +410,22 @@ abstract class Base extends ContainerAwareCommand
                         $entity->getRole()
                     ];
 
-                    return implode(' - ', $data);
+                    return \implode(' - ', $data);
                 };
 
                 //$value = implode(' - ', array_map($iterator, $value->toArray()));
-                $value = array_map($iterator, $value->toArray());
+                $value = \array_map($iterator, $value->toArray());
             }
 
             return [
                 $attribute,
-                is_array($value) ? implode(",\n", $value) : $value,
+                \is_array($value) ? \implode(",\n", $value) : $value,
             ];
         };
 
         // Specify headers and rows
-        $headers = ['Attribute', 'Value'];
-        $rows = array_map($iterator, $attributes);
+        static $headers = ['Attribute', 'Value'];
+        $rows = \array_map($iterator, $attributes);
 
         // Print console table
         $this->io->table($headers, $rows);
