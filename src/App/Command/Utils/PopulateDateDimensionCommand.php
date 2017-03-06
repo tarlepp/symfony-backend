@@ -165,7 +165,7 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
 
         $progress = $this->getProgressBar(
             (int)$dateEnd->diff($dateStart)->format('%a') + 1,
-            sprintf('Creating DateDimension entities between years %d and %d...', $yearStart, $yearEnd)
+            \sprintf('Creating DateDimension entities between years %d and %d...', $yearStart, $yearEnd)
         );
 
         // Get repository
