@@ -294,7 +294,7 @@ class DateDimension implements EntityInterface
             $this->setYear((int)$dateTime->format('Y'));
             $this->setMonth((int)$dateTime->format('n'));
             $this->setDay((int)$dateTime->format('j'));
-            $this->setQuarter((int)floor(((int)$dateTime->format('n') - 1) / 3) + 1);
+            $this->setQuarter((int)\floor(((int)$dateTime->format('n') - 1) / 3) + 1);
             $this->setWeekNumber((int)$dateTime->format('W'));
             $this->setDayNumberOfWeek((int)$dateTime->format('N'));
             $this->setDayNumberOfYear((int)$dateTime->format('z'));

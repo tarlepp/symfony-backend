@@ -482,7 +482,7 @@ class RequestLog implements EntityInterface
             $this->setScheme($request->getScheme());
             $this->setHttpHost($request->getHttpHost());
             $this->setBasePath($request->getBasePath());
-            $this->setScript('/' . basename($request->getScriptName()));
+            $this->setScript('/' . \basename($request->getScriptName()));
             $this->setPath($request->getPathInfo());
             $this->setQueryString($request->getRequestUri());
             $this->setUri($request->getUri());
@@ -659,7 +659,7 @@ class RequestLog implements EntityInterface
     public function setHeaders(array $headers): RequestLog
     {
         // Clean possible sensitive data from parameters
-        array_walk($headers, [$this, 'cleanParameters']);
+        \array_walk($headers, [$this, 'cleanParameters']);
 
         $this->headers = $headers;
 
@@ -681,7 +681,7 @@ class RequestLog implements EntityInterface
     public function setParameters(array $parameters): RequestLog
     {
         // Clean possible sensitive data from parameters
-        array_walk($parameters, [$this, 'cleanParameters']);
+        \array_walk($parameters, [$this, 'cleanParameters']);
 
         $this->parameters = $parameters;
 
@@ -952,7 +952,7 @@ class RequestLog implements EntityInterface
     protected function cleanParameters(&$value, string $key)
     {
         // What keys we should replace so that any sensitive data is not logged
-        $replacements = [
+        static $replacements = [
             'password'          => '*** REPLACED ***',
             'token'             => '*** REPLACED ***',
             'authorization'     => '*** REPLACED ***',
@@ -960,16 +960,16 @@ class RequestLog implements EntityInterface
         ];
 
         // Normalize current key
-        $key = mb_strtolower($key);
+        $key = \mb_strtolower($key);
 
         // Replace current value
-        if (array_key_exists($key, $replacements)) {
+        if (\array_key_exists($key, $replacements)) {
             $value = $replacements[$key];
         }
 
         // Recursive call
-        if (is_array($value)) {
-            array_walk($value, [$this, 'cleanParameters']);
+        if (\is_array($value)) {
+            \array_walk($value, [$this, 'cleanParameters']);
         }
     }
 
@@ -981,13 +981,13 @@ class RequestLog implements EntityInterface
     {
         $controller = $request->get('_controller', '');
 
-        if (strpos($controller, '::')) {
-            $controller = explode('::', $controller);
-            $controller = explode('\\', $controller[0]);
+        if (\strpos($controller, '::')) {
+            $controller = \explode('::', $controller);
+            $controller = \explode('\\', $controller[0]);
 
             return $controller[4] ?? '';
         } else {
-            $controller = explode(':', $controller);
+            $controller = \explode(':', $controller);
 
             return $controller[0];
         }
@@ -1000,7 +1000,7 @@ class RequestLog implements EntityInterface
     private function determineAction(Request $request): string
     {
         $action = $request->get('_controller', '');
-        $action = strpos($action, '::') ? explode('::', $action) : explode(':', $action);
+        $action = \strpos($action, '::') ? \explode('::', $action) : \explode(':', $action);
 
         return $action[1] ?? '';
     }
@@ -1024,7 +1024,7 @@ class RequestLog implements EntityInterface
             } catch (\LogicException $error) { // Oh noes content isn't JSON so just parse it
                 $output = [];
 
-                parse_str($request->getContent(), $output);
+                \parse_str($request->getContent(), $output);
             }
         } else { // Otherwise trust parameter bag
             $output = $request->request->all();
@@ -1043,17 +1043,17 @@ class RequestLog implements EntityInterface
     private function cleanContent(string $content): string
     {
         $iterator = function ($search) use (&$content) {
-            $content = preg_replace('/(' . $search . '":)"(.*)"/', '$1"*** REPLACED ***"', $content);
+            $content = \preg_replace('/(' . $search . '":)"(.*)"/', '$1"*** REPLACED ***"', $content);
         };
 
-        $replacements = [
+        static $replacements = [
             'password',
             'token',
             'authorization',
             'cookie',
         ];
 
-        array_map($iterator, $replacements);
+        \array_map($iterator, $replacements);
 
         return $content;
     }

@@ -367,7 +367,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
             return $userGroup->getRole();
         };
 
-        return array_map($iterator, $this->userGroups->toArray());
+        return \array_map($iterator, $this->userGroups->toArray());
     }
 
     /**
@@ -562,7 +562,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
             $this->getPassword(),
         ];
 
-        return hash('sha512', implode('', $bits));
+        return \hash('sha512', \implode('', $bits));
     }
 
     /**
