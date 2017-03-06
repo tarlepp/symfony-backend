@@ -64,10 +64,10 @@ class UserGroup extends AbstractFixture implements FixtureInterface, OrderedFixt
         $roles = $roleService->getRoles();
 
         // Create groups
-        array_map(
+        \array_map(
             [$this, 'createGroup'],
-            array_fill(0, count($roles), $manager),
-            array_fill(0, count($roles), $roleService),
+            \array_fill(0, \count($roles), $manager),
+            \array_fill(0, \count($roles), $roleService),
             $roles
         );
 

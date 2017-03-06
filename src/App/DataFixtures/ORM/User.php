@@ -87,10 +87,10 @@ class User extends AbstractFixture implements FixtureInterface, OrderedFixtureIn
         $roles = $roleService->getRoles();
 
         // Create users for every user group / role
-        array_map(
+        \array_map(
             [$this, 'createUser'],
-            array_fill(0, count($roles), $manager),
-            array_fill(0, count($roles), $roleService),
+            \array_fill(0, \count($roles), $manager),
+            \array_fill(0, \count($roles), $roleService),
             $roles
         );
 
