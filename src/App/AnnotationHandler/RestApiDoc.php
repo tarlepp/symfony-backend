@@ -58,7 +58,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
             }
         };
 
-        array_map($iterator, $annotations);
+        \array_map($iterator, $annotations);
 
         if ($supported && $this->container !== null) {
             $controllerService = $this->getControllerService($method);
@@ -133,7 +133,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
             }
         };
 
-        array_map($iterator, $annotations);
+        \array_map($iterator, $annotations);
 
         if ($needsAuthorizationHeader) {
             $annotation->addHeader(
@@ -160,7 +160,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
     private function attachOutput(ApiDoc $annotation, \ReflectionMethod $method, RestController $controllerService)
     {
         $entity = $controllerService->getResourceService()->getEntityName();
-        $bits = explode('\\', $entity);
+        $bits = \explode('\\', $entity);
 
         $output = null;
 
@@ -181,7 +181,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
             case 'find':
                 $output = [
                     'class'     => 'array<' . $entity . '>',
-                    'groups'    => array_slice($bits, -1, 1)
+                    'groups'    => \array_slice($bits, -1, 1)
                 ];
                 break;
             case 'create':
@@ -190,7 +190,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
             case 'update':
                 $output = [
                     'class'     => $entity,
-                    'groups'    => array_slice($bits, -1, 1)
+                    'groups'    => \array_slice($bits, -1, 1)
                 ];
                 break;
             case 'ids':
@@ -209,7 +209,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
         }
 
         if ($output !== null) {
-            $clazz = new \ReflectionClass(get_class($annotation));
+            $clazz = new \ReflectionClass(\get_class($annotation));
             $property = $clazz->getProperty('output');
             $property->setAccessible(true);
             $property->setValue($annotation, $output);
@@ -238,7 +238,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
             }
         };
 
-        array_map($iterator, $annotations);
+        \array_map($iterator, $annotations);
 
         // Oh noes, @Security annotation is not present - cannot do anything
         if ($security === false) {
@@ -246,7 +246,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
         }
 
         // Determine necessary user role for current route
-        preg_match('/has_role\(\'(\w+)\'\)/', $security->getExpression(), $matches);
+        \preg_match('/has_role\(\'(\w+)\'\)/', $security->getExpression(), $matches);
 
         // And we have some roles, so we can add those to method documentation
         if ($matches) {
@@ -260,7 +260,7 @@ MESSAGE;
             $annotation->setAuthenticationRoles([$matches[1]]);
 
             // Attach new documentation block
-            $annotation->setDocumentation(sprintf($message, $annotation->getDocumentation(), $matches[1]));
+            $annotation->setDocumentation(\sprintf($message, $annotation->getDocumentation(), $matches[1]));
         }
     }
 
@@ -288,7 +288,7 @@ MESSAGE;
             }
         };
 
-        array_map($iterator, $annotations);
+        \array_map($iterator, $annotations);
 
         // Attach auth related status codes
         if ($security) {
@@ -324,18 +324,18 @@ MESSAGE;
                 break;
         }
 
-        ksort($codes);
+        \ksort($codes);
+
+        static $data = [
+            'message'   => 'string',
+            'code'      => 'integer',
+            'status'    => 'integer',
+        ];
 
         // Finally add status codes.
         foreach ($codes as $code => $description) {
             if ($code >= 400) {
-                $data = [
-                    'message'   => 'string',
-                    'code'      => 'integer',
-                    'status'    => 'integer',
-                ];
-
-                $description .= ' -  Output is an JSON object as in: ' . json_encode($data);
+                $description .= ' -  Output is an JSON object as in: ' . \json_encode($data);
             }
 
             $annotation->addStatusCode($code, $description);
