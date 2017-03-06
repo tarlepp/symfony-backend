@@ -23,11 +23,11 @@ use Doctrine\Common\Persistence\Proxy;
  *
  * @method  Repository      getRepository(): Repository
  * @method  Proxy|Entity    getReference(string $id): Proxy
- * @method  Entity[]        find(array $criteria = [], array $orderBy = [], int $limit = null, int $offset = null, array $search = []): array
- * @method  null|Entity     findOne(string $id, bool $throwExceptionIfNotFound = false)
- * @method  null|Entity     findOneBy(array $criteria, array $orderBy = [], bool $throwExceptionIfNotFound = false)
+ * @method  Entity[]        find(array $criteria = null, array $orderBy = null, int $limit = null, int $offset = null, array $search = null): array
+ * @method  null|Entity     findOne(string $id, bool $throwExceptionIfNotFound = null)
+ * @method  null|Entity     findOneBy(array $criteria, array $orderBy = null, bool $throwExceptionIfNotFound = null)
  * @method  Entity          create(\stdClass $data): Entity
- * @method  Entity          save(Entity $entity, bool $skipValidation = false): Entity
+ * @method  Entity          save(Entity $entity, bool $skipValidation = null): Entity
  * @method  Entity          update(string $id, \stdClass $data): Entity
  * @method  Entity          delete(string $id): Entity
  */

@@ -85,12 +85,12 @@ interface Base
      * @throws  NoResultException
      * @throws  NonUniqueResultException
      *
-     * @param   array   $criteria
-     * @param   array   $search
+     * @param   null|array  $criteria
+     * @param   null|array  $search
      *
      * @return  integer
      */
-    public function count(array $criteria = [], array $search = []): int;
+    public function count(array $criteria = null, array $search = null): int;
 
     /**
      * Generic replacement for basic 'findBy' method if/when you want to use generic LIKE search.
@@ -108,7 +108,7 @@ interface Base
     public function findByWithSearchTerms(
         array $search,
         array $criteria,
-        array $orderBy = [],
+        array $orderBy = null,
         int $limit = null,
         int $offset = null
     ): array;
@@ -118,12 +118,12 @@ interface Base
      *
      * @throws  \InvalidArgumentException
      *
-     * @param   array   $criteria
-     * @param   array   $search
+     * @param   null|array  $criteria
+     * @param   null|array  $search
      *
      * @return  array
      */
-    public function findIds(array $criteria = [], array $search = []): array;
+    public function findIds(array $criteria = null, array $search = null): array;
 
     /**
      * Helper method to 'reset' repository entity table - in other words delete all records - so be carefully with

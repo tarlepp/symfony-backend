@@ -7,7 +7,6 @@ declare(strict_types=1);
  */
 namespace App\Services\Rest;
 
-use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Interfaces\EntityInterface as Entity;
 use App\Repository\Base as Repository;
 use Doctrine\ORM\OptimisticLockException;
@@ -87,19 +86,25 @@ abstract class Base implements Interfaces\Base
      */
     public function getAssociations(): array
     {
-        return array_keys($this->repository->getAssociations());
+        return \array_keys($this->repository->getAssociations());
     }
 
     /**
      * {@inheritdoc}
      */
     public function find(
-        array $criteria = [],
-        array $orderBy = [],
+        array $criteria = null,
+        array $orderBy = null,
         int $limit = null,
         int $offset = null,
-        array $search = []
+        array $search = null
     ): array {
+        $criteria = $criteria ?? [];
+        $orderBy = $orderBy ?? [];
+        $limit = $limit ?? 0;
+        $offset = $offset ?? 0;
+        $search = $search ?? [];
+
         // Before callback method call
         $this->beforeFind($criteria, $orderBy, $limit, $offset, $search);
 
@@ -115,12 +120,14 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function findOne(string $id, bool $throwExceptionIfNotFound = false)
+    public function findOne(string $id, bool $throwExceptionIfNotFound = null)
     {
+        $throwExceptionIfNotFound = $throwExceptionIfNotFound ?? false;
+
         // Before callback method call
         $this->beforeFindOne($id);
 
-        /** @var null|EntityInterface $entity */
+        /** @var null|Entity $entity */
         $entity = $this->repository->find($id);
 
         // Entity not found
@@ -137,12 +144,15 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = [], bool $throwExceptionIfNotFound = false)
+    public function findOneBy(array $criteria, array $orderBy = null, bool $throwExceptionIfNotFound = null)
     {
+        $orderBy = $orderBy ?? [];
+        $throwExceptionIfNotFound = $throwExceptionIfNotFound ?? false;
+
         // Before callback method call
         $this->beforeFindOneBy($criteria, $orderBy);
 
-        /** @var null|EntityInterface $entity */
+        /** @var null|Entity $entity */
         $entity = $this->repository->findOneBy($criteria, $orderBy);
 
         // Entity not found
@@ -159,8 +169,11 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function count(array $criteria = [], array $search = []): int
+    public function count(array $criteria = null, array $search = null): int
     {
+        $criteria = $criteria ?? [];
+        $search = $search ?? [];
+
         // Before callback method call
         $this->beforeCount($criteria, $search);
 
@@ -202,8 +215,10 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function save(Entity $entity, bool $skipValidation = false): Entity
+    public function save(Entity $entity, bool $skipValidation = null): Entity
     {
+        $skipValidation = $skipValidation ?? false;
+
         // Before callback method call
         $this->beforeSave($entity);
 
@@ -212,7 +227,7 @@ abstract class Base implements Interfaces\Base
             $errors = $this->validator->validate($entity);
 
             // Oh noes, we have some errors
-            if (count($errors) > 0) {
+            if (\count($errors) > 0) {
                 throw new ValidatorException((string)$errors);
             }
         }
@@ -279,8 +294,11 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function getIds(array $criteria = [], array $search = []): array
+    public function getIds(array $criteria = null, array $search = null): array
     {
+        $criteria = $criteria ?? [];
+        $search = $search ?? [];
+
         // Before callback method call
         $this->beforeIds($criteria, $search);
 
@@ -296,15 +314,21 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function beforeFind(array &$criteria, array &$orderBy, &$limit, &$offset, array &$search)
+    public function beforeFind(array &$criteria, array &$orderBy, int &$limit, int &$offset, array &$search)
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function afterFind(array &$criteria, array &$orderBy, &$limit, &$offset, array &$search, array &$entities)
-    {
+    public function afterFind(
+        array &$criteria,
+        array &$orderBy,
+        int &$limit,
+        int &$offset,
+        array &$search,
+        array &$entities
+    ) {
     }
 
     /**
@@ -317,7 +341,7 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function afterFindOne(string &$id, $entity)
+    public function afterFindOne(string &$id, Entity $entity = null)
     {
     }
 
@@ -331,7 +355,7 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function afterFindOneBy(array &$criteria, array &$orderBy, $entity)
+    public function afterFindOneBy(array &$criteria, array &$orderBy, Entity $entity = null)
     {
     }
 
@@ -436,7 +460,7 @@ abstract class Base implements Interfaces\Base
     protected function persistEntity(Entity $entity, \stdClass $data)
     {
         // Specify properties that are not allowed to update by user
-        $ignoreProperties = array_merge(
+        $ignoreProperties = \array_merge(
             [
                 'createdAt', 'createdBy',
                 'updatedAt', 'updatedBy',
@@ -454,22 +478,22 @@ abstract class Base implements Interfaces\Base
         foreach ($data as $property => $value) {
             $type = $meta->getTypeOfField($property);
 
-            if (in_array($property, $ignoreProperties, true)) {
+            if (\in_array($property, $ignoreProperties, true)) {
                 continue;
-            } elseif (array_key_exists($property, $associations)) {
+            } elseif (\array_key_exists($property, $associations)) {
                 $value = $this->determineAssociationValue($associations[$property], $value);
             } elseif ($type === 'date') {
                 $value = new \DateTime($value, new \DateTimeZone('UTC'));
             }
 
             // Specify setter method for current property
-            $method = sprintf(
+            $method = \sprintf(
                 'set%s',
-                ucwords($property)
+                \ucwords($property)
             );
 
             // Yeah method exists, so use it with current value
-            if (method_exists($entity, $method)) {
+            if (\method_exists($entity, $method)) {
                 $entity->$method($value);
             }
         }
@@ -486,19 +510,19 @@ abstract class Base implements Interfaces\Base
      * @param   array   $association
      * @param   mixed   $value
      *
-     * @return  EntityInterface
+     * @return  Entity
      */
-    private function determineAssociationValue(array $association, $value)
+    private function determineAssociationValue(array $association, $value): Entity
     {
         // Get repository class for current association entity
         $repository = $this->getRepository()->getEntityManager()->getRepository($association['targetEntity']);
 
-        /** @var EntityInterface $entity */
+        /** @var Entity $entity */
         $entity = $repository->findOneBy(['id' => $value instanceof \stdClass ? $value->id : $value]);
 
         // Oh noes association entity not found - darn...
         if ($entity === null) {
-            $message = sprintf(
+            $message = \sprintf(
                 "Cannot find record for '%s' with id '%s'",
                 $association['fieldName'],
                 $value instanceof \stdClass ? $value->id : $value

@@ -103,8 +103,11 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function count(array $criteria = [], array $search = []): int
+    public function count(array $criteria = null, array $search = null): int
     {
+        $criteria = $criteria ?? [];
+        $search = $search ?? [];
+
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
 
@@ -123,10 +126,14 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     public function findByWithSearchTerms(
         array $search,
         array $criteria,
-        array $orderBy = [],
+        array $orderBy = null,
         int $limit = null,
         int $offset = null
     ): array {
+        $orderBy = $orderBy ?? [];
+        $limit = $limit ?? 0;
+        $offset = $offset ?? 0;
+
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
 
@@ -136,8 +143,8 @@ abstract class Base extends EntityRepository implements Interfaces\Base
         $this->processOrderBy($queryBuilder, $orderBy);
 
         // Process limit and offset
-        null === $limit ?: $queryBuilder->setMaxResults($limit);
-        null === $offset ?: $queryBuilder->setFirstResult($offset);
+        $limit === 0 ?: $queryBuilder->setMaxResults($limit);
+        $offset === 0 ?: $queryBuilder->setFirstResult($offset);
 
         return $queryBuilder->getQuery()->getResult();
     }
@@ -145,8 +152,11 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
-    public function findIds(array $criteria = [], array $search = []): array
+    public function findIds(array $criteria = null, array $search = null): array
     {
+        $criteria = $criteria ?? [];
+        $search = $search ?? [];
+
         // Create new query builder
         $queryBuilder = $this->createQueryBuilder('entity');
 
@@ -159,7 +169,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
             ->distinct(true)
         ;
 
-        return array_map('current', $queryBuilder->getQuery()->getArrayResult());
+        return \array_map('current', $queryBuilder->getQuery()->getArrayResult());
     }
 
     /**
@@ -234,13 +244,13 @@ abstract class Base extends EntityRepository implements Interfaces\Base
          * @return  array
          */
         $createCriteria = function (string $column, $value, $operator = null) {
-            if (strpos($column, '.') === false) {
+            if (\strpos($column, '.') === false) {
                 $column = 'entity.' . $column;
             }
 
             // Determine used operator
             if (null === $operator) {
-                $operator = is_array($value) ? 'in' : 'eq';
+                $operator = \is_array($value) ? 'in' : 'eq';
             }
 
             return [$column, $operator, $value];
@@ -254,7 +264,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
          */
         $processCriteria = function ($value, $column) use (&$condition, $createCriteria) {
             // If criteria contains 'and' OR 'or' key(s) assume that array in only in the right format
-            if (strcmp($column, 'and') === 0 || strcmp($column, 'or') === 0) {
+            if (\strcmp($column, 'and') === 0 || \strcmp($column, 'or') === 0) {
                 $condition[$column] = $value;
             } else {
                 // Add condition
@@ -263,7 +273,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
         };
 
         // Create used condition array
-        array_walk($criteria, $processCriteria);
+        \array_walk($criteria, $processCriteria);
 
         // And attach search term condition to main query
         $queryBuilder->andWhere($this->getExpression($queryBuilder, $queryBuilder->expr()->andX(), $condition));
@@ -311,7 +321,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
     protected function processOrderBy(QueryBuilder $queryBuilder, array $orderBy)
     {
         foreach ($orderBy as $column => $order) {
-            if (strpos($column, '.') === false) {
+            if (\strpos($column, '.') === false) {
                 $column = 'entity.' . $column;
             }
 
@@ -403,17 +413,17 @@ abstract class Base extends EntityRepository implements Interfaces\Base
         CompositeExpression $expression,
         array $criteria
     ): CompositeExpression {
-        if (!count($criteria)) {
+        if (!\count($criteria)) {
             return $expression;
         }
 
         foreach ($criteria as $key => $comparison) {
-            if ($key === 'or' || array_key_exists('or', $comparison)) {
+            if ($key === 'or' || \array_key_exists('or', $comparison)) {
                 $expression->add($this->getExpression($queryBuilder, $queryBuilder->expr()->orX(), $comparison));
-            } elseif ($key === 'and' || array_key_exists('and', $comparison)) {
+            } elseif ($key === 'and' || \array_key_exists('and', $comparison)) {
                 $expression->add($this->getExpression($queryBuilder, $queryBuilder->expr()->andX(), $comparison));
             } else {
-                $comparison = (object)array_combine(['field', 'operator', 'value'], $comparison);
+                $comparison = (object)\array_combine(['field', 'operator', 'value'], $comparison);
 
                 // Increase parameter count
                 $this->parameterCount++;
@@ -421,10 +431,10 @@ abstract class Base extends EntityRepository implements Interfaces\Base
                 // Initialize used callback parameters
                 $parameters = [$comparison->field];
 
-                $lowercaseOperator = strtolower($comparison->operator);
+                $lowercaseOperator = \strtolower($comparison->operator);
 
                 // Array values needs some extra work
-                if (is_array($comparison->value)) {
+                if (\is_array($comparison->value)) {
                     // Operator is between, so we need to add third parameter for Expr method
                     if ($lowercaseOperator === 'between') {
                         $parameters[] = '?' . $this->parameterCount;
@@ -435,7 +445,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
                         $parameters[] = '?' . $this->parameterCount;
                         $queryBuilder->setParameter($this->parameterCount, $comparison->value[1]);
                     } else { // Otherwise this must be IN or NOT IN expression
-                        $parameters[] = array_map(function ($value) use ($queryBuilder) {
+                        $parameters[] = \array_map(function ($value) use ($queryBuilder) {
                             return  $queryBuilder->expr()->literal($value);
                         }, $comparison->value);
                     }
@@ -446,7 +456,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
                 }
 
                 // And finally add new expression to main one with specified parameters
-                $expression->add(call_user_func_array([$queryBuilder->expr(), $comparison->operator], $parameters));
+                $expression->add(\call_user_func_array([$queryBuilder->expr(), $comparison->operator], $parameters));
             }
         }
 
