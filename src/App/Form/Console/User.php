@@ -64,7 +64,7 @@ class User extends AbstractType
             $choices[$name] = $userGroup->getId();
         };
 
-        array_map($iterator, $this->userGroupService->find());
+        \array_map($iterator, $this->userGroupService->find());
 
         return $choices;
     }
@@ -81,7 +81,6 @@ class User extends AbstractType
                 [
                     'label'     => 'Username',
                     'required'  => true,
-                    'data'      => '',
                 ]
             )
             ->add(
@@ -90,7 +89,6 @@ class User extends AbstractType
                 [
                     'label'     => 'Firstname',
                     'required'  => true,
-                    'data'      => '',
                 ]
             )
             ->add(
@@ -99,7 +97,6 @@ class User extends AbstractType
                 [
                     'label'     => 'Surname',
                     'required'  => true,
-                    'data'      => '',
                 ]
             )
             ->add(
@@ -108,7 +105,6 @@ class User extends AbstractType
                 [
                     'label'     => 'Email address',
                     'required'  => true,
-                    'data'      => '',
                 ]
             )
             ->add(
@@ -116,7 +112,6 @@ class User extends AbstractType
                 Type\PasswordType::class,
                 [
                     'label'     => 'Password',
-                    'data'      => '',
                 ]
             )
             ->add(
@@ -126,7 +121,6 @@ class User extends AbstractType
                     'choices'   => $this->getUserGroupChoices(),
                     'multiple'  => true,
                     'required'  => true,
-                    'data'      => [],
                 ]
             )
         ;
