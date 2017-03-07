@@ -63,9 +63,9 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
         try {
             $user = $query->getSingleResult();
         } catch (NoResultException $exception) {
-            sleep(5);
+            \sleep(5);
 
-            $message = sprintf(
+            $message = \sprintf(
                 'User "%s" not found',
                 $username
             );
@@ -92,10 +92,10 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      */
     public function refreshUser(UserInterface $user): UserInterface
     {
-        $class = get_class($user);
+        $class = \get_class($user);
 
         if (!$this->supportsClass($class)) {
-            throw new UnsupportedUserException(sprintf('Instance of "%s" is not supported.', $class));
+            throw new UnsupportedUserException(\sprintf('Instance of "%s" is not supported.', $class));
         }
 
         return $this->loadUserByUsername($user->getUsername());
@@ -110,7 +110,7 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
      */
     public function supportsClass($class): bool
     {
-        return $this->getEntityName() === $class || is_subclass_of($class, $this->getEntityName());
+        return $this->getEntityName() === $class || \is_subclass_of($class, $this->getEntityName());
     }
 
     /**
