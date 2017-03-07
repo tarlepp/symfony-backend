@@ -56,7 +56,7 @@ class BodyListener
      */
     private function isJsonRequest(Request $request): bool
     {
-        return in_array($request->getContentType(), ['', 'json', 'txt'], true);
+        return \in_array($request->getContentType(), ['', 'json', 'txt'], true);
     }
 
     /**

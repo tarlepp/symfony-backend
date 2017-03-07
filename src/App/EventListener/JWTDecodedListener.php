@@ -66,9 +66,9 @@ class JWTDecodedListener
         $user = $this->userService->getRepository()->loadUserByUsername($payload['username']);
 
         // Custom checks to validate user's JWT
-        if ((!array_key_exists('ip', $payload) || $payload['ip'] !== $request->getClientIp())
-            || (!array_key_exists('agent', $payload) || $payload['agent'] !== $request->headers->get('User-Agent'))
-            || (!array_key_exists('checksum', $payload) || $payload['checksum'] !== $user->getChecksum())
+        if ((!\array_key_exists('ip', $payload) || $payload['ip'] !== $request->getClientIp())
+            || (!\array_key_exists('agent', $payload) || $payload['agent'] !== $request->headers->get('User-Agent'))
+            || (!\array_key_exists('checksum', $payload) || $payload['checksum'] !== $user->getChecksum())
         ) {
             $event->markAsInvalid();
         }

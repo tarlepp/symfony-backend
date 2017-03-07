@@ -134,8 +134,8 @@ class JWTCreatedListener
     private function setUserData(array &$payload, User $user)
     {
         // Determine all roles for current user
-        $payload['roles'] = array_unique(
-            array_map(
+        $payload['roles'] = \array_unique(
+            \array_map(
                 function (RoleInterface $role) {
                     return $role->getRole();
                 },
@@ -144,7 +144,7 @@ class JWTCreatedListener
         );
 
         // Merge payload with user's login data
-        $payload = array_merge($payload, $user->getLoginData());
+        $payload = \array_merge($payload, $user->getLoginData());
     }
 
     /**
