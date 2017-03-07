@@ -37,6 +37,14 @@ class Roles implements RolesInterface
     /**
      * {@inheritdoc}
      */
+    public function getHierarchy(): array
+    {
+        return $this->rolesHierarchy;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRoles(): array
     {
         $roles = [

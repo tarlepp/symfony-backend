@@ -29,6 +29,13 @@ interface Roles
     public function __construct(array $rolesHierarchy);
 
     /**
+     * Getter for role hierarchy.
+     *
+     * @return array
+     */
+    public function getHierarchy(): array;
+
+    /**
      * Getter method to return all roles in single dimensional array.
      *
      * @return string[]

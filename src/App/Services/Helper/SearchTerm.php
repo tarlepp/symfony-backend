@@ -22,17 +22,21 @@ class SearchTerm implements SearchTermInterface
      *
      * @param   string|array    $column     Search column(s), could be a string or an array of strings.
      * @param   string|array    $search     Search term(s), could be a string or an array of strings.
-     * @param   string          $operand    Used operand with multiple search terms. See OPERAND_* constants.
-     * @param   integer         $mode       Used mode on LIKE search. See MODE_* constants.
+     * @param   null|string     $operand    Used operand with multiple search terms. See OPERAND_* constants. Defaults
+     *                                      to self::OPERAND_OR
+     * @param   null|integer    $mode       Used mode on LIKE search. See MODE_* constants. Defaults to self::MODE_FULL
      *
      * @return  array|null
      */
     public static function getCriteria(
         $column,
         $search,
-        string $operand = self::OPERAND_OR,
-        int $mode = self::MODE_FULL
+        string $operand = null,
+        int $mode = null
     ) {
+        $operand = $operand ?? self::OPERAND_OR;
+        $mode = $mode ?? self::MODE_FULL;
+
         /**
          * Lambda function to filter out all "empty" values.
          *
@@ -41,13 +45,20 @@ class SearchTerm implements SearchTermInterface
          * @return  bool
          */
         $iterator = function ($value) {
-            return mb_strlen(trim((string)$value)) > 0;
+            return mb_strlen(\trim((string)$value)) > 0;
         };
 
         // Normalize column and search parameters
-        $columns = array_filter(array_map('trim', (is_array($column) ? $column : (array)$column)), $iterator);
-        $searchTerms = array_unique(
-            array_filter(array_map('trim', (is_array($search) ? $search : explode(' ', (string)$search))), $iterator)
+        $columns = \array_filter(
+            \array_map('\trim', (\is_array($column) ? $column : (array)$column)),
+            $iterator
+        );
+
+        $searchTerms = \array_unique(
+            \array_filter(
+                \array_map('\trim', (\is_array($search) ? $search : \explode(' ', (string)$search))),
+                $iterator
+            )
         );
 
         // Fallback to OR operand if not supported one given
@@ -83,7 +94,7 @@ class SearchTerm implements SearchTermInterface
          */
         $iteratorTerm = function ($term) use ($columns, $mode) {
             $iteratorColumn = function ($column) use ($term, $mode) {
-                if (strpos($column, '.') === false) {
+                if (\strpos($column, '.') === false) {
                     $column = 'entity.' . $column;
                 }
 
@@ -103,21 +114,21 @@ class SearchTerm implements SearchTermInterface
                 return [$column, 'like', $term];
             };
 
-            return count($columns) ? array_map($iteratorColumn, $columns) : null;
+            return \count($columns) ? \array_map($iteratorColumn, $columns) : null;
         };
 
         // Get criteria
-        $criteria = array_filter(array_map($iteratorTerm, $searchTerms));
+        $criteria = \array_filter(\array_map($iteratorTerm, $searchTerms));
 
         // Initialize output
         $output = null;
 
         // We have some generated criteria
-        if (count($criteria)) {
+        if (\count($criteria)) {
             // Create used criteria array
             $output = [
                 'and' => [
-                    $operand => call_user_func_array('array_merge', $criteria)
+                    $operand => \call_user_func_array('\array_merge', $criteria)
                 ]
             ];
         }
