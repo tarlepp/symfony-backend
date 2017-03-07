@@ -120,13 +120,13 @@ class ResponseLogger implements ResponseLoggerInterface
             return;
         }
 
+        // Create new request log entity
+        $entity = new RequestLogEntity($this->request, $this->response);
+        $entity->setUser($this->user);
+        $entity->setMasterRequest($this->masterRequest);
+
         // Store request log and  clean history
         try {
-            // Create new request log entity
-            $entity = new RequestLogEntity($this->request, $this->response);
-            $entity->setUser($this->user);
-            $entity->setMasterRequest($this->masterRequest);
-
             $this->service->save($entity, true);
             $this->service->getRepository()->cleanHistory();
         } catch (\Exception $error) {

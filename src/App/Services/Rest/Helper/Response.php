@@ -78,10 +78,12 @@ class Response implements ResponseInterface
     public function createResponse(
         HttpFoundationRequest $request,
         $data,
-        int $httpStatus = 200,
+        int $httpStatus = null,
         string $format = null,
         Context $context = null
     ): HttpFoundationResponse {
+        $httpStatus = $httpStatus ?? 200;
+
         if (null === $format) {
             $format = $request->getContentType() === self::FORMAT_XML ? self::FORMAT_XML : self::FORMAT_JSON;
         }
@@ -118,33 +120,33 @@ class Response implements ResponseInterface
     {
         // Specify used populate settings
         $populate = (array)$request->get('populate', []);
-        $populateAll = array_key_exists('populateAll', $request->query->all());
-        $populateOnly = array_key_exists('populateOnly', $request->query->all());
+        $populateAll = \array_key_exists('populateAll', $request->query->all());
+        $populateOnly = \array_key_exists('populateOnly', $request->query->all());
 
         // Get current entity name
         $entityName = $this->getResourceService()->getEntityName();
 
-        $bits = explode('\\', $entityName);
-        $entityName = end($bits);
+        $bits = \explode('\\', $entityName);
+        $entityName = \end($bits);
 
         // Determine used default group
         $defaultGroup = $populateAll ? 'Default' : $entityName;
 
         // Set all associations to be populated
-        if ($populateAll && count($populate) === 0) {
+        if ($populateAll && \count($populate) === 0) {
             $associations = $this->getResourceService()->getAssociations();
 
             $iterator = function (string $assocName) use ($entityName): string {
                 return $entityName . '.' . $assocName;
             };
 
-            $populate = array_map($iterator, $associations);
+            $populate = \array_map($iterator, $associations);
         }
 
         if ($populateOnly) {
-            $groups = count($populate) === 0 ? [$defaultGroup] : $populate;
+            $groups = \count($populate) === 0 ? [$defaultGroup] : $populate;
         } else {
-            $groups = array_merge([$defaultGroup], $populate);
+            $groups = \array_merge([$defaultGroup], $populate);
         }
 
         // Create context and set used groups

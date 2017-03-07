@@ -47,7 +47,7 @@ class Request
     public static function getCriteria(HttpFoundationRequest $request): array
     {
         try {
-            $where = array_filter(JSON::decode($request->get('where', '{}'), true));
+            $where = \array_filter(JSON::decode($request->get('where', '{}'), true));
         } catch (\LogicException $error) {
             throw new HttpException(
                 HttpFoundationResponse::HTTP_BAD_REQUEST,
@@ -84,7 +84,7 @@ class Request
     public static function getOrderBy(HttpFoundationRequest $request)
     {
         // Normalize parameter value
-        $input = array_filter((array)$request->get('order', []));
+        $input = \array_filter((array)$request->get('order', []));
 
         // Initialize output
         $output = [];
@@ -96,18 +96,18 @@ class Request
          * @param   string          $value
          * @param   integer|string  $key
          */
-        $iterator = function (&$value, $key) use (&$output) {
+        $iterator = function (string &$value, $key) use (&$output) {
             $order = 'ASC';
 
-            if (is_string($key)) {
+            if (\is_string($key)) {
                 $column = $key;
-                $order = in_array(strtoupper($value), ['ASC', 'DESC'], true) ? strtoupper($value) : $order;
+                $order = \in_array(mb_strtoupper($value), ['ASC', 'DESC'], true) ? mb_strtoupper($value) : $order;
             } else {
                 $column = $value;
             }
 
             if ($column[0] === '-') {
-                $column = substr($column, 1);
+                $column = mb_substr($column, 1);
                 $order = 'DESC';
             }
 
@@ -115,7 +115,7 @@ class Request
         };
 
         // Process user input
-        array_walk($input, $iterator);
+        \array_walk($input, $iterator);
 
         return $output;
     }
@@ -134,7 +134,7 @@ class Request
     {
         $limit = $request->get('limit', null);
 
-        return null === $limit ? null : abs($limit);
+        return null === $limit ? null : \abs($limit);
     }
 
     /**
@@ -151,7 +151,7 @@ class Request
     {
         $offset = $request->get('offset', null);
 
-        return null === $offset ? null : abs($offset);
+        return null === $offset ? null : \abs($offset);
     }
 
     /**
@@ -177,11 +177,11 @@ class Request
         try {
             $input = JSON::decode($search, true);
 
-            if (!is_array($input)) {
+            if (!\is_array($input)) {
                 throw new \LogicException('Search term is not an array, fallback to string handling');
             }
 
-            if (!array_key_exists('and', $input) && !array_key_exists('or', $input)) {
+            if (!\array_key_exists('and', $input) && !\array_key_exists('or', $input)) {
                 throw new HttpException(
                     HttpFoundationResponse::HTTP_BAD_REQUEST,
                     'Given search parameter is not valid, within JSON provide \'and\' and/or \'or\' property.'
@@ -190,7 +190,7 @@ class Request
         } catch (\LogicException $error) { // Parameter was not JSON so just use parameter values as search strings
             // By default we want to use 'OR' operand with given search words.
             return [
-                'or' => array_unique(array_values(array_filter(explode(' ', $search)))),
+                'or' => \array_unique(\array_values(\array_filter(\explode(' ', $search)))),
             ];
         }
 
@@ -200,15 +200,15 @@ class Request
          * @param   string|array $terms
          */
         $iterator = function (&$terms) {
-            if (!is_array($terms)) {
-                $terms = explode(' ', (string)$terms);
+            if (!\is_array($terms)) {
+                $terms = \explode(' ', (string)$terms);
             }
 
-            $terms = array_unique(array_values(array_filter($terms)));
+            $terms = \array_unique(\array_values(\array_filter($terms)));
         };
 
         // Normalize user input, note that this support array and string formats on value
-        array_walk($input, $iterator);
+        \array_walk($input, $iterator);
 
         return $input;
     }

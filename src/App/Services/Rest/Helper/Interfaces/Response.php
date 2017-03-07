@@ -60,16 +60,16 @@ interface Response
      *
      * @param   HttpFoundationRequest   $request
      * @param   mixed                   $data
-     * @param   integer                 $httpStatus
-     * @param   string                  $format
-     * @param   Context                 $context
+     * @param   null|integer            $httpStatus
+     * @param   null|string             $format
+     * @param   null|Context            $context
      *
      * @return  HttpFoundationResponse
      */
     public function createResponse(
         HttpFoundationRequest $request,
         $data,
-        int $httpStatus = 200,
+        int $httpStatus = null,
         string $format = null,
         Context $context = null
     ): HttpFoundationResponse;
