@@ -77,7 +77,7 @@ class DefaultControllerTest extends WebTestCase
      */
     private function getContent($method): string
     {
-        return json_encode([
+        return \json_encode([
             'message'   => 'No route found for "' . $method . ' /": Method Not Allowed (Allow: GET, HEAD)',
             'code'      => 0,
             'status'    => 405,

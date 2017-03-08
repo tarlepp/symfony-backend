@@ -7,6 +7,7 @@ declare(strict_types = 1);
  */
 namespace AppBundle\functional\Controller;
 
+use App\Tests\Traits\TestThatBaseRouteWithAnonUserReturns200;
 use App\Tests\Traits\TestThatBaseRouteWithAnonUserReturns401;
 use App\Tests\WebTestCase;
 
@@ -20,7 +21,7 @@ class PlaygroundControllerTest extends WebTestCase
 {
     static protected $baseRoute = '/playground';
 
-    use TestThatBaseRouteWithAnonUserReturns401;
+    use TestThatBaseRouteWithAnonUserReturns200;
 
     /**
      * @dataProvider dataProviderTestThatResponseIsExpectedWithLoggedInUser

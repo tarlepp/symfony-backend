@@ -73,14 +73,14 @@ class UserControllerTest extends WebTestCase
             }
 
             // Get response object keys
-            $keys = array_keys(get_object_vars($responseData));
+            $keys = \array_keys(\get_object_vars($responseData));
 
-            static::assertSame(sort($attributes), sort($keys), 'Response contains keys that are not expected');
+            static::assertSame(\sort($attributes), \sort($keys), 'Response contains keys that are not expected');
             static::assertSame('Access denied.', $responseData->message, 'Response message was not expected');
             static::assertSame(403, $responseData->status, 'Response status was not expected');
             static::assertSame(0, $responseData->code, 'Response code was not expected');
         } else { // Otherwise check that response has correct output
-            static::assertTrue(is_array($responseData), 'Response did not return array of users.');
+            static::assertTrue(\is_array($responseData), 'Response did not return array of users.');
             static::assertCount(5, $responseData, 'Response did not contain expected number of users.');
         }
     }
@@ -126,9 +126,9 @@ class UserControllerTest extends WebTestCase
             }
 
             // Get response object keys
-            $keys = array_keys(get_object_vars($responseData));
+            $keys = \array_keys(\get_object_vars($responseData));
 
-            static::assertSame(sort($attributes), sort($keys), 'Response contains keys that are not expected');
+            static::assertSame(\sort($attributes), \sort($keys), 'Response contains keys that are not expected');
             static::assertSame('Access denied.', $responseData->message);
             static::assertSame(403, $responseData->status, 'Response status was not expected');
             static::assertSame(0, $responseData->code, 'Response code was not expected');
@@ -144,9 +144,9 @@ class UserControllerTest extends WebTestCase
             }
 
             // Get response object keys
-            $keys = array_keys(get_object_vars($responseData));
+            $keys = \array_keys(\get_object_vars($responseData));
 
-            static::assertSame(sort($attributes), sort($keys), 'Response contains keys that are not expected');
+            static::assertSame(\sort($attributes), \sort($keys), 'Response contains keys that are not expected');
         }
     }
 
@@ -184,9 +184,9 @@ class UserControllerTest extends WebTestCase
         }
 
         // Get response object keys
-        $keys = array_keys(get_object_vars($responseData));
+        $keys = \array_keys(\get_object_vars($responseData));
 
-        static::assertSame(sort($attributes), sort($keys), 'Response contains keys that are not expected');
+        static::assertSame(\sort($attributes), \sort($keys), 'Response contains keys that are not expected');
         static::assertSame('You can\'t remove yourself...', $responseData->message);
         static::assertSame(400, $responseData->status, 'Response status was not expected');
         static::assertSame(0, $responseData->code, 'Response code was not expected');
@@ -250,7 +250,7 @@ class UserControllerTest extends WebTestCase
     {
         // Fetch users and pick random of those
         $users = $this->getContainer()->get('app.services.rest.user')->find();
-        $key = array_rand($users, 1);
+        $key = \array_rand($users, 1);
 
         /** @var User $user */
         $user = $users[$key];
@@ -280,7 +280,7 @@ class UserControllerTest extends WebTestCase
     {
         // Fetch users and pick random of those
         $users = $this->getContainer()->get('app.services.rest.user')->find();
-        $key = array_rand($users, 1);
+        $key = \array_rand($users, 1);
 
         /** @var User $user */
         $user = $users[$key];
@@ -322,9 +322,9 @@ class UserControllerTest extends WebTestCase
             ->get('app.services.rest.user')
             ->find(['and' => [['entity.username', 'neq', 'john-root']]]);
 
-        return call_user_func_array(
-            'array_merge',
-            array_map(function (User $user) {
+        return \call_user_func_array(
+            '\array_merge',
+            \array_map(function (User $user) {
                 return [
                     ['john-root', 'doe-root', $user, Response::HTTP_OK],
                     ['john.doe-root@test.com', 'doe-root', $user, Response::HTTP_NOT_FOUND],

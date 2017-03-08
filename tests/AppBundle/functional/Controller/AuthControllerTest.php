@@ -40,7 +40,7 @@ class AuthControllerTest extends WebTestCase
                 'CONTENT_TYPE'          => 'application/json',
                 'HTTP_X-Requested-With' => 'XMLHttpRequest'
             ],
-            json_encode(['username' => $username, 'password' => $password])
+            \json_encode(['username' => $username, 'password' => $password])
         );
 
         // Check that HTTP status code is correct
@@ -89,7 +89,7 @@ class AuthControllerTest extends WebTestCase
                 'CONTENT_TYPE'          => 'application/json',
                 'HTTP_X-Requested-With' => 'XMLHttpRequest'
             ],
-            json_encode(['username' => $username, 'password' => $password])
+            \json_encode(['username' => $username, 'password' => $password])
         );
 
         // Specify error message
@@ -99,7 +99,7 @@ class AuthControllerTest extends WebTestCase
         ];
 
         // Check that HTTP status code is correct
-        static::assertSame(401, $client->getResponse()->getStatusCode(), implode("\n", $message));
+        static::assertSame(401, $client->getResponse()->getStatusCode(), \implode("\n", $message));
     }
 
     /**
