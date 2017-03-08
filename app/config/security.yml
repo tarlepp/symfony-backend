@@ -56,6 +56,7 @@ security:
         api:
             pattern: ^/
             stateless: true
+            anonymous: true
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator

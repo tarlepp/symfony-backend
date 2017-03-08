@@ -19,8 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("/playground")
  *
- * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
- *
  * @package App\Controller
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
