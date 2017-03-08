@@ -70,8 +70,10 @@ trait Create
      *
      * @return  Response
      */
-    public function createMethod(Request $request, array $allowedHttpMethods = ['POST']): Response
+    public function createMethod(Request $request, array $allowedHttpMethods = null): Response
     {
+        $allowedHttpMethods = $allowedHttpMethods ?? ['POST'];
+
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
             throw new \LogicException(
@@ -80,7 +82,7 @@ trait Create
             );
         }
 
-        if (!in_array($request->getMethod(), $allowedHttpMethods, true)) {
+        if (!\in_array($request->getMethod(), $allowedHttpMethods, true)) {
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
@@ -96,7 +98,7 @@ trait Create
         } catch (\Exception $error) {
             if ($error instanceof HttpException) {
                 throw $error;
-            } else if ($error instanceof OptimisticLockException || $error instanceof ORMInvalidArgumentException) {
+            } elseif ($error instanceof OptimisticLockException || $error instanceof ORMInvalidArgumentException) {
                 throw new HttpException(
                     Response::HTTP_INTERNAL_SERVER_ERROR,
                     $error->getMessage(),

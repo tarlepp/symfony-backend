@@ -11,7 +11,6 @@ use App\Annotation\RestApiDoc;
 use App\Traits\Rest\Methods\Count as CountMethod;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -34,7 +33,6 @@ trait Count
      * Count action for current resource.
      *
      * @Route("/count")
-     * @Route("/count/")
      *
      * @Method({"GET"})
      *

@@ -58,8 +58,10 @@ trait Count
      *
      * @return  Response
      */
-    public function countMethod(Request $request, array $allowedHttpMethods = ['GET']): Response
+    public function countMethod(Request $request, array $allowedHttpMethods = null): Response
     {
+        $allowedHttpMethods = $allowedHttpMethods ?? ['GET'];
+
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
             throw new \LogicException(
@@ -68,7 +70,7 @@ trait Count
             );
         }
 
-        if (!in_array($request->getMethod(), $allowedHttpMethods, true)) {
+        if (!\in_array($request->getMethod(), $allowedHttpMethods, true)) {
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
@@ -78,7 +80,7 @@ trait Count
         try {
             $criteria   = RestHelperRequest::getCriteria($request);
 
-            if (method_exists($this, 'processCriteria')) {
+            if (\method_exists($this, 'processCriteria')) {
                 $this->processCriteria($criteria);
             }
 
@@ -89,9 +91,9 @@ trait Count
         } catch (\Exception $error) {
             if ($error instanceof HttpException) {
                 throw $error;
-            } else if ($error instanceof NoResultException) {
+            } elseif ($error instanceof NoResultException) {
                 throw new HttpException(Response::HTTP_NOT_FOUND, 'Not found', $error, [], Response::HTTP_NOT_FOUND);
-            } else if ($error instanceof NonUniqueResultException) {
+            } elseif ($error instanceof NonUniqueResultException) {
                 throw new HttpException(
                     Response::HTTP_INTERNAL_SERVER_ERROR,
                     $error->getMessage(),

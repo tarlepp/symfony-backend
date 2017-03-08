@@ -98,8 +98,10 @@ trait Find
      *
      * @return  Response
      */
-    public function findMethod(Request $request, array $allowedHttpMethods = ['GET']): Response
+    public function findMethod(Request $request, array $allowedHttpMethods = null): Response
     {
+        $allowedHttpMethods = $allowedHttpMethods ?? ['GET'];
+
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
             throw new \LogicException(
@@ -108,7 +110,7 @@ trait Find
             );
         }
 
-        if (!in_array($request->getMethod(), $allowedHttpMethods, true)) {
+        if (!\in_array($request->getMethod(), $allowedHttpMethods, true)) {
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
@@ -121,7 +123,7 @@ trait Find
         try {
             $criteria = RestHelperRequest::getCriteria($request);
 
-            if (method_exists($this, 'processCriteria')) {
+            if (\method_exists($this, 'processCriteria')) {
                 $this->processCriteria($criteria);
             }
 

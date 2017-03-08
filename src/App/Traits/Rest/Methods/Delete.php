@@ -68,8 +68,10 @@ trait Delete
      *
      * @return  Response
      */
-    public function deleteMethod(Request $request, string $id, array $allowedHttpMethods = ['DELETE']): Response
+    public function deleteMethod(Request $request, string $id, array $allowedHttpMethods = null): Response
     {
+        $allowedHttpMethods = $allowedHttpMethods ?? ['DELETE'];
+
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
             throw new \LogicException(
@@ -78,7 +80,7 @@ trait Delete
             );
         }
 
-        if (!in_array($request->getMethod(), $allowedHttpMethods, true)) {
+        if (!\in_array($request->getMethod(), $allowedHttpMethods, true)) {
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
@@ -87,7 +89,7 @@ trait Delete
         } catch (\Exception $error) {
             if ($error instanceof HttpException) {
                 throw $error;
-            } else if ($error instanceof OptimisticLockException || $error instanceof ORMInvalidArgumentException) {
+            } elseif ($error instanceof OptimisticLockException || $error instanceof ORMInvalidArgumentException) {
                 throw new HttpException(
                     Response::HTTP_INTERNAL_SERVER_ERROR,
                     $error->getMessage(),

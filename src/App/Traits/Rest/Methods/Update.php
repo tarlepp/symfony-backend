@@ -72,8 +72,10 @@ trait Update
      *
      * @return  Response
      */
-    public function updateMethod(Request $request, string $id, array $allowedHttpMethods = ['PUT']): Response
+    public function updateMethod(Request $request, string $id, array $allowedHttpMethods = null): Response
     {
+        $allowedHttpMethods = $allowedHttpMethods ?? ['PUT'];
+
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
             throw new \LogicException(
@@ -82,7 +84,7 @@ trait Update
             );
         }
 
-        if (!in_array($request->getMethod(), $allowedHttpMethods, true)) {
+        if (!\in_array($request->getMethod(), $allowedHttpMethods, true)) {
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
@@ -97,7 +99,7 @@ trait Update
         } catch (\Exception $error) {
             if ($error instanceof HttpException) {
                 throw $error;
-            } else if ($error instanceof OptimisticLockException || $error instanceof ORMInvalidArgumentException) {
+            } elseif ($error instanceof OptimisticLockException || $error instanceof ORMInvalidArgumentException) {
                 throw new HttpException(
                     Response::HTTP_INTERNAL_SERVER_ERROR,
                     $error->getMessage(),

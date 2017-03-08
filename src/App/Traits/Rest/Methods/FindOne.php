@@ -67,8 +67,10 @@ trait FindOne
      *
      * @return  Response
      */
-    public function findOneMethod(Request $request, string $id, array $allowedHttpMethods = ['GET']): Response
+    public function findOneMethod(Request $request, string $id, array $allowedHttpMethods = null): Response
     {
+        $allowedHttpMethods = $allowedHttpMethods ?? ['GET'];
+
         // Make sure that we have everything we need to make this  work
         if (!($this instanceof RestController)) {
             throw new \LogicException(
@@ -77,7 +79,7 @@ trait FindOne
             );
         }
 
-        if (!in_array($request->getMethod(), $allowedHttpMethods, true)) {
+        if (!\in_array($request->getMethod(), $allowedHttpMethods, true)) {
             throw new MethodNotAllowedHttpException($allowedHttpMethods);
         }
 
