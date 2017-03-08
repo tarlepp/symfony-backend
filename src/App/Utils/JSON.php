@@ -24,17 +24,15 @@ class JSON
      * @var array<string>
      */
     private static $errorReference = [
-        JSON_ERROR_NONE             => 'No error has occurred.',
-        JSON_ERROR_DEPTH            => 'The maximum stack depth has been exceeded.',
-        JSON_ERROR_STATE_MISMATCH   => 'Invalid or malformed JSON.',
-        JSON_ERROR_CTRL_CHAR        => 'Control character error, possibly incorrectly encoded.',
-        JSON_ERROR_SYNTAX           => 'Syntax error, malformed JSON',
-        JSON_ERROR_UTF8             => 'Malformed UTF-8 characters, possibly incorrectly encoded.',
-        // These last 3 messages are only supported on PHP >= 5.5.
-        // See http://php.net/json_last_error#refsect1-function.json-last-error-returnvalues
-        JSON_ERROR_RECURSION        => 'One or more recursive references in the value to be encoded.',
-        JSON_ERROR_INF_OR_NAN       => 'One or more NAN or INF values in the value to be encoded.',
-        JSON_ERROR_UNSUPPORTED_TYPE => 'A value of a type that cannot be encoded was given.',
+        \JSON_ERROR_NONE                => 'No error has occurred.',
+        \JSON_ERROR_DEPTH               => 'The maximum stack depth has been exceeded.',
+        \JSON_ERROR_STATE_MISMATCH      => 'Invalid or malformed JSON.',
+        \JSON_ERROR_CTRL_CHAR           => 'Control character error, possibly incorrectly encoded.',
+        \JSON_ERROR_SYNTAX              => 'Syntax error, malformed JSON',
+        \JSON_ERROR_UTF8                => 'Malformed UTF-8 characters, possibly incorrectly encoded.',
+        \JSON_ERROR_RECURSION           => 'One or more recursive references in the value to be encoded.',
+        \JSON_ERROR_INF_OR_NAN          => 'One or more NAN or INF values in the value to be encoded.',
+        \JSON_ERROR_UNSUPPORTED_TYPE    => 'A value of a type that cannot be encoded was given.',
     ];
 
     /**
@@ -54,9 +52,12 @@ class JSON
      *
      * @return  string
      */
-    public static function encode($input, int $options = 0, int $depth = 512): string
+    public static function encode($input, int $options = null, int $depth = null): string
     {
-        $output = json_encode($input, $options, $depth);
+        $options = $options ?? 0;
+        $depth = $depth ?? 512;
+
+        $output = \json_encode($input, $options, $depth);
 
         self::handleError();
 
@@ -79,9 +80,13 @@ class JSON
      *
      * @return  \stdClass|array|mixed
      */
-    public static function decode(string $json, bool $assoc = false, int $depth = 512, int $options = 0)
+    public static function decode(string $json, bool $assoc = null, int $depth = null, int $options = null)
     {
-        $output = json_decode($json, $assoc, $depth, $options);
+        $assoc = $assoc ?? false;
+        $depth = $depth ?? 512;
+        $options = $options ?? 0;
+
+        $output = \json_decode($json, $assoc, $depth, $options);
 
         self::handleError();
 
@@ -98,11 +103,11 @@ class JSON
     private static function handleError()
     {
         // Get last JSON error
-        $error = json_last_error();
+        $error = \json_last_error();
 
         // Oh noes, some error happened
-        if ($error !== JSON_ERROR_NONE) {
-            throw new \LogicException(self::getErrorMessage($error) . ' - ' . json_last_error_msg());
+        if ($error !== \JSON_ERROR_NONE) {
+            throw new \LogicException(self::getErrorMessage($error) . ' - ' . \json_last_error_msg());
         }
     }
 
@@ -117,7 +122,7 @@ class JSON
      */
     private static function getErrorMessage(int $error): string
     {
-        return !array_key_exists($error, self::$errorReference) ?
+        return !\array_key_exists($error, self::$errorReference) ?
             self::JSON_UNKNOWN_ERROR : (string)self::$errorReference[$error];
     }
 }
