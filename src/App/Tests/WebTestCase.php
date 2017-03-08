@@ -9,7 +9,6 @@ namespace App\Tests;
 
 use App\Tests\Helpers\Auth;
 use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as Base;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -38,8 +37,11 @@ abstract class WebTestCase extends KernelTestCase
      *
      * @return Client A Client instance
      */
-    protected static function createClient(array $options = [], array $server = [])
+    protected static function createClient(array $options = null, array $server = null)
     {
+        $options = $options ?? [];
+        $server = $server ?? [];
+
         static::bootKernel($options);
 
         $client = static::$kernel->getContainer()->get('test.client');
@@ -91,11 +93,14 @@ abstract class WebTestCase extends KernelTestCase
      *
      * @return \Symfony\Bundle\FrameworkBundle\Client
      */
-    public function getClient(string $username, string $password, array $options = [], array $server = [])
+    public function getClient(string $username, string $password, array $options = null, array $server = null)
     {
+        $options = $options ?? [];
+        $server = $server ?? [];
+
         return static::createClient(
             $options,
-            array_merge(
+            \array_merge(
                 $this->getAuthService()->getAuthorizationHeadersForUser($username, $password),
                 $server
             )

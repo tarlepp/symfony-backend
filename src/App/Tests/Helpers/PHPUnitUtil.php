@@ -81,7 +81,7 @@ class PHPUnitUtil
         };
 
         try {
-            array_map(
+            \array_map(
                 'call_user_func',
                 [
                     $loadFixturesDoctrineCommand,

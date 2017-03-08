@@ -54,7 +54,7 @@ abstract class EntityTestCase extends KernelTestCase
      */
     private static function getValidValueForType(string $type, array $meta)
     {
-        if (substr_count($type, '\\') > 1) {
+        if (\substr_count($type, '\\') > 1) {
             $type = 'CustomClass';
         }
 
@@ -78,7 +78,7 @@ abstract class EntityTestCase extends KernelTestCase
                 $value = true;
                 break;
             default:
-                $message = sprintf(
+                $message = \sprintf(
                     "Cannot create valid value for type '%s'.",
                     $type
                 );
@@ -97,7 +97,7 @@ abstract class EntityTestCase extends KernelTestCase
      */
     private static function getNotValidValueForType(string $type)
     {
-        if (substr_count($type, '\\') > 1) {
+        if (\substr_count($type, '\\') > 1) {
             $type = 'CustomClass';
         }
 
@@ -111,7 +111,7 @@ abstract class EntityTestCase extends KernelTestCase
                 $value = new \stdClass();
                 break;
             default:
-                $message = sprintf(
+                $message = \sprintf(
                     "Cannot create invalid value for type '%s'.",
                     $type
                 );
@@ -161,8 +161,8 @@ abstract class EntityTestCase extends KernelTestCase
     public function testThatGetIdMethodExists()
     {
         static::assertTrue(
-            method_exists($this->entity, 'getId'),
-            sprintf(
+            \method_exists($this->entity, 'getId'),
+            \sprintf(
                 "Entity '%s' does not have expected getter 'getId()' method for 'id' property.",
                 $this->entityName
             )
@@ -191,16 +191,16 @@ abstract class EntityTestCase extends KernelTestCase
      */
     public function testThatGetterAndSetterExists(string $field, string $type, array $meta)
     {
-        $getter = 'get' . ucfirst($field);
-        $setter = 'set' . ucfirst($field);
+        $getter = 'get' . \ucfirst($field);
+        $setter = 'set' . \ucfirst($field);
 
         if ($type === 'boolean') {
-            $getter = 'is' . ucfirst($field);
+            $getter = 'is' . \ucfirst($field);
         }
 
         static::assertTrue(
-            method_exists($this->entity, $getter),
-            sprintf(
+            \method_exists($this->entity, $getter),
+            \sprintf(
                 "Entity '%s' does not have expected getter '%s()' method for '%s' property.",
                 $this->entityName,
                 $getter,
@@ -208,10 +208,10 @@ abstract class EntityTestCase extends KernelTestCase
             )
         );
 
-        if (array_key_exists('columnName', $meta)) {
+        if (\array_key_exists('columnName', $meta)) {
             static::assertTrue(
-                method_exists($this->entity, $setter),
-                sprintf(
+                \method_exists($this->entity, $setter),
+                \sprintf(
                     "Entity '%s' does not have expected setter '%s()' method for '%s' property.",
                     $this->entityName,
                     $setter,
@@ -230,9 +230,9 @@ abstract class EntityTestCase extends KernelTestCase
      */
     public function testThatSetterOnlyAcceptSpecifiedType(string $field, string $type, array $meta)
     {
-        $setter = 'set' . ucfirst($field);
+        $setter = 'set' . \ucfirst($field);
 
-        if (!array_key_exists('columnName', $meta) && !array_key_exists('joinColumns', $meta)) {
+        if (!\array_key_exists('columnName', $meta) && !\array_key_exists('joinColumns', $meta)) {
             static::markTestSkipped('No need to test this setter...');
         }
 
@@ -242,10 +242,10 @@ abstract class EntityTestCase extends KernelTestCase
 
         $this->entity->{$setter}($value);
 
-        $message = sprintf(
+        $message = \sprintf(
             "Setter '%s' didn't fail with invalid value type '%s', maybe missing variable type?",
             $setter,
-            is_object($value) ? gettype($value) : '(' . gettype($value) . ')' . $value
+            \is_object($value) ? \gettype($value) : '(' . \gettype($value) . ')' . $value
         );
 
         static::fail($message);
@@ -260,16 +260,16 @@ abstract class EntityTestCase extends KernelTestCase
      */
     public function testThatSetterReturnsInstanceOfEntity(string $field, string $type, array $meta)
     {
-        $setter = 'set' . ucfirst($field);
+        $setter = 'set' . \ucfirst($field);
 
-        if (!array_key_exists('columnName', $meta)) {
+        if (!\array_key_exists('columnName', $meta)) {
             static::markTestSkipped('No need to test this setter...');
         }
 
         static::assertInstanceOf(
-            get_class($this->entity),
-            call_user_func([$this->entity, $setter], self::getValidValueForType($type, $meta)),
-            sprintf(
+            \get_class($this->entity),
+            \call_user_func([$this->entity, $setter], self::getValidValueForType($type, $meta)),
+            \sprintf(
                 "Entity '%s' setter '%s()' method for '%s' property did not return expected value.",
                 $this->entityName,
                 $setter,
@@ -287,27 +287,27 @@ abstract class EntityTestCase extends KernelTestCase
      */
     public function testThatGetterReturnsExpectedValue(string $field, string $type, array $meta)
     {
-        $getter = 'get' . ucfirst($field);
-        $setter = 'set' . ucfirst($field);
+        $getter = 'get' . \ucfirst($field);
+        $setter = 'set' . \ucfirst($field);
 
         if ($type === 'boolean') {
-            $getter = 'is' . ucfirst($field);
+            $getter = 'is' . \ucfirst($field);
         }
 
-        if (array_key_exists('columnName', $meta) || array_key_exists('joinColumns', $meta)) {
+        if (\array_key_exists('columnName', $meta) || \array_key_exists('joinColumns', $meta)) {
             $value = self::getValidValueForType($type, $meta);
 
             $this->entity->{$setter}($value);
 
             static::assertSame(
                 $value,
-                call_user_func([$this->entity, $getter]),
-                sprintf(
+                \call_user_func([$this->entity, $getter]),
+                \sprintf(
                     'Getter method of %s:%s did not return expected value type (%s) and it returned (%s)',
                     $this->entityName,
                     $getter,
-                    gettype($value),
-                    gettype(call_user_func([$this->entity, $getter]))
+                    \gettype($value),
+                    \gettype(\call_user_func([$this->entity, $getter]))
                 )
             );
         } else {
@@ -315,16 +315,16 @@ abstract class EntityTestCase extends KernelTestCase
 
             static::assertInstanceOf(
                 $type,
-                call_user_func([$this->entity, $getter])
+                \call_user_func([$this->entity, $getter])
             );
         }
 
         try {
             if (static::isType($type)) {
-                static::assertInternalType($type, call_user_func([$this->entity, $getter]));
+                static::assertInternalType($type, \call_user_func([$this->entity, $getter]));
             }
         } catch (\Exception $error) {
-            static::assertInstanceOf($type, call_user_func([$this->entity, $getter]));
+            static::assertInstanceOf($type, \call_user_func([$this->entity, $getter]));
         }
     }
 
@@ -347,8 +347,8 @@ abstract class EntityTestCase extends KernelTestCase
         }
 
         static::assertTrue(
-            method_exists($this->entity, $method),
-            sprintf(
+            \method_exists($this->entity, $method),
+            \sprintf(
                 "Entity '%s' does not have expected association method '%s()' for property '%s'.",
                 $this->entityName,
                 $method,
@@ -357,7 +357,7 @@ abstract class EntityTestCase extends KernelTestCase
         );
 
         if ($expectedOutput) {
-            static::assertInstanceOf($expectedOutput, call_user_func([$this->entity, $method], $input));
+            static::assertInstanceOf($expectedOutput, \call_user_func([$this->entity, $method], $input));
         }
     }
 
@@ -388,9 +388,9 @@ abstract class EntityTestCase extends KernelTestCase
         }
 
         static::assertInstanceOf(
-            get_class($this->entity),
-            call_user_func([$this->entity, $methodAdder], $targetEntity),
-            sprintf(
+            \get_class($this->entity),
+            \call_user_func([$this->entity, $methodAdder], $targetEntity),
+            \sprintf(
                 "Added method '%s()' for property '%s' did not return instance of the entity itself",
                 $methodAdder,
                 $field
@@ -398,7 +398,7 @@ abstract class EntityTestCase extends KernelTestCase
         );
 
         /** @var ArrayCollection $collection */
-        $collection = call_user_func([$this->entity, $methodGetter]);
+        $collection = \call_user_func([$this->entity, $methodGetter]);
 
         static::assertTrue(
             $collection->contains($targetEntity)
@@ -406,20 +406,20 @@ abstract class EntityTestCase extends KernelTestCase
 
         if (isset($mappings['mappedBy'])) {
             /** @var ArrayCollection $collection */
-            $collection = $targetEntity->{'get' . ucfirst($mappings['mappedBy'])}();
+            $collection = $targetEntity->{'get' . \ucfirst($mappings['mappedBy'])}();
 
             static::assertTrue($collection->contains($this->entity));
         } elseif (isset($mappings['inversedBy'])) {
             /** @var ArrayCollection $collection */
-            $collection = $targetEntity->{'get' . ucfirst($mappings['inversedBy'])}();
+            $collection = $targetEntity->{'get' . \ucfirst($mappings['inversedBy'])}();
 
             static::assertTrue($collection->contains($this->entity));
         }
 
         static::assertInstanceOf(
-            get_class($this->entity),
-            call_user_func([$this->entity, $methodRemoval], $targetEntity),
-            sprintf(
+            \get_class($this->entity),
+            \call_user_func([$this->entity, $methodRemoval], $targetEntity),
+            \sprintf(
                 "Removal method '%s()' for property '%s' did not return instance of the entity itself",
                 $methodAdder,
                 $field
@@ -427,18 +427,18 @@ abstract class EntityTestCase extends KernelTestCase
         );
 
         /** @var ArrayCollection $collection */
-        $collection = call_user_func([$this->entity, $methodGetter]);
+        $collection = \call_user_func([$this->entity, $methodGetter]);
 
         static::assertTrue($collection->isEmpty());
 
         if (isset($mappings['mappedBy'])) {
             /** @var ArrayCollection $collection */
-            $collection = $targetEntity->{'get' . ucfirst($mappings['mappedBy'])}();
+            $collection = $targetEntity->{'get' . \ucfirst($mappings['mappedBy'])}();
 
             static::assertTrue($collection->isEmpty());
         } elseif (isset($mappings['inversedBy'])) {
             /** @var ArrayCollection $collection */
-            $collection = $targetEntity->{'get' . ucfirst($mappings['inversedBy'])}();
+            $collection = $targetEntity->{'get' . \ucfirst($mappings['inversedBy'])}();
 
             static::assertTrue($collection->isEmpty());
         }
@@ -448,9 +448,9 @@ abstract class EntityTestCase extends KernelTestCase
         $this->entity->{$methodAdder}($targetEntity);
 
         static::assertInstanceOf(
-            get_class($this->entity),
-            call_user_func([$this->entity, $methodClear]),
-            sprintf(
+            \get_class($this->entity),
+            \call_user_func([$this->entity, $methodClear]),
+            \sprintf(
                 "Clear method '%s()' for property '%s' did not return instance of the entity itself",
                 $methodAdder,
                 $field
@@ -458,7 +458,7 @@ abstract class EntityTestCase extends KernelTestCase
         );
 
         /** @var ArrayCollection $collection */
-        $collection = call_user_func([$this->entity, $methodGetter]);
+        $collection = \call_user_func([$this->entity, $methodGetter]);
 
         static::assertTrue($collection->isEmpty());
     }
@@ -482,9 +482,9 @@ abstract class EntityTestCase extends KernelTestCase
         }
 
         static::assertInstanceOf(
-            get_class($this->entity),
-            call_user_func([$this->entity, $methodSetter], $targetEntity),
-            sprintf(
+            \get_class($this->entity),
+            \call_user_func([$this->entity, $methodSetter], $targetEntity),
+            \sprintf(
                 "Setter method '%s()' for property '%s' did not return instance of the entity itself",
                 $methodSetter,
                 $field
@@ -492,13 +492,13 @@ abstract class EntityTestCase extends KernelTestCase
         );
 
         static::assertInstanceOf(
-            get_class($targetEntity),
-            call_user_func([$this->entity, $methodGetter]),
-            sprintf(
+            \get_class($targetEntity),
+            \call_user_func([$this->entity, $methodGetter]),
+            \sprintf(
                 "Getter method '%s()' for property '%s' did not return expected object '%s'.",
                 $methodGetter,
                 $field,
-                get_class($targetEntity)
+                \get_class($targetEntity)
             )
         );
     }
@@ -517,8 +517,8 @@ abstract class EntityTestCase extends KernelTestCase
 
         static::assertInstanceOf(
             ArrayCollection::class,
-            call_user_func([$this->entity, $methodGetter]),
-            sprintf(
+            \call_user_func([$this->entity, $methodGetter]),
+            \sprintf(
                 "Getter method '%s()' for property '%s' did not return expected 'ArrayCollection' object.",
                 $methodGetter,
                 $field
@@ -555,7 +555,7 @@ abstract class EntityTestCase extends KernelTestCase
          *
          * @return  array
          */
-        $iterator = function ($field) use ($meta) {
+        $iterator = function (string $field) use ($meta): array {
             $type = $meta->getTypeOfField($field);
 
             switch ($type) {
@@ -578,7 +578,7 @@ abstract class EntityTestCase extends KernelTestCase
                     $type = 'boolean';
                     break;
                 default:
-                    $message = sprintf(
+                    $message = \sprintf(
                         "Currently type '%s' is not supported within generic EntityTestCase",
                         $type
                     );
@@ -590,7 +590,7 @@ abstract class EntityTestCase extends KernelTestCase
             return [$field, $type, $meta->getFieldMapping($field)];
         };
 
-        $fieldsToOmit = array_merge(
+        $fieldsToOmit = \array_merge(
             $meta->getIdentifierFieldNames(),
             ['password']
         );
@@ -602,8 +602,8 @@ abstract class EntityTestCase extends KernelTestCase
          *
          * @return  bool
          */
-        $filter = function ($field) use ($fieldsToOmit) {
-            return !in_array($field, $fieldsToOmit, true);
+        $filter = function (string $field) use ($fieldsToOmit): bool {
+            return !\in_array($field, $fieldsToOmit, true);
         };
 
         $entityManager->close();
@@ -612,7 +612,7 @@ abstract class EntityTestCase extends KernelTestCase
         $assocFields = [];
 
         foreach ($meta->getAssociationMappings() as $mapping) {
-            if (in_array($mapping['fieldName'], ['createdBy', 'updatedBy', 'deletedBy'], true)) {
+            if (\in_array($mapping['fieldName'], ['createdBy', 'updatedBy', 'deletedBy'], true)) {
                 continue;
             }
 
@@ -622,8 +622,8 @@ abstract class EntityTestCase extends KernelTestCase
             $assocFields[] = [$field, $type, $mapping];
         }
 
-        return array_merge(
-            array_map($iterator, array_filter($meta->getFieldNames(), $filter)),
+        return \array_merge(
+            \array_map($iterator, \array_filter($meta->getFieldNames(), $filter)),
             $assocFields
         );
     }
@@ -641,7 +641,7 @@ abstract class EntityTestCase extends KernelTestCase
         // Get entity class meta data
         $meta = $entityManager->getClassMetadata($this->entityName);
 
-        $iterator = function ($mapping) {
+        $iterator = function (array $mapping): array {
             $targetEntity = new $mapping['targetEntity']();
 
             $singular = $mapping['fieldName'][mb_strlen($mapping['fieldName']) - 1] === 's' ?
@@ -649,10 +649,10 @@ abstract class EntityTestCase extends KernelTestCase
 
             return [
                 [
-                    'get' . ucfirst($mapping['fieldName']),
-                    'add' . ucfirst($singular),
-                    'remove' . ucfirst($singular),
-                    'clear' . ucfirst($mapping['fieldName']),
+                    'get' . \ucfirst($mapping['fieldName']),
+                    'add' . \ucfirst($singular),
+                    'remove' . \ucfirst($singular),
+                    'clear' . \ucfirst($mapping['fieldName']),
                     $mapping['fieldName'],
                     $targetEntity,
                     $mapping,
@@ -669,7 +669,7 @@ abstract class EntityTestCase extends KernelTestCase
 
         self::$kernel->shutdown();
 
-        $items = array_filter($meta->getAssociationMappings(), $filter);
+        $items = \array_filter($meta->getAssociationMappings(), $filter);
 
         if (empty($items)) {
             return [
@@ -677,7 +677,7 @@ abstract class EntityTestCase extends KernelTestCase
             ];
         }
 
-        return call_user_func_array('array_merge', array_map($iterator, $items));
+        return \call_user_func_array('array_merge', \array_map($iterator, $items));
     }
 
     /**
@@ -693,13 +693,13 @@ abstract class EntityTestCase extends KernelTestCase
         // Get entity class meta data
         $meta = $entityManager->getClassMetadata($this->entityName);
 
-        $iterator = function ($mapping) {
+        $iterator = function (array $mapping): array {
             $targetEntity = new $mapping['targetEntity']();
 
             return [
                 [
-                    'set' . ucfirst($mapping['fieldName']),
-                    'get' . ucfirst($mapping['fieldName']),
+                    'set' . \ucfirst($mapping['fieldName']),
+                    'get' . \ucfirst($mapping['fieldName']),
                     $targetEntity,
                     $mapping['fieldName'],
                     $mapping,
@@ -707,7 +707,7 @@ abstract class EntityTestCase extends KernelTestCase
             ];
         };
 
-        $filter = function ($mapping) {
+        $filter = function (array $mapping): bool {
             return $mapping['type'] === ClassMetadataInfo::MANY_TO_ONE;
         };
 
@@ -716,7 +716,7 @@ abstract class EntityTestCase extends KernelTestCase
 
         self::$kernel->shutdown();
 
-        $items = array_filter($meta->getAssociationMappings(), $filter);
+        $items = \array_filter($meta->getAssociationMappings(), $filter);
 
         if (empty($items)) {
             return [
@@ -724,7 +724,7 @@ abstract class EntityTestCase extends KernelTestCase
             ];
         }
 
-        return call_user_func_array('array_merge', array_map($iterator, $items));
+        return \call_user_func_array('array_merge', \array_map($iterator, $items));
     }
 
     /**
@@ -740,11 +740,11 @@ abstract class EntityTestCase extends KernelTestCase
         // Get entity class meta data
         $meta = $entityManager->getClassMetadata($this->entityName);
 
-        $iterator = function ($mapping) {
+        $iterator = function (array $mapping): array {
             $input = new $mapping['targetEntity']();
 
             $methods = [
-                ['get' . ucfirst($mapping['fieldName']), $mapping['fieldName'], false, false]
+                ['get' . \ucfirst($mapping['fieldName']), $mapping['fieldName'], false, false]
             ];
 
             switch ($mapping['type']) {
@@ -752,7 +752,7 @@ abstract class EntityTestCase extends KernelTestCase
                     break;
                 case ClassMetadataInfo::MANY_TO_ONE:
                     $methods[] = [
-                        'set' . ucfirst($mapping['fieldName']),
+                        'set' . \ucfirst($mapping['fieldName']),
                         $mapping['fieldName'],
                         $input,
                         $this->entityName
@@ -766,25 +766,25 @@ abstract class EntityTestCase extends KernelTestCase
 
                     $methods = [
                         [
-                            'get' . ucfirst($mapping['fieldName']),
+                            'get' . \ucfirst($mapping['fieldName']),
                             $mapping['fieldName'],
                             $input,
                             ArrayCollection::class
                         ],
                         [
-                            'add' . ucfirst($singular),
+                            'add' . \ucfirst($singular),
                             $mapping['fieldName'],
                             $input,
                             $this->entityName
                         ],
                         [
-                            'remove' . ucfirst($singular),
+                            'remove' . \ucfirst($singular),
                             $mapping['fieldName'],
                             $input,
                             $this->entityName
                         ],
                         [
-                            'clear' . ucfirst($mapping['fieldName']),
+                            'clear' . \ucfirst($mapping['fieldName']),
                             $mapping['fieldName'],
                             $input,
                             $this->entityName
@@ -808,7 +808,7 @@ abstract class EntityTestCase extends KernelTestCase
             ];
         }
 
-        return call_user_func_array('array_merge', array_map($iterator, $meta->getAssociationMappings()));
+        return \call_user_func_array('array_merge', \array_map($iterator, $meta->getAssociationMappings()));
     }
 
     /**
@@ -824,18 +824,17 @@ abstract class EntityTestCase extends KernelTestCase
         // Get entity class meta data
         $meta = $entityManager->getClassMetadata($this->entityName);
 
-        $iterator = function ($mapping) {
-
+        $iterator = function (array $mapping): array {
             return [
                 [
-                    'get' . ucfirst($mapping['fieldName']),
+                    'get' . \ucfirst($mapping['fieldName']),
                     $mapping['fieldName'],
                     $mapping,
                 ]
             ];
         };
 
-        $filter = function ($mapping) {
+        $filter = function (array $mapping): bool {
             return $mapping['type'] === ClassMetadataInfo::ONE_TO_MANY;
         };
 
@@ -844,7 +843,7 @@ abstract class EntityTestCase extends KernelTestCase
 
         self::$kernel->shutdown();
 
-        $items = array_filter($meta->getAssociationMappings(), $filter);
+        $items = \array_filter($meta->getAssociationMappings(), $filter);
 
         if (empty($items)) {
             return [
@@ -852,6 +851,6 @@ abstract class EntityTestCase extends KernelTestCase
             ];
         }
 
-        return call_user_func_array('array_merge', array_map($iterator, $items));
+        return \call_user_func_array('array_merge', \array_map($iterator, $items));
     }
 }

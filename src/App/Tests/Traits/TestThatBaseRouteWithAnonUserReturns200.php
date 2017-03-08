@@ -7,11 +7,16 @@ declare(strict_types = 1);
  */
 namespace App\Tests\Traits;
 
+use Symfony\Bundle\FrameworkBundle\Client;
+
 /**
  * Class TestThatBaseRouteWithAnonUserReturns200
  *
  * @package App\Tests\Traits
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ *
+ * @method  static  Client  createClient()
+ * @method  static  void    assertSame($expected, $actual, $message = '')
  */
 trait TestThatBaseRouteWithAnonUserReturns200
 {

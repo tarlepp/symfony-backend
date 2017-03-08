@@ -84,7 +84,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
             static::fail('You have not specified entityName to your test class.');
         }
 
-        $message = sprintf(
+        $message = \sprintf(
             "Rest service '%s->getEntityName()' did not return expected entity name '%s'.",
             $this->serviceName,
             $this->entityName
@@ -104,7 +104,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
 
         $proxy = 'Proxies\\__CG__\\' . $this->entityName;
 
-        $message = sprintf(
+        $message = \sprintf(
             "Rest service '%s->getReference()' did not return expected proxy '%s' instance.",
             $this->serviceName,
             $proxy
@@ -122,7 +122,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
             static::fail('You have not specified repositoryName to your test class.');
         }
 
-        $message = sprintf(
+        $message = \sprintf(
             "Rest service '%s->getRepository()' did not return expected repository '%s' instance.",
             $this->serviceName,
             $this->repositoryName
@@ -152,14 +152,14 @@ abstract class RestServiceTestCase extends ContainerTestCase
         if ($this->entityCount === false) {
             return;
         } elseif ($this->entityCount > 0) {
-            $message = sprintf(
+            $message = \sprintf(
                 "Rest service '%s->find()' did not return expected count of entities.",
                 $this->serviceName
             );
 
             static::assertCount($this->entityCount, $data, $message);
 
-            $message = sprintf(
+            $message = \sprintf(
                 "Rest service '%s->find()' did not return an array of '%s' entities.",
                 $this->serviceName,
                 $this->entityName
@@ -167,7 +167,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
 
             static::assertInstanceOf($this->entityName, $data[0], $message);
         } else {
-            $message = sprintf(
+            $message = \sprintf(
                 "Cannot test service '%s->find()' method properly because test class doesn't have 'entityCount'.",
                 $this->serviceName
             );

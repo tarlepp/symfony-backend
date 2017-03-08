@@ -43,18 +43,18 @@ class Auth
     /**
      * Method to get authorization headers for specified user.
      *
-     * @param   string|null $username
-     * @param   string|null $password
+     * @param   string  $username
+     * @param   string  $password
      *
      * @return  array
      *
      * @throws  \Exception
      */
-    public function getAuthorizationHeadersForUser(string $username = null, string $password = null)
+    public function getAuthorizationHeadersForUser(string $username, string $password)
     {
-        $key = sha1($username . $password);
+        $key = \hash('sha512', $username . $password);
 
-        if (!array_key_exists($key, $this->cache)) {
+        if (!\array_key_exists($key, $this->cache)) {
             $this->cache[$key] = $this->makeLogin($username, $password);
         }
 

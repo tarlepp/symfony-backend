@@ -121,11 +121,11 @@ abstract class RepositoryTestCase extends KernelTestCase
         $message = 'Repository did not return expected associations for entity.';
 
         static::assertSame(
-            array_merge(
+            \array_merge(
                 $this->associations,
                 $this->skipUserAssociations ? [] : ['createdBy', 'updatedBy', 'deletedBy']
             ),
-            array_keys($this->repository->getAssociations()),
+            \array_keys($this->repository->getAssociations()),
             $message
         );
     }
@@ -152,7 +152,7 @@ abstract class RepositoryTestCase extends KernelTestCase
             ->expects(static::once())
             ->method('flush');
 
-        $repositoryClass = get_class($this->repository);
+        $repositoryClass = \get_class($this->repository);
 
         /** @var Repository $repository */
         $repository = new $repositoryClass($entityManager, new ClassMetadata($this->entityName));
@@ -183,7 +183,7 @@ abstract class RepositoryTestCase extends KernelTestCase
             ->expects(static::once())
             ->method('flush');
 
-        $repositoryClass = get_class($this->repository);
+        $repositoryClass = \get_class($this->repository);
 
         /** @var Repository $repository */
         $repository = new $repositoryClass($entityManager, new ClassMetadata($this->entityName));
@@ -260,8 +260,8 @@ abstract class RepositoryTestCase extends KernelTestCase
         string $operand,
         string $expectedDQL
     ) {
-        if (count($this->repository->getSearchColumns()) === 0) {
-            $message = sprintf(
+        if (\count($this->repository->getSearchColumns()) === 0) {
+            $message = \sprintf(
                 "Repository for entity '%s' doesn't contain any defined search columns.",
                 $this->entityName
             );
@@ -273,15 +273,14 @@ abstract class RepositoryTestCase extends KernelTestCase
 
         PHPUnitUtil::callMethod($this->repository, 'processSearchTerms', [$queryBuilder, [$operand => $searchTerms]]);
 
-        $criteria = [];
         $index = 1;
 
         $iterator = function ($column) use (&$index) {
-            if (strpos($column, '.') === false) {
+            if (\strpos($column, '.') === false) {
                 $column = 'entity.' . $column;
             }
 
-            $output = sprintf(
+            $output = \sprintf(
                 '%s LIKE ?%d',
                 $column,
                 $index
@@ -292,14 +291,18 @@ abstract class RepositoryTestCase extends KernelTestCase
             return $output;
         };
 
-        $iMax = count($searchTerms);
+        $iMax = \count($searchTerms);
+
+        $terms = [];
 
         for ($i = 0; $i < $iMax; $i++) {
-            $criteria = array_merge($criteria, array_map($iterator, $this->repository->getSearchColumns()));
+            $terms[] = \array_map($iterator, $this->repository->getSearchColumns());
         }
 
+        $criteria = \count($terms) ? \array_merge(...$terms) : [];
+
         static::assertSame(
-            sprintf($expectedDQL, $this->entityName, implode(' ' . strtoupper($operand) . ' ', $criteria)),
+            \sprintf($expectedDQL, $this->entityName, \implode(' ' . \strtoupper($operand) . ' ', $criteria)),
             $queryBuilder->getQuery()->getDQL(),
             'processSearchTerms method did not create expected query criteria.'
         );
@@ -359,7 +362,7 @@ abstract class RepositoryTestCase extends KernelTestCase
      */
     protected function createEntity(EntityInterface $entity = null): EntityInterface
     {
-        if (null === $entity && count($this->entityProperties) === 0) {
+        if (null === $entity && \count($this->entityProperties) === 0) {
             static::markTestSkipped();
         }
 
@@ -367,7 +370,7 @@ abstract class RepositoryTestCase extends KernelTestCase
             $entity = new $this->entityName();
 
             foreach ($this->entityProperties as $property => $value) {
-                $method = 'set' . ucfirst($property);
+                $method = 'set' . \ucfirst($property);
 
                 $entity->{$method}($value);
             }
@@ -402,8 +405,8 @@ abstract class RepositoryTestCase extends KernelTestCase
             $command->run($input, new NullOutput());
         };
 
-        array_map(
-            'call_user_func',
+        \array_map(
+            '\call_user_func',
             [
                 $loadFixturesDoctrineCommand,
             ]
