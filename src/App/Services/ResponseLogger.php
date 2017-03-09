@@ -120,15 +120,8 @@ class ResponseLogger implements ResponseLoggerInterface
             return;
         }
 
-        // Create new request log entity
-        $entity = new RequestLogEntity($this->request, $this->response);
-        $entity->setUser($this->user);
-        $entity->setMasterRequest($this->masterRequest);
-
-        // Store request log and  clean history
         try {
-            $this->service->save($entity, true);
-            $this->service->getRepository()->cleanHistory();
+            $this->createRequestLogEntry();
         } catch (\Exception $error) {
             // Silently ignore this error to prevent client to get real error IF not in dev environment
             if ($this->environment === 'dev') {
@@ -137,5 +130,20 @@ class ResponseLogger implements ResponseLoggerInterface
 
             $this->logger->error($error->getMessage());
         }
+    }
+
+    /**
+     * Store request log and  clean history
+     *
+     * @throws \LogicException
+     */
+    private function createRequestLogEntry()
+    {
+        // Create new request log entity
+        $entity = new RequestLogEntity($this->request, $this->response);
+        $entity->setUser($this->user);
+        $entity->setMasterRequest($this->masterRequest);
+
+        $this->service->save($entity, true);
     }
 }

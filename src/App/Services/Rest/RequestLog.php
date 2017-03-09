@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 namespace App\Services\Rest;
 
+use App\Entity\Interfaces\EntityInterface;
 use App\Entity\RequestLog as Entity;
 use App\Repository\RequestLog as Repository;
 use Doctrine\Common\Persistence\Proxy;
@@ -33,5 +34,17 @@ use Doctrine\Common\Persistence\Proxy;
  */
 class RequestLog extends Base
 {
-    // Implement custom service methods here
+    /**
+     * After lifecycle method for create method.
+     *
+     * @param   \stdClass               $data
+     * @param   EntityInterface|Entity  $entity
+     */
+    public function afterCreate(\stdClass $data, EntityInterface $entity)
+    {
+        parent::afterCreate($data, $entity);
+
+        // Clean history
+        $this->getRepository()->cleanHistory();
+    }
 }

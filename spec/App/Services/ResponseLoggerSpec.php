@@ -83,14 +83,12 @@ class ResponseLoggerSpec extends ObjectBehavior
      * @param   \PhpSpec\Wrapper\Collaborator|Response              $response
      * @param   \PhpSpec\Wrapper\Collaborator|HeaderBag             $headerBag
      * @param   \PhpSpec\Wrapper\Collaborator|RequestLogService     $service
-     * @param   \PhpSpec\Wrapper\Collaborator|RequestLogRepository  $repository
      */
     function it_should_create_new_RequestLog_entity(
         Request $request,
         Response $response,
         HeaderBag $headerBag,
-        RequestLogService $service,
-        RequestLogRepository $repository
+        RequestLogService $service
     ) {
         // Mock HeaderBag call
         $headerBag->all()->shouldBeCalled()->willReturn([]);
@@ -118,11 +116,7 @@ class ResponseLoggerSpec extends ObjectBehavior
         $response->getStatusCode()->shouldBeCalled()->willReturn(200);
         $response->getContent()->shouldBeCalled()->willReturn('fake content');
 
-        // Mock repository method
-        $repository->cleanHistory()->shouldBeCalled();
-
         // Request log should be save
-        $service->getRepository()->shouldBeCalled()->willReturn($repository);
         $service->save(Argument::type(RequestLogEntity::class), Argument::type('bool'))->shouldBeCalled();
 
         // And finally make actual call
