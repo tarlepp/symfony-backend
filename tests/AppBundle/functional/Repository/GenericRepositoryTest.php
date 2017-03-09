@@ -91,7 +91,7 @@ class GenericRepositoryTest extends KernelTestCase
         PHPUnitUtil::callMethod($this->repository, 'processCriteria', [$queryBuilder, $criteria]);
 
         static::assertSame(
-            sprintf($expectedDQL, $this->entityName),
+            \sprintf($expectedDQL, $this->entityName),
             $queryBuilder->getQuery()->getDQL(),
             'processCriteria method did not create expected query criteria.'
         );
@@ -115,7 +115,7 @@ class GenericRepositoryTest extends KernelTestCase
 
         static::assertSame(
             $expectedResult,
-            implode(', ', array_map($iterator, $queryBuilder->getDQLPart('orderBy'))),
+            \implode(', ', \array_map($iterator, $queryBuilder->getDQLPart('orderBy'))),
             'processOrderBy method did not create expected query ORDER BY part.'
         );
     }

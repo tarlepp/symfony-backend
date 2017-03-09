@@ -64,9 +64,9 @@ class UserTest extends RepositoryTestCase
      */
     public function testThatRefreshUserMethodLoadsUser(User $user, string $username)
     {
-        $message = "Method did not return expected user, weird.";
+        $message = 'Method did not return expected user, weird.';
 
-        static::assertEquals(
+        static::assertSame(
             $this->repository->findOneBy(['username' => $username]),
             $this->repository->refreshUser($user),
             $message
