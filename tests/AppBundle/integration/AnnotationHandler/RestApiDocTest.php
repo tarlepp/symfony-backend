@@ -42,15 +42,15 @@ class RestApiDocTest extends ContainerTestCase
         static::assertCount($expectedRequirements, $annotation->getRequirements(), 'Requirements are not expected');
         static::assertArrayHasKey('Authorization', $annotation->getHeaders(), 'Authorization header is not found');
         static::assertTrue(
-            in_array($role, $annotation->getAuthenticationRoles(), true),
+            \in_array($role, $annotation->getAuthenticationRoles(), true),
             'Expected role is not present'
         );
 
-        $httpStatusCodes = array_merge($httpStatusCodes, [400, 401, 403, 405, 500]);
+        $httpStatusCodes = \array_merge($httpStatusCodes, [400, 401, 403, 405, 500]);
 
-        sort($httpStatusCodes);
+        \sort($httpStatusCodes);
 
-        $statuses = array_keys($annotation->toArray()['statusCodes']);
+        $statuses = \array_keys($annotation->toArray()['statusCodes']);
 
         static::assertSame($httpStatusCodes, $statuses, 'HTTP status codes are not expected.');
     }

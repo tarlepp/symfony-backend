@@ -44,12 +44,12 @@ class SchemaTest extends KernelTestCase
         $messages = [];
 
         $formatter = function ($errors, $className) use (&$messages) {
-            $messages[] = $className . ': ' . implode(', ', $errors);
+            $messages[] = $className . ': ' . \implode(', ', $errors);
         };
 
-        array_walk($errors, $formatter);
+        \array_walk($errors, $formatter);
 
-        static::assertEmpty($errors, implode("\n", $messages));
+        static::assertEmpty($errors, \implode("\n", $messages));
     }
 
     public function testThatSchemaInSyncWithMetadata()

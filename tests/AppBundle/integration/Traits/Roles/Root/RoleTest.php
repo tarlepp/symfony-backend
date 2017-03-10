@@ -49,7 +49,7 @@ class RoleTest extends KernelTestCase
             ->method($traitMethod)
             ->with(...$parameters);
 
-        $result = call_user_func_array([$stub, $method], $parameters);
+        $result = \call_user_func_array([$stub, $method], $parameters);
 
         static::assertInstanceOf(Response::class, $result);
     }
@@ -62,7 +62,7 @@ class RoleTest extends KernelTestCase
         $pattern = __DIR__ . '/../../../../../../src/App/Traits/Rest/Roles/Root/*.php';
 
         $iterator = function (string $filename): array {
-            $name = str_replace('.php', '', basename($filename));
+            $name = \str_replace('.php', '', \basename($filename));
 
             $parameters = [
                 $request = $this->createMock(Request::class),
@@ -78,12 +78,12 @@ class RoleTest extends KernelTestCase
 
             return [
                 'App\\Traits\\Rest\\Roles\\Root\\' . $name,
-                lcfirst($name),
-                lcfirst($name) . 'Method',
+                \lcfirst($name),
+                \lcfirst($name) . 'Method',
                 $parameters,
             ];
         };
 
-        return array_map($iterator, glob($pattern));
+        return \array_map($iterator, \glob($pattern));
     }
 }

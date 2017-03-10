@@ -10,9 +10,9 @@ namespace AppBundle\unit\Repository;
 use App\Entity\User as UserEntity;
 use App\Repository\User as UserRepository;
 use App\Tests\Helpers\PHPUnitUtil;
+use App\Tests\KernelTestCase;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Composite as CompositeExpression;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
 /**

@@ -87,7 +87,7 @@ class DateDimensionTest extends EntityTestCase
         $entity = new DateDimension($dateTime);
 
         static::assertSame(
-            (int)floor(((int)$dateTime->format('n') - 1) / 3) + 1,
+            (int)\floor(((int)$dateTime->format('n') - 1) / 3) + 1,
             $entity->getQuarter(),
             'getQuarter() method did not return expected value.'
         );

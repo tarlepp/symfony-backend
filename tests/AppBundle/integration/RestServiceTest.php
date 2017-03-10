@@ -25,10 +25,10 @@ class RestServiceTest extends KernelTestCase
      */
     public function testThatAllRestServicesHaveTestClass(string $expectedTestFile, string $serviceClass)
     {
-        $message = sprintf(
+        $message = \sprintf(
             "Rest service '%s' doesn't have required functional test class, please create it to '%s'.",
             $serviceClass,
-            'tests/' . substr($expectedTestFile, mb_strpos($expectedTestFile, '/../') + 4)
+            'tests/' . \substr($expectedTestFile, \mb_strpos($expectedTestFile, '/../') + 4)
         );
 
         static::assertFileExists($expectedTestFile, $message);
@@ -47,7 +47,7 @@ class RestServiceTest extends KernelTestCase
          * @return  bool
          */
         $filter = function (string $filename): bool {
-            $class = '\\App\\Services\\Rest\\' . str_replace('.php', '', basename($filename));
+            $class = '\\App\\Services\\Rest\\' . \str_replace('.php', '', \basename($filename));
 
             $reflection = new \ReflectionClass($class);
 
@@ -62,16 +62,16 @@ class RestServiceTest extends KernelTestCase
          * @return  array
          */
         $iterator = function (string $filename) use ($basePath): array {
-            $class = '\\App\\Services\\Rest\\' . str_replace('.php', '', basename($filename));
+            $class = '\\App\\Services\\Rest\\' . \str_replace('.php', '', \basename($filename));
 
             $reflection = new \ReflectionClass($class);
 
             return [
-                $basePath . str_replace('.php', 'Test.php', basename($filename)),
+                $basePath . \str_replace('.php', 'Test.php', \basename($filename)),
                 $reflection->getName(),
             ];
         };
 
-        return array_map($iterator, array_filter(glob($pattern), $filter));
+        return \array_map($iterator, \array_filter(\glob($pattern), $filter));
     }
 }

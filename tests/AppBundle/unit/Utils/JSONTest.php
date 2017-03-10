@@ -38,8 +38,8 @@ class JSONTest extends KernelTestCase
     public function testThatDecodeWorksLikeExpected(array $parameters, $expected)
     {
         static::assertSame(
-            serialize($expected),
-            serialize(call_user_func_array('\App\Utils\JSON::decode', $parameters))
+            \serialize($expected),
+            \serialize(\call_user_func_array('\App\Utils\JSON::decode', $parameters))
         );
     }
 
@@ -53,7 +53,7 @@ class JSONTest extends KernelTestCase
      */
     public function testThatEncodeThrowsAnExceptionOnMaximumDepth(array $arguments)
     {
-        call_user_func_array('\App\Utils\JSON::encode', $arguments);
+        \call_user_func_array('\App\Utils\JSON::encode', $arguments);
     }
 
     /**
@@ -66,7 +66,7 @@ class JSONTest extends KernelTestCase
      */
     public function testThatDecodeThrowsAnExceptionOnMaximumDepth(array $arguments)
     {
-        call_user_func_array('\App\Utils\JSON::decode', $arguments);
+        \call_user_func_array('\App\Utils\JSON::decode', $arguments);
     }
 
     /**
@@ -144,12 +144,12 @@ class JSONTest extends KernelTestCase
     {
         $iterator = function ($data) {
             return [
-                [$data[1], is_array($data[0]) ? true : false],
+                [$data[1], \is_array($data[0]) ? true : false],
                 $data[0],
             ];
         };
 
-        return array_map($iterator, $this->dataProviderTestThatEncodeWorksLikeExpected());
+        return \array_map($iterator, $this->dataProviderTestThatEncodeWorksLikeExpected());
     }
 
     /**

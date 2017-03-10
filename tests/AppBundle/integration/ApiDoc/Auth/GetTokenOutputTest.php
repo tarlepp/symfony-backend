@@ -8,7 +8,7 @@ declare(strict_types = 1);
 namespace AppBundle\integration\ApiDoc\Auth;
 
 use App\ApiDoc\Auth\GetTokenOutput;
-use Symfony\Component\Form\Test\TypeTestCase;
+use App\Tests\TypeTestCase;
 
 /**
  * Class GetTokenOutputTest
@@ -32,7 +32,7 @@ class GetTokenOutputTest extends TypeTestCase
         $form->submit($formData);
 
         static::assertTrue($form->isSynchronized());
-        static::assertEquals($formData, $form->getData());
+        static::assertSame($formData, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
@@ -56,7 +56,7 @@ class GetTokenOutputTest extends TypeTestCase
         $form->submit($formData);
 
         static::assertTrue($form->isSynchronized());
-        static::assertEquals($expectedFormData, $form->getData());
+        static::assertSame($expectedFormData, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;

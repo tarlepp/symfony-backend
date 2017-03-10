@@ -120,7 +120,7 @@ class UTCDateTimeTypeTest extends ContainerTestCase
             ];
         };
 
-        return array_map($iterator, self::getTestValues());
+        return \array_map($iterator, self::getTestValues());
     }
 
     /**

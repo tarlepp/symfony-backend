@@ -142,7 +142,7 @@ class ExceptionListenerTest extends KernelTestCase
 
         $result = JSON::decode($event->getResponse()->getContent(), true);
 
-        static::assertSame($expectedKeys, array_keys($result));
+        static::assertSame($expectedKeys, \array_keys($result));
     }
 
     /**

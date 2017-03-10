@@ -26,9 +26,9 @@ class EntityTest extends KernelTestCase
      */
     public function testThatAllEntitiesHaveTestClass($entity)
     {
-        $testFile = str_replace(['App\\', '\\'], ['AppBundle\\integration\\', '/'], $entity);
+        $testFile = \str_replace(['App\\', '\\'], ['AppBundle\\integration\\', '/'], $entity);
         $testFile = static::$kernel->getRootDir() . '/../tests/' . $testFile . 'Test.php';
-        $message = sprintf(
+        $message = \sprintf(
             "Entity '%s' doesn't have required test class, please create it to '%s'.",
             $entity,
             $testFile
@@ -60,6 +60,6 @@ class EntityTest extends KernelTestCase
             return [$classMetaData->getName()];
         };
 
-        return array_filter(array_map($filter, $classMetaData));
+        return \array_filter(\array_map($filter, $classMetaData));
     }
 }

@@ -26,10 +26,10 @@ class ControllerTest extends KernelTestCase
      */
     public function testThatAllControllersHaveFunctionalTestClass(string $expectedTestFile, string $controllerClass)
     {
-        $message = sprintf(
+        $message = \sprintf(
             "Controller '%s' doesn't have required functional test class, please create it to '%s'.",
             $controllerClass,
-            'tests/' . substr($expectedTestFile, mb_strpos($expectedTestFile, '/../') + 4)
+            'tests/' . \substr($expectedTestFile, \mb_strpos($expectedTestFile, '/../') + 4)
         );
 
         static::assertFileExists($expectedTestFile, $message);
@@ -45,10 +45,10 @@ class ControllerTest extends KernelTestCase
         string $expectedTestFile,
         string $controllerClass
     ) {
-        $message = sprintf(
+        $message = \sprintf(
             "REST Controller '%s' doesn't have required integration test class, please create it to '%s'.",
             $controllerClass,
-            'tests/' . substr($expectedTestFile, mb_strpos($expectedTestFile, '/../') + 4)
+            'tests/' . \substr($expectedTestFile, \mb_strpos($expectedTestFile, '/../') + 4)
         );
 
         static::assertFileExists($expectedTestFile, $message);
@@ -67,17 +67,17 @@ class ControllerTest extends KernelTestCase
          * @return  array
          */
         $iterator = function (string $filename) use ($basePath): array {
-            $class = '\\App\\Controller\\' . str_replace('.php', '', basename($filename));
+            $class = '\\App\\Controller\\' . \str_replace('.php', '', \basename($filename));
 
             $reflection = new \ReflectionClass($class);
 
             return [
-                $basePath . str_replace('.php', 'Test.php', basename($filename)),
+                $basePath . \str_replace('.php', 'Test.php', \basename($filename)),
                 $reflection->getName(),
             ];
         };
 
-        return array_map($iterator, $this->getControllerClasses());
+        return \array_map($iterator, $this->getControllerClasses());
     }
 
     /**
@@ -93,12 +93,12 @@ class ControllerTest extends KernelTestCase
          * @return  array
          */
         $iterator = function (string $filename) use ($basePath): array {
-            $class = '\\App\\Controller\\' . str_replace('.php', '', basename($filename));
+            $class = '\\App\\Controller\\' . \str_replace('.php', '', \basename($filename));
 
             $reflection = new \ReflectionClass($class);
 
             return [
-                $basePath . str_replace('.php', 'Test.php', basename($filename)),
+                $basePath . \str_replace('.php', 'Test.php', \basename($filename)),
                 $reflection->getName(),
             ];
         };
@@ -111,14 +111,14 @@ class ControllerTest extends KernelTestCase
          * @return  bool
          */
         $filter = function (string $filename): bool {
-            $class = '\\App\\Controller\\' . str_replace('.php', '', basename($filename));
+            $class = '\\App\\Controller\\' . \str_replace('.php', '', \basename($filename));
 
             $reflection = new \ReflectionClass($class);
 
             return $reflection->isSubclassOf(RestController::class);
         };
 
-        return array_map($iterator, array_filter($this->getControllerClasses(), $filter));
+        return \array_map($iterator, \array_filter($this->getControllerClasses(), $filter));
     }
 
     /**
@@ -134,13 +134,13 @@ class ControllerTest extends KernelTestCase
          * @return  bool
          */
         $filter = function (string $filename): bool {
-            $class = '\\App\\Controller\\' . str_replace('.php', '', basename($filename));
+            $class = '\\App\\Controller\\' . \str_replace('.php', '', \basename($filename));
 
             $reflection = new \ReflectionClass($class);
 
             return !$reflection->isAbstract();
         };
 
-        return array_filter(glob($pattern), $filter);
+        return \array_filter(\glob($pattern), $filter);
     }
 }
