@@ -9,8 +9,6 @@ namespace App\Traits\Rest\Roles\Admin;
 
 use App\Annotation\RestApiDoc;
 use App\Traits\Rest\Methods\Update as UpdateMethod;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMInvalidArgumentException;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -19,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Trait to add 'Update' action for REST resources for 'ROLE_ADMIN' users.
