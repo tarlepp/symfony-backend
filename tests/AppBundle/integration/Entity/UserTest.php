@@ -74,7 +74,7 @@ class UserTest extends EntityTestCase
         $this->entity->setPassword('str_rot13', 'password');
 
         /** @var User $entity */
-        $entity = \unserialize(\serialize($this->entity), ['allowed_classes' => [\stdClass::class]]);
+        $entity = \unserialize(\serialize($this->entity), ['allowed_classes' => true]);
 
         // Assert that unserialized object returns expected data
 
