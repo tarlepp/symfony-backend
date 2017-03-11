@@ -35,14 +35,13 @@ use Doctrine\Common\Persistence\Proxy;
 class RequestLog extends Base
 {
     /**
-     * After lifecycle method for create method.
+     * After lifecycle method for save method.
      *
-     * @param   \stdClass               $data
      * @param   EntityInterface|Entity  $entity
      */
-    public function afterCreate(\stdClass $data, EntityInterface $entity)
+    public function afterSave(EntityInterface $entity)
     {
-        parent::afterCreate($data, $entity);
+        parent::afterSave($entity);
 
         // Clean history
         $this->getRepository()->cleanHistory();
