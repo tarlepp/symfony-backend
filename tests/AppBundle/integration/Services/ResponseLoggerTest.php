@@ -58,16 +58,6 @@ class ResponseLoggerTest extends KernelTestCase
         $stubRequest = $this->createMock(Request::class);
         $stubResponse = $this->createMock(Response::class);
         $stubUser = $this->createMock(UserEntity::class);
-        $stubRepository = $this->createMock(RequestLogRepository::class);
-
-        $stubRepository
-            ->expects(static::once())
-            ->method('cleanHistory');
-
-        $stubRequestLogService
-            ->expects(static::once())
-            ->method('getRepository')
-            ->willReturn($stubRepository);
 
         $stubRequestLogService
             ->expects(static::once())
