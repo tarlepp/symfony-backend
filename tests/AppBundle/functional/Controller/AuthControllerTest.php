@@ -154,7 +154,7 @@ class AuthControllerTest extends WebTestCase
         );
 
         static::assertSame(
-            '{"code":401,"message":"JWT Token not found"}',
+            '{"message":"Access denied.","code":403,"status":401}',
             $client->getResponse()->getContent(),
             "Response content was not expected for /auth/profile request\n" . $client->getResponse()
         );

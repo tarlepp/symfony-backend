@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
@@ -37,13 +40,20 @@ class ExceptionListener
     protected $environment;
 
     /**
+     * @var TokenStorageInterface
+     */
+    protected $tokenStorage;
+
+    /**
      * ExceptionListener constructor.
      *
-     * @param   LoggerInterface $logger
-     * @param   string          $environment
+     * @param   TokenStorageInterface   $tokenStorage
+     * @param   LoggerInterface         $logger
+     * @param   string                  $environment
      */
-    public function __construct(LoggerInterface $logger, string $environment)
+    public function __construct(TokenStorageInterface $tokenStorage, LoggerInterface $logger, string $environment)
     {
+        $this->tokenStorage = $tokenStorage;
         $this->logger = $logger;
         $this->environment = $environment;
     }
@@ -65,6 +75,10 @@ class ExceptionListener
         // Log exception
         $this->logger->error((string)$exception);
 
+        // Get current token, and determine if request is made from logged in user or not
+        $token = $this->tokenStorage->getToken();
+        $user = !($token === null || $token instanceof AnonymousToken);
+
         // Create new response
         $response = new Response();
 
@@ -74,6 +88,10 @@ class ExceptionListener
             $response->headers->replace($exception->getHeaders());
         } elseif ($exception instanceof AuthenticationException) {
             $response->setStatusCode(Response::HTTP_UNAUTHORIZED);
+        } elseif ($exception instanceof AccessDeniedException) {
+            $response->setStatusCode($user ? Response::HTTP_FORBIDDEN : Response::HTTP_UNAUTHORIZED);
+        } elseif (\method_exists($exception, 'getStatusCode')) {
+            $response->setStatusCode($exception->getStatusCode());
         } else {
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -123,9 +141,13 @@ class ExceptionListener
         }
 
         // Within AccessDeniedHttpException we need to hide actual real message from users
-        if ($exception instanceof AccessDeniedHttpException) {
+        if ($exception instanceof AccessDeniedHttpException ||
+            $exception instanceof AccessDeniedException
+        ) {
             $message = 'Access denied.';
-        } elseif ($exception instanceof DBALException || $exception instanceof ORMException) { // Database errors
+        } elseif ($exception instanceof DBALException ||
+            $exception instanceof ORMException
+        ) { // Database errors
             $message = 'Database error.';
         } else {
             $message = $exception->getMessage();

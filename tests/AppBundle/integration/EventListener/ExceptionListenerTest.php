@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent as Event;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
@@ -38,9 +39,11 @@ class ExceptionListenerTest extends KernelTestCase
     public function testThatOnKernelExceptionMethodCallsLogger(string $environment)
     {
         /**
-         * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface    $stubLogger
-         * @var \PHPUnit_Framework_MockObject_MockObject|Event              $stubEvent
+         * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface  $stubTokenStorage
+         * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface        $stubLogger
+         * @var \PHPUnit_Framework_MockObject_MockObject|Event                  $stubEvent
          */
+        $stubTokenStorage = $this->createMock(TokenStorageInterface::class);
         $stubLogger = $this->createMock(LoggerInterface::class);
         $stubEvent = $this->createMock(Event::class);
 
@@ -56,7 +59,7 @@ class ExceptionListenerTest extends KernelTestCase
             ->method('error')
             ->with((string)$exception);
 
-        $listener = new ExceptionListener($stubLogger, $environment);
+        $listener = new ExceptionListener($stubTokenStorage, $stubLogger, $environment);
         $listener->onKernelException($stubEvent);
     }
 
@@ -68,9 +71,11 @@ class ExceptionListenerTest extends KernelTestCase
     public function testThatOnKernelExceptionMethodSetResponse(string $environment)
     {
         /**
-         * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface    $stubLogger
-         * @var \PHPUnit_Framework_MockObject_MockObject|Event              $stubEvent
+         * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface  $stubTokenStorage
+         * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface        $stubLogger
+         * @var \PHPUnit_Framework_MockObject_MockObject|Event                  $stubEvent
          */
+        $stubTokenStorage = $this->createMock(TokenStorageInterface::class);
         $stubLogger = $this->createMock(LoggerInterface::class);
         $stubEvent = $this->createMock(Event::class);
 
@@ -85,7 +90,7 @@ class ExceptionListenerTest extends KernelTestCase
             ->expects(static::once())
             ->method('setResponse');
 
-        $listener = new ExceptionListener($stubLogger, $environment);
+        $listener = new ExceptionListener($stubTokenStorage, $stubLogger, $environment);
         $listener->onKernelException($stubEvent);
     }
 
@@ -98,10 +103,12 @@ class ExceptionListenerTest extends KernelTestCase
     public function testResponseHasExpectedStatusCode(int $expectedStatus, \Exception $exception)
     {
         /**
+         * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface  $stubTokenStorage
          * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface        $stubLogger
          * @var \PHPUnit_Framework_MockObject_MockObject|HttpKernelInterface    $stubHttpKernel
          * @var \PHPUnit_Framework_MockObject_MockObject|Request                $stubRequest
          */
+        $stubTokenStorage = $this->createMock(TokenStorageInterface::class);
         $stubLogger = $this->createMock(LoggerInterface::class);
         $stubHttpKernel = $this->createMock(HttpKernelInterface::class);
         $stubRequest = $this->createMock(Request::class);
@@ -110,7 +117,7 @@ class ExceptionListenerTest extends KernelTestCase
         $event = new Event($stubHttpKernel, $stubRequest, HttpKernelInterface::MASTER_REQUEST, $exception);
 
         // Process event
-        $listener = new ExceptionListener($stubLogger, 'dev');
+        $listener = new ExceptionListener($stubTokenStorage, $stubLogger, 'dev');
         $listener->onKernelException($event);
 
         static::assertSame($expectedStatus, $event->getResponse()->getStatusCode());
@@ -125,10 +132,12 @@ class ExceptionListenerTest extends KernelTestCase
     public function testThatResponseHasExpectedKeys(array $expectedKeys, string $environment)
     {
         /**
+         * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface  $stubTokenStorage
          * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface        $stubLogger
          * @var \PHPUnit_Framework_MockObject_MockObject|HttpKernelInterface    $stubHttpKernel
          * @var \PHPUnit_Framework_MockObject_MockObject|Request                $stubRequest
          */
+        $stubTokenStorage = $this->createMock(TokenStorageInterface::class);
         $stubLogger = $this->createMock(LoggerInterface::class);
         $stubHttpKernel = $this->createMock(HttpKernelInterface::class);
         $stubRequest = $this->createMock(Request::class);
@@ -137,7 +146,7 @@ class ExceptionListenerTest extends KernelTestCase
         $event = new Event($stubHttpKernel, $stubRequest, HttpKernelInterface::MASTER_REQUEST, new \Exception('error'));
 
         // Process event
-        $listener = new ExceptionListener($stubLogger, $environment);
+        $listener = new ExceptionListener($stubTokenStorage, $stubLogger, $environment);
         $listener->onKernelException($event);
 
         $result = JSON::decode($event->getResponse()->getContent(), true);
@@ -158,11 +167,13 @@ class ExceptionListenerTest extends KernelTestCase
         string $expectedMessage
     ) {
         /**
+         * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface  $stubTokenStorage
          * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface $stubLogger
          */
+        $stubTokenStorage = $this->createMock(TokenStorageInterface::class);
         $stubLogger = $this->createMock(LoggerInterface::class);
 
-        $listener = new ExceptionListener($stubLogger, $environment);
+        $listener = new ExceptionListener($stubTokenStorage, $stubLogger, $environment);
 
         static::assertSame($expectedMessage, PHPUnitUtil::callMethod($listener, 'getExceptionMessage', [$exception]));
     }

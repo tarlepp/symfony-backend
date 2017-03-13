@@ -7,7 +7,7 @@ services:
 
     app.event.exception_listener:
         class: App\EventListener\ExceptionListener
-        arguments: [ '@logger', '%kernel.environment%' ]
+        arguments: [ '@security.token_storage', '@logger', '%kernel.environment%' ]
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 

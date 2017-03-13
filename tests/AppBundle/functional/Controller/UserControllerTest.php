@@ -78,7 +78,7 @@ class UserControllerTest extends WebTestCase
             static::assertSame(\sort($attributes), \sort($keys), 'Response contains keys that are not expected');
             static::assertSame('Access denied.', $responseData->message, 'Response message was not expected');
             static::assertSame(403, $responseData->status, 'Response status was not expected');
-            static::assertSame(0, $responseData->code, 'Response code was not expected');
+            static::assertSame(403, $responseData->code, 'Response code was not expected');
         } else { // Otherwise check that response has correct output
             static::assertTrue(\is_array($responseData), 'Response did not return array of users.');
             static::assertCount(5, $responseData, 'Response did not contain expected number of users.');
@@ -131,7 +131,7 @@ class UserControllerTest extends WebTestCase
             static::assertSame(\sort($attributes), \sort($keys), 'Response contains keys that are not expected');
             static::assertSame('Access denied.', $responseData->message);
             static::assertSame(403, $responseData->status, 'Response status was not expected');
-            static::assertSame(0, $responseData->code, 'Response code was not expected');
+            static::assertSame(403, $responseData->code, 'Response code was not expected');
         } else { // Otherwise check that response has correct output
             $attributes = ['id', 'username', 'firstname', 'surname', 'email'];
 
