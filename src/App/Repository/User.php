@@ -133,14 +133,14 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
             ->setParameter('username', $username)
         ;
 
-        if (null !== $id) {
+        if ($id !== null) {
             $query
                 ->andWhere('u.id <> :id')
                 ->setParameter('id', $id)
             ;
         }
 
-        return null === $query->getQuery()->getOneOrNullResult();
+        return $query->getQuery()->getOneOrNullResult() === null;
     }
 
     /**
@@ -163,13 +163,13 @@ class User extends Base implements UserProviderInterface, UserLoaderInterface
             ->setParameter('email', $email)
         ;
 
-        if (null !== $id) {
+        if ($id !== null) {
             $query
                 ->andWhere('u.id <> :id')
                 ->setParameter('id', $id)
             ;
         }
 
-        return null === $query->getQuery()->getOneOrNullResult();
+        return $query->getQuery()->getOneOrNullResult() === null;
     }
 }

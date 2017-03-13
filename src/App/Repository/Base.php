@@ -249,7 +249,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
             }
 
             // Determine used operator
-            if (null === $operator) {
+            if ($operator === null) {
                 $operator = \is_array($value) ? 'in' : 'eq';
             }
 
@@ -304,7 +304,7 @@ abstract class Base extends EntityRepository implements Interfaces\Base
         foreach ($searchTerms as $operand => $terms) {
             $criteria = SearchTerm::getCriteria($columns, $terms, $operand);
 
-            if (null !== $criteria) {
+            if ($criteria !== null) {
                 $queryBuilder->andWhere($this->getExpression($queryBuilder, $queryBuilder->expr()->andX(), $criteria));
             }
         }

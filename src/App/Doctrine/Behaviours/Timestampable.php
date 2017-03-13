@@ -100,6 +100,6 @@ trait Timestampable
      */
     protected function formatDatetime(\DateTime $dateTime = null)
     {
-        return null === $dateTime ? null : $dateTime->format(\DATE_RFC3339);
+        return $dateTime === null ? null : $dateTime->format(\DATE_RFC3339);
     }
 }

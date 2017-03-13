@@ -476,7 +476,7 @@ class RequestLog implements EntityInterface
     {
         $this->id = Uuid::uuid4()->toString();
 
-        if (null !== $request) {
+        if ($request !== null) {
             $this->setClientIp($request->getClientIp());
             $this->setMethod($request->getRealMethod());
             $this->setScheme($request->getScheme());
@@ -497,7 +497,7 @@ class RequestLog implements EntityInterface
             $this->setTime(new \DateTime('now', new \DateTimeZone('UTC')));
         }
 
-        if (null !== $response) {
+        if ($response !== null) {
             $this->setStatusCode($response->getStatusCode());
             $this->setResponseContentLength(mb_strlen($response->getContent()));
         }

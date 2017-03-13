@@ -134,7 +134,7 @@ class Request
     {
         $limit = $request->get('limit', null);
 
-        return null === $limit ? null : \abs($limit);
+        return $limit === null ? null : \abs($limit);
     }
 
     /**
@@ -151,7 +151,7 @@ class Request
     {
         $offset = $request->get('offset', null);
 
-        return null === $offset ? null : \abs($offset);
+        return $offset === null ? null : \abs($offset);
     }
 
     /**
@@ -170,7 +170,7 @@ class Request
     {
         $search = $request->get('search', null);
 
-        if (null === $search) {
+        if ($search === null) {
             return [];
         }
 

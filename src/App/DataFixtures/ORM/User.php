@@ -120,7 +120,7 @@ class User extends AbstractFixture implements FixtureInterface, OrderedFixtureIn
      */
     private function createUser(ObjectManager $manager, Roles $roles, string $role = null)
     {
-        $suffix = null === $role ? '' : '-' . $roles->getShort($role);
+        $suffix = $role === null ? '' : '-' . $roles->getShort($role);
 
         // Create new user
         $user = new UserEntity();
@@ -130,7 +130,7 @@ class User extends AbstractFixture implements FixtureInterface, OrderedFixtureIn
         $user->setEmail('john.doe' . $suffix . '@test.com');
         $user->setPlainPassword('doe' . $suffix);
 
-        if (null !== $role) {
+        if ($role !== null) {
             /** @var UserGroupEntity $userGroup */
             $userGroup = $this->getReference('user-group-' . $roles->getShort($role));
             $user->addUserGroup($userGroup);

@@ -50,14 +50,14 @@ abstract class KernelTestCase extends TestCase
 
         $dir = static::getPhpUnitCliConfigArgument();
 
-        if (null === $dir &&
+        if ($dir === null &&
             (\is_file(\getcwd() . \DIRECTORY_SEPARATOR . 'phpunit.xml') ||
                 \is_file(\getcwd() . \DIRECTORY_SEPARATOR . 'phpunit.xml.dist'))) {
             $dir = \getcwd();
         }
 
         // Can't continue
-        if (null === $dir) {
+        if ($dir === null) {
             throw new \RuntimeException('Unable to guess the Kernel directory.');
         }
 
@@ -171,7 +171,7 @@ abstract class KernelTestCase extends TestCase
     {
         $options = $options ?? [];
 
-        if (null === static::$class) {
+        if (static::$class === null) {
             static::$class = static::getKernelClass();
         }
 
@@ -186,7 +186,7 @@ abstract class KernelTestCase extends TestCase
      */
     protected static function ensureKernelShutdown()
     {
-        if (null !== static::$kernel) {
+        if (static::$kernel !== null) {
             $container = static::$kernel->getContainer();
 
             static::$kernel->shutdown();

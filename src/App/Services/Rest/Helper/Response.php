@@ -84,11 +84,11 @@ class Response implements ResponseInterface
     ): HttpFoundationResponse {
         $httpStatus = $httpStatus ?? 200;
 
-        if (null === $format) {
+        if ($format === null) {
             $format = $request->getContentType() === self::FORMAT_XML ? self::FORMAT_XML : self::FORMAT_JSON;
         }
 
-        if (null === $context) {
+        if ($context === null) {
             $context = $this->getSerializeContext($request);
         }
 

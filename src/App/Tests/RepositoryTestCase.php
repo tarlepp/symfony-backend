@@ -362,11 +362,11 @@ abstract class RepositoryTestCase extends KernelTestCase
      */
     protected function createEntity(EntityInterface $entity = null): EntityInterface
     {
-        if (null === $entity && \count($this->entityProperties) === 0) {
+        if ($entity === null && \count($this->entityProperties) === 0) {
             static::markTestSkipped();
         }
 
-        if (null === $entity) {
+        if ($entity === null) {
             $entity = new $this->entityName();
 
             foreach ($this->entityProperties as $property => $value) {

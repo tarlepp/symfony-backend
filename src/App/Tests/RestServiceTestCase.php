@@ -80,7 +80,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
      */
     public function testThatGetEntityNameReturnsExpectedValue()
     {
-        if (null === $this->entityName) {
+        if ($this->entityName === null) {
             static::fail('You have not specified entityName to your test class.');
         }
 
@@ -98,7 +98,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
      */
     public function testThatGetReferenceReturnsExpectedProxy()
     {
-        if (null === $this->entityName) {
+        if ($this->entityName === null) {
             static::fail('You have not specified entityName to your test class.');
         }
 
@@ -118,7 +118,7 @@ abstract class RestServiceTestCase extends ContainerTestCase
      */
     public function testThatGetRepositoryReturnsExpectedValue()
     {
-        if (null === $this->repositoryName) {
+        if ($this->repositoryName === null) {
             static::fail('You have not specified repositoryName to your test class.');
         }
 

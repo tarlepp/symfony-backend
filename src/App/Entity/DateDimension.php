@@ -287,7 +287,7 @@ class DateDimension implements EntityInterface
     {
         $this->id = Uuid::uuid4()->toString();
 
-        if (null !== $dateTime) {
+        if ($dateTime !== null) {
             $this->setDate($dateTime);
             $this->setYear((int)$dateTime->format('Y'));
             $this->setMonth((int)$dateTime->format('n'));

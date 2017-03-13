@@ -45,7 +45,7 @@ class ResponseListener
         $token = $tokenStorage->getToken();
 
         // We don't have valid user atm, so set user to null
-        if (null === $token || $token instanceof AnonymousToken) {
+        if ($token === null || $token instanceof AnonymousToken) {
             $this->user = null;
         } else { // Otherwise get user object
             $this->user = $tokenStorage->getToken()->getUser();

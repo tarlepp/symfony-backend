@@ -169,7 +169,7 @@ abstract class Base extends ContainerAwareCommand
 
         $user = null;
 
-        while (null === $user) {
+        while ($user === null) {
             try {
                 $question = new Question('Username or email: ', $this->input->getOption('username'));
                 $username = $this->io->askQuestion($question);
@@ -203,7 +203,7 @@ abstract class Base extends ContainerAwareCommand
         $userGroup = null;
 
         // And do while user has "selected" one valid user group
-        while (null === $userGroup) {
+        while ($userGroup === null) {
             try {
                 $userGroup = $this->getUserGroupAnswer();
             } catch (\Exception $error) {

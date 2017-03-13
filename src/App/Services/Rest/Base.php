@@ -131,7 +131,7 @@ abstract class Base implements Interfaces\Base
         $entity = $this->repository->find($id);
 
         // Entity not found
-        if ($throwExceptionIfNotFound && null === $entity) {
+        if ($throwExceptionIfNotFound && $entity === null) {
             throw new NotFoundHttpException('Not found');
         }
 
@@ -156,7 +156,7 @@ abstract class Base implements Interfaces\Base
         $entity = $this->repository->findOneBy($criteria, $orderBy);
 
         // Entity not found
-        if ($throwExceptionIfNotFound && null === $entity) {
+        if ($throwExceptionIfNotFound && $entity === null) {
             throw new NotFoundHttpException('Not found');
         }
 
@@ -250,7 +250,7 @@ abstract class Base implements Interfaces\Base
         $entity = $this->repository->find($id);
 
         // Entity not found
-        if (null === $entity) {
+        if ($entity === null) {
             throw new NotFoundHttpException('Not found');
         }
 
@@ -275,7 +275,7 @@ abstract class Base implements Interfaces\Base
         $entity = $this->repository->find($id);
 
         // Entity not found
-        if (null === $entity) {
+        if ($entity === null) {
             throw new NotFoundHttpException('Not found');
         }
 
