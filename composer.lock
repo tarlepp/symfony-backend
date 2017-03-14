@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d5590f230c6d3b1c237541cf957e1986",
-    "content-hash": "9b11a1982a49b9c0a5830cf3519cfef3",
+    "hash": "a4f1352d8b23a5e40aa78abf4b4e9cac",
+    "content-hash": "b9459cb16dad79a2fdce258af9eb2f5a",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1322,17 +1322,17 @@
         },
         {
             "name": "jms/serializer-bundle",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "target-dir": "JMS/SerializerBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
-                "reference": "95c0258b74a71ed40981998a8aa8b3bc13f9760d"
+                "reference": "4c6af116ff93d071c6086963798ca1ff8c1384df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/95c0258b74a71ed40981998a8aa8b3bc13f9760d",
-                "reference": "95c0258b74a71ed40981998a8aa8b3bc13f9760d",
+                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/4c6af116ff93d071c6086963798ca1ff8c1384df",
+                "reference": "4c6af116ff93d071c6086963798ca1ff8c1384df",
                 "shasum": ""
             },
             "require": {
@@ -1390,7 +1390,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2017-02-22 16:15:59"
+            "time": "2017-03-13 17:02:39"
         },
         {
             "name": "knplabs/doctrine-behaviors",
@@ -2110,16 +2110,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.9",
+            "version": "v2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "6968531206671f94377b01dc7888d5d1b858a01b"
+                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/6968531206671f94377b01dc7888d5d1b858a01b",
-                "reference": "6968531206671f94377b01dc7888d5d1b858a01b",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/634bae8e911eefa89c1abfbf1b66da679ac8f54d",
+                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d",
                 "shasum": ""
             },
             "require": {
@@ -2154,7 +2154,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-03 20:43:42"
+            "time": "2017-03-13 16:27:32"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -3341,12 +3341,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "40d133c29a6abe39397ad89a08cd0c661e3e1767"
+                "reference": "27dbfda18e44dcb9315b786e36d13dd807fc8e53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/40d133c29a6abe39397ad89a08cd0c661e3e1767",
-                "reference": "40d133c29a6abe39397ad89a08cd0c661e3e1767",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/27dbfda18e44dcb9315b786e36d13dd807fc8e53",
+                "reference": "27dbfda18e44dcb9315b786e36d13dd807fc8e53",
                 "shasum": ""
             },
             "require": {
@@ -3483,7 +3483,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-03-12 16:08:03"
+            "time": "2017-03-14 07:58:07"
         },
         {
             "name": "twig/twig",
@@ -5334,12 +5334,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "10ba9296665d42b56470f87b157781e21a768338"
+                "reference": "fc1b0c54b61a30fd15d6de04f6e01c01d0aa4a7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/10ba9296665d42b56470f87b157781e21a768338",
-                "reference": "10ba9296665d42b56470f87b157781e21a768338",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/fc1b0c54b61a30fd15d6de04f6e01c01d0aa4a7b",
+                "reference": "fc1b0c54b61a30fd15d6de04f6e01c01d0aa4a7b",
                 "shasum": ""
             },
             "require": {
@@ -5388,7 +5388,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2017-03-02 12:54:15"
+            "time": "2017-03-13 11:11:00"
         },
         {
             "name": "webmozart/assert",
