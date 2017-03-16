@@ -13,6 +13,7 @@ use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class ExceptionListenerSpec
@@ -25,14 +26,16 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 class ExceptionListenerSpec extends ObjectBehavior
 {
     /**
+     * @param   \PhpSpec\Wrapper\Collaborator|TokenStorageInterface         $tokenStorage
      * @param   \PhpSpec\Wrapper\Collaborator|LoggerInterface               $logger
      * @param   \PhpSpec\Wrapper\Collaborator|GetResponseForExceptionEvent  $event
      */
     function let(
+        TokenStorageInterface $tokenStorage,
         LoggerInterface $logger,
         GetResponseForExceptionEvent $event
     ) {
-        $this->beConstructedWith($logger, 'dev');
+        $this->beConstructedWith($tokenStorage, $logger, 'dev');
 
         $exception = new \Exception('Error message');
 
