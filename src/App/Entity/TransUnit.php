@@ -129,7 +129,7 @@ class TransUnit implements EntityInterface
     private $translations;
 
     /**
-     * Group constructor.
+     * TransUnit constructor.
      */
     public function __construct()
     {
