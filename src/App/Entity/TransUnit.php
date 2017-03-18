@@ -10,7 +10,10 @@ namespace App\Entity;
 use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class TransUnit
@@ -47,6 +50,7 @@ class TransUnit implements EntityInterface
      *      "Default",
      *      "TransUnit",
      *      "TransUnit.id",
+     *      "Translation.transUnit",
      *  })
      * @JMS\Type("string")
      *
