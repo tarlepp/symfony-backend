@@ -105,7 +105,7 @@ class TransUnit implements EntityInterface
      * @Assert\Length(min = 2, max = 255)
      *
      * @ORM\Column(
-     *      name="key",
+     *      name="`key`",
      *      type="string",
      *      length=255,
      *      nullable=false
