@@ -179,19 +179,19 @@ class Translation implements EntityInterface
     }
 
     /**
-     * @return string
+     * @return Locale
      */
-    public function getLocale(): string
+    public function getLocale(): Locale
     {
         return $this->locale;
     }
 
     /**
-     * @param string $locale
+     * @param Locale $locale
      *
      * @return Translation
      */
-    public function setLocale(string $locale): Translation
+    public function setLocale(Locale $locale): Translation
     {
         $this->locale = $locale;
 
