@@ -19,6 +19,10 @@ services:
         class: App\Services\Rest\User
         arguments: [ '@repository.user', '@validator' ]
 
+    app.services.rest.trans_unit:
+        class: App\Services\Rest\TransUnit
+        arguments: [ '@repository.trans_unit', '@validator' ]
+
     app.services.rest.user_group:
         class: App\Services\Rest\UserGroup
         arguments: [ '@repository.user_group', '@validator' ]

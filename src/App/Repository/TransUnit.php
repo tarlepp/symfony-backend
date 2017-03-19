@@ -7,6 +7,8 @@ declare(strict_types=1);
  */
 namespace App\Repository;
 
+use Doctrine\ORM\Query\Expr\Join;
+
 /**
  * Class TransUnit
  *
@@ -22,5 +24,36 @@ class TransUnit extends Base
      */
     protected static $searchColumns = ['domain', 'key'];
 
-    // Implement custom entity query methods here
+    /**
+     * Method to fetch translations from database for specified language and domain.
+     *
+     * @param   string  $language
+     * @param   string  $domain
+     *
+     * @return  array
+     */
+    public function getTranslations(string $language, string $domain): array
+    {
+        // Create query builder
+        $queryBuilder = $this->createQueryBuilder('entity');
+
+        // Specify used parameters
+        $parameters = [
+            'locale' => $language,
+            'domain' => $domain,
+        ];
+
+        // Build query
+        $queryBuilder
+            ->select(
+                'entity.key             AS key',
+                'translations.content   AS content'
+            )
+            ->innerJoin('entity.translations', 'translations')
+            ->innerJoin('translations.locale', 'locale', Join::WITH, 'locale.code = :locale')
+            ->andWhere('entity.domain = :domain')
+            ->setParameters($parameters);
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
 }
