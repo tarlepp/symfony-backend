@@ -18,4 +18,35 @@ use App\Tests\WebTestCase;
 class TranslationControllerTest extends WebTestCase
 {
     static protected $baseRoute = '/translation';
+
+    /**
+     * @dataProvider dataProviderTestThatTranslationsAreReturned
+     *
+     * @param string $language
+     */
+    public function testThatTranslationsAreReturned(string $language)
+    {
+        $url = self::$baseRoute . '/' . $language . '.json';
+
+        $client = self::createClient();
+        $client->request('GET', $url);
+
+        // Check that HTTP status code is correct
+        static::assertSame(
+            200,
+            $client->getResponse()->getStatusCode(),
+            'HTTP status code was not expected for GET ' . $url . "\n" . $client->getResponse()
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderTestThatTranslationsAreReturned(): array
+    {
+        return [
+            ['en'],
+            ['fi'],
+        ];
+    }
 }
