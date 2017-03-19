@@ -1,15 +1,15 @@
 <?php
 declare(strict_types = 1);
 /**
- * /tests/AppBundle/functional/Repository/TranslationTest.php
+ * /tests/AppBundle/functional/Repository/LocaleTest.php
  *
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
 namespace AppBundle\functional\Repository;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Entity\Translation as Entity;
-use App\Repository\Translation as Repository;
+use App\Entity\Locale as Entity;
+use App\Repository\Locale as Repository;
 use App\Tests\RepositoryTestCase;
 
 /**
@@ -18,7 +18,7 @@ use App\Tests\RepositoryTestCase;
  * @package AppBundle\Entity
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
  */
-class TranslationTest extends RepositoryTestCase
+class LocaleTest extends RepositoryTestCase
 {
     /**
      * @var Entity
@@ -39,12 +39,24 @@ class TranslationTest extends RepositoryTestCase
      * @var array
      */
     protected $associations = [
-        'transUnit',
-        'locale',
+        'translations',
     ];
 
     /**
      * @var array
      */
     protected $entityProperties = [];
+
+    /**
+     * @inheritdoc
+     */
+    protected function createEntity(EntityInterface $entity = null): EntityInterface
+    {
+        $this->entityProperties = [
+            'name'  => 'English',
+            'code'  => 'en',
+        ];
+
+        return parent::createEntity($entity);
+    }
 }
