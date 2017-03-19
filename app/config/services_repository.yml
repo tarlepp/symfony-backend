@@ -12,20 +12,30 @@ services:
         arguments: [ App\Entity\Author ]
         class: App\Repository\Author
 
-    repository.date_dimension:
-        parent: repository
-        arguments: [ App\Entity\DateDimension ]
-        class: App\Repository\DateDimension
-
     repository.book:
         parent: repository
         arguments: [ App\Entity\Book ]
         class: App\Repository\Book
 
+    repository.date_dimension:
+        parent: repository
+        arguments: [ App\Entity\DateDimension ]
+        class: App\Repository\DateDimension
+
+    repository.locale:
+        parent: repository
+        arguments: [ App\Entity\Locale ]
+        class: App\Repository\Locale
+
     repository.request_log:
         parent: repository
         arguments: [ App\Entity\RequestLog ]
         class: App\Repository\RequestLog
+
+    repository.trans_unit:
+        parent: repository
+        arguments: [ App\Entity\TransUnit ]
+        class: App\Repository\TransUnit
 
     repository.user:
         parent: repository

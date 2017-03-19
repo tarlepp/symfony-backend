@@ -92,25 +92,31 @@ class Translation implements EntityInterface
     /**
      * Translation locale
      *
-     * @var string
+     * @var \App\Entity\Locale
      *
      * @JMS\Groups({
      *      "Default",
      *      "Translation",
      *      "Translation.locale",
      *  })
-     * @JMS\Type("string")
+     * @JMS\Type("App\Entity\Locale")
      *
      * @Assert\NotBlank()
      * @Assert\NotNull()
-     * @Assert\Length(min = 2, max = 10)
      *
-     * @ORM\Column(
-     *      name="locale",
-     *      type="string",
-     *      length=255,
-     *      nullable=false
+     * @ORM\ManyToOne(
+     *      targetEntity="App\Entity\Locale",
+     *      inversedBy="translations",
+     *      cascade={"all"},
      *  )
+     * @ORM\JoinColumns({
+     *      @ORM\JoinColumn(
+     *          name="locale_id",
+     *          referencedColumnName="id",
+     *          onDelete="CASCADE",
+     *          nullable=false,
+     *      ),
+     *  })
      */
     private $locale;
 
