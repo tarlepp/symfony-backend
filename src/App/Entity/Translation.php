@@ -19,8 +19,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(
  *      name="translation",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="uq_trans_unit_locale",
+ *              columns={"trans_unit_id", "locale_id"},
+ *          ),
+ *      },
  *      indexes={
  *          @ORM\Index(name="trans_unit_id", columns={"trans_unit_id"}),
+ *          @ORM\Index(name="locale_id", columns={"locale_id"}),
  *          @ORM\Index(name="created_by_id", columns={"created_by_id"}),
  *          @ORM\Index(name="updated_by_id", columns={"updated_by_id"}),
  *          @ORM\Index(name="deleted_by_id", columns={"deleted_by_id"}),
