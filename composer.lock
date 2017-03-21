@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1b476b908a95d4a6b232a2cccfd3f8a4",
-    "content-hash": "2ae7f5fb4695b4410f1f66e25e081458",
+    "hash": "e468ba0aabd8d900d4eb6f024a3eacdf",
+    "content-hash": "a23ec7974daf7680520e801fbe9cd45f",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2497,21 +2497,21 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "3.5.2",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "5677cfe02397dd6b58c861870dfaa5d9007d3954"
+                "reference": "0b7bdfb180e72c8d76e75a649ced67e392201458"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/5677cfe02397dd6b58c861870dfaa5d9007d3954",
-                "reference": "5677cfe02397dd6b58c861870dfaa5d9007d3954",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/0b7bdfb180e72c8d76e75a649ced67e392201458",
+                "reference": "0b7bdfb180e72c8d76e75a649ced67e392201458",
                 "shasum": ""
             },
             "require": {
                 "paragonie/random_compat": "^1.0|^2.0",
-                "php": ">=5.4"
+                "php": "^5.4 || ^7.0"
             },
             "replace": {
                 "rhumsaa/uuid": "self.version"
@@ -2575,7 +2575,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2016-11-22 19:21:44"
+            "time": "2017-03-18 15:38:09"
         },
         {
             "name": "roave/security-advisories",
@@ -3341,12 +3341,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "c12727deb862add6ef093ba59dd45acdd7d2c021"
+                "reference": "a96a99723ab4d421cabe2251c8a81318dc099594"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/c12727deb862add6ef093ba59dd45acdd7d2c021",
-                "reference": "c12727deb862add6ef093ba59dd45acdd7d2c021",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/a96a99723ab4d421cabe2251c8a81318dc099594",
+                "reference": "a96a99723ab4d421cabe2251c8a81318dc099594",
                 "shasum": ""
             },
             "require": {
@@ -3483,7 +3483,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-03-17 19:27:05"
+            "time": "2017-03-21 15:27:08"
         },
         {
             "name": "twig/twig",

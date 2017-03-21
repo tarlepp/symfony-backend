@@ -50,7 +50,7 @@
         "nelmio/api-doc-bundle": "dev-master",
         "nelmio/cors-bundle": "1.5.1",
         "piwik/device-detector": "3.7.6",
-        "ramsey/uuid": "3.5.2",
+        "ramsey/uuid": "3.6.0",
         "sensio/distribution-bundle": "5.0.18",
         "sensio/framework-extra-bundle": "3.0.23",
         "symfony/monolog-bundle": "3.0.3",
