@@ -33,6 +33,27 @@ use Symfony\Component\HttpFoundation\Response;
 class TranslationController extends RestController
 {
     /**
+     * Controller action method to fetch currently supported locales from database.
+     *
+     * @Route("/locales.json")
+     *
+     * @Method("GET")
+     *
+     * @param   Request $request
+     *
+     * @return  Response
+     *
+     * @throws  \Symfony\Component\HttpKernel\Exception\HttpException
+     */
+    public function getLocales(Request $request)
+    {
+        return $this->getResponseService()->createResponse(
+            $request,
+            $this->getResourceService()->getRepository()->getLocales()
+        );
+    }
+
+    /**
      * Getter method for default domain (messages) translations from database.
      *
      * @Route("/{language}.json")

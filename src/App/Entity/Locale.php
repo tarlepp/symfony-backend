@@ -94,6 +94,31 @@ class Locale implements EntityInterface
     private $name;
 
     /**
+     * Locale short name.
+     *
+     * @var string
+     *
+     * @JMS\Groups({
+     *      "Default",
+     *      "Locale",
+     *      "Locale.nameShort",
+     *  })
+     * @JMS\Type("string")
+     *
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     * @Assert\Length(min = 2, max = 10)
+     *
+     * @ORM\Column(
+     *      name="name_short",
+     *      type="string",
+     *      length=255,
+     *      nullable=false
+     *  )
+     */
+    private $nameShort;
+
+    /**
      * Locale code.
      *
      * @var string
@@ -171,6 +196,26 @@ class Locale implements EntityInterface
     public function setName(string $name): Locale
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNameShort(): string
+    {
+        return $this->nameShort;
+    }
+
+    /**
+     * @param string $nameShort
+     *
+     * @return Locale
+     */
+    public function setNameShort(string $nameShort): Locale
+    {
+        $this->nameShort = $nameShort;
 
         return $this;
     }

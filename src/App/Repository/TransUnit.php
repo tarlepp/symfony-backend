@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 namespace App\Repository;
 
+use App\Entity\Locale;
 use Doctrine\ORM\Query\Expr\Join;
 
 /**
@@ -53,6 +54,29 @@ class TransUnit extends Base
             ->innerJoin('translations.locale', 'locale', Join::WITH, 'locale.code = :locale')
             ->andWhere('entity.domain = :domain')
             ->setParameters($parameters);
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
+    /**
+     * Method to fetch locale data from database.
+     *
+     * @return array
+     */
+    public function getLocales(): array
+    {
+        // Create pure query builder
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+
+        // Build query
+        $queryBuilder
+            ->select(
+                'locale.id',
+                'locale.code',
+                'locale.name',
+                'locale.nameShort'
+            )
+            ->from(Locale::class, 'locale');
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
