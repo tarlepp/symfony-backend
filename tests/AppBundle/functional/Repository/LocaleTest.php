@@ -53,8 +53,9 @@ class LocaleTest extends RepositoryTestCase
     protected function createEntity(EntityInterface $entity = null): EntityInterface
     {
         $this->entityProperties = [
-            'name'  => 'English',
-            'code'  => 'en',
+            'name'      => 'English',
+            'nameShort' => 'EN',
+            'code'      => 'en'
         ];
 
         return parent::createEntity($entity);
