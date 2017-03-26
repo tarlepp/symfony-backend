@@ -54,10 +54,17 @@ class TranslationController extends RestController
     }
 
     /**
-     * Getter method for default domain (messages) translations from database.
+     * Getter method for default domain (messages) translations from database. Note that this covers following requests
+     *  - GET /translation/en.json
+     *  - GET /translation/domain/en.json
+     *  - GET /translation/domain/domain2/en.json
+     *  - GET /translation/domain/domain2/domain3/en.json
+     *  - etc.
+     *
+     * @see https://symfony.com/doc/current/routing/slash_in_parameter.html
      *
      * @Route("/{language}.json")
-     * @Route("/{domain}/{language}.json")
+     * @Route("/{domain}/{language}.json", requirements={"domain"=".+"})
      *
      * @Method("GET")
      *
