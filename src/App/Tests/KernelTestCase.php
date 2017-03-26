@@ -85,11 +85,15 @@ abstract class KernelTestCase extends TestCase
             if ($testArg === '--configuration' || \preg_match('/^-[^ \-]*c$/', $testArg)) {
                 $dir = \realpath($reversedArgs[$argIndex - 1]);
                 break;
-            } elseif (0 === \strpos($testArg, '--configuration=')) {
+            }
+
+            if (\strpos($testArg, '--configuration=') === 0) {
                 $argPath = \substr($testArg, \strlen('--configuration='));
                 $dir = \realpath($argPath);
                 break;
-            } elseif (0 === \strpos($testArg, '-c')) {
+            }
+
+            if (\strpos($testArg, '-c') === 0) {
                 $argPath = \substr($testArg, \strlen('-c'));
                 $dir = \realpath($argPath);
                 break;

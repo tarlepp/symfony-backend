@@ -151,7 +151,9 @@ abstract class RestServiceTestCase extends ContainerTestCase
         // Skip proper checks of entity
         if ($this->entityCount === false) {
             return;
-        } elseif ($this->entityCount > 0) {
+        }
+
+        if ($this->entityCount > 0) {
             $message = \sprintf(
                 "Rest service '%s->find()' did not return expected count of entities.",
                 $this->serviceName

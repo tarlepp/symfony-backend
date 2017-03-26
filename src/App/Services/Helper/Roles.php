@@ -51,7 +51,7 @@ class Roles implements RolesInterface
             self::ROLE_LOGGED,
             self::ROLE_USER,
             self::ROLE_ADMIN,
-            self::ROLE_ROOT,
+            self::ROLE_ROOT
         ];
 
         return $roles;

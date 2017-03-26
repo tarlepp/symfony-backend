@@ -102,7 +102,7 @@ class ExceptionListener
         $error = [
             'message'   => $this->getExceptionMessage($exception),
             'code'      => $exception->getCode(),
-            'status'    => $response->getStatusCode(),
+            'status'    => $response->getStatusCode()
         ];
 
         // Attach more info to error response in dev environment
@@ -113,7 +113,7 @@ class ExceptionListener
                     'line'          => $exception->getLine(),
                     'message'       => $exception->getMessage(),
                     'trace'         => $exception->getTrace(),
-                    'traceString'   => $exception->getTraceAsString(),
+                    'traceString'   => $exception->getTraceAsString()
                 ]
             ];
         }

@@ -141,7 +141,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
                 [
                     'description'   => 'JWT authorization key, see /auth/getToken endpoint',
                     'required'      => true,
-                    'default'       => 'Bearer _token_here_',
+                    'default'       => 'Bearer _token_here_'
                 ]
             );
         }
@@ -171,7 +171,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
                         'number' => [
                             'dataType'      => 'integer',
                             'required'      => true,
-                            'description'   => 'Number of resource items',
+                            'description'   => 'Number of resource items'
                         ]
                     ],
                     [],
@@ -199,7 +199,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
                         '[]' => [
                             'dataType'      => 'array of resource id values',
                             'required'      => true,
-                            'description'   => 'Resource id values as an array',
+                            'description'   => 'Resource id values as an array'
                         ]
                     ],
                     [],
@@ -329,7 +329,7 @@ MESSAGE;
         static $data = [
             'message'   => 'string',
             'code'      => 'integer',
-            'status'    => 'integer',
+            'status'    => 'integer'
         ];
 
         // Finally add status codes.

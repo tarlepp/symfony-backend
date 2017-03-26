@@ -18,6 +18,8 @@ class RequestLog extends Base
     /**
      * Helper method to clean history data from request_log table.
      *
+     * @throws  \Exception
+     *
      * @return  integer
      */
     public function cleanHistory(): int

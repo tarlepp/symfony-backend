@@ -73,7 +73,7 @@ class Auth
     {
         return [
             'CONTENT_TYPE'          => 'application/json',
-            'HTTP_AUTHORIZATION'    => 'Bearer ' . $token,
+            'HTTP_AUTHORIZATION'    => 'Bearer ' . $token
         ];
     }
 

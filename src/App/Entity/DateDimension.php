@@ -7,7 +7,6 @@ declare(strict_types=1);
  */
 namespace App\Entity;
 
-use App\Doctrine\Behaviours as ORMBehaviors;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;

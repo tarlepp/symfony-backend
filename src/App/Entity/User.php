@@ -502,7 +502,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
         return JSON::encode([
             'id'        => $this->id,
             'username'  => $this->username,
-            'password'  => $this->password,
+            'password'  => $this->password
         ]);
     }
 
@@ -546,7 +546,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
         return [
             'firstname' => $this->getFirstname(),
             'surname'   => $this->getSurname(),
-            'email'     => $this->getEmail(),
+            'email'     => $this->getEmail()
         ];
     }
 
@@ -559,7 +559,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
     {
         $bits = [
             $this->getId(),
-            $this->getPassword(),
+            $this->getPassword()
         ];
 
         return \hash('sha512', \implode('', $bits));

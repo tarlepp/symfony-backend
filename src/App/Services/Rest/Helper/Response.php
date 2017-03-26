@@ -31,7 +31,7 @@ class Response implements ResponseInterface
      */
     private $contentTypes = [
         self::FORMAT_JSON   => 'application/json',
-        self::FORMAT_XML    => 'application/xml',
+        self::FORMAT_XML    => 'application/xml'
     ];
 
     /**

@@ -267,7 +267,7 @@ abstract class Base extends ContainerAwareCommand
             'firstname',
             'surname',
             'email',
-            'userGroups',
+            'userGroups'
         ];
 
         $this->printGenericInformation($user, $attributes);
@@ -286,7 +286,7 @@ abstract class Base extends ContainerAwareCommand
         static $attributes = [
             'id',
             'name',
-            'role',
+            'role'
         ];
 
         $this->printGenericInformation($userGroup, $attributes);
@@ -364,7 +364,7 @@ abstract class Base extends ContainerAwareCommand
             return [
                 $userGroup->getId(),
                 $userGroup->getName(),
-                $userGroup->getRole(),
+                $userGroup->getRole()
             ];
         };
 
@@ -419,7 +419,7 @@ abstract class Base extends ContainerAwareCommand
 
             return [
                 $attribute,
-                \is_array($value) ? \implode(",\n", $value) : $value,
+                \is_array($value) ? \implode(",\n", $value) : $value
             ];
         };
 

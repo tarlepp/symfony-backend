@@ -25,7 +25,7 @@ class UniqueUsername extends Constraint
 
     // Error names configuration
     protected static $errorNames = [
-        self::IS_UNIQUE_USERNAME_ERROR => 'IS_UNIQUE_USERNAME_ERROR',
+        self::IS_UNIQUE_USERNAME_ERROR => 'IS_UNIQUE_USERNAME_ERROR'
     ];
 
     // Message for validation error

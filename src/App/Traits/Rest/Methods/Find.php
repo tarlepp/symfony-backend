@@ -134,15 +134,15 @@ trait Find
         } catch (\Exception $error) {
             if ($error instanceof HttpException) {
                 throw $error;
-            } else {
-                throw new HttpException(
-                    Response::HTTP_BAD_REQUEST,
-                    $error->getMessage(),
-                    $error,
-                    [],
-                    Response::HTTP_BAD_REQUEST
-                );
             }
+
+            throw new HttpException(
+                Response::HTTP_BAD_REQUEST,
+                $error->getMessage(),
+                $error,
+                [],
+                Response::HTTP_BAD_REQUEST
+            );
         }
     }
 

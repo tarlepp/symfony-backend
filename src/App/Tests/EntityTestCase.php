@@ -655,7 +655,7 @@ abstract class EntityTestCase extends KernelTestCase
                     'clear' . \ucfirst($mapping['fieldName']),
                     $mapping['fieldName'],
                     $targetEntity,
-                    $mapping,
+                    $mapping
                 ]
             ];
         };
@@ -677,7 +677,7 @@ abstract class EntityTestCase extends KernelTestCase
             ];
         }
 
-        return \call_user_func_array('array_merge', \array_map($iterator, $items));
+        return \array_merge(...\array_values(\array_map($iterator, $items)));
     }
 
     /**
@@ -702,7 +702,7 @@ abstract class EntityTestCase extends KernelTestCase
                     'get' . \ucfirst($mapping['fieldName']),
                     $targetEntity,
                     $mapping['fieldName'],
-                    $mapping,
+                    $mapping
                 ]
             ];
         };
@@ -724,7 +724,7 @@ abstract class EntityTestCase extends KernelTestCase
             ];
         }
 
-        return \call_user_func_array('array_merge', \array_map($iterator, $items));
+        return \array_merge(...\array_values(\array_map($iterator, $items)));
     }
 
     /**
@@ -788,7 +788,7 @@ abstract class EntityTestCase extends KernelTestCase
                             $mapping['fieldName'],
                             $input,
                             $this->entityName
-                        ],
+                        ]
                     ];
                     break;
             }
@@ -808,7 +808,7 @@ abstract class EntityTestCase extends KernelTestCase
             ];
         }
 
-        return \call_user_func_array('array_merge', \array_map($iterator, $meta->getAssociationMappings()));
+        return \array_merge(...\array_values(\array_map($iterator, $meta->getAssociationMappings())));
     }
 
     /**
@@ -829,7 +829,7 @@ abstract class EntityTestCase extends KernelTestCase
                 [
                     'get' . \ucfirst($mapping['fieldName']),
                     $mapping['fieldName'],
-                    $mapping,
+                    $mapping
                 ]
             ];
         };
@@ -851,6 +851,6 @@ abstract class EntityTestCase extends KernelTestCase
             ];
         }
 
-        return \call_user_func_array('array_merge', \array_map($iterator, $items));
+        return \array_merge(...\array_values(\array_map($iterator, $items)));
     }
 }

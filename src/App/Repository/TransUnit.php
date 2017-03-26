@@ -41,7 +41,7 @@ class TransUnit extends Base
         // Specify used parameters
         $parameters = [
             'locale' => $language,
-            'domain' => $domain,
+            'domain' => $domain
         ];
 
         // Build query

@@ -93,7 +93,11 @@ class LoginLogger implements LoginLoggerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Method to handle login event.
+     *
+     * @throws  \Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException
+     *
+     * @return  void
      */
     public function handle()
     {
@@ -113,7 +117,7 @@ class LoginLogger implements LoginLoggerInterface
     /**
      * Method to create new login entry and store it to database.
      *
-     * @throws  \UnexpectedValueException
+     * @throws  \Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException
      *
      * @return  UserLoginEntity
      */

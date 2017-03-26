@@ -80,7 +80,7 @@ class User extends AbstractType
                 Type\TextType::class,
                 [
                     'label'     => 'Username',
-                    'required'  => true,
+                    'required'  => true
                 ]
             )
             ->add(
@@ -88,7 +88,7 @@ class User extends AbstractType
                 Type\TextType::class,
                 [
                     'label'     => 'Firstname',
-                    'required'  => true,
+                    'required'  => true
                 ]
             )
             ->add(
@@ -96,7 +96,7 @@ class User extends AbstractType
                 Type\TextType::class,
                 [
                     'label'     => 'Surname',
-                    'required'  => true,
+                    'required'  => true
                 ]
             )
             ->add(
@@ -104,14 +104,14 @@ class User extends AbstractType
                 Type\EmailType::class,
                 [
                     'label'     => 'Email address',
-                    'required'  => true,
+                    'required'  => true
                 ]
             )
             ->add(
                 'plainPassword',
                 Type\PasswordType::class,
                 [
-                    'label'     => 'Password',
+                    'label'     => 'Password'
                 ]
             )
             ->add(
@@ -120,7 +120,7 @@ class User extends AbstractType
                 [
                     'choices'   => $this->getUserGroupChoices(),
                     'multiple'  => true,
-                    'required'  => true,
+                    'required'  => true
                 ]
             )
         ;
@@ -134,7 +134,7 @@ class User extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => UserDto::class,
+            'data_class' => UserDto::class
         ]);
     }
 }

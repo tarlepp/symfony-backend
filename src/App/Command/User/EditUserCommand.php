@@ -46,8 +46,8 @@ class EditUserCommand extends Base
     protected static $commandParameters = [
         [
             'name'          => 'username',
-            'description'   => 'Username',
-        ],
+            'description'   => 'Username'
+        ]
     ];
 
     /**

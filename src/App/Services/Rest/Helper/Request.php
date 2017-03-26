@@ -190,7 +190,7 @@ class Request
         } catch (\LogicException $error) { // Parameter was not JSON so just use parameter values as search strings
             // By default we want to use 'OR' operand with given search words.
             return [
-                'or' => \array_unique(\array_values(\array_filter(\explode(' ', $search)))),
+                'or' => \array_unique(\array_values(\array_filter(\explode(' ', $search))))
             ];
         }
 

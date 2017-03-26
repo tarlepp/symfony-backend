@@ -91,9 +91,13 @@ trait Count
         } catch (\Exception $error) {
             if ($error instanceof HttpException) {
                 throw $error;
-            } elseif ($error instanceof NoResultException) {
+            }
+
+            if ($error instanceof NoResultException) {
                 throw new HttpException(Response::HTTP_NOT_FOUND, 'Not found', $error, [], Response::HTTP_NOT_FOUND);
-            } elseif ($error instanceof NonUniqueResultException) {
+            }
+
+            if ($error instanceof NonUniqueResultException) {
                 throw new HttpException(
                     Response::HTTP_INTERNAL_SERVER_ERROR,
                     $error->getMessage(),
@@ -101,15 +105,15 @@ trait Count
                     [],
                     Response::HTTP_INTERNAL_SERVER_ERROR
                 );
-            } else {
-                throw new HttpException(
-                    Response::HTTP_BAD_REQUEST,
-                    $error->getMessage(),
-                    $error,
-                    [],
-                    Response::HTTP_BAD_REQUEST
-                );
             }
+
+            throw new HttpException(
+                Response::HTTP_BAD_REQUEST,
+                $error->getMessage(),
+                $error,
+                [],
+                Response::HTTP_BAD_REQUEST
+            );
         }
     }
 

@@ -44,8 +44,8 @@ class CreateUserGroupCommand extends Base
     protected static $commandParameters = [
         [
             'name'          => 'name',
-            'description'   => 'Name of the user group',
-        ],
+            'description'   => 'Name of the user group'
+        ]
     ];
 
     /**

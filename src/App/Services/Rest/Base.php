@@ -463,7 +463,7 @@ abstract class Base implements Interfaces\Base
         $ignoreProperties = \array_merge(
             [
                 'createdAt', 'createdBy',
-                'updatedAt', 'updatedBy',
+                'updatedAt', 'updatedBy'
             ],
             static::$ignoredPropertiesOnPersistEntity
         );
@@ -480,7 +480,9 @@ abstract class Base implements Interfaces\Base
 
             if (\in_array($property, $ignoreProperties, true)) {
                 continue;
-            } elseif (\array_key_exists($property, $associations)) {
+            }
+
+            if (\array_key_exists($property, $associations)) {
                 $value = $this->determineAssociationValue($associations[$property], $value);
             } elseif ($type === 'date') {
                 $value = new \DateTime($value, new \DateTimeZone('UTC'));

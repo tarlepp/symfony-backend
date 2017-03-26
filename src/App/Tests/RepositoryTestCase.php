@@ -351,7 +351,7 @@ abstract class RepositoryTestCase extends KernelTestCase
                 'and',
                 /** @lang text */
                 'SELECT e FROM %s e WHERE %s'
-            ],
+            ]
         ];
     }
 
@@ -397,7 +397,7 @@ abstract class RepositoryTestCase extends KernelTestCase
 
             $input = new ArrayInput([
                 'command' => 'doctrine:fixtures:load',
-                '--no-interaction' => true,
+                '--no-interaction' => true
             ]);
 
             $input->setInteractive(false);
@@ -408,7 +408,7 @@ abstract class RepositoryTestCase extends KernelTestCase
         \array_map(
             '\call_user_func',
             [
-                $loadFixturesDoctrineCommand,
+                $loadFixturesDoctrineCommand
             ]
         );
     }

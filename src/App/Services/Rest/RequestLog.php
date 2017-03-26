@@ -37,7 +37,9 @@ class RequestLog extends Base
     /**
      * After lifecycle method for save method.
      *
-     * @param   EntityInterface|Entity  $entity
+     * @throws  \Exception
+     *
+     * @param   EntityInterface|Entity $entity
      */
     public function afterSave(EntityInterface $entity)
     {

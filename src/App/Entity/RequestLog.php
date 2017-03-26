@@ -956,7 +956,7 @@ class RequestLog implements EntityInterface
             'password'          => '*** REPLACED ***',
             'token'             => '*** REPLACED ***',
             'authorization'     => '*** REPLACED ***',
-            'cookie'            => '*** REPLACED ***',
+            'cookie'            => '*** REPLACED ***'
         ];
 
         // Normalize current key
@@ -986,11 +986,11 @@ class RequestLog implements EntityInterface
             $controller = \explode('\\', $controller[0]);
 
             return $controller[4] ?? '';
-        } else {
-            $controller = \explode(':', $controller);
-
-            return $controller[0];
         }
+
+        $controller = \explode(':', $controller);
+
+        return $controller[0];
     }
 
     /**
@@ -1050,7 +1050,7 @@ class RequestLog implements EntityInterface
             'password',
             'token',
             'authorization',
-            'cookie',
+            'cookie'
         ];
 
         \array_map($iterator, $replacements);

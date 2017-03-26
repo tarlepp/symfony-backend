@@ -98,7 +98,9 @@ trait Create
         } catch (\Exception $error) {
             if ($error instanceof HttpException) {
                 throw $error;
-            } elseif ($error instanceof OptimisticLockException || $error instanceof ORMInvalidArgumentException) {
+            }
+
+            if ($error instanceof OptimisticLockException || $error instanceof ORMInvalidArgumentException) {
                 throw new HttpException(
                     Response::HTTP_INTERNAL_SERVER_ERROR,
                     $error->getMessage(),
@@ -106,15 +108,15 @@ trait Create
                     [],
                     Response::HTTP_INTERNAL_SERVER_ERROR
                 );
-            } else {
-                throw new HttpException(
-                    Response::HTTP_BAD_REQUEST,
-                    $error->getMessage(),
-                    $error,
-                    [],
-                    Response::HTTP_BAD_REQUEST
-                );
             }
+
+            throw new HttpException(
+                Response::HTTP_BAD_REQUEST,
+                $error->getMessage(),
+                $error,
+                [],
+                Response::HTTP_BAD_REQUEST
+            );
         }
     }
 

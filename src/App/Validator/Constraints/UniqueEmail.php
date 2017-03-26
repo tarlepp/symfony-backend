@@ -25,7 +25,7 @@ class UniqueEmail extends Constraint
 
     // Error names configuration
     protected static $errorNames = [
-        self::IS_UNIQUE_EMAIL_ERROR => 'IS_UNIQUE_EMAIL_ERROR',
+        self::IS_UNIQUE_EMAIL_ERROR => 'IS_UNIQUE_EMAIL_ERROR'
     ];
 
     // Message for validation error

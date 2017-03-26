@@ -33,7 +33,7 @@ class UserPassword extends AbstractType
                 Type\PasswordType::class,
                 [
                     'label'     => 'Password',
-                    'required'  => true,
+                    'required'  => true
                 ]
             )
         ;
@@ -47,7 +47,7 @@ class UserPassword extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => UserDto::class,
+            'data_class' => UserDto::class
         ]);
     }
 }

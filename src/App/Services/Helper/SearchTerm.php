@@ -128,7 +128,7 @@ class SearchTerm implements SearchTermInterface
             // Create used criteria array
             $output = [
                 'and' => [
-                    $operand => \call_user_func_array('\array_merge', $criteria)
+                    $operand => \array_merge(...\array_values($criteria))
                 ]
             ];
         }

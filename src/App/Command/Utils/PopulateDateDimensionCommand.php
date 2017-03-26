@@ -52,6 +52,7 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
     /**
      * Executes the current command.
      *
+     * @throws  \Exception
      * @throws  \LogicException
      * @throws  \RuntimeException
      * @throws  OptimisticLockException
@@ -149,6 +150,7 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
     /**
      * Method to create DateDimension entities to database.
      *
+     * @throws \Exception
      * @throws \LogicException
      * @throws ServiceCircularReferenceException
      * @throws ServiceNotFoundException

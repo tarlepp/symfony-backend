@@ -45,8 +45,8 @@ class EditUserGroupCommand extends Base
     protected static $commandParameters = [
         [
             'name'          => 'id',
-            'description'   => 'User group ID',
-        ],
+            'description'   => 'User group ID'
+        ]
     ];
 
     /**

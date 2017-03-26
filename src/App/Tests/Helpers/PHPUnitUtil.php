@@ -72,7 +72,7 @@ class PHPUnitUtil
 
             $input = new ArrayInput([
                 'command' => 'doctrine:fixtures:load',
-                '--no-interaction' => true,
+                '--no-interaction' => true
             ]);
 
             $input->setInteractive(false);
@@ -84,7 +84,7 @@ class PHPUnitUtil
             \array_map(
                 'call_user_func',
                 [
-                    $loadFixturesDoctrineCommand,
+                    $loadFixturesDoctrineCommand
                 ]
             );
         } catch (\Exception $error) {

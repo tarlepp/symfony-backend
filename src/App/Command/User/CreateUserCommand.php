@@ -46,23 +46,23 @@ class CreateUserCommand extends Base
     protected static $commandParameters = [
         [
             'name'          => 'username',
-            'description'   => 'Username',
+            'description'   => 'Username'
         ],
         [
             'name'          => 'firstname',
-            'description'   => 'Firstname',
+            'description'   => 'Firstname'
         ],
         [
             'name'          => 'surname',
-            'description'   => 'Surname',
+            'description'   => 'Surname'
         ],
         [
             'name'          => 'email',
-            'description'   => 'Email address',
+            'description'   => 'Email address'
         ],
         [
             'name'          => 'plainPassword',
-            'description'   => 'Plain password',
+            'description'   => 'Plain password'
         ]
     ];
 
