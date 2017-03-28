@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "60db58f50f3401ba01d7be1e966f812f",
-    "content-hash": "e504aab6fd9f346a426adaab8a631f55",
+    "hash": "67d5ddf0c850560437eb65065bf14602",
+    "content-hash": "1ec8d0ed315c0baa8e6e2586418012cc",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1246,16 +1246,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "9dc44f2924a90bf526a2e1c4bb1ce9d772a00a45"
+                "reference": "5e9008cbb0bac2986979d905a87ae48efcf578c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/9dc44f2924a90bf526a2e1c4bb1ce9d772a00a45",
-                "reference": "9dc44f2924a90bf526a2e1c4bb1ce9d772a00a45",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/5e9008cbb0bac2986979d905a87ae48efcf578c4",
+                "reference": "5e9008cbb0bac2986979d905a87ae48efcf578c4",
                 "shasum": ""
             },
             "require": {
@@ -1268,6 +1268,7 @@
                 "phpoption/phpoption": "^1.1"
             },
             "conflict": {
+                "jms/serializer-bundle": "<1.2.1",
                 "twig/twig": "<1.12"
             },
             "require-dev": {
@@ -1286,12 +1287,14 @@
                 "twig/twig": "~1.12|~2.0"
             },
             "suggest": {
+                "doctrine/cache": "Required if you like to use cache functionality.",
+                "doctrine/collections": "Required if you like to use doctrine collection types as ArrayCollection.",
                 "symfony/yaml": "Required if you'd like to serialize data to YAML format."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -1318,25 +1321,25 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2017-02-14 14:35:22"
+            "time": "2017-03-24 13:11:23"
         },
         {
             "name": "jms/serializer-bundle",
-            "version": "1.2.1",
+            "version": "1.3.0",
             "target-dir": "JMS/SerializerBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
-                "reference": "4c6af116ff93d071c6086963798ca1ff8c1384df"
+                "reference": "9ad30c8f0786525647101f6ad07aa47f8a493529"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/4c6af116ff93d071c6086963798ca1ff8c1384df",
-                "reference": "4c6af116ff93d071c6086963798ca1ff8c1384df",
+                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/9ad30c8f0786525647101f6ad07aa47f8a493529",
+                "reference": "9ad30c8f0786525647101f6ad07aa47f8a493529",
                 "shasum": ""
             },
             "require": {
-                "jms/serializer": "^1.5",
+                "jms/serializer": "^1.6",
                 "php": ">=5.4.0",
                 "phpoption/phpoption": "^1.1.0",
                 "symfony/framework-bundle": "~2.3|~3.0"
@@ -1363,7 +1366,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2-dev"
+                    "dev-master": "1.3-dev"
                 }
             },
             "autoload": {
@@ -1390,7 +1393,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2017-03-13 17:02:39"
+            "time": "2017-03-28 09:35:40"
         },
         {
             "name": "knplabs/doctrine-behaviors",
@@ -2497,16 +2500,16 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "3.6.0",
+            "version": "3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "0b7bdfb180e72c8d76e75a649ced67e392201458"
+                "reference": "4ae32dd9ab8860a4bbd750ad269cba7f06f7934e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/0b7bdfb180e72c8d76e75a649ced67e392201458",
-                "reference": "0b7bdfb180e72c8d76e75a649ced67e392201458",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/4ae32dd9ab8860a4bbd750ad269cba7f06f7934e",
+                "reference": "4ae32dd9ab8860a4bbd750ad269cba7f06f7934e",
                 "shasum": ""
             },
             "require": {
@@ -2518,9 +2521,9 @@
             },
             "require-dev": {
                 "apigen/apigen": "^4.1",
-                "codeception/aspect-mock": "1.0.0",
+                "codeception/aspect-mock": "^1.0 | ^2.0",
                 "doctrine/annotations": "~1.2.0",
-                "goaop/framework": "1.0.0-alpha.2",
+                "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
                 "ircmaxell/random-lib": "^1.1",
                 "jakub-onderka/php-parallel-lint": "^0.9.0",
                 "mockery/mockery": "^0.9.4",
@@ -2575,7 +2578,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2017-03-18 15:38:09"
+            "time": "2017-03-26 20:37:53"
         },
         {
             "name": "roave/security-advisories",
@@ -2934,16 +2937,16 @@
         },
         {
             "name": "symfony/monolog-bundle",
-            "version": "v3.0.3",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bundle.git",
-                "reference": "ebce76a39a65495a66c34eb1574cc4b9e35a4e64"
+                "reference": "6f96c7dbb6b2ef70b307a1a6f897153cbca3da47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/ebce76a39a65495a66c34eb1574cc4b9e35a4e64",
-                "reference": "ebce76a39a65495a66c34eb1574cc4b9e35a4e64",
+                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/6f96c7dbb6b2ef70b307a1a6f897153cbca3da47",
+                "reference": "6f96c7dbb6b2ef70b307a1a6f897153cbca3da47",
                 "shasum": ""
             },
             "require": {
@@ -2990,7 +2993,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-01-10 20:01:51"
+            "time": "2017-03-26 11:55:59"
         },
         {
             "name": "symfony/polyfill-intl-icu",
@@ -3341,12 +3344,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "4149eab34904d11f4bbbaa0d1690333d096307f7"
+                "reference": "05d15cf4dfbfd8667a0b27cc8e889cbc6ad97fb1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/4149eab34904d11f4bbbaa0d1690333d096307f7",
-                "reference": "4149eab34904d11f4bbbaa0d1690333d096307f7",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/05d15cf4dfbfd8667a0b27cc8e889cbc6ad97fb1",
+                "reference": "05d15cf4dfbfd8667a0b27cc8e889cbc6ad97fb1",
                 "shasum": ""
             },
             "require": {
@@ -3398,6 +3401,7 @@
                 "symfony/inflector": "self.version",
                 "symfony/intl": "self.version",
                 "symfony/ldap": "self.version",
+                "symfony/lock": "self.version",
                 "symfony/monolog-bridge": "self.version",
                 "symfony/options-resolver": "self.version",
                 "symfony/process": "self.version",
@@ -3483,20 +3487,20 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-03-22 14:07:28"
+            "time": "2017-03-28 08:56:13"
         },
         {
             "name": "twig/twig",
-            "version": "v2.2.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "29bb02dde09ff56291d30f7687eb8696918023af"
+                "reference": "9718186a5df85a4f7917e78d3ffcabc204c75d25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/29bb02dde09ff56291d30f7687eb8696918023af",
-                "reference": "29bb02dde09ff56291d30f7687eb8696918023af",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9718186a5df85a4f7917e78d3ffcabc204c75d25",
+                "reference": "9718186a5df85a4f7917e78d3ffcabc204c75d25",
                 "shasum": ""
             },
             "require": {
@@ -3506,12 +3510,12 @@
             "require-dev": {
                 "psr/container": "^1.0",
                 "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.2"
+                "symfony/phpunit-bridge": "~3.3@dev"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
             "autoload": {
@@ -3546,7 +3550,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-02-27 00:16:20"
+            "time": "2017-03-22 15:41:51"
         },
         {
             "name": "zendframework/zend-code",
@@ -5336,12 +5340,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "fc1b0c54b61a30fd15d6de04f6e01c01d0aa4a7b"
+                "reference": "cfccd28964312201522f9edbc9739b393c64c978"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/fc1b0c54b61a30fd15d6de04f6e01c01d0aa4a7b",
-                "reference": "fc1b0c54b61a30fd15d6de04f6e01c01d0aa4a7b",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/cfccd28964312201522f9edbc9739b393c64c978",
+                "reference": "cfccd28964312201522f9edbc9739b393c64c978",
                 "shasum": ""
             },
             "require": {
@@ -5390,7 +5394,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2017-03-13 11:11:00"
+            "time": "2017-03-20 13:28:31"
         },
         {
             "name": "webmozart/assert",
