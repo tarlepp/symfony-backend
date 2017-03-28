@@ -75,7 +75,7 @@ swiftmailer:
 jms_serializer:
     handlers:
         datetime:
-            default_format: 'Y-m-d\\TH:i:sP' # DATE_RFC3339
+            default_format: 'Y-m-d\TH:i:sP' # DATE_RFC3339
             default_timezone: 'UTC'
 
 # https://github.com/nelmio/NelmioApiDocBundle/blob/master/Resources/doc/index.rst#step-4-configure-the-bundle
