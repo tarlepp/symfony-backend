@@ -1043,7 +1043,7 @@ class RequestLog implements EntityInterface
     private function cleanContent(string $content): string
     {
         $iterator = function ($search) use (&$content) {
-            $content = \preg_replace('/(' . $search . '":)"(.*)"/', '$1"*** REPLACED ***"', $content);
+            $content = \preg_replace('/(' . $search . '":)\s*"(.*)"/', '$1"*** REPLACED ***"', $content);
         };
 
         static $replacements = [
