@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "67d5ddf0c850560437eb65065bf14602",
-    "content-hash": "1ec8d0ed315c0baa8e6e2586418012cc",
+    "hash": "db96645e1ca348ef3b068e18bc39ba45",
+    "content-hash": "77049092b884f86a78956915bcada9f3",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -46,6 +46,65 @@
                 "transliterator"
             ],
             "time": "2015-09-28 16:26:35"
+        },
+        {
+            "name": "composer/ca-bundle",
+            "version": "1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/ca-bundle.git",
+                "reference": "b17e6153cb7f33c7e44eb59578dc12eee5dc8e12"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
+                "reference": "b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "ext-pcre": "*",
+                "php": "^5.3.2 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5",
+                "psr/log": "^1.0",
+                "symfony/process": "^2.5 || ^3.0"
+            },
+            "suggest": {
+                "symfony/process": "This is necessary to reliably check whether openssl_x509_parse is vulnerable on older php versions, but can be ignored on PHP 5.5.6+"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\CaBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Lets you find a path to the system CA bundle, and includes a fallback to the Mozilla CA bundle.",
+            "keywords": [
+                "cabundle",
+                "cacert",
+                "certificate",
+                "ssl",
+                "tls"
+            ],
+            "time": "2017-03-06 11:59:08"
         },
         {
             "name": "doctrine/annotations",
@@ -1325,17 +1384,17 @@
         },
         {
             "name": "jms/serializer-bundle",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "target-dir": "JMS/SerializerBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
-                "reference": "9ad30c8f0786525647101f6ad07aa47f8a493529"
+                "reference": "c52ee408dea913c8abb1684ac6a9bb9c52c30564"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/9ad30c8f0786525647101f6ad07aa47f8a493529",
-                "reference": "9ad30c8f0786525647101f6ad07aa47f8a493529",
+                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/c52ee408dea913c8abb1684ac6a9bb9c52c30564",
+                "reference": "c52ee408dea913c8abb1684ac6a9bb9c52c30564",
                 "shasum": ""
             },
             "require": {
@@ -1393,7 +1452,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2017-03-28 09:35:40"
+            "time": "2017-03-29 10:10:19"
         },
         {
             "name": "knplabs/doctrine-behaviors",
@@ -2586,12 +2645,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "66f7b04100fb2a7bdeaaddf02579189e15835056"
+                "reference": "1196fb8f4bf78e53204838bbdda6f10547541f12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/66f7b04100fb2a7bdeaaddf02579189e15835056",
-                "reference": "66f7b04100fb2a7bdeaaddf02579189e15835056",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/1196fb8f4bf78e53204838bbdda6f10547541f12",
+                "reference": "1196fb8f4bf78e53204838bbdda6f10547541f12",
                 "shasum": ""
             },
             "conflict": {
@@ -2644,7 +2703,7 @@
                 "silverstripe/framework": ">=3,<3.3",
                 "silverstripe/userforms": "<3",
                 "simplesamlphp/saml2": "<1.8.1|>=1.9,<1.9.1|>=1.10,<1.10.3|>=2,<2.3.3",
-                "simplesamlphp/simplesamlphp": "<1.14.11",
+                "simplesamlphp/simplesamlphp": "<1.14.12",
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "socalnick/scn-social-auth": "<1.15.2",
                 "squizlabs/php_codesniffer": ">=1,<2.8.1",
@@ -2713,7 +2772,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2017-03-16 14:24:35"
+            "time": "2017-03-31 06:31:44"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -2839,19 +2898,20 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.0.2",
+            "version": "v4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "56bded66985e22f6eac2cf86735fd21c625bff2f"
+                "reference": "9e69eddf3bc49d1ee5c7908564da3141796d4bbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/56bded66985e22f6eac2cf86735fd21c625bff2f",
-                "reference": "56bded66985e22f6eac2cf86735fd21c625bff2f",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/9e69eddf3bc49d1ee5c7908564da3141796d4bbc",
+                "reference": "9e69eddf3bc49d1ee5c7908564da3141796d4bbc",
                 "shasum": ""
             },
             "require": {
+                "composer/ca-bundle": "^1.0",
                 "symfony/console": "~2.7|~3.0"
             },
             "bin": [
@@ -2879,7 +2939,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-03-09 17:33:20"
+            "time": "2017-03-31 14:50:32"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3344,12 +3404,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "05d15cf4dfbfd8667a0b27cc8e889cbc6ad97fb1"
+                "reference": "e3d99649aa45f7f372ff01b811a1d0b4b5a84e0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/05d15cf4dfbfd8667a0b27cc8e889cbc6ad97fb1",
-                "reference": "05d15cf4dfbfd8667a0b27cc8e889cbc6ad97fb1",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/e3d99649aa45f7f372ff01b811a1d0b4b5a84e0e",
+                "reference": "e3d99649aa45f7f372ff01b811a1d0b4b5a84e0e",
                 "shasum": ""
             },
             "require": {
@@ -3364,7 +3424,7 @@
                 "symfony/polyfill-php56": "~1.0",
                 "symfony/polyfill-php70": "~1.0",
                 "symfony/polyfill-util": "~1.0",
-                "twig/twig": "~1.28|~2.0"
+                "twig/twig": "~1.32|~2.2"
             },
             "conflict": {
                 "phpdocumentor/reflection-docblock": "<3.0",
@@ -3487,7 +3547,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-03-28 08:56:13"
+            "time": "2017-03-31 14:39:57"
         },
         {
             "name": "twig/twig",
