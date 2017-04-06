@@ -162,11 +162,11 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
      */
     private function createEntities(int $yearStart, int $yearEnd)
     {
-        $dateStart = new \DateTime($yearStart . '-01-01', new \DateTimeZone('UTC'));
+        $dateStart = new \DateTime($yearStart . '-01-01 00:00:00', new \DateTimeZone('UTC'));
         $dateEnd = new \DateTime($yearEnd . '-12-31', new \DateTimeZone('UTC'));
 
         $progress = $this->getProgressBar(
-            (int)$dateEnd->diff($dateStart)->format('%a') + 1,
+            ((int)$dateEnd->diff($dateStart)->format('%a') + 1) * 48,
             \sprintf('Creating DateDimension entities between years %d and %d...', $yearStart, $yearEnd)
         );
 
@@ -193,12 +193,14 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
             if ($currentYear !== (int)$dateStart->format('Y')) {
                 $em->flush();
                 $em->clear();
+
+                $currentYear = (int)$dateStart->format('Y');
             }
 
             // Persist entity, advance progress bar and move to next date
             $em->persist(new DateDimension(clone $dateStart));
             $progress->advance();
-            $dateStart->add(new \DateInterval('P1D'));
+            $dateStart->add(new \DateInterval('PT30M'));
         }
 
         // Finally flush remaining entities
