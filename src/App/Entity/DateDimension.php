@@ -285,7 +285,7 @@ class DateDimension implements EntityInterface
      *      "DateDimension",
      *      "DateDimension.time",
      *  })
-     * @JMS\Type("string")
+     * @JMS\Type("DateTime<'H:i:s'>")
      *
      * @ORM\Column(
      *      name="time",
@@ -552,11 +552,11 @@ class DateDimension implements EntityInterface
     }
 
     /**
-     * @return string
+     * @return \DateTime
      */
-    public function getTime()
+    public function getTime(): \DateTime
     {
-        return $this->time->format('H:i:s');
+        return $this->time;
     }
 
     /**
