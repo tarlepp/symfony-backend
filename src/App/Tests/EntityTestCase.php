@@ -563,6 +563,7 @@ abstract class EntityTestCase extends KernelTestCase
                 case 'bigint':
                     $type = 'integer';
                     break;
+                case 'time':
                 case 'date':
                 case 'datetime':
                     $type = \DateTime::class;
