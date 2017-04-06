@@ -35,6 +35,9 @@ trait Timestampable
      * @JMS\Groups({
      *      "Author.createdAt",
      *      "Book.createdAt",
+     *      "Locale.createdAt",
+     *      "Translation.createdAt",
+     *      "TransUnit.createdAt",
      *      "User.createdAt",
      *      "UserGroup.createdAt",
      *  })
@@ -56,6 +59,9 @@ trait Timestampable
      * @JMS\Groups({
      *      "Author.updatedAt",
      *      "Book.updatedAt",
+     *      "Locale.updatedAt",
+     *      "Translation.updatedAt",
+     *      "TransUnit.updatedAt",
      *      "User.updatedAt",
      *      "UserGroup.updatedAt",
      *  })

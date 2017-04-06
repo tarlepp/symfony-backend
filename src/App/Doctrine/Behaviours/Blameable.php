@@ -35,6 +35,9 @@ trait Blameable
      * @JMS\Groups({
      *      "Author.createdBy",
      *      "Book.createdBy",
+     *      "Locale.createdBy",
+     *      "Translation.createdBy",
+     *      "TransUnit.createdBy",
      *      "User.createdBy",
      *      "UserGroup.createdBy",
      *  })
@@ -60,6 +63,9 @@ trait Blameable
      * @JMS\Groups({
      *      "Author.updatedBy",
      *      "Book.updatedBy",
+     *      "Locale.updatedBy",
+     *      "Translation.updatedBy",
+     *      "TransUnit.updatedBy",
      *      "User.updatedBy",
      *      "UserGroup.updatedBy",
      *  })
@@ -88,6 +94,9 @@ trait Blameable
      * @JMS\Groups({
      *      "Author.deletedBy",
      *      "Book.deletedBy",
+     *      "Locale.deletedBy",
+     *      "Translation.deletedBy",
+     *      "TransUnit.deletedBy",
      *      "User.deletedBy",
      *      "UserGroup.deletedBy",
      *  })
