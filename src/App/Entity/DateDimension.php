@@ -278,27 +278,6 @@ class DateDimension implements EntityInterface
     private $unixTime;
 
     /**
-     * @var \DateTime
-     *
-     * @JMS\Groups({
-     *      "Default",
-     *      "DateDimension",
-     *      "DateDimension.time",
-     *  })
-     * @JMS\Type("DateTime<'H:i:s'>")
-     *
-     * @ORM\Column(
-     *      name="time",
-     *      type="time",
-     *      nullable=false,
-     *      options={
-     *          "comment": "Time with 30min period",
-     *      },
-     *  )
-     */
-    private $time;
-
-    /**
      * DateDimension constructor.
      *
      * @param \DateTime $dateTime
@@ -319,7 +298,6 @@ class DateDimension implements EntityInterface
             $this->setLeapYear((bool)$dateTime->format('L'));
             $this->setWeekNumberingYear((int)$dateTime->format('o'));
             $this->setUnixTime((int)$dateTime->format('U'));
-            $this->setTime($dateTime);
         }
     }
 
@@ -547,26 +525,6 @@ class DateDimension implements EntityInterface
     public function setUnixTime(int $unixTime): DateDimension
     {
         $this->unixTime = $unixTime;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getTime(): \DateTime
-    {
-        return $this->time;
-    }
-
-    /**
-     * @param \DateTime $time
-     *
-     * @return DateDimension
-     */
-    public function setTime(\DateTime $time): DateDimension
-    {
-        $this->time = $time;
 
         return $this;
     }

@@ -166,7 +166,7 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
         $dateEnd = new \DateTime($yearEnd . '-12-31', new \DateTimeZone('UTC'));
 
         $progress = $this->getProgressBar(
-            ((int)$dateEnd->diff($dateStart)->format('%a') + 1) * 48,
+            (int)$dateEnd->diff($dateStart)->format('%a') + 1,
             \sprintf('Creating DateDimension entities between years %d and %d...', $yearStart, $yearEnd)
         );
 
@@ -200,7 +200,7 @@ class PopulateDateDimensionCommand extends ContainerAwareCommand
             // Persist entity, advance progress bar and move to next date
             $em->persist(new DateDimension(clone $dateStart));
             $progress->advance();
-            $dateStart->add(new \DateInterval('PT30M'));
+            $dateStart->add(new \DateInterval('P1D'));
         }
 
         // Finally flush remaining entities
