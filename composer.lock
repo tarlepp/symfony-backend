@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9073478df4ac31580c411c0a57d2789d",
-    "content-hash": "2fe5b86e11005f6638076f27c3758552",
+    "hash": "d0cd3a55c2e064edded9f7acf0b8fe3f",
+    "content-hash": "aca5d067bbbaafa25f64886ead10b1b0",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1388,17 +1388,17 @@
         },
         {
             "name": "jms/serializer-bundle",
-            "version": "1.3.1",
+            "version": "1.4.0",
             "target-dir": "JMS/SerializerBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
-                "reference": "c52ee408dea913c8abb1684ac6a9bb9c52c30564"
+                "reference": "fdd73dbc8642940084deda2a96fa5db62d0f2384"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/c52ee408dea913c8abb1684ac6a9bb9c52c30564",
-                "reference": "c52ee408dea913c8abb1684ac6a9bb9c52c30564",
+                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/fdd73dbc8642940084deda2a96fa5db62d0f2384",
+                "reference": "fdd73dbc8642940084deda2a96fa5db62d0f2384",
                 "shasum": ""
             },
             "require": {
@@ -1429,7 +1429,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -1456,7 +1456,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2017-03-29 10:10:19"
+            "time": "2017-04-10 12:31:39"
         },
         {
             "name": "knplabs/doctrine-behaviors",
@@ -3408,12 +3408,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "ab93feae3f9a16c4f18c5736435d18fa36338d2c"
+                "reference": "bc9352673117e98fd6b6f0ab1697e4e2d2007037"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/ab93feae3f9a16c4f18c5736435d18fa36338d2c",
-                "reference": "ab93feae3f9a16c4f18c5736435d18fa36338d2c",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/bc9352673117e98fd6b6f0ab1697e4e2d2007037",
+                "reference": "bc9352673117e98fd6b6f0ab1697e4e2d2007037",
                 "shasum": ""
             },
             "require": {
@@ -3551,7 +3551,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-04-05 23:31:59"
+            "time": "2017-04-10 06:31:22"
         },
         {
             "name": "twig/twig",
@@ -4307,16 +4307,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "5.0.4",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "37bbf491e6b585267ef1e0cbb0056f5c00ebf91c"
+                "reference": "cff36444733ac6d3f153866f55898373ca184610"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/37bbf491e6b585267ef1e0cbb0056f5c00ebf91c",
-                "reference": "37bbf491e6b585267ef1e0cbb0056f5c00ebf91c",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/cff36444733ac6d3f153866f55898373ca184610",
+                "reference": "cff36444733ac6d3f153866f55898373ca184610",
                 "shasum": ""
             },
             "require": {
@@ -4340,7 +4340,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0.x-dev"
+                    "dev-master": "5.1.x-dev"
                 }
             },
             "autoload": {
@@ -4366,7 +4366,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-02 07:46:32"
+            "time": "2017-04-07 04:39:58"
         },
         {
             "name": "phpunit/php-file-iterator",

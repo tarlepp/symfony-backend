@@ -43,7 +43,7 @@
         "gesdinet/jwt-refresh-token-bundle": "0.2.0",
         "gfreeau/get-jwt-bundle": "2.0.x-dev",
         "incenteev/composer-parameter-handler": "2.1.2",
-        "jms/serializer-bundle": "1.3.1",
+        "jms/serializer-bundle": "1.4.0",
         "knplabs/doctrine-behaviors": "1.4.0",
         "lexik/jwt-authentication-bundle": "2.2.0",
         "matthiasnoback/symfony-console-form": "2.3.0",
