@@ -16,6 +16,7 @@ Table of Contents
     * [Environment checks](#environment-checks)
     * [CLI](#cli)
     * [WEB](#web)
+      * [Apache](#apache)
     * [Configuration](#configuration)
     * [Database initialization](#database-initialization)
   * [Development](#development)
@@ -97,6 +98,13 @@ $ ./bin/console server:run
 Open your favorite browser with ```http://127.0.0.1:8000/config.php``` url and check it for any errors.
 And if you get just blank page double check your [permissions](http://symfony.com/doc/current/book/installation.html#book-installation-permissions).
 
+### Apache
+To get JWT authorization headers to work correctly you need to make sure that your Apache config has `mod_rewrite` enabled. This you can do with following command:
+
+```bash
+$ sudo a2enmod rewrite
+```
+
 ## Configuration
 Application will ask your configuration settings when you first time run ```php composer.phar install``` command.
 All those parameters that you should change are in ```/app/config/parameters.yml``` file, so just open that and 
@@ -110,7 +118,7 @@ At start you have just empty database which you have configured in previous topi
 just run following command:
 
 ```bash
-$ ./bin/console doctrine:schema:update
+$ ./bin/console doctrine:schema:update --force
 ```
 
 # Development
