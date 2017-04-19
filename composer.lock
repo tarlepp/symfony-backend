@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "aca5d067bbbaafa25f64886ead10b1b0",
+    "content-hash": "2b28434c040e84f3e97e9accecdd2cb8",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1362,16 +1362,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "1.6.1",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "2cf3b1aac0c93e9f5fed759c1a7441c76801e045"
+                "reference": "b8683d206e7297f54034f67a877f966c14dc12ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/2cf3b1aac0c93e9f5fed759c1a7441c76801e045",
-                "reference": "2cf3b1aac0c93e9f5fed759c1a7441c76801e045",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/b8683d206e7297f54034f67a877f966c14dc12ea",
+                "reference": "b8683d206e7297f54034f67a877f966c14dc12ea",
                 "shasum": ""
             },
             "require": {
@@ -1437,7 +1437,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2017-04-12T14:28:35+00:00"
+            "time": "2017-04-17T15:27:46+00:00"
         },
         {
             "name": "jms/serializer-bundle",
@@ -1579,16 +1579,16 @@
         },
         {
             "name": "lexik/jwt-authentication-bundle",
-            "version": "v2.2.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lexik/LexikJWTAuthenticationBundle.git",
-                "reference": "3bf2107841de2d8ba6df8fd1c3f7cbf25a2256cd"
+                "reference": "70ee4749145272285e301d4fd137518dcb2b75fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/3bf2107841de2d8ba6df8fd1c3f7cbf25a2256cd",
-                "reference": "3bf2107841de2d8ba6df8fd1c3f7cbf25a2256cd",
+                "url": "https://api.github.com/repos/lexik/LexikJWTAuthenticationBundle/zipball/70ee4749145272285e301d4fd137518dcb2b75fb",
+                "reference": "70ee4749145272285e301d4fd137518dcb2b75fb",
                 "shasum": ""
             },
             "require": {
@@ -1604,7 +1604,7 @@
                 "phpunit/phpunit": "^4.8|^5.0",
                 "symfony/browser-kit": "^2.8|^3.0",
                 "symfony/dom-crawler": "^2.8|^3.0",
-                "symfony/phpunit-bridge": "^2.8|^3.0",
+                "symfony/phpunit-bridge": "~3.2",
                 "symfony/yaml": "^2.8|^3.0"
             },
             "suggest": {
@@ -1672,7 +1672,7 @@
                 "rest",
                 "symfony"
             ],
-            "time": "2017-03-09T22:32:04+00:00"
+            "time": "2017-04-14T14:30:20+00:00"
         },
         {
             "name": "matthiasnoback/symfony-console-form",
@@ -3510,12 +3510,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "ac5cfee6f12f5c93fe8d8b67941fd478dfaa397a"
+                "reference": "b72c11fd059efacaf209f622684167c0c0fe78e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/ac5cfee6f12f5c93fe8d8b67941fd478dfaa397a",
-                "reference": "ac5cfee6f12f5c93fe8d8b67941fd478dfaa397a",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/b72c11fd059efacaf209f622684167c0c0fe78e6",
+                "reference": "b72c11fd059efacaf209f622684167c0c0fe78e6",
                 "shasum": ""
             },
             "require": {
@@ -3656,7 +3656,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-04-14 23:49:57"
+            "time": "2017-04-18 14:29:00"
         },
         {
             "name": "twig/twig",
