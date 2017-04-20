@@ -74,7 +74,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
      *
      * @return  RestController|null
      */
-    private function getControllerService(\ReflectionMethod $method)
+    private function getControllerService(\ReflectionMethod $method): RestController
     {
         // Create annotation reader
         $annotationReader = new AnnotationReader();
@@ -85,14 +85,7 @@ class RestApiDoc implements HandlerInterface, ContainerAwareInterface
             RouteAnnotation::class
         );
 
-        /** @var RestController $controllerService */
-        try {
-            $controllerService = $this->container->get($controllerClass->getService());
-        } catch (\Exception $exception) {
-            return null;
-        }
-
-        return $controllerService;
+        return $this->container->get($controllerClass->getService());
     }
 
     /**
