@@ -31,3 +31,7 @@ services:
 
     jms_serializer.cache_naming_strategy:
         class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
+
+    jms_serializer.object_constructor:
+        alias: jms_serializer.doctrine_object_constructor
+        public: false

@@ -73,6 +73,8 @@ swiftmailer:
 
 # http://jmsyst.com/bundles/JMSSerializerBundle/master/configuration
 jms_serializer:
+    metadata:
+         auto_detection: true
     handlers:
         datetime:
             default_format: 'Y-m-d\TH:i:sP' # DATE_RFC3339
