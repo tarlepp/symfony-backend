@@ -54,6 +54,7 @@ nbproject
 # PHPUnit
 /app/phpunit.xml
 /phpunit.xml
+/phpunit.phar
 
 # Build data
 /build/
