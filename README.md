@@ -121,6 +121,18 @@ just run following command:
 $ ./bin/console doctrine:schema:update --force
 ```
 
+## Creation of user groups and users
+First you need to create `user groups` for your `users`. You can create new user groups with following command:
+
+```bash
+$ ./bin/console user:createGroup
+```
+
+And after that you can create new users with following command:
+```bash
+$ ./bin/console user:create
+```
+
 # Development
 * [Coding Standards](http://symfony.com/doc/current/contributing/code/standards.html) 
 
