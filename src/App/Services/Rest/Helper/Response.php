@@ -7,8 +7,8 @@ declare(strict_types=1);
  */
 namespace App\Services\Rest\Helper;
 
-use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use App\Services\Rest\Helper\Interfaces\Response as ResponseInterface;
+use App\Services\Rest\Interfaces\Base as ResourceServiceInterface;
 use JMS\Serializer\Context;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
@@ -55,17 +55,9 @@ class Response implements ResponseInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function setResourceService(ResourceServiceInterface $resourceService): ResponseInterface
-    {
-        $this->resourceService = $resourceService;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
+     * Getter for current resource service.
+     *
+     * @return ResourceServiceInterface
      */
     public function getResourceService(): ResourceServiceInterface
     {
@@ -73,48 +65,21 @@ class Response implements ResponseInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Getter for JMS serializer.
+     *
+     * @return Serializer
      */
-    public function createResponse(
-        HttpFoundationRequest $request,
-        $data,
-        int $httpStatus = null,
-        string $format = null,
-        Context $context = null
-    ): HttpFoundationResponse {
-        $httpStatus = $httpStatus ?? 200;
-
-        if ($format === null) {
-            $format = $request->getContentType() === self::FORMAT_XML ? self::FORMAT_XML : self::FORMAT_JSON;
-        }
-
-        if ($context === null) {
-            $context = $this->getSerializeContext($request);
-        }
-
-        try {
-            // Create new response
-            $response = new HttpFoundationResponse();
-            $response->setContent($this->serializer->serialize($data, $format, $context));
-            $response->setStatusCode($httpStatus);
-        } catch (\Exception $error) {
-            throw new HttpException(
-                HttpFoundationResponse::HTTP_BAD_REQUEST,
-                $error->getMessage(),
-                $error,
-                [],
-                HttpFoundationResponse::HTTP_BAD_REQUEST
-            );
-        }
-
-        // Set content type
-        $response->headers->set('Content-Type', $this->contentTypes[$format]);
-
-        return $response;
+    public function getSerializer(): Serializer
+    {
+        return $this->serializer;
     }
 
     /**
-     * {@inheritdoc}
+     * Helper method to get serialization context for query.
+     *
+     * @param   HttpFoundationRequest $request
+     *
+     * @return  Context
      */
     public function getSerializeContext(HttpFoundationRequest $request): Context
     {
@@ -152,7 +117,71 @@ class Response implements ResponseInterface
         // Create context and set used groups
         return SerializationContext::create()
             ->setGroups($groups)
-            ->setSerializeNull(true)
-        ;
+            ->setSerializeNull(true);
+    }
+
+    /**
+     * Setter for resource service.
+     *
+     * @param   ResourceServiceInterface    $resourceService
+     *
+     * @return  ResponseInterface
+     */
+    public function setResourceService(ResourceServiceInterface $resourceService): ResponseInterface
+    {
+        $this->resourceService = $resourceService;
+
+        return $this;
+    }
+
+    /**
+     * Helper method to create response for request.
+     *
+     * @throws  HttpException
+     *
+     * @param   HttpFoundationRequest   $request
+     * @param   mixed                   $data
+     * @param   null|integer            $httpStatus
+     * @param   null|string             $format
+     * @param   null|Context            $context
+     *
+     * @return  HttpFoundationResponse
+     */
+    public function createResponse(
+        HttpFoundationRequest $request,
+        $data,
+        int $httpStatus = null,
+        string $format = null,
+        Context $context = null
+    ): HttpFoundationResponse {
+        $httpStatus = $httpStatus ?? 200;
+
+        if ($format === null) {
+            $format = $request->getContentType() === self::FORMAT_XML ? self::FORMAT_XML : self::FORMAT_JSON;
+        }
+
+        if ($context === null) {
+            $context = $this->getSerializeContext($request);
+        }
+
+        try {
+            // Create new response
+            $response = new HttpFoundationResponse();
+            $response->setContent($this->serializer->serialize($data, $format, $context));
+            $response->setStatusCode($httpStatus);
+        } catch (\Exception $error) {
+            throw new HttpException(
+                HttpFoundationResponse::HTTP_BAD_REQUEST,
+                $error->getMessage(),
+                $error,
+                [],
+                HttpFoundationResponse::HTTP_BAD_REQUEST
+            );
+        }
+
+        // Set content type
+        $response->headers->set('Content-Type', $this->contentTypes[$format]);
+
+        return $response;
     }
 }

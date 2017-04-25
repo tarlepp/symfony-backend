@@ -38,6 +38,29 @@ interface Response
     public function __construct(Serializer $serializer);
 
     /**
+     * Getter for current resource service.
+     *
+     * @return ResourceServiceInterface
+     */
+    public function getResourceService(): ResourceServiceInterface;
+
+    /**
+     * Getter for JMS serializer.
+     *
+     * @return Serializer
+     */
+    public function getSerializer(): Serializer;
+
+    /**
+     * Helper method to get serialization context for query.
+     *
+     * @param   HttpFoundationRequest $request
+     *
+     * @return  Context
+     */
+    public function getSerializeContext(HttpFoundationRequest $request): Context;
+
+    /**
      * Setter for resource service.
      *
      * @param   ResourceServiceInterface    $resourceService
@@ -45,13 +68,6 @@ interface Response
      * @return  Response
      */
     public function setResourceService(ResourceServiceInterface $resourceService): Response;
-
-    /**
-     * Getter for current resource service.
-     *
-     * @return ResourceServiceInterface
-     */
-    public function getResourceService(): ResourceServiceInterface;
 
     /**
      * Helper method to create response for request.
@@ -73,13 +89,4 @@ interface Response
         string $format = null,
         Context $context = null
     ): HttpFoundationResponse;
-
-    /**
-     * Helper method to get serialization context for query.
-     *
-     * @param   HttpFoundationRequest $request
-     *
-     * @return  Context
-     */
-    public function getSerializeContext(HttpFoundationRequest $request): Context;
 }
