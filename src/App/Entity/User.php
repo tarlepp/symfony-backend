@@ -117,7 +117,7 @@ class User implements EntityInterface, UserInterface, EquatableInterface, \Seria
     private $username;
 
     /**
-     * User's firstname.d
+     * User's firstname.
      *
      * @var string
      *
