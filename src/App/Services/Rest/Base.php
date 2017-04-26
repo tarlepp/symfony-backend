@@ -7,10 +7,15 @@ declare(strict_types=1);
  */
 namespace App\Services\Rest;
 
+use App\DTO\Rest\Interfaces\RestDto;
 use App\Entity\Interfaces\EntityInterface as Entity;
 use App\Repository\Base as Repository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
+use Doctrine\ORM\Proxy\Proxy;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
@@ -27,11 +32,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class Base implements Interfaces\Base
 {
     /**
-     * Ignored properties on persist entity call. Define these on your service class.
+     * REST service entity DTO class.
      *
-     * @var array
+     * @var string
      */
-    protected static $ignoredPropertiesOnPersistEntity = [];
+    protected static $dtoClass;
 
     /**
      * REST service entity repository.
@@ -48,7 +53,10 @@ abstract class Base implements Interfaces\Base
     protected $validator;
 
     /**
-     * {@inheritdoc}
+     * Class constructor.
+     *
+     * @param   Repository          $repository
+     * @param   ValidatorInterface  $validator
      */
     public function __construct(Repository $repository, ValidatorInterface $validator)
     {
@@ -58,7 +66,9 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Getter method for current entity name.
+     *
+     * @return  string
      */
     public function getEntityName(): string
     {
@@ -66,7 +76,14 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Gets a reference to the entity identified by the given type and identifier without actually loading it,
+     * if the entity is not yet loaded.
+     *
+     * @throws  ORMException
+     *
+     * @param   string  $id The entity identifier.
+     *
+     * @return  Proxy|Entity
      */
     public function getReference(string $id)
     {
@@ -74,7 +91,9 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Getter method for entity repository.
+     *
+     * @return  Repository
      */
     public function getRepository(): Repository
     {
@@ -82,7 +101,9 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Getter method for all associations that current entity contains.
+     *
+     * @return array
      */
     public function getAssociations(): array
     {
@@ -90,7 +111,39 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Getter method for used DTO class for this REST service.
+     *
+     * @return  string
+     *
+     * @throws  \UnexpectedValueException
+     */
+    public function getDtoClass(): string
+    {
+        if (static::$dtoClass === null) {
+            $message = \sprintf(
+                'Current service class \'%s\' does\'t know what DTO class to use... Please define \'protected static $dtoClass\' to this class.',
+                \get_called_class()
+            );
+
+            throw new \UnexpectedValueException($message);
+        }
+
+        return static::$dtoClass;
+    }
+
+    /**
+     * Generic find method to return an array of items from database. Return value is an array of specified repository
+     * entities.
+     *
+     * @throws  \InvalidArgumentException
+     *
+     * @param   array           $criteria
+     * @param   null|array      $orderBy
+     * @param   null|integer    $limit
+     * @param   null|integer    $offset
+     * @param   null|array      $search
+     *
+     * @return  Entity[]
      */
     public function find(
         array $criteria = null,
@@ -118,7 +171,15 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Generic findOne method to return single item from database. Return value is single entity from specified
+     * repository.
+     *
+     * @throws  NotFoundHttpException
+     *
+     * @param   string          $id
+     * @param   null|boolean    $throwExceptionIfNotFound
+     *
+     * @return  null|Entity
      */
     public function findOne(string $id, bool $throwExceptionIfNotFound = null)
     {
@@ -142,7 +203,16 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Generic findOneBy method to return single item from database by given criteria. Return value is single entity
+     * from specified repository or null if entity was not found.
+     *
+     * @throws  NotFoundHttpException
+     *
+     * @param   array           $criteria
+     * @param   null|array      $orderBy
+     * @param   null|boolean    $throwExceptionIfNotFound
+     *
+     * @return  null|Entity
      */
     public function findOneBy(array $criteria, array $orderBy = null, bool $throwExceptionIfNotFound = null)
     {
@@ -167,7 +237,16 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Generic count method to return entity count for specified criteria and search terms.
+     *
+     * @throws  \InvalidArgumentException
+     * @throws  NoResultException
+     * @throws  NonUniqueResultException
+     *
+     * @param   null|array  $criteria
+     * @param   null|array  $search
+     *
+     * @return  integer
      */
     public function count(array $criteria = null, array $search = null): int
     {
@@ -186,10 +265,23 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Generic method to create new item (entity) to specified database repository. Return value is created entity for
+     * specified repository.
+     *
+     * @throws  ValidatorException
+     * @throws  ORMInvalidArgumentException
+     * @throws  OptimisticLockException
+     * @throws  NotFoundHttpException
+     *
+     * @param   RestDto $dto
+     *
+     * @return  Entity
      */
-    public function create(\stdClass $data): Entity
+    public function create(RestDto $dto): Entity
     {
+        // Validate DTO
+        $this->validateDto($dto);
+
         // Determine entity name
         $entity = $this->repository->getClassName();
 
@@ -201,19 +293,28 @@ abstract class Base implements Interfaces\Base
         $entity = new $entity();
 
         // Before callback method call
-        $this->beforeCreate($data, $entity);
+        $this->beforeCreate($dto, $entity);
 
         // Create or update entity
-        $this->persistEntity($entity, $data);
+        $this->persistEntity($entity, $dto);
 
         // After callback method call
-        $this->afterCreate($data, $entity);
+        $this->afterCreate($dto, $entity);
 
         return $entity;
     }
 
     /**
-     * {@inheritdoc}
+     * Generic method to save given entity to specified repository. Return value is created entity.
+     *
+     * @throws  ValidatorException
+     * @throws  ORMInvalidArgumentException
+     * @throws  OptimisticLockException
+     *
+     * @param   Entity          $entity
+     * @param   null|boolean    $skipValidation
+     *
+     * @return  Entity
      */
     public function save(Entity $entity, bool $skipValidation = null): Entity
     {
@@ -242,42 +343,53 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Generic method to update specified entity with new data.
+     *
+     * @throws  NotFoundHttpException
+     * @throws  ValidatorException
+     * @throws  ORMInvalidArgumentException
+     * @throws  OptimisticLockException
+     *
+     * @param   string  $id
+     * @param   RestDto $dto
+     *
+     * @return  Entity
      */
-    public function update(string $id, \stdClass $data): Entity
+    public function update(string $id, RestDto $dto): Entity
     {
-        /** @var Entity $entity */
-        $entity = $this->repository->find($id);
+        // Fetch entity
+        $entity = $this->getEntity($id);
 
-        // Entity not found
-        if ($entity === null) {
-            throw new NotFoundHttpException('Not found');
-        }
+        // Validate DTO
+        $this->validateDto($dto);
 
         // Before callback method call
-        $this->beforeUpdate($id, $data, $entity);
+        $this->beforeUpdate($id, $dto, $entity);
 
         // Create or update entity
-        $this->persistEntity($entity, $data);
+        $this->persistEntity($entity, $dto);
 
         // After callback method call
-        $this->afterUpdate($id, $data, $entity);
+        $this->afterUpdate($id, $dto, $entity);
 
         return $entity;
     }
 
     /**
-     * {@inheritdoc}
+     * Generic method to delete specified entity from database.
+     *
+     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws NotFoundHttpException
+     *
+     * @param   string  $id
+     *
+     * @return  Entity
      */
     public function delete(string $id): Entity
     {
-        /** @var Entity $entity */
-        $entity = $this->repository->find($id);
-
-        // Entity not found
-        if ($entity === null) {
-            throw new NotFoundHttpException('Not found');
-        }
+        // Fetch entity
+        $entity = $this->getEntity($id);
 
         // Before callback method call
         $this->beforeDelete($id, $entity);
@@ -292,7 +404,15 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Generic ids method to return an array of id values from database. Return value is an array of specified
+     * repository entity id values.
+     *
+     * @throws  \InvalidArgumentException
+     *
+     * @param   null|array  $criteria
+     * @param   null|array  $search
+     *
+     * @return  array
      */
     public function getIds(array $criteria = null, array $search = null): array
     {
@@ -312,14 +432,27 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Before lifecycle method for find method.
+     *
+     * @param   array   $criteria
+     * @param   array   $orderBy
+     * @param   integer $limit
+     * @param   integer $offset
+     * @param   array   $search
      */
     public function beforeFind(array &$criteria, array &$orderBy, int &$limit, int &$offset, array &$search)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * After lifecycle method for find method.
+     *
+     * @param   array       $criteria
+     * @param   array       $orderBy
+     * @param   integer     $limit
+     * @param   integer     $offset
+     * @param   array       $search
+     * @param   Entity[]    $entities
      */
     public function afterFind(
         array &$criteria,
@@ -332,112 +465,162 @@ abstract class Base implements Interfaces\Base
     }
 
     /**
-     * {@inheritdoc}
+     * Before lifecycle method for findOne method.
+     *
+     * @param   string  $id
      */
     public function beforeFindOne(string &$id)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * After lifecycle method for findOne method.
+     *
+     * @param   string      $id
+     * @param   null|Entity $entity
      */
     public function afterFindOne(string &$id, Entity $entity = null)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * Before lifecycle method for findOneBy method.
+     *
+     * @param   array   $criteria
+     * @param   array   $orderBy
      */
     public function beforeFindOneBy(array &$criteria, array &$orderBy)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * After lifecycle method for findOneBy method.
+     *
+     * @param   array       $criteria
+     * @param   array       $orderBy
+     * @param   null|Entity $entity
      */
     public function afterFindOneBy(array &$criteria, array &$orderBy, Entity $entity = null)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * Before lifecycle method for count method.
+     *
+     * @param   array       $criteria
+     * @param   null|array  $search
      */
     public function beforeCount(array &$criteria, array &$search)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * Before lifecycle method for count method.
+     *
+     * @param   array       $criteria
+     * @param   null|array  $search
+     * @param   integer     $count
      */
     public function afterCount(array &$criteria, array &$search, int &$count)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * Before lifecycle method for create method.
+     *
+     * @param   RestDto $dto
+     * @param   Entity  $entity
      */
-    public function beforeCreate(\stdClass $data, Entity $entity)
+    public function beforeCreate(RestDto $dto, Entity $entity)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * After lifecycle method for create method.
+     *
+     * @param   RestDto $dto
+     * @param   Entity  $entity
      */
-    public function afterCreate(\stdClass $data, Entity $entity)
+    public function afterCreate(RestDto $dto, Entity $entity)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * Before lifecycle method for save method.
+     *
+     * @param   Entity  $entity
      */
     public function beforeSave(Entity $entity)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * After lifecycle method for save method.
+     *
+     * @param   Entity  $entity
      */
     public function afterSave(Entity $entity)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * Before lifecycle method for update method.
+     *
+     * @param   string  $id
+     * @param   RestDto $dto
+     * @param   Entity  $entity
      */
-    public function beforeUpdate(string &$id, \stdClass $data, Entity $entity)
+    public function beforeUpdate(string &$id, RestDto $dto, Entity $entity)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * After lifecycle method for update method.
+     *
+     * @param   string  $id
+     * @param   RestDto $dto
+     * @param   Entity  $entity
      */
-    public function afterUpdate(string &$id, \stdClass $data, Entity $entity)
+    public function afterUpdate(string &$id, RestDto $dto, Entity $entity)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * Before lifecycle method for delete method.
+     *
+     * @param   string  $id
+     * @param   Entity  $entity
      */
     public function beforeDelete(string &$id, Entity $entity)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * After lifecycle method for delete method.
+     *
+     * @param   string  $id
+     * @param   Entity  $entity
      */
     public function afterDelete(string &$id, Entity $entity)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * Before lifecycle method for ids method.
+     *
+     * @param   array   $criteria
+     * @param   array   $search
      */
     public function beforeIds(array &$criteria, array &$search)
     {
     }
 
     /**
-     * {@inheritdoc}
+     * Before lifecycle method for ids method.
+     *
+     * @param   array   $criteria
+     * @param   array   $search
+     * @param   array   $ids
      */
     public function afterIds(array &$criteria, array &$search, array &$ids)
     {
@@ -446,91 +629,56 @@ abstract class Base implements Interfaces\Base
     /**
      * Helper method to set data to specified entity and store it to database.
      *
-     * @todo    should this throw an error, if given data contains something else than entity itself?
-     * @todo    should this throw an error, if setter method doesn't exists?
-     *
      * @throws  ValidatorException
      * @throws  OptimisticLockException
      * @throws  NotFoundHttpException
      * @throws  ORMInvalidArgumentException
      *
-     * @param   Entity $entity
-     * @param   \stdClass $data
+     * @param   Entity  $entity
+     * @param   RestDto $dto
      */
-    protected function persistEntity(Entity $entity, \stdClass $data)
+    protected function persistEntity(Entity $entity, RestDto $dto)
     {
-        // Specify properties that are not allowed to update by user
-        $ignoreProperties = \array_merge(
-            [
-                'createdAt', 'createdBy',
-                'updatedAt', 'updatedBy'
-            ],
-            static::$ignoredPropertiesOnPersistEntity
-        );
-
-        // Determine associations for current entity
-        $associations = $this->getRepository()->getAssociations();
-
-        // And fetch meta data for entity
-        $meta = $this->getRepository()->getEntityManager()->getClassMetadata($this->getEntityName());
-
-        // Iterate given data
-        foreach ($data as $property => $value) {
-            $type = $meta->getTypeOfField($property);
-
-            if (\in_array($property, $ignoreProperties, true)) {
-                continue;
-            }
-
-            if (\array_key_exists($property, $associations)) {
-                $value = $this->determineAssociationValue($associations[$property], $value);
-            } elseif ($type === 'date') {
-                $value = new \DateTime($value, new \DateTimeZone('UTC'));
-            }
-
-            // Specify setter method for current property
-            $method = \sprintf(
-                'set%s',
-                \ucwords($property)
-            );
-
-            // Yeah method exists, so use it with current value
-            if (\method_exists($entity, $method)) {
-                $entity->$method($value);
-            }
-        }
+        // Update entity according to DTO current state
+        $dto->update($entity);
 
         // And save current entity
         $this->save($entity);
     }
 
     /**
-     * Helper method to determine association entity value.
+     * Helper method to validate given DTO class.
      *
+     * @throws  ValidatorException
+     *
+     * @param   RestDto $dto
+     */
+    private function validateDto(RestDto $dto)
+    {
+        // Check possible errors of DTO
+        $errors = $this->validator->validate($dto);
+
+        // Oh noes, we have some errors
+        if (\count($errors) > 0) {
+            throw new ValidatorException((string)$errors);
+        }
+    }
+
+    /**
      * @throws  NotFoundHttpException
      *
-     * @param   array   $association
-     * @param   mixed   $value
+     * @param   string $id
      *
      * @return  Entity
      */
-    private function determineAssociationValue(array $association, $value): Entity
+    private function getEntity(string $id): Entity
     {
-        // Get repository class for current association entity
-        $repository = $this->getRepository()->getEntityManager()->getRepository($association['targetEntity']);
-
         /** @var Entity $entity */
-        $entity = $repository->findOneBy(['id' => $value instanceof \stdClass ? $value->id : $value]);
+        $entity = $this->repository->find($id);
 
-        // Oh noes association entity not found - darn...
+        // Entity not found
         if ($entity === null) {
-            $message = \sprintf(
-                "Cannot find record for '%s' with id '%s'",
-                $association['fieldName'],
-                $value instanceof \stdClass ? $value->id : $value
-            );
-
-            throw new NotFoundHttpException($message);
+            throw new NotFoundHttpException('Not found');
         }
 
         return $entity;

@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 namespace AppBundle\integration\Services\Rest;
 
+use App\DTO\Rest\User as UserDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Repository\Base as Repository;
 use App\Services\Rest\User as UserService;
@@ -227,26 +228,11 @@ class GenericServiceTest extends KernelTestCase
         $repository = $this->getRepositoryMock('getClassName', 'getEntityManager', 'getEntityName', 'save');
 
         $repository
-            ->expects(static::exactly(2))
-            ->method('getEntityManager')
-            ->willReturn($this->entityManager);
-
-        $repository
-            ->expects(static::exactly(2))
-            ->method('getClassName')
-            ->willReturn(UserEntity::class);
-
-        $repository
-            ->expects(static::once())
-            ->method('getEntityName')
-            ->willReturn(UserEntity::class);
-
-        $repository
             ->expects(static::never())
             ->method('save');
 
         $service = new UserService($repository, $this->validator);
-        $service->create(new \stdClass());
+        $service->create(new UserDto());
     }
 
     public function testThatCreateCallsServiceMethods()
@@ -258,17 +244,7 @@ class GenericServiceTest extends KernelTestCase
             ->method('getClassName')
             ->willReturn(UserEntity::class);
 
-        $repository
-            ->expects(static::atLeast(1))
-            ->method('getEntityManager')
-            ->willReturn($this->entityManager);
-
-        $repository
-            ->expects(static::once())
-            ->method('getEntityName')
-            ->willReturn(UserEntity::class);
-
-        $object = new \stdClass();
+        $object = new UserDto();
         $object->username = 'foo.bar';
         $object->firstname = 'foo';
         $object->surname = 'bar';
@@ -341,7 +317,7 @@ class GenericServiceTest extends KernelTestCase
             ->willReturn(null);
 
         $service = new UserService($repository, $this->validator);
-        $service->update('id-that-does-not-exists', new \stdClass());
+        $service->update('id-that-does-not-exists', new UserDto());
     }
 
     /**
@@ -354,23 +330,13 @@ class GenericServiceTest extends KernelTestCase
         $repository = $this->getRepositoryMock('getEntityManager', 'getEntityName', 'find');
 
         $repository
-            ->expects(static::exactly(2))
-            ->method('getEntityManager')
-            ->willReturn($this->entityManager);
-
-        $repository
-            ->expects(static::exactly(2))
-            ->method('getEntityName')
-            ->willReturn(UserEntity::class);
-
-        $repository
             ->expects(static::once())
             ->method('find')
             ->with('invalid-entity')
             ->willReturn($entity);
 
         $service = new UserService($repository, $this->validator);
-        $service->update('invalid-entity', new \stdClass());
+        $service->update('invalid-entity', new UserDto());
     }
 
     public function testThatUpdateReturnsExpectedData()
@@ -387,16 +353,6 @@ class GenericServiceTest extends KernelTestCase
         $repository = $this->getRepositoryMock('getEntityManager', 'getEntityName', 'find', 'save');
 
         $repository
-            ->expects(static::exactly(2))
-            ->method('getEntityManager')
-            ->willReturn($this->entityManager);
-
-        $repository
-            ->expects(static::exactly(2))
-            ->method('getEntityName')
-            ->willReturn(UserEntity::class);
-
-        $repository
             ->expects(static::once())
             ->method('find')
             ->with('entity-id')
@@ -408,47 +364,13 @@ class GenericServiceTest extends KernelTestCase
             ->willReturn($repository);
 
         $service = new UserService($repository, $this->validator);
+
+        $dto = new UserDto();
+        $dto->load($entity);
+        $dto->username = 'bar.foo';
 
         /** @noinspection PhpUnitTestsInspection */
-        static::assertEquals($expectedEntity, $service->update('entity-id', (object)['username' => 'bar.foo']));
-    }
-
-    public function testThatUpdateIgnoresCertainProperties()
-    {
-        $entity = new UserEntity();
-        $entity->setUsername('foo.bar');
-        $entity->setFirstname('foo');
-        $entity->setSurname('bar');
-        $entity->setEmail('foo.bar@foobar.com');
-
-        $repository = $this->getRepositoryMock('getEntityManager', 'getEntityName', 'find', 'save');
-
-        $repository
-            ->expects(static::exactly(2))
-            ->method('getEntityManager')
-            ->willReturn($this->entityManager);
-
-        $repository
-            ->expects(static::exactly(2))
-            ->method('getEntityName')
-            ->willReturn(UserEntity::class);
-
-        $repository
-            ->expects(static::once())
-            ->method('find')
-            ->with('entity-id')
-            ->willReturn($entity);
-
-        $repository
-            ->expects(static::once())
-            ->method('save')
-            ->willReturn($repository);
-
-        $service = new UserService($repository, $this->validator);
-
-        $entity = $service->update('entity-id', (object)['password' => 'foobar']);
-
-        static::assertNull($entity->getPassword());
+        static::assertEquals($expectedEntity, $service->update('entity-id', $dto));
     }
 
     /**

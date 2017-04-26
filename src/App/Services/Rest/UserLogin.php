@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 namespace App\Services\Rest;
 
+use App\DTO\Rest\Interfaces\RestDto;
 use App\Entity\UserLogin as Entity;
 use App\Repository\UserLogin as Repository;
 use Doctrine\Common\Persistence\Proxy;
@@ -26,9 +27,9 @@ use Doctrine\Common\Persistence\Proxy;
  * @method  Entity[]        find(array $criteria = null, array $orderBy = null, int $limit = null, int $offset = null, array $search = null): array
  * @method  null|Entity     findOne(string $id, bool $throwExceptionIfNotFound = null)
  * @method  null|Entity     findOneBy(array $criteria, array $orderBy = null, bool $throwExceptionIfNotFound = null)
- * @method  Entity          create(\stdClass $data): Entity
+ * @method  Entity          create(RestDto $dto): Entity
  * @method  Entity          save(Entity $entity, bool $skipValidation = null): Entity
- * @method  Entity          update(string $id, \stdClass $data): Entity
+ * @method  Entity          update(string $id, RestDto $dto): Entity
  * @method  Entity          delete(string $id): Entity
  */
 class UserLogin extends Base

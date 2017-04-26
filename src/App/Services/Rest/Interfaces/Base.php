@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 namespace App\Services\Rest\Interfaces;
 
+use App\DTO\Rest\Interfaces\RestDto;
 use App\Entity\Interfaces\EntityInterface as Entity;
 use App\Repository\Base as Repository;
 use Doctrine\Common\Proxy\Proxy;
@@ -67,6 +68,15 @@ interface Base
      * @return array
      */
     public function getAssociations(): array;
+
+    /**
+     * Getter method for used DTO class for this REST service.
+     *
+     * @return  string
+     *
+     * @throws  \UnexpectedValueException
+     */
+    public function getDtoClass(): string;
 
     /**
      * Generic find method to return an array of items from database. Return value is an array of specified repository
@@ -140,11 +150,11 @@ interface Base
      * @throws  OptimisticLockException
      * @throws  NotFoundHttpException
      *
-     * @param   \stdClass   $data
+     * @param   RestDto $dto
      *
      * @return  Entity
      */
-    public function create(\stdClass $data): Entity;
+    public function create(RestDto $dto): Entity;
 
     /**
      * Generic method to save given entity to specified repository. Return value is created entity.
@@ -168,12 +178,12 @@ interface Base
      * @throws  ORMInvalidArgumentException
      * @throws  OptimisticLockException
      *
-     * @param   string      $id
-     * @param   \stdClass   $data
+     * @param   string  $id
+     * @param   RestDto $dto
      *
      * @return  Entity
      */
-    public function update(string $id, \stdClass $data): Entity;
+    public function update(string $id, RestDto $dto): Entity;
 
     /**
      * Generic method to delete specified entity from database.
@@ -283,18 +293,18 @@ interface Base
     /**
      * Before lifecycle method for create method.
      *
-     * @param   \stdClass   $data
-     * @param   Entity      $entity
+     * @param   RestDto $dto
+     * @param   Entity  $entity
      */
-    public function beforeCreate(\stdClass $data, Entity $entity);
+    public function beforeCreate(RestDto $dto, Entity $entity);
 
     /**
      * After lifecycle method for create method.
      *
-     * @param   \stdClass   $data
-     * @param   Entity      $entity
+     * @param   RestDto $dto
+     * @param   Entity  $entity
      */
-    public function afterCreate(\stdClass $data, Entity $entity);
+    public function afterCreate(RestDto $dto, Entity $entity);
 
     /**
      * Before lifecycle method for save method.
@@ -313,20 +323,20 @@ interface Base
     /**
      * Before lifecycle method for update method.
      *
-     * @param   string      $id
-     * @param   \stdClass   $data
-     * @param   Entity      $entity
+     * @param   string  $id
+     * @param   RestDto $dto
+     * @param   Entity  $entity
      */
-    public function beforeUpdate(string &$id, \stdClass $data, Entity $entity);
+    public function beforeUpdate(string &$id, RestDto $dto, Entity $entity);
 
     /**
      * After lifecycle method for update method.
      *
-     * @param   string      $id
-     * @param   \stdClass   $data
-     * @param   Entity      $entity
+     * @param   string  $id
+     * @param   RestDto $dto
+     * @param   Entity  $entity
      */
-    public function afterUpdate(string &$id, \stdClass $data, Entity $entity);
+    public function afterUpdate(string &$id, RestDto $dto, Entity $entity);
 
     /**
      * Before lifecycle method for delete method.

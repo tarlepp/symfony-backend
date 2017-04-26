@@ -7,6 +7,7 @@ declare(strict_types = 1);
  */
 namespace AppBundle\integration\Traits\Rest\Methods;
 
+use App\DTO\Rest\Interfaces\RestDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Tests\KernelTestCase;
 use App\Traits\Rest\Methods\Create;
@@ -16,6 +17,7 @@ use AppBundle\integration\Traits\Rest\Methods\Create as CreateTestClass;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 
+use JMS\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -52,6 +54,8 @@ class CreateTest extends KernelTestCase
     {
         $resourceService = $this->createMock(ResourceServiceInterface::class);
         $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
+        $dtoInterface = $this->createMock(RestDto::class);
+        $serializer = $this->createMock(Serializer::class);
 
         /** @var CreateTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
         $testClass = $this->getMockForAbstractClass(
@@ -69,40 +73,34 @@ class CreateTest extends KernelTestCase
             '{"foo":"bar"}'
         );
 
+        $testClass
+            ->expects(static::exactly(2))
+            ->method('getResponseService')
+            ->willReturn($restHelperResponse);
+
+        $serializer
+            ->expects(static::once())
+            ->method('deserialize')
+            ->withAnyParameters()
+            ->willReturn($dtoInterface);
+
+        $restHelperResponse
+            ->expects(static::once())
+            ->method('getSerializer')
+            ->willReturn($serializer);
+
         $resourceService
             ->expects(static::once())
             ->method('create')
             ->willThrowException($exception);
 
         $testClass
-            ->expects(static::once())
+            ->expects(static::exactly(2))
             ->method('getResourceService')
             ->willReturn($resourceService);
 
         $this->expectException(HttpException::class);
         $this->expectExceptionCode($expectedCode);
-
-        $testClass->createMethod($request);
-    }
-
-    /**
-     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
-     * @expectedExceptionMessage Syntax error, malformed JSON - Syntax error
-     * @expectedExceptionCode 400
-     */
-    public function testThatTraitThrowsExceptionWithInvalidPayload()
-    {
-        $resourceService = $this->createMock(ResourceServiceInterface::class);
-        $restHelperResponse = $this->createMock(RestHelperResponseInterface::class);
-
-        /** @var CreateTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
-        $testClass = $this->getMockForAbstractClass(
-            CreateTestClass::class,
-            [$resourceService, $restHelperResponse]
-        );
-
-        // Create request and response
-        $request = Request::create('/', 'POST');
 
         $testClass->createMethod($request);
     }
@@ -116,6 +114,8 @@ class CreateTest extends KernelTestCase
         $request = $this->createMock(Request::class);
         $response = $this->createMock(Response::class);
         $entityInterface = $this->createMock(EntityInterface::class);
+        $dtoInterface = $this->createMock(RestDto::class);
+        $serializer = $this->createMock(Serializer::class);
 
         /** @var CreateTestClass|\PHPUnit_Framework_MockObject_MockObject $testClass */
         $testClass = $this->getMockForAbstractClass(CreateTestClass::class, [$resourceService, $restHelperResponse]);
@@ -136,6 +136,17 @@ class CreateTest extends KernelTestCase
             ->withAnyParameters()
             ->willReturn($entityInterface);
 
+        $serializer
+            ->expects(static::once())
+            ->method('deserialize')
+            ->withAnyParameters()
+            ->willReturn($dtoInterface);
+
+        $restHelperResponse
+            ->expects(static::once())
+            ->method('getSerializer')
+            ->willReturn($serializer);
+
         $restHelperResponse
             ->expects(static::once())
             ->method('createResponse')
@@ -143,12 +154,12 @@ class CreateTest extends KernelTestCase
             ->willReturn($response);
 
         $testClass
-            ->expects(static::once())
+            ->expects(static::exactly(2))
             ->method('getResourceService')
             ->willReturn($resourceService);
 
         $testClass
-            ->expects(static::once())
+            ->expects(static::exactly(2))
             ->method('getResponseService')
             ->willReturn($restHelperResponse);
 

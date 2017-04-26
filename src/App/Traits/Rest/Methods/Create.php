@@ -87,12 +87,18 @@ trait Create
         }
 
         try {
-            // Determine entity / DTO data from request
-            $data = JSON::decode($request->getContent());
+            // Convert request content to DTO
+            $dto = $this->getResponseService()
+                ->getSerializer()
+                ->deserialize(
+                    $request->getContent(),
+                    $this->getResourceService()->getDtoClass(),
+                    'json'
+                );
 
             return $this->getResponseService()->createResponse(
                 $request,
-                $this->getResourceService()->create($data),
+                $this->getResourceService()->create($dto),
                 201
             );
         } catch (\Exception $error) {
