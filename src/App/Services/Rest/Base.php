@@ -345,6 +345,7 @@ abstract class Base implements Interfaces\Base
     /**
      * Generic method to update specified entity with new data.
      *
+     * @throws  \BadMethodCallException
      * @throws  NotFoundHttpException
      * @throws  ValidatorException
      * @throws  ORMInvalidArgumentException
@@ -360,17 +361,29 @@ abstract class Base implements Interfaces\Base
         // Fetch entity
         $entity = $this->getEntity($id);
 
+        /**
+         * Determine used dto class and create new instance of that and load entity to that. And after that patch
+         * that dto with given partial OR whole dto class.
+         *
+         * @var RestDto $restDto
+         */
+        $dtoClass = \get_class($dto);
+
+        $restDto = new $dtoClass();
+        $restDto->load($entity);
+        $restDto->patch($dto);
+
         // Validate DTO
-        $this->validateDto($dto);
+        $this->validateDto($restDto);
 
         // Before callback method call
-        $this->beforeUpdate($id, $dto, $entity);
+        $this->beforeUpdate($id, $restDto, $entity);
 
         // Create or update entity
-        $this->persistEntity($entity, $dto);
+        $this->persistEntity($entity, $restDto);
 
         // After callback method call
-        $this->afterUpdate($id, $dto, $entity);
+        $this->afterUpdate($id, $restDto, $entity);
 
         return $entity;
     }
