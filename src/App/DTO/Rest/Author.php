@@ -12,19 +12,22 @@ use App\Entity\Interfaces\EntityInterface;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
+// Note that these are just for the class PHPDoc block
+/** @noinspection PhpHierarchyChecksInspection */
+/** @noinspection PhpSignatureMismatchDuringInheritanceInspection */
+
 /**
  * Class Author
  *
+ * @JMS\AccessType("public_method")
+ *
  * @package App\DTO\Rest
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ *
+ * @method  Author  patch(Interfaces\RestDto $dto): Interfaces\RestDto
  */
-class Author implements Interfaces\RestDto
+class Author extends Base
 {
-    /**
-     * @var string
-     */
-    private $id;
-
     /**
      * @var string
      *
@@ -34,7 +37,7 @@ class Author implements Interfaces\RestDto
      *
      * @JMS\Type("string")
      */
-    public $name = '';
+    private $name = '';
 
     /**
      * @var string
@@ -44,7 +47,51 @@ class Author implements Interfaces\RestDto
      *
      * @JMS\Type("string")
      */
-    public $description = '';
+    private $description = '';
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Author
+     */
+    public function setName(string $name): Author
+    {
+        $this->visited[] = 'name';
+
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return Author
+     */
+    public function setDescription(string $description): Author
+    {
+        $this->visited[] = 'description';
+
+        $this->description = $description;
+
+        return $this;
+    }
 
     /**
      * Method to load DTO data from author entity.
@@ -55,7 +102,6 @@ class Author implements Interfaces\RestDto
      */
     public function load(EntityInterface $entity): Interfaces\RestDto
     {
-        $this->id = $entity->getId();
         $this->name = $entity->getName();
         $this->description = $entity->getDescription();
 

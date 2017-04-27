@@ -18,6 +18,24 @@ use App\Entity\Interfaces\EntityInterface;
 interface RestDto
 {
     /**
+     * Getter method for visited setters. This is needed for dto patching.
+     *
+     * @return array
+     */
+    public function getVisited(): array;
+
+    /**
+     * Method to patch current dto with another one.
+     *
+     * @throws  \BadMethodCallException
+     *
+     * @param   RestDto $dto
+     *
+     * @return  RestDto
+     */
+    public function patch(RestDto $dto): RestDto;
+
+    /**
      * Method to load DTO data from specified entity.
      *
      * @param   EntityInterface $entity

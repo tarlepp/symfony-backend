@@ -8,25 +8,29 @@ declare(strict_types = 1);
 namespace App\DTO\Rest;
 
 use App\Entity\Book as BookEntity;
+use App\Entity\Author as AuthorEntity;
 use App\Entity\Interfaces\EntityInterface;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
+// Note that these are just for the class PHPDoc block
+/** @noinspection PhpHierarchyChecksInspection */
+/** @noinspection PhpSignatureMismatchDuringInheritanceInspection */
+
 /**
  * Class Book
  *
+ * @JMS\AccessType("public_method")
+ *
  * @package App\DTO\Rest
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ *
+ * @method  Book    patch(Interfaces\RestDto $dto): Interfaces\RestDto
  */
-class Book implements Interfaces\RestDto
+class Book extends Base
 {
     /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var \App\Entity\Author
+     * @var AuthorEntity
      *
      * @JMS\Type("App\Entity\Author")
      *
@@ -64,6 +68,94 @@ class Book implements Interfaces\RestDto
     public $releaseDate;
 
     /**
+     * @return AuthorEntity
+     */
+    public function getAuthor(): AuthorEntity
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param AuthorEntity $author
+     *
+     * @return Book
+     */
+    public function setAuthor(AuthorEntity $author): Book
+    {
+        $this->visited[] = 'author';
+
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     *
+     * @return Book
+     */
+    public function setTitle(string $title): Book
+    {
+        $this->visited[] = 'title';
+
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return Book
+     */
+    public function setDescription($description = null): Book
+    {
+        $this->visited[] = 'description';
+
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getReleaseDate(): \DateTime
+    {
+        return $this->releaseDate;
+    }
+
+    /**
+     * @param \DateTime $releaseDate
+     *
+     * @return Book
+     */
+    public function setReleaseDate(\DateTime $releaseDate): Book
+    {
+        $this->visited[] = 'releaseDate';
+
+        $this->releaseDate = $releaseDate;
+
+        return $this;
+    }
+
+    /**
      * Method to load DTO data from specified entity.
      *
      * @param   EntityInterface|BookEntity  $entity
@@ -72,7 +164,6 @@ class Book implements Interfaces\RestDto
      */
     public function load(EntityInterface $entity): Interfaces\RestDto
     {
-        $this->id = $entity->getId();
         $this->author = $entity->getAuthor();
         $this->title = $entity->getTitle();
         $this->description = $entity->getDescription();

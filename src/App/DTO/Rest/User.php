@@ -13,19 +13,22 @@ use App\Entity\Interfaces\EntityInterface;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
+// Note that these are just for the class PHPDoc block
+/** @noinspection PhpHierarchyChecksInspection */
+/** @noinspection PhpSignatureMismatchDuringInheritanceInspection */
+
 /**
  * Class User
  *
+ * @JMS\AccessType("public_method")
+ *
  * @package App\DTO\Rest
  * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ *
+ * @method  User    patch(Interfaces\RestDto $dto): Interfaces\RestDto
  */
-class User implements RestDto
+class User extends Base
 {
-    /**
-     * @var string
-     */
-    public $id;
-
     /**
      * @var string
      *
@@ -71,6 +74,94 @@ class User implements RestDto
     public $email;
 
     /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername(string $username): User
+    {
+        $this->visited[] = 'username';
+
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstname(): string
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * @param string $firstname
+     *
+     * @return User
+     */
+    public function setFirstname(string $firstname): User
+    {
+        $this->visited[] = 'firstName';
+
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @param string $surname
+     *
+     * @return User
+     */
+    public function setSurname(string $surname): User
+    {
+        $this->visited[] = 'surname';
+
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail(string $email): User
+    {
+        $this->visited[] = 'email';
+
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
      * Method to load DTO data from specified entity.
      *
      * @param   EntityInterface|UserEntity  $entity
@@ -79,12 +170,11 @@ class User implements RestDto
      */
     public function load(EntityInterface $entity): RestDto
     {
-        $this->id = $entity->getId();
         $this->username = $entity->getUsername();
         $this->firstname = $entity->getFirstname();
         $this->surname = $entity->getSurname();
         $this->email = $entity->getEmail();
-        
+
         return $this;
     }
 
@@ -101,7 +191,7 @@ class User implements RestDto
         $entity->setFirstname($this->firstname);
         $entity->setSurname($this->surname);
         $entity->setEmail($this->email);
-        
+
         return $entity;
     }
 }
