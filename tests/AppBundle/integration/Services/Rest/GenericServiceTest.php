@@ -245,10 +245,10 @@ class GenericServiceTest extends KernelTestCase
             ->willReturn(UserEntity::class);
 
         $object = new UserDto();
-        $object->username = 'foo.bar';
-        $object->firstname = 'foo';
-        $object->surname = 'bar';
-        $object->email = 'foobar@foobar.com';
+        $object->setUsername('foo.bar');
+        $object->setFirstname('foo');
+        $object->setSurname('bar');
+        $object->setEmail('foobar@foobar.com');
 
         $service = new UserService($repository, $this->validator);
         $service->create($object);
@@ -320,25 +320,6 @@ class GenericServiceTest extends KernelTestCase
         $service->update('id-that-does-not-exists', new UserDto());
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\ValidatorException
-     */
-    public function testThatUpdateThrowsAnExceptionWithInvalidEntity()
-    {
-        $entity = new UserEntity();
-
-        $repository = $this->getRepositoryMock('getEntityManager', 'getEntityName', 'find');
-
-        $repository
-            ->expects(static::once())
-            ->method('find')
-            ->with('invalid-entity')
-            ->willReturn($entity);
-
-        $service = new UserService($repository, $this->validator);
-        $service->update('invalid-entity', new UserDto());
-    }
-
     public function testThatUpdateReturnsExpectedData()
     {
         $entity = new UserEntity();
@@ -367,7 +348,7 @@ class GenericServiceTest extends KernelTestCase
 
         $dto = new UserDto();
         $dto->load($entity);
-        $dto->username = 'bar.foo';
+        $dto->setUsername('bar.foo');
 
         /** @noinspection PhpUnitTestsInspection */
         static::assertEquals($expectedEntity, $service->update('entity-id', $dto));
