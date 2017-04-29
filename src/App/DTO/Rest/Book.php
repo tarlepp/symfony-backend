@@ -37,7 +37,7 @@ class Book extends Base
      * @Assert\NotBlank()
      * @Assert\NotNull()
      */
-    public $author;
+    private $author;
 
     /**
      * @var string
@@ -48,14 +48,14 @@ class Book extends Base
      *
      * @JMS\Type("string")
      */
-    public $title;
+    private $title;
 
     /**
      * @var string
      *
      * @JMS\Type("string")
      */
-    public $description;
+    private $description;
 
     /**
      * @var \DateTime
@@ -65,7 +65,7 @@ class Book extends Base
      * @Assert\NotBlank()
      * @Assert\NotNull()
      */
-    public $releaseDate;
+    private $releaseDate;
 
     /**
      * @return AuthorEntity

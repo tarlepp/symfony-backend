@@ -38,7 +38,7 @@ class User extends Base
      * @Assert\NotNull()
      * @Assert\Length(min = 2, max = 255)
      */
-    public $username;
+    private $username;
 
     /**
      * @var string
@@ -49,7 +49,7 @@ class User extends Base
      * @Assert\NotNull()
      * @Assert\Length(min = 2, max = 255)
      */
-    public $firstname;
+    private $firstname;
 
     /**
      * @var string
@@ -60,7 +60,7 @@ class User extends Base
      * @Assert\NotNull()
      * @Assert\Length(min = 2, max = 255)
      */
-    public $surname;
+    private $surname;
 
     /**
      * @var string
@@ -71,7 +71,7 @@ class User extends Base
      * @Assert\NotNull()
      * @Assert\Email()
      */
-    public $email;
+    private $email;
 
     /**
      * @return string
