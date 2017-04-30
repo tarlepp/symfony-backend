@@ -82,7 +82,7 @@ class Book extends Base
      */
     public function setAuthor(AuthorEntity $author): Book
     {
-        $this->visited[] = 'author';
+        $this->setVisited('author');
 
         $this->author = $author;
 
@@ -104,7 +104,7 @@ class Book extends Base
      */
     public function setTitle(string $title): Book
     {
-        $this->visited[] = 'title';
+        $this->setVisited('title');
 
         $this->title = $title;
 
@@ -126,7 +126,7 @@ class Book extends Base
      */
     public function setDescription($description = null): Book
     {
-        $this->visited[] = 'description';
+        $this->setVisited('description');
 
         $this->description = $description;
 
@@ -148,7 +148,7 @@ class Book extends Base
      */
     public function setReleaseDate(\DateTime $releaseDate): Book
     {
-        $this->visited[] = 'releaseDate';
+        $this->setVisited('releaseDate');
 
         $this->releaseDate = $releaseDate;
 

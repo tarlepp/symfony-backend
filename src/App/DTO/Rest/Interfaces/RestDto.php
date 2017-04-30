@@ -25,6 +25,15 @@ interface RestDto
     public function getVisited(): array;
 
     /**
+     * Setter for visited data. This is needed for dto patching.
+     *
+     * @param   string  $property
+     *
+     * @return  RestDto
+     */
+    public function setVisited(string $property): RestDto;
+
+    /**
      * Method to patch current dto with another one.
      *
      * @throws  \BadMethodCallException

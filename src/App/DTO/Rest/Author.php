@@ -64,7 +64,7 @@ class Author extends Base
      */
     public function setName(string $name): Author
     {
-        $this->visited[] = 'name';
+        $this->setVisited('name');
 
         $this->name = $name;
 
@@ -86,7 +86,7 @@ class Author extends Base
      */
     public function setDescription(string $description): Author
     {
-        $this->visited[] = 'description';
+        $this->setVisited('description');
 
         $this->description = $description;
 

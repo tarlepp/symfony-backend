@@ -20,7 +20,7 @@ abstract class Base implements Interfaces\RestDto
      *
      * @var array
      */
-    protected $visited = [];
+    private $visited = [];
 
     /**
      * Getter method for visited setters. This is needed for dto patching.
@@ -30,6 +30,20 @@ abstract class Base implements Interfaces\RestDto
     public function getVisited(): array
     {
         return $this->visited;
+    }
+
+    /**
+     * Setter for visited data. This is needed for dto patching.
+     *
+     * @param   string  $property
+     *
+     * @return  Interfaces\RestDto
+     */
+    public function setVisited(string $property): Interfaces\RestDto
+    {
+        $this->visited[] = $property;
+
+        return $this;
     }
 
     /**
