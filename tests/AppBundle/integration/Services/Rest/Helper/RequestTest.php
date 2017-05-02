@@ -30,6 +30,17 @@ class RequestTest extends KernelTestCase
         RequestHelper::getCriteria($fakeRequest);
     }
 
+    public function testThatGetCriteriaMethodsReturnsExpectedArray()
+    {
+        $data = [
+            'foo' => 'bar',
+        ];
+
+        $fakeRequest = Request::create('/', 'GET', ['where' => \json_encode($data)]);
+
+        static::assertSame($data, RequestHelper::getCriteria($fakeRequest));
+    }
+
     /**
      * @dataProvider dataProviderTestThatGetOrderByReturnsExpectedValue
      *

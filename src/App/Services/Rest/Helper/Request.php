@@ -200,10 +200,6 @@ class Request
          * @param   string|array $terms
          */
         $iterator = function (&$terms) {
-            if (!\is_array($terms)) {
-                $terms = \explode(' ', (string)$terms);
-            }
-
             $terms = \array_unique(\array_values(\array_filter($terms)));
         };
 
