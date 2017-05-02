@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
@@ -178,6 +179,93 @@ class ExceptionListenerTest extends KernelTestCase
         static::assertSame($expectedMessage, PHPUnitUtil::callMethod($listener, 'getExceptionMessage', [$exception]));
     }
 
+    public function testThatStatusCodeIs403WhenUserTokenIsPresentAndAccessDeniedExceptionIsThrown()
+    {
+        /**
+         * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface  $stubTokenStorage
+         * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface        $stubLogger
+         * @var \PHPUnit_Framework_MockObject_MockObject|HttpKernelInterface    $stubHttpKernel
+         * @var \PHPUnit_Framework_MockObject_MockObject|Request                $stubRequest
+         */
+        $stubTokenStorage = $this->createMock(TokenStorageInterface::class);
+        $stubLogger = $this->createMock(LoggerInterface::class);
+        $stubHttpKernel = $this->createMock(HttpKernelInterface::class);
+        $stubRequest = $this->createMock(Request::class);
+
+        $stubTokenStorage
+            ->expects(static::once())
+            ->method('getToken')
+            ->willReturn('user token');
+
+        $exception = new AccessDeniedException(AccessDeniedException::class);
+
+        // Create event
+        $event = new Event($stubHttpKernel, $stubRequest, HttpKernelInterface::MASTER_REQUEST, $exception);
+
+        // Process event
+        $listener = new ExceptionListener($stubTokenStorage, $stubLogger, 'dev');
+        $listener->onKernelException($event);
+
+        static::assertSame(403, $event->getResponse()->getStatusCode());
+    }
+
+    public function testThatStatusCodeIs401WhenUserTokenIsNotPresentAndAccessDeniedExceptionIsThrown()
+    {
+        /**
+         * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface  $stubTokenStorage
+         * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface        $stubLogger
+         * @var \PHPUnit_Framework_MockObject_MockObject|HttpKernelInterface    $stubHttpKernel
+         * @var \PHPUnit_Framework_MockObject_MockObject|Request                $stubRequest
+         */
+        $stubTokenStorage = $this->createMock(TokenStorageInterface::class);
+        $stubLogger = $this->createMock(LoggerInterface::class);
+        $stubHttpKernel = $this->createMock(HttpKernelInterface::class);
+        $stubRequest = $this->createMock(Request::class);
+
+        $exception = new AccessDeniedException(AccessDeniedException::class);
+
+        // Create event
+        $event = new Event($stubHttpKernel, $stubRequest, HttpKernelInterface::MASTER_REQUEST, $exception);
+
+        // Process event
+        $listener = new ExceptionListener($stubTokenStorage, $stubLogger, 'dev');
+        $listener->onKernelException($event);
+
+        static::assertSame(401, $event->getResponse()->getStatusCode());
+    }
+
+    public function testThatExceptionClassGetStatusCodeIsCalledIfPresent()
+    {
+        /**
+         * @var \PHPUnit_Framework_MockObject_MockObject|TokenStorageInterface  $stubTokenStorage
+         * @var \PHPUnit_Framework_MockObject_MockObject|LoggerInterface        $stubLogger
+         * @var \PHPUnit_Framework_MockObject_MockObject|HttpKernelInterface    $stubHttpKernel
+         * @var \PHPUnit_Framework_MockObject_MockObject|Request                $stubRequest
+         * @var \PHPUnit_Framework_MockObject_MockObject|\Exception             $stubException
+         */
+        $stubTokenStorage = $this->createMock(TokenStorageInterface::class);
+        $stubLogger = $this->createMock(LoggerInterface::class);
+        $stubHttpKernel = $this->createMock(HttpKernelInterface::class);
+        $stubRequest = $this->createMock(Request::class);
+        $stubException = $this->getMockBuilder(\Exception::class)
+            ->setMethods(['getStatusCode'])
+            ->getMock();
+
+        $stubException
+            ->expects(static::once())
+            ->method('getStatusCode')
+            ->willReturn(400);
+
+        // Create event
+        $event = new Event($stubHttpKernel, $stubRequest, HttpKernelInterface::MASTER_REQUEST, $stubException);
+
+        // Process event
+        $listener = new ExceptionListener($stubTokenStorage, $stubLogger, 'dev');
+        $listener->onKernelException($event);
+
+        static::assertSame(400, $event->getResponse()->getStatusCode());
+    }
+
     /**
      * @return array
      */
@@ -246,15 +334,19 @@ class ExceptionListenerTest extends KernelTestCase
         return [
             [
                 Response::HTTP_INTERNAL_SERVER_ERROR,
-                new \Exception(\Exception::class)
+                new \Exception(\Exception::class),
             ],
             [
                 Response::HTTP_INTERNAL_SERVER_ERROR,
-                new \BadMethodCallException(\BadMethodCallException::class)
+                new \BadMethodCallException(\BadMethodCallException::class),
             ],
             [
                 Response::HTTP_UNAUTHORIZED,
-                new AuthenticationException(AuthenticationException::class)
+                new AuthenticationException(AuthenticationException::class),
+            ],
+            [
+                Response::HTTP_UNAUTHORIZED,
+                new AccessDeniedException(AccessDeniedException::class),
             ],
             [
                 Response::HTTP_BAD_REQUEST,

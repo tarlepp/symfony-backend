@@ -83,14 +83,14 @@ class ExceptionListener
         $response = new Response();
 
         // HttpExceptionInterface is a special type of exception that holds status code and header details
-        if ($exception instanceof HttpExceptionInterface) {
+        if ($exception instanceof AuthenticationException) {
+            $response->setStatusCode(Response::HTTP_UNAUTHORIZED);
+        } else if ($exception instanceof AccessDeniedException) {
+            $response->setStatusCode($user ? Response::HTTP_FORBIDDEN : Response::HTTP_UNAUTHORIZED);
+        } else if ($exception instanceof HttpExceptionInterface) {
             $response->setStatusCode($exception->getStatusCode());
             $response->headers->replace($exception->getHeaders());
-        } elseif ($exception instanceof AuthenticationException) {
-            $response->setStatusCode(Response::HTTP_UNAUTHORIZED);
-        } elseif ($exception instanceof AccessDeniedException) {
-            $response->setStatusCode($user ? Response::HTTP_FORBIDDEN : Response::HTTP_UNAUTHORIZED);
-        } elseif (\method_exists($exception, 'getStatusCode')) {
+        } else if (\method_exists($exception, 'getStatusCode')) {
             $response->setStatusCode($exception->getStatusCode());
         } else {
             $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -137,20 +137,20 @@ class ExceptionListener
     private function getExceptionMessage(\Exception $exception): string
     {
         if ($this->environment === 'dev') {
-            return $exception->getMessage();
-        }
-
-        // Within AccessDeniedHttpException we need to hide actual real message from users
-        if ($exception instanceof AccessDeniedHttpException ||
-            $exception instanceof AccessDeniedException
-        ) {
-            $message = 'Access denied.';
-        } elseif ($exception instanceof DBALException ||
-            $exception instanceof ORMException
-        ) { // Database errors
-            $message = 'Database error.';
-        } else {
             $message = $exception->getMessage();
+        } else {
+            // Within AccessDeniedHttpException we need to hide actual real message from users
+            if ($exception instanceof AccessDeniedHttpException ||
+                $exception instanceof AccessDeniedException
+            ) {
+                $message = 'Access denied.';
+            } else if ($exception instanceof DBALException ||
+                $exception instanceof ORMException
+            ) { // Database errors
+                $message = 'Database error.';
+            } else {
+                $message = $exception->getMessage();
+            }
         }
 
         return $message;
