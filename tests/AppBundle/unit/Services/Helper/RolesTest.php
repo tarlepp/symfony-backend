@@ -30,6 +30,23 @@ class RolesTest extends ContainerTestCase
         $this->service = $this->getContainer()->get('app.services.helper.roles');
     }
 
+    public function testThatGetHierarchyReturnsExpected()
+    {
+        $expected = [
+            'ROLE_USER' => [
+                'ROLE_LOGGED',
+            ],
+            'ROLE_ADMIN' => [
+                'ROLE_USER',
+            ],
+            'ROLE_ROOT' => [
+                'ROLE_ADMIN',
+            ]
+        ];
+
+        static::assertSame($expected, $this->service->getHierarchy(), 'Roles hierarchy is not expected.');
+    }
+
     public function testThatGetRolesReturnsExpected()
     {
         static::assertSame(
