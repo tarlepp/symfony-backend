@@ -108,6 +108,33 @@ class GenericServiceTest extends KernelTestCase
         $service->getAssociations();
     }
 
+    public function testThatGetDtoClassReturnsExpected()
+    {
+        $repository = $this->getRepositoryMock();
+
+        $service = new UserService($repository, $this->validator);
+
+        static::assertSame(UserDto::class, $service->getDtoClass());
+    }
+
+    /**
+     * @expectedException \UnexpectedValueException
+     * @expectedExceptionMessage Current service class
+     */
+    public function testThatGetDtoThrowsAnException()
+    {
+        $repository = $this->getRepositoryMock();
+
+        $service = new UserService($repository, $this->validator);
+
+        $clazz = new \ReflectionClass(\get_class($service));
+        $property = $clazz->getProperty('dtoClass');
+        $property->setAccessible(true);
+        $property->setValue($service, null);
+
+        $service->getDtoClass();
+    }
+
     public function testThatFindCallsServiceMethods()
     {
         $repository = $this->getRepositoryMock('findByWithSearchTerms');
