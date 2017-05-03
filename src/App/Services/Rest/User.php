@@ -34,5 +34,12 @@ use Doctrine\Common\Persistence\Proxy;
  */
 class User extends Base
 {
+    /**
+     * REST service entity DTO class.
+     *
+     * @var string
+     */
+    protected static $dtoClass = \App\DTO\Rest\User::class;
+
     // Implement custom service methods here
 }
